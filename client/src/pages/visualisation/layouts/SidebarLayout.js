@@ -1,7 +1,7 @@
 import React from "react";
 import ControlLayout from "./ControlLayout";
 import ListLayout from "./ListLayout";
-import { Navigate, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
 /**
@@ -20,7 +20,7 @@ const SidebarLayout = () => {
       maxWidth: 500,
       width: "20vw",
       height: "calc(100vh - 30px)",
-      backgroundColor: "#222222",
+      backgroundColor: "#212529",
       padding: "1em",
       color: "white",
     },
@@ -62,14 +62,19 @@ const SidebarLayout = () => {
               </Dropdown.Item>
               <Dropdown.Item href="#/action-2">Timeline</Dropdown.Item>
               <Dropdown.Item href="#/action-3">ENA</Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item href="#/action-4">Separated link</Dropdown.Item>
+              <Dropdown.Item href="#/action-4">
+                Audio Social Activities
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
       </div>
       <ControlLayout></ControlLayout>
       <ListLayout>
+        <label>Project: Nursing</label>
+        <label>Project: Nursing</label>
+        <label>Project: Nursing</label>
+        <label>Project: Nursing</label>
         <label>Project: Nursing</label>
       </ListLayout>
     </div>

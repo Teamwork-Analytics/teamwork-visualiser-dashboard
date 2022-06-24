@@ -1,24 +1,24 @@
 export const fakeSessions = [
   {
-    name: "Oloo",
+    name: "Session 1",
   },
   {
-    name: "Olaa",
+    name: "Session 2",
     project: "Monash Nurse",
   },
   {
-    name: "Heyho",
+    name: "Session 3",
   },
   {
-    name: "Heyho",
+    name: "Session 4",
   },
   {
-    name: "Heyho",
+    name: "Session 5",
   },
   {
-    name: "Heyho",
+    name: "Session 6",
   },
   {
-    name: "Heyho",
+    name: "Session 7",
   },
 ];

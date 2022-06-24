@@ -1,19 +1,20 @@
 import React from "react";
-import HiveCard from "../../components/card/HiveCard";
+import { Card } from "react-bootstrap";
+import TACard from "../../components/card/TACard";
 import { Session } from "./Session";
 
 const SessionCard = ({ session }: { session: Session }) => {
-  const styles = {
-    body: {},
-  };
-
   return (
-    <HiveCard height={250}>
-      <div style={{ textAlign: "left" }}>
-        <h3>{session.name}</h3>
-        <label>{session.project && session.project}</label>
-      </div>
-    </HiveCard>
+    <TACard height={250}>
+      <Card.Body>
+        <Card.Title>{session.name}</Card.Title>
+        <Card.Text></Card.Text>
+      </Card.Body>
+
+      {session.project && (
+        <Card.Footer className="text-muted">{session.project}</Card.Footer>
+      )}
+    </TACard>
   );
 };
 

@@ -1,0 +1,11 @@
+.ta-card {
+  transition-duration: 0.5s;
+}
+.ta-card:hover {
+  transform: translateY(-0.3em);
+  transition-duration: 0.5s;
+}
+
+.ta-card > h3:link {
+  text-decoration: none;
+}

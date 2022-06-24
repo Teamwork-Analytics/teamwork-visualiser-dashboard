@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import SessionCard from "./SessionCard";
 import SearchBar from "../../components/SearchBar";
 import { Session } from "./Session";
+import { Button } from "react-bootstrap";
 
 /**
  * First page to select and create sessions
@@ -20,20 +21,30 @@ const SessionPage = () => {
       rowGap: "2em",
     },
     navigation: {
-      maxWidth: "900px",
-      width: "30vw",
       padding: "1em",
       textAlign: "center" as const,
       borderRadius: "0.5em",
+    },
+    control: {
+      display: "flex",
+      width: "100%",
+      padding: "1em",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row" as const,
     },
   };
   return (
     <div style={styles.main}>
       <h1 style={styles.title}>SESSIONS</h1>
-      <div style={pageStyles.navigation}>
-        <SearchBar />
+      <div style={pageStyles.control}>
+        <div style={pageStyles.navigation}>
+          <SearchBar />
+        </div>
+        <Button variant="success">Add Session +</Button>
       </div>
-      <div style={{ width: 900, margin: "0 auto" }}>
+
+      <div style={{ width: 900, margin: "1em auto" }}>
         <div style={pageStyles.list}>
           {fakeSessions.map((session: Session) => (
             <Link

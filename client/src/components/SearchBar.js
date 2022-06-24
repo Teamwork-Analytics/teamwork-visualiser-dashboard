@@ -8,14 +8,15 @@ const SearchBar = () => {
         <Form.Control
           style={{
             borderRadius: "0.5em",
-            boxShadow: "0px 2px 10px 0px grey",
+            maxWidth: "500px",
+            width: "30vw",
           }}
           size={"lg"}
           autofocus="autofocus"
           type="text"
           id="searchBar"
           aria-describedby="searchBar"
-          placeholder="Type session name... "
+          placeholder="Search session name... "
         />
       </Form.Group>
     </Form>
