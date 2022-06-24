@@ -4,6 +4,7 @@ import ListLayout from "./ListLayout";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
+import { MyD3Component } from "../../../data/MyD3Component";
 /**
  * The sidebar (narrow) that exists together with Diagram layout
  */
@@ -69,13 +70,14 @@ const SidebarLayout = () => {
           </Dropdown>
         </div>
       </div>
-      <ControlLayout></ControlLayout>
+      <ControlLayout />
       <ListLayout>
         <label>Project: Nursing</label>
         <label>Project: Nursing</label>
         <label>Project: Nursing</label>
         <label>Project: Nursing</label>
         <label>Project: Nursing</label>
+        <MyD3Component data={[1, 2, 3]} />
       </ListLayout>
     </div>
   );
