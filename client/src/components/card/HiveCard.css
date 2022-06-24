@@ -1,0 +1,11 @@
+.hive-card {
+  transition-duration: 0.5s;
+}
+.hive-card:hover {
+  transform: translateY(-0.3em);
+  transition-duration: 0.5s;
+}
+
+.hive-card > h3:link {
+  text-decoration: none;
+}
