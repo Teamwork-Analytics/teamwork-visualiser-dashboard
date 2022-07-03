@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Carousel } from "react-bootstrap";
+import HiveContainer from "../../projects/hive/HiveContainer";
 
 const TACarousel = () => {
   const [index, setIndex] = useState(0);
@@ -11,15 +12,7 @@ const TACarousel = () => {
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src={require("../../images/sample.jpg")}
-          alt="First slide"
-        />
-        <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
+        <HiveContainer />
       </Carousel.Item>
       <Carousel.Item>
         <img
