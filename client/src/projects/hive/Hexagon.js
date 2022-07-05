@@ -1,6 +1,10 @@
 import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
-import data from "./data/clean/145.csv";
+import data from "./data/clean/145_RED.csv";
+import data1 from "./data/clean/145_GREEN.csv";
+import data2 from "./data/clean/145_BLUE.csv";
+import data3 from "./data/clean/145_YELLOW.csv";
+import dataAll from "./data/clean/145_all.csv";
 
 const CONSTANTS = {
   HEX_RADIUS: 25,
@@ -12,25 +16,26 @@ const cssColourMatcher = {
   GREEN: "lime",
   RED: "red",
   BLUE: "blue",
-  YELLOW: "yellow",
-};
-
-const fillColour = {
-  made: "skyblue",
-  missed: "indianred",
-  blank: "#999",
+  YELLOW: "gold",
 };
 
 class HexagonComponent {
   constructor(svg, session, posOnly) {
     this.svg = svg;
 
-    d3.csv(data).then(
-      function (d, i) {
+    // const phase = ["0:04:57", "0:07:34", "0:17:35", "0:23:55", "0:33:10"];
+
+    d3.csv(dataAll).then(
+      function (d, i, arr) {
         d.forEach((record, j) => {
           // formula = (data * image-resolution) / actual-size
           const posX = (record.x * 1902) / 7742;
           const posY = (record.y * 2283) / 9695;
+
+          // if (record["audio time"] === phase[4]) {
+          //   console.log(record["audio time"]);
+          //   arr.length = i + 1;
+          // }
 
           if (record.tagId in cssColourMatcher) {
             if (record.audio === "1") {
@@ -60,7 +65,8 @@ class HexagonComponent {
     const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
     const h2 = d3hex.hexbin().radius(30);
     const strokeWidth = !!colour ? "0.02em" : "0.02em";
-    const strokeColour = colour ? cssColourMatcher[colour] : "black";
+    // const strokeColour = colour ? cssColourMatcher[colour] : "black";
+    const strokeColour = "black";
     if (!!shotFlag) {
       this.svg
         .append("g")
@@ -73,7 +79,7 @@ class HexagonComponent {
           return "M" + d.x + "," + d.y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
-        .attr("fill", fillColour[shotFlag])
+        .attr("fill", shotFlag === "made" ? cssColourMatcher[colour] : "grey")
         .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
         .attr("stroke-width", strokeWidth);
       // .style("opacity", 0)
