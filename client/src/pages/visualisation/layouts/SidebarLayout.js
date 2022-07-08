@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import ControlLayout from "./ControlLayout";
 import ListLayout from "./ListLayout";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "react-bootstrap-icons";
+import { ArrowLeft, GearFill } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
-import { MyD3Component } from "../../../data/MyD3Component";
+import ObservationControlView from "../../../projects/observation/ObservationControlView";
 /**
  * The sidebar (narrow) that exists together with Diagram layout
  */
-const SidebarLayout = () => {
+const SidebarLayout = ({ tool, setTool }) => {
   let params = useParams();
   const navigate = useNavigate();
 
@@ -34,6 +34,13 @@ const SidebarLayout = () => {
       cursor: "pointer",
     },
   };
+
+  const availableTools = {
+    observation: "Observation",
+    "teamwork-vis": "Teamwork Barchart",
+    "hive-vis": "Position and Audio",
+    "audio-socnet-vis": "Audio Social Network",
+  };
   return (
     <div style={styles.outer}>
       <div style={styles.title}>
@@ -42,42 +49,38 @@ const SidebarLayout = () => {
           onClick={() => navigate("/main")}
           size={"30px"}
         />
-        <h1 style={{ fontFamily: "Open Sans, sans-serif" }}>
+        <h4 style={{ fontFamily: "Open Sans, sans-serif" }}>
           {params.sessionName}
-        </h1>
+        </h4>
       </div>
       <div style={{ width: "100%" }}>
         <div className="d-grid gap-2">
           <Dropdown>
             <Dropdown.Toggle
-              id="dropdown-button-dark-example1"
-              variant="secondary"
+              id="tool-selector"
+              variant="primary"
               style={{ width: "100%" }}
             >
-              Observation
+              {availableTools[tool]}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu variant="dark">
-              <Dropdown.Item href="#/action-1" active>
-                Collaboration Graph
-              </Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Timeline</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">ENA</Dropdown.Item>
-              <Dropdown.Item href="#/action-4">
-                Audio Social Activities
-              </Dropdown.Item>
+            <Dropdown.Menu variant="dark" onClick={(e) => setTool(e.target.id)}>
+              {Object.keys(availableTools).map((d) => (
+                <Dropdown.Item id={d} active={tool === d}>
+                  {availableTools[d]}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
         </div>
       </div>
-      <ControlLayout />
+
+      <ControlLayout>
+        {tool !== "hive-vis" && <ObservationControlView />}
+      </ControlLayout>
+
       <ListLayout>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <MyD3Component data={[1, 2, 3]} />
+        <label>{tool}</label>
       </ListLayout>
     </div>
   );

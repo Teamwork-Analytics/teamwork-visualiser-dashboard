@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Carousel } from "react-bootstrap";
-import HiveContainer from "../../projects/hive/HiveContainer";
+import HiveView from "../../projects/hive/HiveView";
 
 const TACarousel = () => {
   const [index, setIndex] = useState(0);
@@ -12,7 +12,7 @@ const TACarousel = () => {
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
-        <HiveContainer />
+        <HiveView />
       </Carousel.Item>
       <Carousel.Item>
         <img

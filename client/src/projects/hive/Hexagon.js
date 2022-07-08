@@ -1,14 +1,10 @@
 import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
-import data from "./data/clean/145_RED.csv";
-import data1 from "./data/clean/145_GREEN.csv";
-import data2 from "./data/clean/145_BLUE.csv";
-import data3 from "./data/clean/145_YELLOW.csv";
 import dataAll from "./data/clean/145_all.csv";
 
 const CONSTANTS = {
   HEX_RADIUS: 25,
-  HEIGHT: 2283,
+  HEIGHT: 3183,
   HEXAGON_OPACITY: "0.2",
 };
 
@@ -29,8 +25,8 @@ class HexagonComponent {
       function (d, i, arr) {
         d.forEach((record, j) => {
           // formula = (data * image-resolution) / actual-size
-          const posX = (record.x * 1902) / 7742;
-          const posY = (record.y * 2283) / 9695;
+          const posX = (record.x * 2902) / 7742;
+          const posY = (record.y * 3283) / 10395;
 
           // if (record["audio time"] === phase[4]) {
           //   console.log(record["audio time"]);

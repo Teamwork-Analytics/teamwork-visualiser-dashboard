@@ -35,9 +35,9 @@ function App() {
         </Routes>
       </BrowserRouter>
       <footer style={styles.footer}>
-        <label>
-          by {TEAM_NAME} {new Date().getFullYear()}
-        </label>
+        <small>
+          by {TEAM_NAME} &copy; {new Date().getFullYear()}
+        </small>
       </footer>
     </div>
   );

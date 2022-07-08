@@ -1,3 +1,4 @@
+import { chord } from "d3";
 import React from "react";
 
 /**
@@ -7,13 +8,15 @@ const ControlLayout = ({ children }) => {
   const styles = {
     outer: {
       width: "100%",
-      height: "25vh",
+      height: "20vh",
       backgroundColor: "#1a1a1a",
       borderRadius: "15px",
       overflowY: "scroll",
       padding: "1em",
     },
   };
+  console.log(children);
+
   return <div style={styles.outer}>{children}</div>;
 };
 

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const classroomSchema = new mongoose.Schema(
+const sessionSchema = new mongoose.Schema(
   {
     name: String,
     layout: { type: mongoose.SchemaTypes.ObjectId, ref: "layout" },
@@ -9,6 +9,6 @@ const classroomSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Classroom = mongoose.model("classroom", classroomSchema);
+const Session = mongoose.model("session", sessionSchema);
 
-module.exports = Classroom;
+module.exports = Session;

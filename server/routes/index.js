@@ -1,6 +1,6 @@
 var router = require("express").Router();
 
 // router.use("/users", require("./user"));
-router.use("/classrooms", require("./classroom"));
+router.use("/sessions", require("./session"));
 
 module.exports = router;

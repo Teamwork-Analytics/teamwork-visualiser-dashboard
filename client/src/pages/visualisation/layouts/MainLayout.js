@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * The wide layout to display the classroom diagram
+ * The wide layout to display the session diagram
  */
 const MainLayout = ({ children }) => {
   return (

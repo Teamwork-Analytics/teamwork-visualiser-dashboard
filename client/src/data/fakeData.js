@@ -1,6 +1,6 @@
 export const fakeSessions = [
   {
-    name: "Session 1",
+    name: "Session1: 25July2022 - 3pm",
   },
   {
     name: "Session 2",

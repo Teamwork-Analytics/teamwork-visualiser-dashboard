@@ -4,20 +4,21 @@ import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import TACarousel from "../../components/carousel/TACarousel";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
-import { ReactComponent as NursingFloorPlan } from "../../../data/floor-plan/nursing-small.svg";
-import HiveContainer from "../../projects/hive/HiveContainer";
+import HiveView from "../../projects/hive/HiveView";
+import ObservationView from "../../projects/observation/ObservationView";
 
 /**
  * The main page (wide)
  */
 const VisualisationPage = () => {
   const [open, setOpen] = useState(true);
+  const [tool, setTool] = useState("observation");
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <Collapse in={open} dimension="width">
         <div id="sidebar">
-          <SidebarLayout />
+          <SidebarLayout tool={tool} setTool={setTool} />
         </div>
       </Collapse>
       <Button
@@ -29,7 +30,7 @@ const VisualisationPage = () => {
         {open ? <ChevronDoubleLeft /> : <ChevronDoubleRight />}
       </Button>
       <MainLayout>
-        <HiveContainer />
+        {tool === "hive-vis" ? <HiveView /> : <ObservationView />}
       </MainLayout>
     </div>
   );

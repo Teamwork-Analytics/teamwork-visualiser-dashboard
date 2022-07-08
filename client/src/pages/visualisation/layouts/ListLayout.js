@@ -7,7 +7,7 @@ const ListLayout = ({ children }) => {
   const styles = {
     outer: {
       width: "100%",
-      height: "60vh",
+      height: "65vh",
       backgroundColor: "#1a1a1a",
       borderRadius: "15px",
       padding: "1em",
