@@ -13,6 +13,7 @@ const ListLayout = ({ children }) => {
       padding: "1em",
       textAlign: "left",
       overflowY: "scroll",
+      margin: "5px auto",
     },
   };
   return <div style={styles.outer}>{children}</div>;

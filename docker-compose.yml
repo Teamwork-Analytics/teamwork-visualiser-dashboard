@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  client:
+    stdin_open: true
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: tvd-client
+    container_name: client
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+  server:
+    restart: always
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: twd-server
+    container_name: server
+    ports:
+      - "5001:5001"
+    # depends_on:
+    #   - vad
+
+  vad:
+    build:
+      context: ./vad
+      dockerfile: Dockerfile
+    image: twd-vad
+    container_name: vad
+    ports:
+      - "8000:8000"
+
+  nginx:
+    restart: unless-stopped
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: twd-nginx
+    container_name: nginx
+    ports:
+      - "3050:80"

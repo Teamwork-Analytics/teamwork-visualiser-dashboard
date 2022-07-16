@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ControlLayout from "./ControlLayout";
 import ListLayout from "./ListLayout";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, GearFill } from "react-bootstrap-icons";
+import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
 import ObservationControlView from "../../../projects/observation/ObservationControlView";
 /**
@@ -76,6 +76,7 @@ const SidebarLayout = ({ tool, setTool }) => {
       </div>
 
       <ControlLayout>
+        {/* TODO: replace with strategy pattern */}
         {tool !== "hive-vis" && <ObservationControlView />}
       </ControlLayout>
 
