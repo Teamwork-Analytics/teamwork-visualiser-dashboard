@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
 import { availableTools } from "../VisualisationContext";
+
 /**
  * The sidebar (narrow) that exists together with Diagram layout
  */
@@ -73,7 +74,7 @@ const SidebarLayout = ({ tool, setTool }) => {
         {availableTools[tool].primaryControlView}
       </PrimaryControlLayout>
       <SecondaryControlLayout>
-        {availableTools[tool].secondaryView}
+        {availableTools[tool].secondaryControlView}
       </SecondaryControlLayout>
     </div>
   );

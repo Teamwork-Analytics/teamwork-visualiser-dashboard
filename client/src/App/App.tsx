@@ -7,6 +7,7 @@ import SessionsPage from "../pages/session/SessionsPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TEAM_NAME } from "../data/manualLabels";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const styles = {
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <div className="App">
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/main" element={<SessionsPage />} />

@@ -5,7 +5,7 @@ import { useHive } from "./HiveContext";
 
 const HiveSlider = ({ data }) => {
   const wrapperStyle = {
-    width: "40vw",
+    width: "5vw",
     margin: 50,
   };
   const { state, setState } = useHive();
@@ -24,6 +24,7 @@ const HiveSlider = ({ data }) => {
         defaultValue={data.length - 1}
         marks={markers}
         step={null}
+        vertical={true}
         onChange={onDrag}
       />
     </div>

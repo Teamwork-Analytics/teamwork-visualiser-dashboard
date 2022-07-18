@@ -40,7 +40,7 @@ const HivePrimaryControlView = () => {
 
   return (
     <div>
-      <h3>FILTER</h3>
+      <h3 className="mb-4">FILTER</h3>
       <div className={"box"}>
         {participantsKeys.map((k, i) => (
           <ParticipantFilter key={i} colourCode={k} />

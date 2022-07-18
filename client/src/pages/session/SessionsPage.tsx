@@ -36,7 +36,7 @@ const SessionsPage = () => {
   };
   return (
     <div style={styles.main}>
-      <h1 style={styles.title}>SESSIONS</h1>
+      <h1 style={styles.title}>TEAMWORK VISUALISATION DASHBOARD 🖥️</h1>
       <div style={pageStyles.control}>
         <div style={pageStyles.navigation}>
           <SearchBar />

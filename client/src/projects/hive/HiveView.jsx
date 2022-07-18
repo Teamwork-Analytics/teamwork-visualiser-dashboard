@@ -33,8 +33,8 @@ const HiveView = () => {
   }, [state, phases]);
 
   return (
-    <div style={{ margin: "0 auto", textAlign: "center" }}>
-      <div style={{ height: "80vh", marginBottom: "15px" }}>
+    <div style={{ margin: "0 auto", textAlign: "center", display: "flex" }}>
+      <div style={{ width: "700px", height: "80vh", marginBottom: "15px" }}>
         <div id="hive"></div>
       </div>
       <HiveSlider data={phases} />
