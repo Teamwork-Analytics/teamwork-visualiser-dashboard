@@ -9,13 +9,13 @@ const CONSTANTS = {
   HEX_RADIUS: 25,
   HEIGHT: 3283,
   WIDTH: 2502,
-  HEXAGON_OPACITY: "0.2",
+  HEXAGON_OPACITY: "0.3",
 };
 
 export const cssColourMatcher = {
   GREEN: "#C0FF00", //lime
   RED: "#ff0000", //red
-  BLUE: "#0000FF", // blue
+  BLUE: "#2e8bc0", // blue
   YELLOW: "#FFD700", // gold
 };
 
