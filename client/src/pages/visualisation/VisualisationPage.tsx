@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
-import TACarousel from "../../components/carousel/TACarousel";
+import { HiveProvider } from "../../projects/hive/HiveContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
-import HiveView from "../../projects/hive/HiveView";
-import ObservationView from "../../projects/observation/ObservationView";
+import { availableTools, useViz, VizProvider } from "./VisualisationContext";
 
-/**
- * The main page (wide)
- */
-const VisualisationPage = () => {
+const VisualisationView = () => {
+  const { tool, setTool } = useViz();
   const [open, setOpen] = useState(true);
-  const [tool, setTool] = useState("observation");
 
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
@@ -30,9 +26,20 @@ const VisualisationPage = () => {
         {open ? <ChevronDoubleLeft /> : <ChevronDoubleRight />}
       </Button>
       <MainLayout>
-        {tool === "hive-vis" ? <HiveView /> : <ObservationView />}
+        {availableTools[tool as keyof typeof String].mainView}
       </MainLayout>
     </div>
+  );
+};
+
+const VisualisationPage = () => {
+  return (
+    <VizProvider>
+      {/* TODO: deal with multiple stack providers later! */}
+      <HiveProvider>
+        <VisualisationView />
+      </HiveProvider>
+    </VizProvider>
   );
 };
 

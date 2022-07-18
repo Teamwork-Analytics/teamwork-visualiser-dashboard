@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import VisualisationPage from "../pages/visualisation/VisualisationPage";
-import SessionPage from "../pages/session/SessionPage";
+import SessionsPage from "../pages/session/SessionsPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TEAM_NAME } from "../data/manualLabels";
@@ -25,9 +25,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/main" element={<SessionPage />} />
+          <Route path="/main" element={<SessionsPage />} />
           <Route
-            path="/visualisation/:sessionName"
+            path="/visualisation/:sessionId"
             element={<VisualisationPage />}
           />
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />

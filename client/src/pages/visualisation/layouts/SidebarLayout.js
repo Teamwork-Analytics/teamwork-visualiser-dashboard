@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import ControlLayout from "./ControlLayout";
-import ListLayout from "./ListLayout";
-import { useParams, useNavigate } from "react-router-dom";
+import React from "react";
+import PrimaryControlLayout from "./PrimaryControlLayout";
+import SecondaryControlLayout from "./SecondaryControlLayout";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
-import ObservationControlView from "../../../projects/observation/ObservationControlView";
+import { availableTools } from "../VisualisationContext";
 /**
  * The sidebar (narrow) that exists together with Diagram layout
  */
 const SidebarLayout = ({ tool, setTool }) => {
-  let params = useParams();
+  let location = useLocation();
   const navigate = useNavigate();
 
   const styles = {
@@ -35,12 +35,6 @@ const SidebarLayout = ({ tool, setTool }) => {
     },
   };
 
-  const availableTools = {
-    observation: "Observation",
-    "teamwork-vis": "Teamwork Barchart",
-    "hive-vis": "Position and Audio",
-    "audio-socnet-vis": "Audio Social Network",
-  };
   return (
     <div style={styles.outer}>
       <div style={styles.title}>
@@ -50,7 +44,7 @@ const SidebarLayout = ({ tool, setTool }) => {
           size={"30px"}
         />
         <h4 style={{ fontFamily: "Open Sans, sans-serif" }}>
-          {params.sessionName}
+          {!!location.state && location.state.name}
         </h4>
       </div>
       <div style={{ width: "100%" }}>
@@ -61,13 +55,13 @@ const SidebarLayout = ({ tool, setTool }) => {
               variant="primary"
               style={{ width: "100%" }}
             >
-              {availableTools[tool]}
+              {availableTools[tool].label}
             </Dropdown.Toggle>
 
             <Dropdown.Menu variant="dark" onClick={(e) => setTool(e.target.id)}>
               {Object.keys(availableTools).map((d) => (
-                <Dropdown.Item id={d} active={tool === d}>
-                  {availableTools[d]}
+                <Dropdown.Item key={d} id={d} active={tool === d}>
+                  {availableTools[d].label}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
@@ -75,14 +69,12 @@ const SidebarLayout = ({ tool, setTool }) => {
         </div>
       </div>
 
-      <ControlLayout>
-        {/* TODO: replace with strategy pattern */}
-        {tool !== "hive-vis" && <ObservationControlView />}
-      </ControlLayout>
-
-      <ListLayout>
-        <label>{tool}</label>
-      </ListLayout>
+      <PrimaryControlLayout>
+        {availableTools[tool].primaryControlView}
+      </PrimaryControlLayout>
+      <SecondaryControlLayout>
+        {availableTools[tool].secondaryView}
+      </SecondaryControlLayout>
     </div>
   );
 };

@@ -1,0 +1,10 @@
+.box {
+  height: 12vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.box > * {
+  flex: 1 1 50px;
+}

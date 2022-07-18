@@ -1,39 +1,44 @@
 import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
-import dataAll from "./data/clean/145_all.csv";
 
+const CLASSROOM_SIZE = {
+  WIDTH: 7067,
+  HEIGHT: 9464,
+};
 const CONSTANTS = {
   HEX_RADIUS: 25,
-  HEIGHT: 3183,
+  HEIGHT: 3283,
+  WIDTH: 2502,
   HEXAGON_OPACITY: "0.2",
 };
 
-const cssColourMatcher = {
-  GREEN: "lime",
-  RED: "red",
-  BLUE: "blue",
-  YELLOW: "gold",
+export const cssColourMatcher = {
+  GREEN: "#C0FF00", //lime
+  RED: "#ff0000", //red
+  BLUE: "#0000FF", // blue
+  YELLOW: "#FFD700", // gold
 };
 
 class HexagonComponent {
-  constructor(svg, session, posOnly) {
+  constructor(svg, csvData, posOnly, selectedColours, timeStamp) {
     this.svg = svg;
 
-    // const phase = ["0:04:57", "0:07:34", "0:17:35", "0:23:55", "0:33:10"];
-
-    d3.csv(dataAll).then(
+    d3.csv(csvData).then(
       function (d, i, arr) {
         d.forEach((record, j) => {
-          // formula = (data * image-resolution) / actual-size
-          const posX = (record.x * 2902) / 7742;
-          const posY = (record.y * 3283) / 10395;
+          // NOTE: formula = (data * image-resolution) / actual-size
+          const posX = (record.x * CONSTANTS.WIDTH) / CLASSROOM_SIZE.WIDTH;
+          const posY = (record.y * CONSTANTS.HEIGHT) / CLASSROOM_SIZE.HEIGHT;
 
-          // if (record["audio time"] === phase[4]) {
-          //   console.log(record["audio time"]);
-          //   arr.length = i + 1;
-          // }
+          if (record["audio time"] === timeStamp) {
+            arr.length = i + 1;
+            return;
+          }
 
-          if (record.tagId in cssColourMatcher) {
+          if (
+            record.tagId in cssColourMatcher &&
+            selectedColours[record.tagId] //NOTE: the key must match with the default state in HiveProvider!
+          ) {
             if (record.audio === "1") {
               this.render(
                 [posX, posY],
@@ -66,7 +71,7 @@ class HexagonComponent {
     if (!!shotFlag) {
       this.svg
         .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.HEIGHT}) scale(1,-1)`)
+        .attr("transform", `translate(100, ${CONSTANTS.HEIGHT}) scale(1,-1)`)
         .selectAll(".hexagon")
         .data(hexbin([subjectPos]))
         .enter()

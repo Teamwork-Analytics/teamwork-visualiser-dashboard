@@ -10,7 +10,7 @@ import { Button } from "react-bootstrap";
 /**
  * First page to select and create sessions
  */
-const SessionPage = () => {
+const SessionsPage = () => {
   const pageStyles = {
     list: {
       display: "flex",
@@ -48,7 +48,8 @@ const SessionPage = () => {
         <div style={pageStyles.list}>
           {fakeSessions.map((session: Session) => (
             <Link
-              to={`/visualisation/${session.name}`}
+              to={`/visualisation/${session.sessionId}`}
+              state={{ name: session.name }}
               style={{ color: "#222222", textDecoration: "none" }}
             >
               <SessionCard session={session} />
@@ -60,4 +61,4 @@ const SessionPage = () => {
   );
 };
 
-export default SessionPage;
+export default SessionsPage;

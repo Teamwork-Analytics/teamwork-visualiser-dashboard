@@ -7,8 +7,8 @@ const SessionCard = ({ session }: { session: Session }) => {
   return (
     <TACard height={250}>
       <Card.Body>
-        <Card.Title>{session.name}</Card.Title>
-        <Card.Text></Card.Text>
+        <Card.Title>{session.sessionId}</Card.Title>
+        <Card.Text>{session.name}</Card.Text>
       </Card.Body>
 
       {session.project && (
