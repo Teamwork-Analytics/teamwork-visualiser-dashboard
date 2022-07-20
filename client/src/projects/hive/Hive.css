@@ -1,9 +1,10 @@
 .box {
-  height: 12vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+  margin-top: 2em;
+  color: white;
 }
 .box > * {
   flex: 1 1 50px;

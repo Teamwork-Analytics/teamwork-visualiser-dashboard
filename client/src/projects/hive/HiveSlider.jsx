@@ -3,25 +3,23 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useHive } from "./HiveContext";
 
-const HiveSlider = ({ data }) => {
+const HiveSlider = () => {
   const wrapperStyle = {
-    width: "5vw",
+    width: "10vw",
     margin: 50,
   };
-  const { state, setState } = useHive();
+  const { state, setState, markers } = useHive();
 
   const onDrag = (value) => {
     setState({ ...state, phase: value });
   };
 
-  const markers = data.reduce((o, curr, i) => ({ ...o, [i]: curr }), {});
-
   return (
     <div style={wrapperStyle}>
       <Slider
         min={0}
-        max={data.length - 1}
-        defaultValue={data.length - 1}
+        max={100}
+        defaultValue={100}
         marks={markers}
         step={null}
         vertical={true}

@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as Observation from "../../projects/observation/index";
 import * as Hive from "../../projects/hive/index";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 
 type VizProviderProps = { children: React.ReactNode };
 
@@ -18,25 +17,19 @@ const availableTools: any = {
     label: "Observation",
     mainView: <Observation.ObservationView />,
     primaryControlView: <Observation.ObservationControlView />,
-    secondaryControlView: <Observation.ObservationSecondaryControl />,
   },
   "teamwork-vis": {
     label: "Teamwork Barchart",
     mainView: <Observation.ObservationView />,
-    primaryControlView: <EmptyPlaceholder />,
-    secondaryControlView: <EmptyPlaceholder />,
   },
   "hive-vis": {
     label: "Position and Audio",
     mainView: <Hive.HiveView />,
-    primaryControlView: <Hive.HiveControlView />,
-    secondaryControlView: <EmptyPlaceholder />,
+    // primaryControlView: <Hive.HivePrimaryControlView />,
   },
   "audio-socnet-vis": {
     label: "Audio Social Network",
     mainView: <Observation.ObservationView />,
-    primaryControlView: <EmptyPlaceholder />,
-    secondaryControlView: <EmptyPlaceholder />,
   },
 };
 

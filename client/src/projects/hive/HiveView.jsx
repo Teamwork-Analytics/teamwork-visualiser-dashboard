@@ -8,9 +8,10 @@ import dataAll from "./data/clean/145_all.csv";
 import floorPlan from "./floor-plan/nursing-small.svg";
 import { useHive } from "./HiveContext";
 import HiveSlider from "./HiveSlider";
+import { HivePrimaryControlView } from "./HiveControlView";
 
 const HiveView = () => {
-  const { state, phases } = useHive();
+  const { state, markers } = useHive();
 
   useEffect(() => {
     d3.select("#floor-plan").remove();
@@ -23,21 +24,22 @@ const HiveView = () => {
           dataAll, //TODO: the data should be coming from the API (back-end)
           false,
           state.participants,
-          phases[state.phase].time
+          markers[state.phase].time
         );
       }
     });
     // return () => {
     //   svgContainer.node().remove();
     // };
-  }, [state, phases]);
+  }, [state, markers]);
 
   return (
     <div style={{ margin: "0 auto", textAlign: "center", display: "flex" }}>
-      <div style={{ width: "700px", height: "80vh", marginBottom: "15px" }}>
-        <div id="hive"></div>
+      <div style={{ width: "550px", height: "90vh", maxHeight: "1080px" }}>
+        <div id="hive" style={{ height: "80vh", marginBottom: "50px" }}></div>
+        <HivePrimaryControlView />
       </div>
-      <HiveSlider data={phases} />
+      <HiveSlider />
     </div>
   );
 };

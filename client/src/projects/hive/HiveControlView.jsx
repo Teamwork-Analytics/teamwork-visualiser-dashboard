@@ -23,12 +23,13 @@ const ParticipantFilter = ({ colourCode }) => {
     <label
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
+        alignItems: "center",
         margin: "0.2em 0.2em",
         width: "40%",
       }}
     >
-      <span>{colourCode}</span>
+      <span>{colourCode}:</span>
       <ReactSwitch onChange={handleChange} checked={checked} onColor={colour} />
     </label>
   );
@@ -40,8 +41,8 @@ const HivePrimaryControlView = () => {
 
   return (
     <div>
-      <h3 className="mb-4">FILTER</h3>
       <div className={"box"}>
+        <label style={{ color: "#a1a1a1" }}>FILTER:</label>
         {participantsKeys.map((k, i) => (
           <ParticipantFilter key={i} colourCode={k} />
         ))}
@@ -50,4 +51,4 @@ const HivePrimaryControlView = () => {
   );
 };
 
-export default HivePrimaryControlView;
+export { ParticipantFilter, HivePrimaryControlView };

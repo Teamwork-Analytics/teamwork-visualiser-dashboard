@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
 import { availableTools } from "../VisualisationContext";
+import EmptyPlaceholder from "../../../components/EmptyPlaceholder";
 
 /**
  * The sidebar (narrow) that exists together with Diagram layout
@@ -71,7 +72,11 @@ const SidebarLayout = ({ tool, setTool }) => {
       </div>
 
       <PrimaryControlLayout>
-        {availableTools[tool].primaryControlView}
+        {availableTools[tool].primaryControlView === undefined ? (
+          <EmptyPlaceholder />
+        ) : (
+          availableTools[tool].primaryControlView
+        )}
       </PrimaryControlLayout>
       <SecondaryControlLayout>
         {availableTools[tool].secondaryControlView}

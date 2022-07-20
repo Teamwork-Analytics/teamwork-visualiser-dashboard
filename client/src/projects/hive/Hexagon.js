@@ -7,8 +7,8 @@ const CLASSROOM_SIZE = {
 };
 const CONSTANTS = {
   HEX_RADIUS: 25,
-  HEIGHT: 3283,
-  WIDTH: 2502,
+  IMG_WIDTH: 2502,
+  IMG_HEIGHT: 3283,
   HEXAGON_OPACITY: "0.3",
 };
 
@@ -27,8 +27,9 @@ class HexagonComponent {
       function (d, i, arr) {
         d.forEach((record, j) => {
           // NOTE: formula = (data * image-resolution) / actual-size
-          const posX = (record.x * CONSTANTS.WIDTH) / CLASSROOM_SIZE.WIDTH;
-          const posY = (record.y * CONSTANTS.HEIGHT) / CLASSROOM_SIZE.HEIGHT;
+          const posX = (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
+          const posY =
+            (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
 
           if (record["audio time"] === timeStamp) {
             arr.length = i + 1;
@@ -71,7 +72,10 @@ class HexagonComponent {
     if (!!shotFlag) {
       this.svg
         .append("g")
-        .attr("transform", `translate(100, ${CONSTANTS.HEIGHT}) scale(1,-1)`)
+        .attr(
+          "transform",
+          `translate(100, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`
+        )
         .selectAll(".hexagon")
         .data(hexbin([subjectPos]))
         .enter()
