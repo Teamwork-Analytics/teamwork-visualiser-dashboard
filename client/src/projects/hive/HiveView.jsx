@@ -40,7 +40,7 @@ const HiveView = () => {
   return (
     <div style={{ margin: "0 auto", textAlign: "center", display: "flex" }}>
       <div style={{ width: "550px", height: "90vh", maxHeight: "1080px" }}>
-        <div id="hive" style={{ height: "80vh", marginBottom: "50px" }}></div>
+        <div id="hive" style={{ height: "80vh", marginBottom: "50px" }} />
         <HivePrimaryControlView />
       </div>
       <HiveSlider />

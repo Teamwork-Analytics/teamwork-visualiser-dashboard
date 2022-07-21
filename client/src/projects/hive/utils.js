@@ -9,19 +9,19 @@ const timeToPercentage = (phases) => {
 };
 
 const labels = [
-  <i>Start</i>,
+  "Start",
   "Handover",
-  "Bed 4 emergency start",
-  "Ward nurses entrance",
-  "MET doctor entrance",
-  <i>End</i>,
+  "Bed 4 emergency",
+  "Ward nurses start",
+  "MET doctor start",
+  "End",
 ];
 
 const cleanRawPhases = (phases) => {
   //phases format: ["0:04:32","0:12:12",...]
   const labeledPhases = phases.map((timestamp, i) => {
     return {
-      label: labels[i],
+      label: labels[i] + ": " + timestamp,
       time: timestamp,
     };
   });

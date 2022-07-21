@@ -79,7 +79,11 @@ const SidebarLayout = ({ tool, setTool }) => {
         )}
       </PrimaryControlLayout>
       <SecondaryControlLayout>
-        {availableTools[tool].secondaryControlView}
+        {availableTools[tool].secondaryControlView === undefined ? (
+          <EmptyPlaceholder />
+        ) : (
+          availableTools[tool].secondaryControlView
+        )}
       </SecondaryControlLayout>
     </div>
   );
