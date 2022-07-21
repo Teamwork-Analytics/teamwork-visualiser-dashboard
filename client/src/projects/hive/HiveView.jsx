@@ -2,16 +2,19 @@ import React, { useEffect } from "react";
 // import * as d3 from "d3";
 import * as d3 from "d3";
 import HexagonComponent from "./Hexagon";
-import dataAll from "./data/clean/145_all.csv";
+import data189 from "./data/189_all.csv";
+import data181 from "./data/181_all.csv";
 
 //TODO: make the following floor plan much more dynamic
 import floorPlan from "./floor-plan/nursing-small.svg";
 import { useHive } from "./HiveContext";
 import HiveSlider from "./HiveSlider";
 import { HivePrimaryControlView } from "./HiveControlView";
+import { useParams } from "react-router-dom";
 
 const HiveView = () => {
   const { state, markers } = useHive();
+  const { sessionId } = useParams();
 
   useEffect(() => {
     d3.select("#floor-plan").remove();
@@ -21,10 +24,11 @@ const HiveView = () => {
         svgContainer.node().append(data.documentElement);
         new HexagonComponent(
           svgContainer.select("#floor-plan"),
-          dataAll, //TODO: the data should be coming from the API (back-end)
+          sessionId === "181" ? data181 : data189, //TODO: the data should be coming from the API (back-end)
           false,
           state.participants,
-          markers[state.phase].time
+          markers[state.phase[0]].time,
+          markers[state.phase[1]].time
         );
       }
     });

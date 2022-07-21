@@ -5,7 +5,7 @@ import { useHive } from "./HiveContext";
 
 const HiveSlider = () => {
   const wrapperStyle = {
-    width: "10vw",
+    width: "5vw",
     margin: 50,
   };
   const { state, setState, markers } = useHive();
@@ -17,9 +17,13 @@ const HiveSlider = () => {
   return (
     <div style={wrapperStyle}>
       <Slider
+        range
+        pushable
+        draggableTrack
+        allowCross={false}
         min={0}
         max={100}
-        defaultValue={100}
+        defaultValue={[0, 100]}
         marks={markers}
         step={null}
         vertical={true}

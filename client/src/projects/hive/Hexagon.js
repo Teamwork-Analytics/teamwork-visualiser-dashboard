@@ -13,26 +13,37 @@ const CONSTANTS = {
 };
 
 export const cssColourMatcher = {
-  GREEN: "#C0FF00", //lime
+  GREEN: "#00FF00", //lime
   RED: "#ff0000", //red
   BLUE: "#2e8bc0", // blue
   YELLOW: "#FFD700", // gold
 };
 
+const timeParser = (timestamp) => {
+  return Date.parse(`1 Jan 1970 ${timestamp} GMT`);
+};
+
 class HexagonComponent {
-  constructor(svg, csvData, posOnly, selectedColours, timeStamp) {
+  constructor(svg, csvData, posOnly, selectedColours, timeStart, timeEnd) {
     this.svg = svg;
 
     d3.csv(csvData).then(
-      function (d, i, arr) {
-        d.forEach((record, j) => {
+      function (d, i) {
+        const startTime = timeParser(timeStart);
+        const endTime = timeParser(timeEnd);
+        const clean = d.filter((data) => {
+          const currTime = timeParser(data["audio time"]);
+          if (startTime <= currTime && currTime <= endTime) return data;
+        });
+
+        clean.forEach((record, j) => {
           // NOTE: formula = (data * image-resolution) / actual-size
           const posX = (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
           const posY =
             (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
 
-          if (record["audio time"] === timeStamp) {
-            arr.length = i + 1;
+          // TODO: convert time to make it
+          if (record["audio time"] === timeEnd) {
             return;
           }
 
@@ -66,9 +77,8 @@ class HexagonComponent {
   render(subjectPos, shotFlag, colour, number) {
     const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
     const h2 = d3hex.hexbin().radius(30);
-    const strokeWidth = !!colour ? "0.02em" : "0.02em";
-    // const strokeColour = colour ? cssColourMatcher[colour] : "black";
-    const strokeColour = "black";
+    const strokeWidth = "0.03em";
+    const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
     if (!!shotFlag) {
       this.svg
         .append("g")

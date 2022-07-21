@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
+import { useParams } from "react-router-dom";
 import { HiveProvider } from "../../projects/hive/HiveContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
@@ -33,10 +34,12 @@ const VisualisationView = () => {
 };
 
 const VisualisationPage = () => {
+  const params = useParams();
+
   return (
     <VizProvider>
       {/* TODO: deal with multiple stack providers later! */}
-      <HiveProvider>
+      <HiveProvider sessionId={params.sessionId}>
         <VisualisationView />
       </HiveProvider>
     </VizProvider>
