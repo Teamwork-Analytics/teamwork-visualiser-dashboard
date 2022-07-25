@@ -16,7 +16,8 @@ const availableTools: any = {
   observation: {
     label: "Observation",
     mainView: <Observation.ObservationView />,
-    primaryControlView: <Observation.ObservationControlView />,
+    primaryControlView: <Observation.ObservationPrimaryControlView />,
+    secondaryControlView: <Observation.ObservationSecondaryControlView />,
   },
   "teamwork-vis": {
     label: "Teamwork Barchart",

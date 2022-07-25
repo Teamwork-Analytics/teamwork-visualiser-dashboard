@@ -7,22 +7,7 @@ const ObservationView = () => {
 
   return (
     <div style={{ margin: "0 auto", width: "100%", height: "100%" }}>
-      <Webcam
-        width={"100%"}
-        height={"90%"}
-        onUserMediaError={(text) => setErrorMessage(text)}
-      >
-        {({ getScreenshot }) => (
-          <Button
-            variant="secondary"
-            onClick={() => {
-              const imageSrc = getScreenshot();
-            }}
-          >
-            Tag Video
-          </Button>
-        )}
-      </Webcam>
+      <Button variant="secondary">Tag Video</Button>
     </div>
   );
 };

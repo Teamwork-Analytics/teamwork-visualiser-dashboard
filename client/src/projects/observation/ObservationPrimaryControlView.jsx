@@ -1,9 +1,9 @@
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
 
-const ObservationControlView = () => {
+const ObservationPrimaryControlView = () => {
   const params = useParams();
 
   const styles = {
@@ -36,4 +36,4 @@ const ObservationControlView = () => {
   );
 };
 
-export default ObservationControlView;
+export default ObservationPrimaryControlView;

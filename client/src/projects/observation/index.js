@@ -1,5 +1,9 @@
-import ObservationControlView from "./ObservationControlView";
+import ObservationPrimaryControlView from "./ObservationPrimaryControlView";
 import ObservationView from "./ObservationView";
-import ObservationSecondaryControl from "./ObservationSecondaryControl";
+import ObservationSecondaryControlView from "./ObservationSecondaryControlView";
 
-export { ObservationControlView, ObservationView, ObservationSecondaryControl };
+export {
+  ObservationPrimaryControlView,
+  ObservationView,
+  ObservationSecondaryControlView,
+};
