@@ -1,16 +1,16 @@
 import React from "react";
-import { fakeSessions } from "../../data/fakeData";
+import { fakeTeams } from "../../data/fakeData";
 import { defaultStyles as styles } from "../page-styles";
 import { Link } from "react-router-dom";
 import SessionCard from "./SessionCard";
 import SearchBar from "../../components/SearchBar";
-import { Session } from "./Session";
+import { Team } from "./Session";
 import { Button } from "react-bootstrap";
 
 /**
  * First page to select and create sessions
  */
-const SessionsPage = () => {
+const MainPage = () => {
   const pageStyles = {
     list: {
       display: "flex",
@@ -46,13 +46,13 @@ const SessionsPage = () => {
 
       <div style={{ width: 900, margin: "1em auto" }}>
         <div style={pageStyles.list}>
-          {fakeSessions.map((session: Session) => (
+          {fakeTeams.map((session: Team) => (
             <Link
               to={`/visualisation/${session.sessionId}`}
               state={{ name: session.name }}
               style={{ color: "#222222", textDecoration: "none" }}
             >
-              <SessionCard session={session} />
+              <SessionCard team={session} />
             </Link>
           ))}
         </div>
@@ -61,4 +61,4 @@ const SessionsPage = () => {
   );
 };
 
-export default SessionsPage;
+export default MainPage;

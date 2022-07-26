@@ -7,15 +7,15 @@ const CLASSROOM_SIZE = {
 };
 const CONSTANTS = {
   HEX_RADIUS: 25,
-  IMG_WIDTH: 2502,
-  IMG_HEIGHT: 3283,
-  HEXAGON_OPACITY: "0.3",
+  IMG_WIDTH: 2252,
+  IMG_HEIGHT: 3093,
+  HEXAGON_OPACITY: "0.4",
 };
 
 export const cssColourMatcher = {
   GREEN: "#00FF00", //lime
   RED: "#ff0000", //red
-  BLUE: "#2e8bc0", // blue
+  BLUE: "#088FFA", // blue
   YELLOW: "#FFD700", // gold
 };
 
@@ -77,7 +77,7 @@ class HexagonComponent {
   render(subjectPos, shotFlag, colour, number) {
     const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
     const h2 = d3hex.hexbin().radius(30);
-    const strokeWidth = "0.03em";
+    const strokeWidth = "0.05em";
     const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
     if (!!shotFlag) {
       this.svg
@@ -94,7 +94,10 @@ class HexagonComponent {
           return "M" + d.x + "," + d.y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
-        .attr("fill", shotFlag === "made" ? cssColourMatcher[colour] : "grey")
+        .attr(
+          "fill",
+          shotFlag === "made" ? cssColourMatcher[colour] : "#C5C5C5"
+        )
         .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
         .attr("stroke-width", strokeWidth);
       // .style("opacity", 0)

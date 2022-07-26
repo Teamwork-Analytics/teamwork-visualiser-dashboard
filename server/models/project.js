@@ -2,22 +2,16 @@ const mongoose = require("mongoose");
 
 const sessionSchema = new mongoose.Schema(
   {
-    sessionId: {
-      required: true,
-      type: String,
-    }, // as recorded in the
     name: {
       type: String,
       required: true,
     },
-    sessionName: String,
-    project: { type: mongoose.SchemaTypes.ObjectId, ref: "project" },
     description: String,
     // speakers: [{ type: mongoose.SchemaTypes.ObjectId, ref: "user" }],
   },
   { timestamps: true }
 );
 
-const Session = mongoose.model("team", sessionSchema);
+const Project = mongoose.model("project", sessionSchema);
 
 module.exports = Session;

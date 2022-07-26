@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
@@ -12,7 +12,13 @@ const VisualisationView = () => {
   const [open, setOpen] = useState(true);
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
       <Collapse in={open} dimension="width">
         <div id="sidebar">
           <SidebarLayout tool={tool} setTool={setTool} />

@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
+import { startAll, stopAll } from "../../services/eureka";
 
 const ObservationPrimaryControlView = () => {
   const params = useParams();
@@ -16,9 +17,17 @@ const ObservationPrimaryControlView = () => {
     },
   };
 
-  const clickButton = (e) => {
-    const labels = OBSERVATION_TOAST_MESSAGES(params.sessionId);
-    toast.success(labels[e.target.value]);
+  const clickButton = async (e) => {
+    const labels = OBSERVATION_TOAST_MESSAGES(params.teamName);
+    const opt = e.target.value;
+    const message = labels[opt];
+    if (opt === "baseline") {
+    } else if (opt === "start") {
+      await startAll(params.teamName);
+    } else if (opt === "end") {
+      await stopAll(params.teamName);
+    }
+    toast.success(message);
   };
 
   return (

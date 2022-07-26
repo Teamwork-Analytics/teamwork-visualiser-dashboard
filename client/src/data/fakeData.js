@@ -1,4 +1,4 @@
-export const fakeSessions = [
+export const fakeTeams = [
   {
     sessionId: "181",
     name: "18 Aug 2021 - 3pm",
@@ -11,23 +11,23 @@ export const fakeSessions = [
   },
   {
     sessionId: "147",
-    name: "Session 3",
+    name: "Session 3: Team A",
   },
   {
     sessionId: "148",
-    name: "Session 4",
+    name: "Session 3: Team B",
   },
   {
     sessionId: "149",
-    name: "Session 5",
+    name: "Session 4: Team A",
   },
   {
     sessionId: "150",
-    name: "Session 6",
+    name: "Session 4: Team B",
   },
   {
     sessionId: "151",
-    name: "Session 7",
+    name: "Session 5: Team A",
   },
 ];
 
@@ -65,3 +65,10 @@ export const fakeSessionContext = {
     },
   },
 };
+
+export const fakeEmpaticaData = [
+  { colour: "red", id: "a", time: undefined },
+  { colour: "blue", id: "b", time: Date.now() },
+  { colour: "green", id: "c", time: Date.now() },
+  { colour: "yellow", id: "d", time: Date.now() },
+];

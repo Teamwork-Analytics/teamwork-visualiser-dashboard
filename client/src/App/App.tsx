@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import VisualisationPage from "../pages/visualisation/VisualisationPage";
-import SessionsPage from "../pages/session/SessionsPage";
+import MainPage from "../pages/main/MainPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TEAM_NAME } from "../data/manualLabels";
@@ -27,7 +27,7 @@ function App() {
       <Toaster />
       <BrowserRouter>
         <Routes>
-          <Route path="/main" element={<SessionsPage />} />
+          <Route path="/main" element={<MainPage />} />
           <Route
             path="/visualisation/:sessionId"
             element={<VisualisationPage />}
