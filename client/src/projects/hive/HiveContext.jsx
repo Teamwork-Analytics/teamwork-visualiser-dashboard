@@ -18,7 +18,6 @@ function HiveProvider({ sessionId, children }) {
     isPositionOnly: false,
   });
 
-  console.log(fakeSessionContext[sessionId]);
   const phases = fakeSessionContext[sessionId].hive.phases; //TODO: should be retrieved from server API
   const markers = cleanRawPhases(phases);
 

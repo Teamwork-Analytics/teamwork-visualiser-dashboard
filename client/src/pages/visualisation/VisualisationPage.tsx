@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
+import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { HiveProvider } from "../../projects/hive/HiveContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
@@ -33,7 +34,11 @@ const VisualisationView = () => {
         {open ? <ChevronDoubleLeft /> : <ChevronDoubleRight />}
       </Button>
       <MainLayout>
-        {availableTools[tool as keyof typeof String].mainView}
+        {availableTools[tool as keyof typeof String].mainView === undefined ? (
+          <EmptyPlaceholder />
+        ) : (
+          availableTools[tool as keyof typeof String].mainView
+        )}
       </MainLayout>
     </div>
   );

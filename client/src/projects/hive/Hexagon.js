@@ -16,7 +16,7 @@ export const cssColourMatcher = {
   GREEN: "#00FF00", //lime
   RED: "#ff0000", //red
   BLUE: "#088FFA", // blue
-  YELLOW: "#FFD700", // gold
+  YELLOW: "#ffdf00", // gold
 };
 
 const timeParser = (timestamp) => {
@@ -96,7 +96,7 @@ class HexagonComponent {
         .attr("stroke", strokeColour)
         .attr(
           "fill",
-          shotFlag === "made" ? cssColourMatcher[colour] : "#C5C5C5"
+          shotFlag === "made" ? cssColourMatcher[colour] : "lightgrey"
         )
         .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
         .attr("stroke-width", strokeWidth);

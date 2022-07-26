@@ -21,7 +21,6 @@ const availableTools: any = {
   },
   "teamwork-vis": {
     label: "Teamwork Barchart",
-    mainView: <Observation.ObservationView />,
   },
   "hive-vis": {
     label: "Position and Audio",
@@ -30,7 +29,6 @@ const availableTools: any = {
   },
   "audio-socnet-vis": {
     label: "Audio Social Network",
-    mainView: <Observation.ObservationView />,
   },
 };
 
