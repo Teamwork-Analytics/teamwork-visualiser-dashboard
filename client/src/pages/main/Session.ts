@@ -1,5 +1,5 @@
-export interface Team {
+export interface Simulation {
   sessionId: string;
   name: string;
-  project?: string;
+  project?: { name?: string };
 }

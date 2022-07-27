@@ -1,21 +1,21 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import TACard from "../../components/card/TACard";
-import { Team } from "./Session";
+import { Simulation } from "./Session";
 
-const TeamCard = ({ team }: { team: Team }) => {
+const SimulationCard = ({ sim }: { sim: Simulation }) => {
   return (
     <TACard height={250}>
       <Card.Body>
-        <Card.Title>{team.sessionId}</Card.Title>
-        <Card.Text>{team.name}</Card.Text>
+        <Card.Title>{sim.sessionId}</Card.Title>
+        <Card.Text>{sim.name}</Card.Text>
       </Card.Body>
 
-      {team.project && (
-        <Card.Footer className="text-muted">{team.project}</Card.Footer>
+      {sim.project && (
+        <Card.Footer className="text-muted">{sim.project.name}</Card.Footer>
       )}
     </TACard>
   );
 };
 
-export default TeamCard;
+export default SimulationCard;

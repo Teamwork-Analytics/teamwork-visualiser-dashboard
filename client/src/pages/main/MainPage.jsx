@@ -3,9 +3,9 @@ import { fakeTeams } from "../../data/fakeData";
 import { defaultStyles as styles } from "../page-styles";
 import { Link } from "react-router-dom";
 import SessionCard from "./SessionCard";
-import SearchBar from "../../components/SearchBar";
-import { Team } from "./Session";
+import { Simulation } from "./Session";
 import { Button } from "react-bootstrap";
+import { MainProvider, useMain } from "./MainContext";
 
 /**
  * First page to select and create sessions
@@ -14,15 +14,15 @@ const MainPage = () => {
   const pageStyles = {
     list: {
       display: "flex",
-      flexDirection: "row" as const,
-      flexWrap: "wrap" as const,
+      flexDirection: "row",
+      flexWrap: "wrap",
       alignContent: "flexStart",
       columnGap: "2em",
       rowGap: "2em",
     },
     navigation: {
       padding: "1em",
-      textAlign: "center" as const,
+      textAlign: "center",
       borderRadius: "0.5em",
     },
     control: {
@@ -31,9 +31,12 @@ const MainPage = () => {
       padding: "1em",
       alignItems: "center",
       justifyContent: "center",
-      flexDirection: "row" as const,
+      flexDirection: "row",
     },
   };
+
+  const { simulations } = useMain();
+
   return (
     <div style={styles.main}>
       <h1 style={styles.title}>TEAMWORK ANALYTICS 🖥️</h1>
@@ -43,19 +46,30 @@ const MainPage = () => {
 
       <div style={{ width: 900, margin: "1em auto" }}>
         <div style={pageStyles.list}>
-          {fakeTeams.map((session: Team) => (
-            <Link
-              to={`/visualisation/${session.sessionId}`}
-              state={{ name: session.name }}
-              style={{ color: "#222222", textDecoration: "none" }}
-            >
-              <SessionCard team={session} />
-            </Link>
-          ))}
+          {!!simulations
+            ? simulations.map((sim, i) => (
+                <Link
+                  key={i}
+                  to={`/visualisation/${sim.sessionId}`}
+                  state={{ name: sim.name }}
+                  style={{ color: "#222222", textDecoration: "none" }}
+                >
+                  <SessionCard key={i} sim={sim} />
+                </Link>
+              ))
+            : null}
         </div>
       </div>
     </div>
   );
 };
 
-export default MainPage;
+const MainPageContainer = () => {
+  return (
+    <MainProvider>
+      <MainPage />
+    </MainProvider>
+  );
+};
+
+export default MainPageContainer;

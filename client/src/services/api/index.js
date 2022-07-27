@@ -47,7 +47,5 @@ api.interceptors.response.use(
 );
 
 const { get, post, put, delete: destroy } = api;
-const API_PATH = "/app";
-const AUTH_PATH = "/auth";
 
-export { get, post, put, destroy, API_PATH, AUTH_PATH };
+export { get, post, put, destroy };

@@ -13,6 +13,7 @@ const MainLayout = ({ children }) => {
         display: "flex",
         alignItems: "center",
         overflowY: "auto",
+        padding: "1em",
       }}
     >
       {children}

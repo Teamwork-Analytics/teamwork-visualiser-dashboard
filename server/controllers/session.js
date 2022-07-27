@@ -1,5 +1,8 @@
 const logger = require("winston");
 const sessionService = require("../services/session");
+const projectService = require("../services/project");
+const obsService = require("../services/observation");
+const { fillErrorObject } = require("../middleware/error");
 
 /**
  * Create a new session
@@ -9,13 +12,22 @@ const sessionService = require("../services/session");
 const createSession = async (req, res, next) => {
   try {
     // TODO: add assertions
-    const newSession = await sessionService.create(req.body);
+    const { projectName } = req.body;
+    // find project
+    const project = await projectService.singleByName(projectName);
+
+    // assemble & create
+    const session = { ...req.body, project: project };
+    const newSession = await sessionService.create(session);
+
+    // create observation object
+    const observation = await obsService.createWithEmpaticas(project);
+    newSession.observation = observation;
+    await newSession.save();
+
     res.status(201).json(newSession);
   } catch (err) {
-    logger.error(err);
-    return res
-      .status(500)
-      .json({ message: "Error in creating a class session" });
+    return res.send(fillErrorObject(500, "Unable to create a session", err));
   }
 };
 
@@ -30,10 +42,19 @@ const getAllSessions = async (req, res, next) => {
     res.status(200).json(allSessions);
   } catch (err) {
     logger.error(err);
-    return res
-      .status(500)
-      .json({ message: "Error in retrieving all class sessions" });
+    return res.send(fillErrorObject(500, "Unable to get all sessions", err));
   }
 };
 
-module.exports = { createSession, getAllSessions };
+const getSession = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const session = await sessionService.single(id);
+    res.status(200).json(session);
+  } catch (err) {
+    logger.error(err);
+    return res.send(fillErrorObject(500, "Unable to get all sessions", err));
+  }
+};
+
+module.exports = { createSession, getSession, getAllSessions };

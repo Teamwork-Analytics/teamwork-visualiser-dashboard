@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Alert,
   Button,
@@ -35,7 +35,6 @@ const ObservationView = () => {
         maxWidth: "1440px",
         height: "100%",
         colour: "white",
-        paddingTop: "1em",
       }}
     >
       <h1>Session {sessionId}</h1>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Observation from "../../projects/observation/index";
 import * as Hive from "../../projects/hive/index";
+import * as Video from "../../projects/video/index";
 
 type VizProviderProps = { children: React.ReactNode };
 
@@ -18,6 +19,10 @@ const availableTools: any = {
     mainView: <Observation.ObservationView />,
     primaryControlView: <Observation.ObservationPrimaryControlView />,
     secondaryControlView: <Observation.ObservationSecondaryControlView />,
+  },
+  video: {
+    label: "Video Player",
+    mainView: <Video.VideoView />,
   },
   "teamwork-vis": {
     label: "Teamwork Barchart",
