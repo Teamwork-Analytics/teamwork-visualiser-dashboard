@@ -40,7 +40,7 @@ const ObservationView = () => {
       <h1>Session {sessionId}</h1>
       <div style={{ width: "20vw", margin: "0 auto" }}>
         <Alert variant={"success"}>Status: simulation has started</Alert>
-        <label>Start time: {new Date(Date.now()).toLocaleTimeString()} </label>
+        <label>Start time: {new Date(Date.now()).toLocaleString()} </label>
         <br />
         <label>Stop time: {"-"}</label>
       </div>
@@ -89,7 +89,7 @@ const ObservationView = () => {
         <div className="mt-2">
           {tagData.map((d) => {
             const timestamp = !!d.timestamp
-              ? new Date(d.timestamp).toISOString()
+              ? new Date(d.timestamp).toLocaleTimeString()
               : "Time error!";
             return (
               <Form>

@@ -34,7 +34,9 @@ const VisualisationView = () => {
         {open ? <ChevronDoubleLeft /> : <ChevronDoubleRight />}
       </Button>
       <MainLayout>
-        {availableTools[tool as keyof typeof String].mainView === undefined ? (
+        {availableTools[tool as keyof typeof String] ===
+        undefined ? null : availableTools[tool as keyof typeof String]
+            .mainView === undefined ? (
           <EmptyPlaceholder />
         ) : (
           availableTools[tool as keyof typeof String].mainView

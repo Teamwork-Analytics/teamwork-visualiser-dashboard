@@ -60,7 +60,14 @@ const SidebarLayout = ({ tool, setTool }) => {
               {availableTools[tool].label}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu variant="dark" onClick={(e) => setTool(e.target.id)}>
+            <Dropdown.Menu
+              variant="dark"
+              onClick={(e) => {
+                if (e.target.id !== "") {
+                  setTool(e.target.id);
+                }
+              }}
+            >
               {Object.keys(availableTools).map((d) => (
                 <Dropdown.Item key={d} id={d} active={tool === d}>
                   {availableTools[d].label}
