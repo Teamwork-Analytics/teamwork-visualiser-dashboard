@@ -29,7 +29,7 @@ function App() {
         <Routes>
           <Route path="/main" element={<MainPage />} />
           <Route
-            path="/visualisation/:sessionId"
+            path="/visualisation/:simulationId"
             element={<VisualisationPage />}
           />
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />

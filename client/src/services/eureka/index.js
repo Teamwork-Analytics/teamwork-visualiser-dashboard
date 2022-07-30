@@ -53,18 +53,18 @@ Object.keys(portStrategy).forEach((k) => {
   eurekaAxiosStrategy.push({ axios: api, key: k });
 });
 
-const startAll = (sessionId) => {
+const startAll = (simulationId) => {
   return Promise.all(
     eurekaAxiosStrategy.forEach(async (s) => {
-      await s["axios"].get(`/${s.key}/start/${sessionId}`);
+      await s["axios"].get(`/${s.key}/start/${simulationId}`);
     })
   );
 };
 
-const stopAll = (sessionId) => {
+const stopAll = (simulationId) => {
   return Promise.all(
     eurekaAxiosStrategy.forEach(async (s) => {
-      await s["axios"].get(`/${s.key}/stop/${sessionId}`);
+      await s["axios"].get(`/${s.key}/stop/${simulationId}`);
     })
   );
 };

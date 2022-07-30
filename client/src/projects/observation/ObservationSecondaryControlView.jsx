@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { fakeDevicesData } from "../../data/fakeData";
+import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import { useObservation } from "./ObservationContext";
 
 const ObservationSecondaryControlView = () => {
-  const [devices, setDevices] = useState(fakeDevicesData);
+  const { observation } = useObservation();
+  const [devices, setDevices] = useState([]);
 
-  const buttonClick = (empaticaId, isReset) => {
+  useEffect(() => {
+    setDevices(observation.synchronisations);
+  }, [observation]);
+
+  const buttonClick = (deviceId, isReset) => {
     const tempDevice = devices.map((d) => {
-      if (d.id === empaticaId) {
-        d.time = Date.now();
+      if (d.device._id === deviceId) {
+        d.syncTime = Date.now();
       } else if (isReset) {
-        d.time = undefined;
+        d.syncTime = undefined;
       }
       return d;
     });
@@ -32,32 +38,39 @@ const ObservationSecondaryControlView = () => {
       </Button>
 
       <Container>
-        {devices.map((d, i) => {
-          const time = !!d.time
-            ? new Date(d.time).toLocaleString()
-            : "No timestamp";
-          return (
-            <Row key={d.id} className="my-4">
-              <Col sm="3">
-                <label style={{ color: "grey" }}>{d.name}</label>
-              </Col>
-              <Col sm="7">
-                <label>{time}</label>
-              </Col>
-              <Col sm="1">
-                <Button
-                  id={d.id}
-                  size="sm"
-                  onClick={(e) => {
-                    buttonClick(e.target.id, false);
-                  }}
-                >
-                  Log
-                </Button>
-              </Col>
-            </Row>
-          );
-        })}
+        {devices.length === 0 ? (
+          <EmptyPlaceholder />
+        ) : (
+          devices.map((data, i) => {
+            const d = data.device;
+            const time = !!data.syncTime
+              ? new Date(data.syncTime).toLocaleString()
+              : "No timestamp";
+
+            return (
+              <Row key={d._id} className="my-4">
+                <Col sm="3">
+                  <label style={{ color: "grey" }}>{d.name}</label>
+                  <label>{d.deviceType}</label>
+                </Col>
+                <Col sm="7">
+                  <label>{time}</label>
+                </Col>
+                <Col sm="1">
+                  <Button
+                    id={d._id}
+                    size="sm"
+                    onClick={(e) => {
+                      buttonClick(e.target.id, false);
+                    }}
+                  >
+                    Log
+                  </Button>
+                </Col>
+              </Row>
+            );
+          })
+        )}
       </Container>
     </div>
   );

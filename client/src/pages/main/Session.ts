@@ -1,5 +1,5 @@
 export interface Simulation {
-  sessionId: string;
+  simulationId: string;
   name: string;
   project?: { name?: string };
 }

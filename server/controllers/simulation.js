@@ -1,5 +1,5 @@
 const logger = require("winston");
-const sessionService = require("../services/session");
+const simulationService = require("../services/simulation");
 const projectService = require("../services/project");
 const obsService = require("../services/observation");
 const { fillErrorObject } = require("../middleware/error");
@@ -9,7 +9,7 @@ const { fillErrorObject } = require("../middleware/error");
  * @param {*} req essayId
  * @param {*} res send newly created session object
  */
-const createSession = async (req, res, next) => {
+const createSimulation = async (req, res, next) => {
   try {
     // TODO: add assertions
     const { projectName } = req.body;
@@ -17,8 +17,8 @@ const createSession = async (req, res, next) => {
     const project = await projectService.singleByName(projectName);
 
     // assemble & create
-    const session = { ...req.body, project: project };
-    const newSession = await sessionService.create(session);
+    const simulation = { ...req.body, project: project };
+    const newSession = await simulationService.create(simulation);
 
     // create observation object
     const observation = await obsService.createWithDevices(project);
@@ -27,7 +27,9 @@ const createSession = async (req, res, next) => {
 
     res.status(201).json(newSession);
   } catch (err) {
-    return res.send(fillErrorObject(500, "Unable to create a session", err));
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to create a simulation", err));
   }
 };
 
@@ -36,25 +38,34 @@ const createSession = async (req, res, next) => {
  * @param {*} req
  * @param {*} res
  */
-const getAllSessions = async (req, res, next) => {
+const getAllSims = async (req, res, next) => {
   try {
-    const allSessions = await sessionService.index();
+    const allSessions = await simulationService.index();
     res.status(200).json(allSessions);
   } catch (err) {
     logger.error(err);
-    return res.send(fillErrorObject(500, "Unable to get all sessions", err));
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to get all simulations", err));
   }
 };
 
-const getSession = async (req, res, next) => {
+const getSimulation = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const session = await sessionService.single(id);
+    const session = await simulationService.single(id);
+    simulations;
     res.status(200).json(session);
   } catch (err) {
     logger.error(err);
-    return res.send(fillErrorObject(500, "Unable to get all sessions", err));
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to get a simulation", err));
   }
 };
 
-module.exports = { createSession, getSession, getAllSessions };
+module.exports = {
+  createSimulation,
+  getSimulation,
+  getAllSims,
+};

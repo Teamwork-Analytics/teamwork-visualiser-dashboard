@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Session = require("./session");
+const Session = require("./simulation");
 
 const deviceObs = {
   _id: false,
@@ -25,7 +25,7 @@ const autoPopulateDevice = function (next) {
 
 const obsSchema = new mongoose.Schema(
   {
-    startBaseline: { type: Date, default: null },
+    baselineTime: { type: Date, default: null },
     startTime: { type: Date, default: null },
     stopTime: { type: Date, default: null },
     phases: [phaseNote],
@@ -35,7 +35,10 @@ const obsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-obsSchema.pre("findOne", autoPopulateDevice).pre("find", autoPopulateDevice);
+obsSchema
+  .pre("findOne", autoPopulateDevice)
+  .pre("find", autoPopulateDevice)
+  .pre("findById", autoPopulateDevice);
 
 //cascade delete
 obsSchema.pre("remove", function (next) {

@@ -11,6 +11,8 @@ const createWithDevices = async (projectId) => {
   });
 };
 
+const single = async (id) => await Observation.findById(id);
+
 const update = async (id, info) => await Observation.findByIdAndUpdate(info);
 
-module.exports = { createWithDevices, update };
+module.exports = { createWithDevices, single, update };

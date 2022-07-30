@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import { MainProvider, useMain } from "./MainContext";
 
 /**
- * First page to select and create sessions
+ * First page to select and create simulations
  */
 const MainPage = () => {
   const pageStyles = {
@@ -17,6 +17,7 @@ const MainPage = () => {
       alignContent: "center",
       columnGap: "2em",
       rowGap: "1.5em",
+      padding: "1em",
     },
     navigation: {
       padding: "1em",
@@ -50,7 +51,7 @@ const MainPage = () => {
             ? simulations.map((sim, i) => (
                 <Link
                   key={i}
-                  to={`/visualisation/${sim.sessionId}`}
+                  to={`/visualisation/${sim.simulationId}`}
                   state={{ name: sim.name }}
                   style={{ color: "#222222", textDecoration: "none" }}
                 >

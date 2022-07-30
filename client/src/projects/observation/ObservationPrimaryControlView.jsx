@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
 import { startAll, stopAll } from "../../services/eureka";
+import { useObservation } from "./ObservationContext";
 
 const ObservationPrimaryControlView = () => {
   const params = useParams();
+  const { observation, setObservation } = useObservation();
 
   const styles = {
     wrapper: {
@@ -19,15 +21,24 @@ const ObservationPrimaryControlView = () => {
   };
 
   const clickButton = async (e) => {
-    const labels = OBSERVATION_TOAST_MESSAGES(params.sessionId);
+    const labels = OBSERVATION_TOAST_MESSAGES(params.simulationId);
     const opt = e.target.value;
     const message = labels[opt];
     if (opt === "baseline") {
+      setObservation({ ...observation, baselineTime: Date.now() });
     } else if (opt === "start") {
-      await startAll(params.sessionId);
-    } else if (opt === "end") {
-      await stopAll(params.sessionId);
+      setObservation({ ...observation, startTime: Date.now() });
+      // await startAll(params.simulationId);
+    } else if (opt === "stop") {
+      setObservation({ ...observation, stopTime: Date.now() });
+      // await stopAll(params.simulationId);
     } else if (opt === "reset") {
+      setObservation({
+        ...observation,
+        baselineTime: null,
+        startTime: null,
+        stopTime: null,
+      });
     }
     toast.success(message);
   };
@@ -40,8 +51,8 @@ const ObservationPrimaryControlView = () => {
       <Button variant="success" value={"start"} onClick={clickButton}>
         Start Simulation
       </Button>
-      <Button variant="secondary" value={"end"} onClick={clickButton}>
-        End Simulation
+      <Button variant="secondary" value={"stop"} onClick={clickButton}>
+        Stop Simulation
       </Button>
       <hr />
       <Button
@@ -51,7 +62,7 @@ const ObservationPrimaryControlView = () => {
         onClick={clickButton}
         data-tip="Clicking this button will reset all captured time."
       >
-        RESET
+        Reset Time
       </Button>
       <ReactTooltip />
     </div>

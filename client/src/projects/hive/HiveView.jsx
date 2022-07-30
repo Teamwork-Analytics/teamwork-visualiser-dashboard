@@ -12,10 +12,10 @@ import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 
 const HiveView = () => {
   const { state, markers } = useHive();
-  const { sessionId } = useParams();
+  const { simulationId } = useParams();
 
   useEffect(() => {
-    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + sessionId;
+    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
     d3.select("#floor-plan").remove();
     let svgContainer = d3.select("#hive");
     d3.xml(floorPlan).then((data) => {

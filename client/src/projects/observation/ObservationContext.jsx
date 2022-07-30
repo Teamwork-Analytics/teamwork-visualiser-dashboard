@@ -6,13 +6,25 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import * as React from "react";
+import ObservationAPI from "../../services/api/observation";
 
 const ObservationContext = React.createContext();
 
-function ObservationProvider({ sessionId, children }) {
-  const [notes, setNotes] = React.useState([]);
+function ObservationProvider({ simulationId, children }) {
+  const [notes, setNotes] = React.useState([]); // it is used to collect different phases
+  const [observation, setObservation] = React.useState({
+    synchronisations: [],
+  });
 
-  const value = { notes, setNotes };
+  React.useEffect(() => {
+    ObservationAPI.single(simulationId).then((res) => {
+      if (res.status === 200) {
+        setObservation(res.data);
+      }
+    });
+  }, []);
+
+  const value = { notes, setNotes, observation, setObservation };
   return (
     <ObservationContext.Provider value={value}>
       {children}

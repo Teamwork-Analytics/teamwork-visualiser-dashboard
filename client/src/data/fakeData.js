@@ -1,32 +1,32 @@
 export const fakeTeams = [
   {
-    sessionId: "181",
+    simulationId: "181",
     name: "18 Aug 2021 - 3pm",
     project: "Peninsula Nursing Simulation",
   },
   {
-    sessionId: "189",
+    simulationId: "189",
     name: "24 Aug 2021 - 9am",
     project: "Peninsula Nursing Simulation",
   },
   {
-    sessionId: "147",
+    simulationId: "147",
     name: "Session 3: Team A",
   },
   {
-    sessionId: "148",
+    simulationId: "148",
     name: "Session 3: Team B",
   },
   {
-    sessionId: "149",
+    simulationId: "149",
     name: "Session 4: Team A",
   },
   {
-    sessionId: "150",
+    simulationId: "150",
     name: "Session 4: Team B",
   },
   {
-    sessionId: "151",
+    simulationId: "151",
     name: "Session 5: Team A",
   },
 ];

@@ -8,7 +8,7 @@ const SimulationCard = ({ sim }: { sim: Simulation }) => {
     <TACard height={60} width={700}>
       <Row style={{ display: "flex", flexDirection: "row" }}>
         <Col>
-          <label>{sim.sessionId}</label>
+          <label>{sim.simulationId}</label>
         </Col>
         <Col sm="5">
           <label>{sim.name}</label>
@@ -21,7 +21,7 @@ const SimulationCard = ({ sim }: { sim: Simulation }) => {
       </Row>
 
       {/* <Card.Body>
-        <Card.Title>{sim.sessionId}</Card.Title>
+        <Card.Title>{sim.simulationId}</Card.Title>
         <Card.Text>{sim.name}</Card.Text>
       </Card.Body>
 

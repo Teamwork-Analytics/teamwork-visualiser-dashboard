@@ -4,6 +4,7 @@ import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { HiveProvider } from "../../projects/hive/HiveContext";
+import { ObservationProvider } from "../../projects/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
 import { availableTools, useViz, VizProvider } from "./VisualisationContext";
@@ -52,9 +53,11 @@ const VisualisationPage = () => {
   return (
     <VizProvider>
       {/* TODO: deal with multiple stack providers later! */}
-      <HiveProvider sessionId={params.sessionId}>
-        <VisualisationView />
-      </HiveProvider>
+      <ObservationProvider simulationId={params.simulationId}>
+        <HiveProvider simulationId={params.simulationId}>
+          <VisualisationView />
+        </HiveProvider>
+      </ObservationProvider>
     </VizProvider>
   );
 };

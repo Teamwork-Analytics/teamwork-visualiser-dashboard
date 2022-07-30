@@ -1,39 +1,17 @@
 const fileSystem = require("fs");
 const { fillErrorObject } = require("../middleware/error");
 
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
 const getCsvFile = (req, res, next) => {
-  // try {
-  //   const { sessionId } = req.params;
-  //   const fileName = sessionId + "_all.csv";
-  //   const path = "./data/hive/" + fileName;
-
-  //   var readStream = fileSystem.createReadStream(path);
-
-  //   res.writeHead(200, {
-  //     "Content-Type": "text/csv",
-  //     "Content-Disposition": "attachment; filename=" + fileName,
-  //   });
-
-  //   return res.send({data: })
-  //   // readStream.pipe(res).on("error", function (e) {
-  //   //   return res
-  //   //     .status(500)
-  //   //     .send(
-  //   //       fillErrorObject(500, "Unable to retrieve a csv file for HIVE", e)
-  //   //     );
-  //   // });
-
-  // } catch (err) {
-  //   return res
-  //     .status(500)
-  //     .send(
-  //       fillErrorObject(500, "Unable to retrieve a csv file for HIVE", err)
-  //     );
-  // }
-
   try {
-    const { sessionId } = req.params;
-    const fileName = sessionId + "_all.csv";
+    const { simulationId } = req.params;
+    const fileName = simulationId + "_all.csv";
     const path = "./data/hive/" + fileName;
 
     res.setHeader("cache-control", "max-age=8640000");

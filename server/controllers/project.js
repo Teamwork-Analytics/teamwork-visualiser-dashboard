@@ -12,7 +12,9 @@ const createProject = async (req, res, next) => {
     return res.status(201).json(newProject);
   } catch (err) {
     logger.error(err);
-    return res.send(fillErrorObject(500, "Unable to create a project", err));
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to create a project", err));
   }
 };
 
@@ -21,9 +23,9 @@ const getAllProjects = async (req, res, next) => {
     const allProjects = await projectService.index();
     res.status(200).json(allProjects);
   } catch (err) {
-    return res.send(
-      fillErrorObject(500, "Unable to retrieve all projects", err)
-    );
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to retrieve all projects", err));
   }
 };
 
@@ -33,7 +35,9 @@ const registerDevices = async (req, res, next) => {
     const updatedProject = await projectService.registerDevices(id, devices);
     return res.status(201).json(updatedProject);
   } catch (err) {
-    return res.send(fillErrorObject(500, "Unable to register devices", err));
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to register devices", err));
   }
 };
 

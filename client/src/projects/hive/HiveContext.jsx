@@ -7,21 +7,20 @@
 
 import * as React from "react";
 import { fakeSessionContext } from "../../data/fakeData";
-import HiveAPI from "../../services/api/hive";
 import { cleanRawPhases } from "./utils";
 
 const HiveContext = React.createContext();
 
-function HiveProvider({ sessionId, children }) {
+function HiveProvider({ simulationId, children }) {
   const [state, setState] = React.useState({
     participants: { RED: true, BLUE: true, YELLOW: true, GREEN: true },
     phase: [0, 100],
     isPositionOnly: false,
   });
 
-  const sessionData = fakeSessionContext[sessionId];
+  const simData = fakeSessionContext[simulationId];
 
-  const phases = sessionData === undefined ? [] : sessionData.hive.phases; //TODO: should be retrieved from server API
+  const phases = simData === undefined ? [] : simData.hive.phases; //TODO: should be retrieved from server API
 
   const markers = cleanRawPhases(phases);
 

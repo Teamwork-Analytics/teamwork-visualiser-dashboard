@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const sessionSchema = new mongoose.Schema(
+const simulationSchema = new mongoose.Schema(
   {
-    sessionId: {
+    simulationId: {
       type: String,
       required: true,
       unique: true,
@@ -26,6 +26,6 @@ const sessionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Session = mongoose.model("session", sessionSchema);
+const Session = mongoose.model("simulation", simulationSchema);
 
 module.exports = Session;

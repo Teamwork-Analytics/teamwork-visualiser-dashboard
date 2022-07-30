@@ -6,7 +6,7 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import * as React from "react";
-import SimulationSessionsAPI from "../../services/api/simulations";
+import SimulationSessionAPI from "../../services/api/simulations";
 
 const MainContext = React.createContext([]);
 
@@ -14,7 +14,7 @@ function MainProvider({ children }) {
   const [simulations, setSimulations] = React.useState([]);
 
   React.useEffect(() => {
-    SimulationSessionsAPI.index().then((res) => {
+    SimulationSessionAPI.index().then((res) => {
       if (res.status === 200) {
         setSimulations(res.data);
       }
