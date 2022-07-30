@@ -21,7 +21,7 @@ const createSession = async (req, res, next) => {
     const newSession = await sessionService.create(session);
 
     // create observation object
-    const observation = await obsService.createWithEmpaticas(project);
+    const observation = await obsService.createWithDevices(project);
     newSession.observation = observation;
     await newSession.save();
 

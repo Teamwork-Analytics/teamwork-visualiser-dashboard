@@ -19,6 +19,8 @@ const labels = [
 
 const cleanRawPhases = (phases) => {
   //phases format: ["0:04:32","0:12:12",...]
+  if (phases.length === 0) return [];
+
   const labeledPhases = phases.map((timestamp, i) => {
     return {
       label: labels[i] + ": " + timestamp,

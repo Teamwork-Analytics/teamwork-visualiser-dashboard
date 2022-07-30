@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const NUM_OF_EMPATICAS = 6;
+const NUM_OF_DEVICES = 10;
 
 function arrayLimit(val) {
-  return val.length <= NUM_OF_EMPATICAS;
+  return val.length <= NUM_OF_DEVICES;
 }
 
 const projectSchema = new mongoose.Schema(
@@ -13,14 +13,14 @@ const projectSchema = new mongoose.Schema(
       unique: true,
     },
     description: String,
-    empaticas: {
+    devices: {
       type: [
         {
           type: mongoose.SchemaTypes.ObjectId,
-          ref: "empatica",
+          ref: "device",
         },
       ],
-      validate: [arrayLimit, `{PATH} exceeds the limit of ${NUM_OF_EMPATICAS}`],
+      validate: [arrayLimit, `{PATH} exceeds the limit of ${NUM_OF_DEVICES}`],
     },
   },
   { timestamps: true }

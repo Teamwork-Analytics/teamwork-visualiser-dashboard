@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { fakeSessionContext } from "../../data/fakeData";
+import HiveAPI from "../../services/api/hive";
 import { cleanRawPhases } from "./utils";
 
 const HiveContext = React.createContext();
@@ -18,7 +19,10 @@ function HiveProvider({ sessionId, children }) {
     isPositionOnly: false,
   });
 
-  const phases = fakeSessionContext[sessionId].hive.phases; //TODO: should be retrieved from server API
+  const sessionData = fakeSessionContext[sessionId];
+
+  const phases = sessionData === undefined ? [] : sessionData.hive.phases; //TODO: should be retrieved from server API
+
   const markers = cleanRawPhases(phases);
 
   const value = { state, setState, markers };

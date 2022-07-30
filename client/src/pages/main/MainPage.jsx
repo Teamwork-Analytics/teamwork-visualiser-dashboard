@@ -1,9 +1,7 @@
 import React from "react";
-import { fakeTeams } from "../../data/fakeData";
 import { defaultStyles as styles } from "../page-styles";
 import { Link } from "react-router-dom";
 import SessionCard from "./SessionCard";
-import { Simulation } from "./Session";
 import { Button } from "react-bootstrap";
 import { MainProvider, useMain } from "./MainContext";
 
@@ -14,11 +12,11 @@ const MainPage = () => {
   const pageStyles = {
     list: {
       display: "flex",
-      flexDirection: "row",
+      flexDirection: "column",
       flexWrap: "wrap",
-      alignContent: "flexStart",
+      alignContent: "center",
       columnGap: "2em",
-      rowGap: "2em",
+      rowGap: "1.5em",
     },
     navigation: {
       padding: "1em",
@@ -41,10 +39,12 @@ const MainPage = () => {
     <div style={styles.main}>
       <h1 style={styles.title}>TEAMWORK ANALYTICS 🖥️</h1>
       <div style={pageStyles.control}>
-        <Button variant="success">Add Session +</Button>
+        <Button variant="success" disabled>
+          Add Session +
+        </Button>
       </div>
 
-      <div style={{ width: 900, margin: "1em auto" }}>
+      <div style={{ overflowY: "scroll", width: "100vw" }}>
         <div style={pageStyles.list}>
           {!!simulations
             ? simulations.map((sim, i) => (

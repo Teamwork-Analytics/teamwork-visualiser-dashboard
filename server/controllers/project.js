@@ -21,25 +21,20 @@ const getAllProjects = async (req, res, next) => {
     const allProjects = await projectService.index();
     res.status(200).json(allProjects);
   } catch (err) {
-    logger.error(err);
     return res.send(
       fillErrorObject(500, "Unable to retrieve all projects", err)
     );
   }
 };
 
-const registerEmpaticas = async (req, res, next) => {
+const registerDevices = async (req, res, next) => {
   try {
-    const { id, empaticas } = req.body;
-    const updatedProject = await projectService.registerEmpaticas(
-      id,
-      empaticas
-    );
+    const { id, devices } = req.body;
+    const updatedProject = await projectService.registerDevices(id, devices);
     return res.status(201).json(updatedProject);
   } catch (err) {
-    logger.error(err);
-    return res.send(fillErrorObject(500, "Unable to register empaticas", err));
+    return res.send(fillErrorObject(500, "Unable to register devices", err));
   }
 };
 
-module.exports = { createProject, getAllProjects, registerEmpaticas };
+module.exports = { createProject, getAllProjects, registerDevices };

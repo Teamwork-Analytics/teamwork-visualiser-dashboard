@@ -20,10 +20,11 @@ const availableTools: any = {
     primaryControlView: <Observation.ObservationPrimaryControlView />,
     secondaryControlView: <Observation.ObservationSecondaryControlView />,
   },
-  video: {
-    label: "Video Player",
-    mainView: <Video.VideoView />,
-  },
+  // NOT IN USED ATM
+  // video: {
+  //   label: "Video Player",
+  //   mainView: <Video.VideoView />,
+  // },
   "teamwork-vis": {
     label: "Teamwork Barchart",
   },

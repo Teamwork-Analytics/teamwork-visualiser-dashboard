@@ -20,6 +20,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-bootstrap-icons": "^1.8.4",
+    "react-bootstrap-time-picker": "^2.0.1",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.3.0",
     "react-papaparse": "^4.0.2",

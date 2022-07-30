@@ -66,9 +66,11 @@ export const fakeSessionContext = {
   },
 };
 
-export const fakeEmpaticaData = [
-  { colour: "red", id: "a", time: undefined },
-  { colour: "blue", id: "b", time: Date.now() },
-  { colour: "green", id: "c", time: Date.now() },
-  { colour: "yellow", id: "d", time: Date.now() },
+export const fakeDevicesData = [
+  { name: "empatica red", id: "a", time: undefined },
+  { name: "empatica blue", id: "b", time: Date.now() },
+  { name: "empatica green", id: "c", time: Date.now() },
+  { name: "empatica yellow", id: "d", time: Date.now() },
+  { name: "video", id: "e", time: undefined },
+  { name: "fitbit", id: "f", time: Date.now() },
 ];

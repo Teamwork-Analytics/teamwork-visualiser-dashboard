@@ -1,6 +1,6 @@
 const Project = require("../models/project");
-const Empatica = require("../models/empatica");
-const SELECTION_FILTER = "_id name description empaticas";
+const Device = require("../models/device");
+const SELECTION_FILTER = "_id name description devices";
 
 const single = async (id) => {
   return await Project.findById(id).select(SELECTION_FILTER);
@@ -13,29 +13,29 @@ const index = async () => await Project.find();
 const singleByName = async (name) =>
   await Project.findOne({ name: name }).select(SELECTION_FILTER);
 
-const registerEmpaticas = async (projectId, listOfEmpaticas) => {
+const registerDevices = async (projectId, listOfDevices) => {
   const project = await single(projectId);
 
-  if (project.empaticas.length === 0) {
-    const empaticas = Promise.all(
-      listOfEmpaticas.map(async (d) => {
-        return await Empatica.create({ ...d, project: projectId });
+  if (project.devices.length === 0) {
+    const devices = Promise.all(
+      listOfDevices.map(async (d) => {
+        return await Device.create({ ...d, project: projectId });
       })
     );
-    project.empaticas = await empaticas;
+    project.devices = await devices;
   }
 
   return await project.save();
 };
 
-const getEmpaticas = async (id) =>
-  await Project.findById(id).select("empaticas").populate("empaticas");
+const getDevices = async (id) =>
+  await Project.findById(id).select("devices").populate("devices");
 
 module.exports = {
   single,
   index,
   create,
   singleByName,
-  registerEmpaticas,
-  getEmpaticas,
+  registerDevices,
+  getDevices,
 };

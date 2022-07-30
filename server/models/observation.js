@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Session = require("./session");
 
-const empaticaObs = {
+const deviceObs = {
   _id: false,
-  empatica: {
+  device: {
     type: mongoose.SchemaTypes.ObjectId,
-    ref: "empatica",
+    ref: "device",
   },
   syncTime: { type: Date, default: null },
 };
@@ -15,10 +15,10 @@ const phaseNote = {
   message: String,
 };
 
-const autoPopulateEmpatica = function (next) {
+const autoPopulateDevice = function (next) {
   this.populate(
-    "synchronisations.empatica synchronisations.syncTime",
-    "deviceId colour"
+    "synchronisations.device synchronisations.syncTime",
+    "deviceId name deviceType"
   );
   next();
 };
@@ -29,16 +29,13 @@ const obsSchema = new mongoose.Schema(
     startTime: { type: Date, default: null },
     stopTime: { type: Date, default: null },
     phases: [phaseNote],
-    synchronisations: [empaticaObs],
-    //TODO: atm, only empatica that needs to be synchronised.
+    synchronisations: [deviceObs],
     //TODO: add validation that empatica is from the correct project
   },
   { timestamps: true }
 );
 
-obsSchema
-  .pre("findOne", autoPopulateEmpatica)
-  .pre("find", autoPopulateEmpatica);
+obsSchema.pre("findOne", autoPopulateDevice).pre("find", autoPopulateDevice);
 
 //cascade delete
 obsSchema.pre("remove", function (next) {

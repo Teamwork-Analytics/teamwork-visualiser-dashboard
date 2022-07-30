@@ -1,13 +1,12 @@
-import { style } from "d3";
 import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { fakeEmpaticaData } from "../../data/fakeData";
+import { fakeDevicesData } from "../../data/fakeData";
 
 const ObservationSecondaryControlView = () => {
-  const [empaticaData, setEmpaticaData] = useState(fakeEmpaticaData);
+  const [devices, setDevices] = useState(fakeDevicesData);
 
   const buttonClick = (empaticaId, isReset) => {
-    const tempData = empaticaData.map((d) => {
+    const tempDevice = devices.map((d) => {
       if (d.id === empaticaId) {
         d.time = Date.now();
       } else if (isReset) {
@@ -15,39 +14,37 @@ const ObservationSecondaryControlView = () => {
       }
       return d;
     });
-    setEmpaticaData(tempData);
+    setDevices(tempDevice);
   };
 
   return (
     <div>
       <h1>Synchronisation</h1>
       <hr />
-      <h3>
-        Empatica{" "}
-        <Button
-          variant="danger"
-          size="sm"
-          onClick={(e) => {
-            buttonClick(e.target.id, true);
-          }}
-        >
-          Reset All
-        </Button>
-      </h3>
+      <Button
+        variant="danger"
+        size="sm"
+        onClick={(e) => {
+          buttonClick(e.target.id, true);
+        }}
+      >
+        Reset All
+      </Button>
+
       <Container>
-        {empaticaData.map((d) => {
+        {devices.map((d, i) => {
           const time = !!d.time
-            ? new Date(d.time).toISOString()
+            ? new Date(d.time).toLocaleString()
             : "No timestamp";
           return (
-            <Row className="my-4">
-              <Col sm="2">
-                <label style={{ color: "grey" }}>{d.colour}</label>
+            <Row key={d.id} className="my-4">
+              <Col sm="3">
+                <label style={{ color: "grey" }}>{d.name}</label>
               </Col>
-              <Col>
+              <Col sm="7">
                 <label>{time}</label>
               </Col>
-              <Col sm="2">
+              <Col sm="1">
                 <Button
                   id={d.id}
                   size="sm"

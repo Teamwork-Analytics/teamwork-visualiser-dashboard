@@ -1,70 +1,69 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import {
   Alert,
   Button,
   ButtonGroup,
   Col,
   Container,
-  Form,
   Row,
 } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import Webcam from "react-webcam";
+import ReactTooltip from "react-tooltip";
+import { manualLabels } from ".";
+import Note from "./Note";
+import { ObservationProvider, useObservation } from "./ObservationContext";
 
-const ObservationView = () => {
-  const [tagData, setTaggedData] = useState([
-    {
-      label: "Handover",
-      timestamp: Date.now(),
+const ObservationViewComponent = () => {
+  const { notes, setNotes } = useObservation();
+
+  const styles = {
+    outer: {
+      margin: "0 auto",
+      width: "50vw",
+      maxWidth: "1440px",
+      height: "100%",
+      colour: "white",
     },
-  ]);
-
-  const phases = [1, 2, 3, 4];
-
-  const addTag = () => {
-    setTaggedData([...tagData, { label: "", timestamp: Date.now() }]);
+    info: { width: "20vw", margin: "0 auto" },
   };
+
+  const addNote = (label = "") => {
+    setNotes((oldArray) => [
+      {
+        id: Date.now().toString(),
+        label: label,
+        timestamp: Date.now(),
+      },
+      ...oldArray,
+    ]);
+  };
+
   const { sessionId } = useParams();
 
-  return (
-    <div
-      style={{
-        margin: "0 auto",
-        width: "50vw",
-        maxWidth: "1440px",
-        height: "100%",
-        colour: "white",
-      }}
-    >
-      <h1>Session {sessionId}</h1>
-      <div style={{ width: "20vw", margin: "0 auto" }}>
-        <Alert variant={"success"}>Status: simulation has started</Alert>
-        <label>Start time: {new Date(Date.now()).toLocaleString()} </label>
-        <br />
-        <label>Stop time: {"-"}</label>
-      </div>
-      <hr />
-      <ButtonGroup className="mx-2">
-        {phases.map((d, i) => {
+  const Buttons = (
+    <>
+      <ButtonGroup className="mx-2 my-2">
+        {manualLabels.phases.map((d, i) => {
           return (
             <Button
               key={i}
               variant="primary"
               size="lg"
-              onClick={() => addTag()}
+              onClick={() => addNote(d.label)}
+              data-tip={d.description}
             >
-              Phase {i + 1}
+              {d.label}
             </Button>
           );
         })}
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="success" size="lg" onClick={() => addTag()}>
-          Manual Tag
+        <Button variant="secondary" size="lg" onClick={() => addNote()}>
+          Manual Tag +
         </Button>
         <Button
-          variant="secondary"
+          variant="success"
           size="lg"
           onClick={() => {
             toast.success("Notes are saved!");
@@ -73,7 +72,11 @@ const ObservationView = () => {
           Save
         </Button>
       </ButtonGroup>
+    </>
+  );
 
+  const NotesTable = (
+    <>
       <Container className="mt-3">
         <Row>
           <Col sm="3">
@@ -87,30 +90,48 @@ const ObservationView = () => {
           </Col>
         </Row>
         <div className="mt-2">
-          {tagData.map((d) => {
-            const timestamp = !!d.timestamp
-              ? new Date(d.timestamp).toLocaleTimeString()
-              : "Time error!";
-            return (
-              <Form>
-                <Form.Group as={Row} className="mb-3">
-                  <Form.Label column sm="3">
-                    {timestamp}
-                  </Form.Label>
-                  <Col sm="7">
-                    <Form.Control placeholder={d.label} />
-                    {/* Replace value above with a state! */}
-                  </Col>
-                  <Col sm="2">
-                    <Button variant="danger">Delete</Button>
-                  </Col>
-                </Form.Group>
-              </Form>
-            );
-          })}
+          {notes.length === 0 ? (
+            <label>No available notes yet.</label>
+          ) : (
+            notes.map((d, i) => {
+              const keyString = `note-${i}`;
+              return (
+                <Note
+                  id={keyString}
+                  initialValue={d.label}
+                  key={d.id}
+                  data={d}
+                />
+              );
+            })
+          )}
         </div>
       </Container>
+    </>
+  );
+
+  return (
+    <div style={styles.outer}>
+      <h1>Session {sessionId}</h1>
+      <div style={styles.info}>
+        <Alert variant={"success"}>Status: simulation has started</Alert>
+        <label>Start time: {new Date(Date.now()).toLocaleString()} </label>
+        <br />
+        <label>Stop time: {"-"}</label>
+      </div>
+      <hr />
+      {Buttons}
+      {NotesTable}
+      <ReactTooltip />
     </div>
+  );
+};
+
+const ObservationView = () => {
+  return (
+    <ObservationProvider>
+      <ObservationViewComponent />
+    </ObservationProvider>
   );
 };
 export default ObservationView;
