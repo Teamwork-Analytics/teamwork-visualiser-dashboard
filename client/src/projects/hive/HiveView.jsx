@@ -29,8 +29,8 @@ const HiveView = () => {
           csvUrl,
           false,
           state.participants,
-          markers[state.phase[0]].time,
-          markers[state.phase[1]].time
+          markers[state.phase[0]].timestamp,
+          markers[state.phase[1]].timestamp
         );
       }
     });

@@ -50,7 +50,7 @@ const SidebarLayout = ({ tool, setTool }) => {
         </h4>
       </div>
       <div style={{ width: "100%" }}>
-        <div className="d-grid gap-2">
+        <div className="d-grid gap-1">
           <Dropdown>
             <Dropdown.Toggle
               id="tool-selector"

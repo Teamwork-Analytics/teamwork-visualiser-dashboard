@@ -38,10 +38,10 @@ const ObservationView = () => {
     let alertColour = "secondary";
     let message = "n't started yet.";
     if (state.stopTime !== null) {
-      alertColour = "warning";
-      message = " stopped.";
-    } else if (state.startTime !== null) {
       alertColour = "success";
+      message = " stopped & is complete.";
+    } else if (state.startTime !== null) {
+      alertColour = "warning";
       message = " started.";
     }
 

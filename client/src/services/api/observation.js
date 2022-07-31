@@ -1,10 +1,11 @@
-import { get, put, post } from "./index";
+import { get, patch } from "./index";
 
 const ObservationAPI = {
   single: (simId) => get(`observations/${simId}`),
-  recordTime: (obsId) => put(`observations/simulation/${obsId}`),
-  syncDeviceTime: (obsId) => put(`observations/device/${obsId}`),
-  recordNote: (obsId) => put(`observations/note/${obsId}`),
+  recordSimTime: (obsId, data) =>
+    patch(`observations/simulation/${obsId}`, data),
+  syncDeviceTime: (obsId, data) => patch(`observations/device/${obsId}`, data),
+  recordNote: (obsId, data) => patch(`observations/note/${obsId}`, data),
 };
 
 export default ObservationAPI;

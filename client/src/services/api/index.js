@@ -46,6 +46,6 @@ api.interceptors.response.use(
   }
 );
 
-const { get, post, put, delete: destroy } = api;
+const { get, post, put, patch, delete: destroy } = api;
 
-export { get, post, put, destroy };
+export { get, post, put, patch, destroy };

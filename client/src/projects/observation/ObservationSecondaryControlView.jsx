@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
 
 const ObservationSecondaryControlView = () => {
-  const { observation } = useObservation();
+  const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
 
   useEffect(() => {
@@ -12,6 +13,16 @@ const ObservationSecondaryControlView = () => {
   }, [observation]);
 
   const buttonClick = (deviceId, isReset) => {
+    const data = {
+      deviceId: deviceId,
+      timeString: new Date(Date.now()).toISOString(),
+    };
+    ObservationAPI.syncDeviceTime(observation._id, data).then((res) => {
+      if (res.status === 200) {
+        setDevices(res.data.synchronisations);
+        setObservation(res.data);
+      }
+    });
     const tempDevice = devices.map((d) => {
       if (d.device._id === deviceId) {
         d.syncTime = Date.now();

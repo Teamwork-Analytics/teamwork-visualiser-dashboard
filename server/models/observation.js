@@ -6,6 +6,7 @@ const deviceObs = {
   device: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "device",
+    autopopulate: true,
   },
   syncTime: { type: Date, default: null },
 };
@@ -38,7 +39,7 @@ const obsSchema = new mongoose.Schema(
 obsSchema
   .pre("findOne", autoPopulateDevice)
   .pre("find", autoPopulateDevice)
-  .pre("findById", autoPopulateDevice);
+  .pre("updateOne", autoPopulateDevice);
 
 //cascade delete
 obsSchema.pre("remove", function (next) {
