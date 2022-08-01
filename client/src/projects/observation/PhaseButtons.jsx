@@ -1,19 +1,23 @@
 import { Button, ButtonGroup } from "react-bootstrap";
 import toast from "react-hot-toast";
-import { manualLabels } from ".";
+import { manualLabels, sortNotesDescending } from ".";
+import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
 
 const PhaseButtons = () => {
-  const { setNotes } = useObservation();
+  const { observation, setNotes } = useObservation();
   const addNote = (label = "") => {
-    setNotes((oldArray) => [
-      {
-        id: Date.now().toString(),
-        label: label,
-        timestamp: Date.now(),
-      },
-      ...oldArray,
-    ]);
+    const data = {
+      message: label,
+      timeString: new Date(Date.now()).toISOString(),
+    };
+
+    ObservationAPI.recordNote(observation._id, data).then((res) => {
+      if (res.status === 200) {
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
+      }
+    });
   };
   return (
     <div>

@@ -8,6 +8,14 @@ export {
   ObservationSecondaryControlView,
 };
 
+export const sortNotesDescending = (observationObj) => {
+  const { phases } = observationObj;
+  phases.sort(
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+  );
+  return phases;
+};
+
 export const manualLabels = {
   phases: [
     { label: "Handover", description: "When doctor leaves the room" },

@@ -23,12 +23,9 @@ const recordSimTime = async (req, res, next) => {
     const { observationId } = req.params;
     const { type, timeString } = req.body;
 
-    const data =
-      type === "reset"
-        ? { baselineTime: null, startTime: null, stopTime: null }
-        : {
-            [type]: new Date(timeString),
-          };
+    const data = {
+      [type]: new Date(timeString),
+    };
     const updatedObs = await observationService.update(observationId, data);
     return res.status(200).json(updatedObs);
   } catch (err) {
@@ -43,6 +40,40 @@ const recordSimTime = async (req, res, next) => {
       );
   }
 };
+
+const resetObservation = async (req, res, next) => {
+  try {
+    const { observationId } = req.params;
+
+    //reset all synchronisations time
+    await observationService.resetSyncTime(observationId);
+
+    //reset all time + phases
+    const updatedData = {
+      baselineTime: null,
+      startTime: null,
+      stopTime: null,
+      phases: [],
+    };
+    const updatedObs = await observationService.update(
+      observationId,
+      updatedData
+    );
+
+    return res.status(200).json(updatedObs);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(
+        fillErrorObject(
+          500,
+          "Unable to reset all recorded time and notes in observation",
+          err
+        )
+      );
+  }
+};
+
 const recordNote = async (req, res, next) => {
   try {
     const { observationId } = req.params;
@@ -89,4 +120,32 @@ const syncDeviceTime = async (req, res, next) => {
   }
 };
 
-module.exports = { getObservation, recordNote, recordSimTime, syncDeviceTime };
+const deletePhaseNote = async (req, res, next) => {
+  try {
+    const { observationId, noteId } = req.params;
+    const currentNotes = await observationService.deleteNote(
+      observationId,
+      noteId
+    );
+    return res.status(200).json(currentNotes);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(
+        fillErrorObject(
+          500,
+          "Unable to delete a note/phase from the observation",
+          err
+        )
+      );
+  }
+};
+
+module.exports = {
+  getObservation,
+  recordNote,
+  deletePhaseNote,
+  recordSimTime,
+  syncDeviceTime,
+  resetObservation,
+};

@@ -9,7 +9,9 @@ import { useObservation } from "./ObservationContext";
 
 const ObservationPrimaryControlView = () => {
   const params = useParams();
-  const { observation, setObservation } = useObservation();
+  const labels = OBSERVATION_TOAST_MESSAGES(params.simulationId);
+
+  const { observation, setObservation, setNotes } = useObservation();
 
   const styles = {
     wrapper: {
@@ -21,8 +23,7 @@ const ObservationPrimaryControlView = () => {
     },
   };
 
-  const clickButton = async (e) => {
-    const labels = OBSERVATION_TOAST_MESSAGES(params.simulationId);
+  const sendRecordedTime = async (e) => {
     const opt = e.target.value;
     const message = labels[opt];
     const data = {
@@ -37,15 +38,29 @@ const ObservationPrimaryControlView = () => {
     });
   };
 
+  const resetAllTimeInObservation = () => {
+    ObservationAPI.resetObservation(observation._id).then((res) => {
+      if (res.status === 200) {
+        setObservation(res.data);
+        setNotes(res.data.phases);
+        toast.success(labels["reset"]);
+      }
+    });
+  };
+
   return (
     <div style={styles.wrapper}>
-      <Button variant="warning" value={"baselineTime"} onClick={clickButton}>
+      <Button
+        variant="warning"
+        value={"baselineTime"}
+        onClick={sendRecordedTime}
+      >
         Start Baseline
       </Button>
-      <Button variant="success" value={"startTime"} onClick={clickButton}>
+      <Button variant="success" value={"startTime"} onClick={sendRecordedTime}>
         Start Simulation
       </Button>
-      <Button variant="secondary" value={"stopTime"} onClick={clickButton}>
+      <Button variant="secondary" value={"stopTime"} onClick={sendRecordedTime}>
         Stop Simulation
       </Button>
       <hr />
@@ -53,7 +68,7 @@ const ObservationPrimaryControlView = () => {
         variant="danger"
         size="sm"
         value={"reset"}
-        onClick={clickButton}
+        onClick={resetAllTimeInObservation}
         data-tip="Clicking this button will reset all captured time."
       >
         Reset Time

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
+import toast from "react-hot-toast";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
@@ -12,7 +13,7 @@ const ObservationSecondaryControlView = () => {
     setDevices(observation.synchronisations);
   }, [observation]);
 
-  const buttonClick = (deviceId, isReset) => {
+  const buttonClick = (deviceId, deviceName) => {
     const data = {
       deviceId: deviceId,
       timeString: new Date(Date.now()).toISOString(),
@@ -21,13 +22,14 @@ const ObservationSecondaryControlView = () => {
       if (res.status === 200) {
         setDevices(res.data.synchronisations);
         setObservation(res.data);
+        toast.success(
+          `${deviceName} has been synchronised at ${data.timeString}`
+        );
       }
     });
     const tempDevice = devices.map((d) => {
       if (d.device._id === deviceId) {
         d.syncTime = Date.now();
-      } else if (isReset) {
-        d.syncTime = undefined;
       }
       return d;
     });
@@ -38,15 +40,6 @@ const ObservationSecondaryControlView = () => {
     <div>
       <h1>Synchronisation</h1>
       <hr />
-      <Button
-        variant="danger"
-        size="sm"
-        onClick={(e) => {
-          buttonClick(e.target.id, true);
-        }}
-      >
-        Reset All
-      </Button>
 
       <Container>
         {devices.length === 0 ? (
@@ -72,7 +65,7 @@ const ObservationSecondaryControlView = () => {
                     id={d._id}
                     size="sm"
                     onClick={(e) => {
-                      buttonClick(e.target.id, false);
+                      buttonClick(e.target.id, `${d.name} ${d.deviceType}`);
                     }}
                   >
                     Log

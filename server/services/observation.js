@@ -1,6 +1,7 @@
 const logger = require("winston");
 const Observation = require("../models/observation");
 const projectService = require("./project");
+const mongoose = require("mongoose");
 
 const AUTO_POPULATE_KEY = "synchronisations.device synchronisations.syncTime";
 const AUTO_POPULATE_VAL = "deviceId name deviceType";
@@ -17,11 +18,23 @@ const createWithDevices = async (projectId) => {
 
 const single = async (id) => await Observation.findById(id);
 
-const update = async (id, info) =>
-  await Observation.findByIdAndUpdate(id, info, { new: true }).populate(
+const update = async (id, data) =>
+  await Observation.findByIdAndUpdate(id, data, { new: true }).populate(
     AUTO_POPULATE_KEY,
     AUTO_POPULATE_VAL
   );
+
+const resetSyncTime = async (id) => {
+  await Observation.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        "synchronisations.$[].syncTime": null,
+      },
+    },
+    { new: true, upsert: false }
+  ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
+};
 
 const addPhaseNote = async (obsId, newData) => {
   const { timeString, message } = newData;
@@ -29,10 +42,30 @@ const addPhaseNote = async (obsId, newData) => {
   return await Observation.findByIdAndUpdate(
     obsId,
     {
-      $push: { phases: { timestamp: new Date(timeString), message: message } },
+      $push: {
+        phases: { timestamp: new Date(timeString), message: message },
+      },
     },
-    { safe: true, upsert: true, new: true }
+    {
+      safe: true,
+      upsert: true,
+      new: true,
+    }
   ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
+};
+
+const deleteNote = async (obsId, phaseNoteId) => {
+  return await Observation.findByIdAndUpdate(
+    obsId,
+    {
+      $pull: {
+        phases: {
+          _id: phaseNoteId,
+        },
+      },
+    },
+    { new: true }
+  );
 };
 
 const synchroniseDevice = async (obsId, syncData) => {
@@ -53,5 +86,7 @@ module.exports = {
   single,
   update,
   addPhaseNote,
+  deleteNote,
   synchroniseDevice,
+  resetSyncTime,
 };

@@ -6,6 +6,7 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import * as React from "react";
+import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 
 const ObservationContext = React.createContext();
@@ -20,6 +21,8 @@ function ObservationProvider({ simulationId, children }) {
     ObservationAPI.single(simulationId).then((res) => {
       if (res.status === 200) {
         setObservation(res.data);
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
       }
     });
   }, []);

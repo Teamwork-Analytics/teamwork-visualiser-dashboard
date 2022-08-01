@@ -25,7 +25,12 @@ const Phases = () => {
           notes.map((d, i) => {
             const keyString = `note-${i}`;
             return (
-              <Note id={keyString} initialValue={d.label} key={d.id} data={d} />
+              <Note
+                id={keyString}
+                initialValue={d.message}
+                key={d._id}
+                data={d}
+              />
             );
           })
         )}
