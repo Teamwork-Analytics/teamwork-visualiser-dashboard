@@ -1,20 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
-import TACarousel from "../../components/carousel/TACarousel";
+import { useParams } from "react-router-dom";
+import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import { HiveProvider } from "../../projects/hive/HiveContext";
+import { ObservationProvider } from "../../projects/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
+import { availableTools, useViz, VizProvider } from "./VisualisationContext";
 
-/**
- * The main page (wide)
- */
-const VisualisationPage = () => {
+const VisualisationView = () => {
+  const { tool, setTool } = useViz();
   const [open, setOpen] = useState(true);
+
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
       <Collapse in={open} dimension="width">
         <div id="sidebar">
-          <SidebarLayout />
+          <SidebarLayout tool={tool} setTool={setTool} />
         </div>
       </Collapse>
       <Button
@@ -26,9 +35,30 @@ const VisualisationPage = () => {
         {open ? <ChevronDoubleLeft /> : <ChevronDoubleRight />}
       </Button>
       <MainLayout>
-        <TACarousel />
+        {availableTools[tool as keyof typeof String] ===
+        undefined ? null : availableTools[tool as keyof typeof String]
+            .mainView === undefined ? (
+          <EmptyPlaceholder />
+        ) : (
+          availableTools[tool as keyof typeof String].mainView
+        )}
       </MainLayout>
     </div>
+  );
+};
+
+const VisualisationPage = () => {
+  const params = useParams();
+
+  return (
+    <VizProvider>
+      {/* TODO: deal with multiple stack providers later! */}
+      <ObservationProvider simulationId={params.simulationId}>
+        <HiveProvider simulationId={params.simulationId}>
+          <VisualisationView />
+        </HiveProvider>
+      </ObservationProvider>
+    </VizProvider>
   );
 };
 

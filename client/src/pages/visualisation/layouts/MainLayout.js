@@ -1,7 +1,7 @@
 import React from "react";
 
 /**
- * The wide layout to display the classroom diagram
+ * The wide layout to display the session diagram
  */
 const MainLayout = ({ children }) => {
   return (
@@ -12,6 +12,8 @@ const MainLayout = ({ children }) => {
         width: "100%",
         display: "flex",
         alignItems: "center",
+        overflowY: "auto",
+        padding: "1em",
       }}
     >
       {children}

@@ -1,15 +1,17 @@
 import React from "react";
-import ControlLayout from "./ControlLayout";
-import ListLayout from "./ListLayout";
-import { useParams, useNavigate } from "react-router-dom";
+import PrimaryControlLayout from "./PrimaryControlLayout";
+import SecondaryControlLayout from "./SecondaryControlLayout";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
-import { MyD3Component } from "../../../data/MyD3Component";
+import { availableTools } from "../VisualisationContext";
+import EmptyPlaceholder from "../../../components/EmptyPlaceholder";
+
 /**
  * The sidebar (narrow) that exists together with Diagram layout
  */
-const SidebarLayout = () => {
-  let params = useParams();
+const SidebarLayout = ({ tool, setTool }) => {
+  let location = useLocation();
   const navigate = useNavigate();
 
   const styles = {
@@ -34,6 +36,7 @@ const SidebarLayout = () => {
       cursor: "pointer",
     },
   };
+
   return (
     <div style={styles.outer}>
       <div style={styles.title}>
@@ -42,43 +45,53 @@ const SidebarLayout = () => {
           onClick={() => navigate("/main")}
           size={"30px"}
         />
-        <h1 style={{ fontFamily: "Open Sans, sans-serif" }}>
-          {params.sessionName}
-        </h1>
+        <h4 style={{ fontFamily: "Open Sans, sans-serif" }}>
+          {!!location.state && location.state.name}
+        </h4>
       </div>
       <div style={{ width: "100%" }}>
-        <div className="d-grid gap-2">
+        <div className="d-grid gap-1">
           <Dropdown>
             <Dropdown.Toggle
-              id="dropdown-button-dark-example1"
-              variant="secondary"
+              id="tool-selector"
+              variant="primary"
               style={{ width: "100%" }}
             >
-              Observation
+              {availableTools[tool].label}
             </Dropdown.Toggle>
 
-            <Dropdown.Menu variant="dark">
-              <Dropdown.Item href="#/action-1" active>
-                Collaboration Graph
-              </Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Timeline</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">ENA</Dropdown.Item>
-              <Dropdown.Item href="#/action-4">
-                Audio Social Activities
-              </Dropdown.Item>
+            <Dropdown.Menu
+              variant="dark"
+              onClick={(e) => {
+                if (e.target.id !== "") {
+                  setTool(e.target.id);
+                }
+              }}
+            >
+              {Object.keys(availableTools).map((d) => (
+                <Dropdown.Item key={d} id={d} active={tool === d}>
+                  {availableTools[d].label}
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
         </div>
       </div>
-      <ControlLayout />
-      <ListLayout>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <label>Project: Nursing</label>
-        <MyD3Component data={[1, 2, 3]} />
-      </ListLayout>
+
+      <PrimaryControlLayout>
+        {availableTools[tool].primaryControlView === undefined ? (
+          <EmptyPlaceholder />
+        ) : (
+          availableTools[tool].primaryControlView
+        )}
+      </PrimaryControlLayout>
+      <SecondaryControlLayout>
+        {availableTools[tool].secondaryControlView === undefined ? (
+          <EmptyPlaceholder />
+        ) : (
+          availableTools[tool].secondaryControlView
+        )}
+      </SecondaryControlLayout>
     </div>
   );
 };
