@@ -1,7 +1,8 @@
 import { get } from "./index";
 
 const HiveAPI = {
-  single: (id) => get(`hives/${id}`),
+  single: (simId) => get(`hives/${simId}`),
+  phases: (simId) => get(`hives/phases/${simId}`),
 };
 
 export default HiveAPI;

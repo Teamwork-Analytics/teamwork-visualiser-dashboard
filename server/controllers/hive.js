@@ -1,6 +1,7 @@
 const fileSystem = require("fs");
 const { fillErrorObject } = require("../middleware/error");
 const hiveServices = require("../services/hive");
+
 /**
  *
  * @param {*} req
@@ -38,20 +39,20 @@ const getCsvFile = (req, res, next) => {
   }
 };
 
-const getPhases = async (req, res, next) => {
+const getPhaseMarkers = async (req, res, next) => {
   try {
-    const { observationId } = req.params;
-    const phases = await hiveServices.constructPhasesArrayFromObservation(
-      observationId
+    const { simulationId } = req.params;
+
+    const phasesData = await hiveServices.constructPhasesArrayFromObservation(
+      simulationId
     );
-    if (phases.length === 0) {
-      return res.status(400);
-    }
+
+    return res.status(200).json(phasesData);
   } catch (err) {
     return res
       .status(500)
-      .send(fillErrorObject(500, "Unable to retrieve phases from HIVE", err));
+      .send(fillErrorObject(500, "Unable to retrieve phases for HIVE", err));
   }
 };
 
-module.exports = { getCsvFile, getPhases };
+module.exports = { getCsvFile, getPhaseMarkers };

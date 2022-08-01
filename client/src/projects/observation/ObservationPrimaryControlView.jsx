@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
 import ObservationAPI from "../../services/api/observation";
-import { startAll, stopAll } from "../../services/eureka";
+import { startBaselineAll, startAll, stopAll } from "../../services/eureka";
 import { useObservation } from "./ObservationContext";
 
 const ObservationPrimaryControlView = () => {
-  const params = useParams();
-  const labels = OBSERVATION_TOAST_MESSAGES(params.simulationId);
+  const { simulationId } = useParams();
+  const labels = OBSERVATION_TOAST_MESSAGES(simulationId);
 
-  const { observation, setObservation, setNotes } = useObservation();
+  const { observation, setObservation } = useObservation();
 
   const styles = {
     wrapper: {
@@ -26,6 +26,17 @@ const ObservationPrimaryControlView = () => {
   const sendRecordedTime = async (e) => {
     const opt = e.target.value;
     const message = labels[opt];
+
+    if (opt === "baselineTime") {
+      await startBaselineAll(simulationId);
+    } else if (opt === "startTime") {
+      await startAll(simulationId);
+    } else if (opt === "stopTime") {
+      await stopAll(simulationId);
+    } else {
+      return;
+    }
+
     const data = {
       type: opt,
       timeString: new Date(Date.now()).toISOString(),
@@ -38,41 +49,33 @@ const ObservationPrimaryControlView = () => {
     });
   };
 
-  const resetAllTimeInObservation = () => {
-    ObservationAPI.resetObservation(observation._id).then((res) => {
-      if (res.status === 200) {
-        setObservation(res.data);
-        setNotes(res.data.phases);
-        toast.success(labels["reset"]);
-      }
-    });
-  };
-
   return (
     <div style={styles.wrapper}>
       <Button
         variant="warning"
         value={"baselineTime"}
         onClick={sendRecordedTime}
+        disabled={observation.baselineTime !== null}
       >
         Start Baseline
       </Button>
-      <Button variant="success" value={"startTime"} onClick={sendRecordedTime}>
+      <Button
+        variant="success"
+        disabled={observation.startTime !== null}
+        value={"startTime"}
+        onClick={sendRecordedTime}
+      >
         Start Simulation
       </Button>
-      <Button variant="secondary" value={"stopTime"} onClick={sendRecordedTime}>
+      <Button
+        variant="secondary"
+        disabled={observation.stopTime !== null}
+        value={"stopTime"}
+        onClick={sendRecordedTime}
+      >
         Stop Simulation
       </Button>
       <hr />
-      <Button
-        variant="danger"
-        size="sm"
-        value={"reset"}
-        onClick={resetAllTimeInObservation}
-        data-tip="Clicking this button will reset all captured time."
-      >
-        Reset Time
-      </Button>
       <ReactTooltip />
     </div>
   );

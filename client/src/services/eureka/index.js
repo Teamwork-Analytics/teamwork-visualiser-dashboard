@@ -44,6 +44,7 @@ Object.keys(portStrategy).forEach((k) => {
         if (error.response.data.code === 403) return;
         message = error.response.data.message;
       }
+      message += `${k} service error:`;
 
       toast.error(`${message} (${error})`);
       // Do something with response error
@@ -53,20 +54,29 @@ Object.keys(portStrategy).forEach((k) => {
   eurekaAxiosStrategy.push({ axios: api, key: k });
 });
 
+const startBaselineAll = (simulationId, action) => {
+  // action can be: start-baseline, start, and stop
+  return Promise.all(
+    eurekaAxiosStrategy.map(async (s) => {
+      return await s["axios"].get(`/${s.key}/start-baseline/${simulationId}`);
+    })
+  );
+};
+
 const startAll = (simulationId) => {
   return Promise.all(
-    eurekaAxiosStrategy.forEach(async (s) => {
-      await s["axios"].get(`/${s.key}/start/${simulationId}`);
+    eurekaAxiosStrategy.map(async (s) => {
+      return await s["axios"].get(`/${s.key}/start/${simulationId}`);
     })
   );
 };
 
-const stopAll = (simulationId) => {
+const stopAll = async (simulationId) => {
   return Promise.all(
-    eurekaAxiosStrategy.forEach(async (s) => {
-      await s["axios"].get(`/${s.key}/stop/${simulationId}`);
+    eurekaAxiosStrategy.map(async (s) => {
+      return await s["axios"].get(`/${s.key}/stop/${simulationId}`);
     })
   );
 };
 
-export { startAll, stopAll };
+export { startBaselineAll, startAll, stopAll };

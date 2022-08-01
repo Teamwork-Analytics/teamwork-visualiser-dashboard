@@ -43,7 +43,7 @@ export const fakeSessionContext = {
   181: {
     hive: {
       phases: [
-        "0:00:01",
+        "0:00:00",
         "0:04:20",
         "0:06:02",
         "0:11:40",
@@ -55,7 +55,7 @@ export const fakeSessionContext = {
   189: {
     hive: {
       phases: [
-        "0:00:01",
+        "0:00:00",
         "0:03:22",
         "0:04:21",
         "0:09:46",

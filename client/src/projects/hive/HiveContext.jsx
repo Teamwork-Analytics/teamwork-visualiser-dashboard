@@ -6,7 +6,7 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import * as React from "react";
-import { fakeSessionContext } from "../../data/fakeData";
+import HiveAPI from "../../services/api/hive";
 import { cleanRawPhases } from "./utils";
 
 const HiveContext = React.createContext();
@@ -17,14 +17,9 @@ function HiveProvider({ simulationId, children }) {
     phase: [0, 100],
     isPositionOnly: false,
   });
+  const [markers, setMarkers] = React.useState([]);
 
-  const simData = fakeSessionContext[simulationId];
-
-  const phases = simData === undefined ? [] : simData.hive.phases; //TODO: should be retrieved from server API
-
-  const markers = cleanRawPhases(phases);
-
-  const value = { state, setState, markers };
+  const value = { state, setState, markers, setMarkers };
   return <HiveContext.Provider value={value}>{children}</HiveContext.Provider>;
 }
 

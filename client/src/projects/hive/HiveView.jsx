@@ -9,9 +9,10 @@ import HiveSlider from "./HiveSlider";
 import { HivePrimaryControlView } from "./HiveControlView";
 import { useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import HiveAPI from "../../services/api/hive";
 
 const HiveView = () => {
-  const { state, markers } = useHive();
+  const { state, markers, setMarkers } = useHive();
   const { simulationId } = useParams();
 
   useEffect(() => {
@@ -35,6 +36,15 @@ const HiveView = () => {
       }
     });
   }, [state, markers]);
+
+  useEffect(() => {
+    HiveAPI.phases(simulationId).then((res) => {
+      if (res.status === 200) {
+        // const cleanedPhases = cleanRawPhases(phases);
+        setMarkers(res.data);
+      }
+    });
+  }, []);
 
   return (
     <Fragment>

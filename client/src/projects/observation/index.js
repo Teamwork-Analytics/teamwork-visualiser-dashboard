@@ -19,7 +19,7 @@ export const sortNotesDescending = (observationObj) => {
 export const manualLabels = {
   phases: [
     { label: "Handover", description: "When doctor leaves the room" },
-    { label: "Bed 4", description: "Whene emergency is happening in Bed 4" },
+    { label: "Bed 4", description: "When emergency is happening in Bed 4" },
     { label: "Ward Nurse", description: "When extra nurses enter the room" },
     {
       label: "MET Doctor",

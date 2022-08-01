@@ -54,6 +54,22 @@ const addPhaseNote = async (obsId, newData) => {
   ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
 };
 
+const updatePhaseNote = async (obsId, newData) => {
+  const { noteId, message } = newData;
+
+  return await Observation.findOneAndUpdate(
+    { _id: obsId, "phases._id": noteId },
+    {
+      $set: {
+        "phases.$.message": message,
+      },
+    },
+    {
+      new: true,
+    }
+  ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
+};
+
 const deleteNote = async (obsId, phaseNoteId) => {
   return await Observation.findByIdAndUpdate(
     obsId,
@@ -86,6 +102,7 @@ module.exports = {
   single,
   update,
   addPhaseNote,
+  updatePhaseNote,
   deleteNote,
   synchroniseDevice,
   resetSyncTime,

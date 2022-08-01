@@ -36,25 +36,23 @@ const ObservationView = () => {
 
   const AlertCondition = () => {
     let alertColour = "secondary";
-    let message = "n't started yet.";
+    let message = "Baseline has started, but simulation hasn't started yet.";
     if (state.stopTime !== null) {
       alertColour = "success";
-      message = " stopped & is complete.";
+      message = "Simulation has stopped & is complete.";
     } else if (state.startTime !== null) {
       alertColour = "warning";
-      message = " started.";
+      message = "Simulation has started.";
     }
 
-    return (
-      <Alert variant={alertColour}>{`Status: simulation has${message}`}</Alert>
-    );
+    return <Alert variant={alertColour}>{`${message}`}</Alert>;
   };
 
   return (
     <div style={styles.outer}>
       <h1>Session {simulationId}</h1>
       <div style={styles.info}>
-        <AlertCondition />
+        {observation.baselineTime !== null ? <AlertCondition /> : null}
         <label>Baseline time: {timeString(state.baselineTime)} </label>
         <br />
         <label>Start time: {timeString(state.startTime)} </label>

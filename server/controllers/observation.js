@@ -94,6 +94,28 @@ const recordNote = async (req, res, next) => {
       );
   }
 };
+
+const updateNote = async (req, res, next) => {
+  try {
+    const { observationId } = req.params;
+
+    const updatedObs = await observationService.updatePhaseNote(
+      observationId,
+      req.body
+    );
+    return res.status(200).json(updatedObs);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(
+        fillErrorObject(
+          500,
+          "Unable to update a note for a phase in observation",
+          err
+        )
+      );
+  }
+};
 const syncDeviceTime = async (req, res, next) => {
   try {
     const { observationId } = req.params;
@@ -144,6 +166,7 @@ const deletePhaseNote = async (req, res, next) => {
 module.exports = {
   getObservation,
   recordNote,
+  updateNote,
   deletePhaseNote,
   recordSimTime,
   syncDeviceTime,

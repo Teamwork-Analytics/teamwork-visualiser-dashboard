@@ -3,6 +3,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import toast from "react-hot-toast";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import ObservationAPI from "../../services/api/observation";
+import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
 
 const ObservationSecondaryControlView = () => {
@@ -76,6 +77,8 @@ const ObservationSecondaryControlView = () => {
           })
         )}
       </Container>
+      <FullResetButton />
+
     </div>
   );
 };

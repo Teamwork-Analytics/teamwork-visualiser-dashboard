@@ -6,6 +6,7 @@ import { useObservation } from "./ObservationContext";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
+
   const addNote = (label = "") => {
     const data = {
       message: label,
@@ -28,6 +29,7 @@ const PhaseButtons = () => {
               key={i}
               variant="primary"
               size="lg"
+              disabled={observation.stopTime !== null}
               onClick={() => addNote(d.label)}
               data-tip={d.description}
             >
@@ -37,7 +39,12 @@ const PhaseButtons = () => {
         })}
       </ButtonGroup>
       <ButtonGroup>
-        <Button variant="secondary" size="lg" onClick={() => addNote()}>
+        <Button
+          variant="secondary"
+          disabled={observation.stopTime !== null}
+          size="lg"
+          onClick={() => addNote()}
+        >
           Manual Tag +
         </Button>
         <Button
