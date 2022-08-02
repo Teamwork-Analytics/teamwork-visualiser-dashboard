@@ -7,9 +7,7 @@ import { useObservation } from "./ObservationContext";
 
 const Note = ({ initialValue, data }) => {
   const { observation, setNotes } = useObservation();
-  const timestamp = !!data.timestamp
-    ? new Date(data.timestamp).toLocaleTimeString()
-    : "Time error!";
+  const [time, setTime] = useState(new Date(data.timestamp));
 
   const [value, setValue] = useState(initialValue);
 
@@ -17,7 +15,9 @@ const Note = ({ initialValue, data }) => {
     const updateInfo = {
       noteId: data._id,
       message: value,
+      timeString: new Date(time).toISOString(),
     };
+
     ObservationAPI.updateNote(observation._id, updateInfo).then((res) => {
       if (res.status === 200) {
         toast.success("Note has been updated!");
@@ -35,12 +35,44 @@ const Note = ({ initialValue, data }) => {
     });
   };
 
+  const dateFormatter = (newTime) => {
+    const date = new Date();
+    var tzo = -date.getTimezoneOffset(),
+      dif = tzo >= 0 ? "+" : "-",
+      pad = function (num) {
+        return (num < 10 ? "0" : "") + num;
+      };
+    const formattedTime =
+      date.getFullYear() +
+      "-" +
+      pad(date.getMonth() + 1) +
+      "-" +
+      pad(date.getDate()) +
+      "T" +
+      newTime +
+      dif +
+      pad(Math.floor(Math.abs(tzo) / 60)) +
+      ":" +
+      pad(Math.abs(tzo) % 60);
+
+    setTime(new Date(formattedTime));
+  };
+
   return (
     <Form>
       <Form.Group as={Row} className="mb-3">
-        <Form.Label column sm="3">
-          {timestamp}
-        </Form.Label>
+        <Col sm="3">
+          <Form.Control
+            type={"time"}
+            value={time.toLocaleTimeString() + `.${time.getMilliseconds()}`}
+            step="0.001"
+            onChange={(e) => {
+              dateFormatter(e.target.value);
+            }}
+            onBlur={() => saveNote()}
+          />
+        </Col>
+
         <Col sm="7">
           <Form.Control
             placeholder={data.message}

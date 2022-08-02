@@ -55,13 +55,15 @@ const addPhaseNote = async (obsId, newData) => {
 };
 
 const updatePhaseNote = async (obsId, newData) => {
-  const { noteId, message } = newData;
+  const { noteId, message, timeString } = newData;
+  const timestamp = new Date(timeString);
 
   return await Observation.findOneAndUpdate(
     { _id: obsId, "phases._id": noteId },
     {
       $set: {
         "phases.$.message": message,
+        "phases.$.timestamp": timestamp,
       },
     },
     {
