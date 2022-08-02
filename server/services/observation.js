@@ -2,6 +2,7 @@ const logger = require("winston");
 const Observation = require("../models/observation");
 const projectService = require("./project");
 const mongoose = require("mongoose");
+const { formatMessageToKey } = require("../utils/index");
 
 const AUTO_POPULATE_KEY = "synchronisations.device synchronisations.syncTime";
 const AUTO_POPULATE_VAL = "deviceId name deviceType";
@@ -43,7 +44,11 @@ const addPhaseNote = async (obsId, newData) => {
     obsId,
     {
       $push: {
-        phases: { timestamp: new Date(timeString), message: message },
+        phases: {
+          timestamp: new Date(timeString),
+          message: message,
+          phaseKey: formatMessageToKey(message),
+        },
       },
     },
     {
@@ -64,6 +69,7 @@ const updatePhaseNote = async (obsId, newData) => {
       $set: {
         "phases.$.message": message,
         "phases.$.timestamp": timestamp,
+        "phases.$.phaseKey": formatMessageToKey(message),
       },
     },
     {

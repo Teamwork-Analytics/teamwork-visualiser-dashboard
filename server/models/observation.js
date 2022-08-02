@@ -14,6 +14,7 @@ const deviceObs = {
 const phaseNote = {
   timestamp: Date,
   message: String,
+  phaseKey: String,
 };
 
 const autoPopulateDevice = function (next) {
