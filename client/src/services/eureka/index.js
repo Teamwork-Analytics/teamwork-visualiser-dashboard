@@ -6,7 +6,6 @@ const DOMAIN_NAME = "http://localhost";
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,
   pos: `${DOMAIN_NAME}:7201`,
-  bio: `${DOMAIN_NAME}:7301`,
   audio: `${DOMAIN_NAME}:7501`,
 };
 
@@ -54,12 +53,14 @@ Object.keys(portStrategy).forEach((k) => {
   eurekaAxiosStrategy.push({ axios: api, key: k });
 });
 
-const startBaselineAll = (simulationId, action) => {
-  // action can be: start-baseline, start, and stop
+const startBaselineAll = async (simulationId, action) => {
   return Promise.all(
-    eurekaAxiosStrategy.map(async (s) => {
-      return await s["axios"].get(`/${s.key}/start-baseline/${simulationId}`);
-    })
+    await eurekaAxiosStrategy["audio"]["axios"].get(
+      `/audio/start-baseline/${simulationId}`
+    ),
+    await eurekaAxiosStrategy["video"]["axios"].get(
+      `/video/init/${simulationId}`
+    )
   );
 };
 
