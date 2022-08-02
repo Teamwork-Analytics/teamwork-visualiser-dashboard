@@ -54,14 +54,8 @@ Object.keys(portStrategy).forEach((k) => {
 });
 
 const startBaselineAll = async (simulationId, action) => {
-  return Promise.all(
-    await eurekaAxiosStrategy["audio"]["axios"].get(
-      `/audio/start-baseline/${simulationId}`
-    ),
-    await eurekaAxiosStrategy["video"]["axios"].get(
-      `/video/init/${simulationId}`
-    )
-  );
+  eurekaAxiosStrategy[2]["axios"].get(`/audio/start-baseline/${simulationId}`);
+  eurekaAxiosStrategy[0]["axios"].get(`/video/init/${simulationId}`);
 };
 
 const startAll = (simulationId) => {

@@ -55,13 +55,13 @@ const ObservationPrimaryControlView = () => {
         variant="warning"
         value={"baselineTime"}
         onClick={sendRecordedTime}
-        disabled={observation.baselineTime !== null}
+        // disabled={observation.baselineTime !== null}
       >
         Start Baseline
       </Button>
       <Button
         variant="success"
-        disabled={observation.startTime !== null}
+        // disabled={observation.startTime !== null}
         value={"startTime"}
         onClick={sendRecordedTime}
       >
@@ -69,7 +69,7 @@ const ObservationPrimaryControlView = () => {
       </Button>
       <Button
         variant="secondary"
-        disabled={observation.stopTime !== null}
+        // disabled={observation.stopTime !== null}
         value={"stopTime"}
         onClick={sendRecordedTime}
       >
