@@ -27,16 +27,6 @@ const ObservationPrimaryControlView = () => {
     const opt = e.target.value;
     const message = labels[opt];
 
-    if (opt === "baselineTime") {
-      await startBaselineAll(simulationId);
-    } else if (opt === "startTime") {
-      await startAll(simulationId);
-    } else if (opt === "stopTime") {
-      await stopAll(simulationId);
-    } else {
-      return;
-    }
-
     const data = {
       type: opt,
       timeString: new Date(Date.now()).toISOString(),
@@ -47,6 +37,16 @@ const ObservationPrimaryControlView = () => {
         toast.success(message);
       }
     });
+
+    if (opt === "baselineTime") {
+      await startBaselineAll(simulationId);
+    } else if (opt === "startTime") {
+      await startAll(simulationId);
+    } else if (opt === "stopTime") {
+      await stopAll(simulationId);
+    } else {
+      return;
+    }
   };
 
   return (
