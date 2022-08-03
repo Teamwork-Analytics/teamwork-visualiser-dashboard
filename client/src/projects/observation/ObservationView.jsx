@@ -60,7 +60,9 @@ const ObservationView = () => {
         <label>Stop time: {timeString(state.stopTime)}</label>
       </div>
       <hr />
+
       <PhaseButtons />
+
       <Phases />
       <ReactTooltip />
     </div>

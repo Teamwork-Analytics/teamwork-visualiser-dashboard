@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
+import Clock from "react-live-clock";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -22,6 +23,9 @@ const PhaseButtons = () => {
   };
   return (
     <div>
+      <h1>
+        <Clock format={"h:mm:ss a"} ticking={true} timezone={"AU/Melbourne"} />
+      </h1>
       <ButtonGroup className="mx-2 my-2">
         {manualLabels.phases.map((d, i) => {
           return (
@@ -38,6 +42,7 @@ const PhaseButtons = () => {
           );
         })}
       </ButtonGroup>
+
       <ButtonGroup>
         <Button
           variant="secondary"

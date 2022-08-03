@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { defaultStyles as styles } from "../page-styles";
 import { Link } from "react-router-dom";
 import SessionCard from "./SessionCard";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { MainProvider, useMain } from "./MainContext";
 
 /**
@@ -31,15 +31,35 @@ const MainPage = () => {
       alignItems: "center",
       justifyContent: "center",
       flexDirection: "row",
+      columnGap: "2em",
     },
   };
 
   const { simulations } = useMain();
+  const [q, setQ] = useState("");
+  const [params] = useState(["simulationId", "name"]);
+
+  function search(items) {
+    return items.filter((item) =>
+      params.some(
+        (paramItem) =>
+          item[paramItem].toLowerCase().indexOf(q.toLowerCase()) > -1
+      )
+    );
+  }
 
   return (
     <div style={styles.main}>
       <h1 style={styles.title}>TEAMWORK ANALYTICS 🖥️</h1>
       <div style={pageStyles.control}>
+        <Form>
+          <Form.Control
+            type={"search"}
+            placeholder={"Search..."}
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </Form>
         <Button variant="success" disabled>
           Add Session +
         </Button>
@@ -48,7 +68,7 @@ const MainPage = () => {
       <div style={{ overflowY: "scroll", width: "100vw" }}>
         <div style={pageStyles.list}>
           {!!simulations
-            ? simulations.map((sim, i) => (
+            ? search(simulations).map((sim, i) => (
                 <Link
                   key={i}
                   to={`/visualisation/${sim.simulationId}`}

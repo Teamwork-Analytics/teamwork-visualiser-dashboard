@@ -24,6 +24,7 @@
     "react-bootstrap-time-picker": "^2.0.1",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.3.0",
+    "react-live-clock": "^6.0.6",
     "react-papaparse": "^4.0.2",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",

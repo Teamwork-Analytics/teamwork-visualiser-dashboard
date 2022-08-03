@@ -75,7 +75,6 @@ const ObservationPrimaryControlView = () => {
       >
         Stop Simulation
       </Button>
-      <hr />
       <ReactTooltip />
     </div>
   );
