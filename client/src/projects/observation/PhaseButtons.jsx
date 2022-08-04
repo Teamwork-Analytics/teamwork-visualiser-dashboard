@@ -33,7 +33,7 @@ const PhaseButtons = () => {
               key={i}
               variant="primary"
               size="lg"
-              disabled={observation.stopTime !== null}
+              // disabled={observation.stopTime !== null}
               onClick={() => addNote(d.label)}
               data-tip={d.description}
             >
@@ -46,7 +46,7 @@ const PhaseButtons = () => {
       <ButtonGroup>
         <Button
           variant="secondary"
-          disabled={observation.stopTime !== null}
+          // disabled={observation.stopTime !== null}
           size="lg"
           onClick={() => addNote()}
         >
