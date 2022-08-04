@@ -24,7 +24,7 @@ const PhaseButtons = () => {
   return (
     <div>
       <h1>
-        <Clock format={"h:mm:ss a"} ticking={true} timezone={"AU/Melbourne"} />
+        <Clock format={"h:mm:ss a"} ticking={true} timezone={"Australia/Melbourne"} />
       </h1>
       <ButtonGroup className="mx-2 my-2">
         {manualLabels.phases.map((d, i) => {

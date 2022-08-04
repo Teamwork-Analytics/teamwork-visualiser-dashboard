@@ -2,11 +2,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = "http://localhost";
+const DOMAIN_NAME_LH =  "http://49.127.81.113";
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,
   pos: `${DOMAIN_NAME}:7201`,
-  audio: `${DOMAIN_NAME}:7501`,
+  audio: `http://49.127.71.18:7501`,
 };
 
 let eurekaAxiosStrategy = []; // each object = {axios, key}
@@ -69,7 +70,7 @@ const startAll = (simulationId) => {
 const stopAll = async (simulationId) => {
   return Promise.all(
     eurekaAxiosStrategy.map(async (s) => {
-      return await s["axios"].get(`/${s.key}/stop/${simulationId}`);
+      return await s["axios"].get(`/${s.key}/stop`);
     })
   );
 };
