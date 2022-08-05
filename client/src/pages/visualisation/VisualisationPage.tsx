@@ -3,7 +3,7 @@ import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
-import { DebriefingProvider } from "../../projects/debrief/DebriefContext";
+import { DebriefingProvider } from "../../projects/debriefing/DebriefContext";
 import { HiveProvider } from "../../projects/hive/HiveContext";
 import { ObservationProvider } from "../../projects/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";

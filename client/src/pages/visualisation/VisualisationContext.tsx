@@ -2,8 +2,7 @@ import * as React from "react";
 import * as Observation from "../../projects/observation/index";
 import * as Hive from "../../projects/hive/index";
 import * as Video from "../../projects/video/index";
-import { ObservationProvider } from "../../projects/observation/ObservationContext";
-import * as Debrief from "../../projects/debrief";
+import * as Debrief from "../../projects/debriefing";
 
 type VizProviderProps = { children: React.ReactNode };
 
