@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-import VisualisationPage from "../pages/visualisation/VisualisationPage";
+import SimulationPage from "../pages/simulation/SimulationPage";
 import MainPage from "../pages/main/MainPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -30,7 +30,7 @@ function App() {
           <Route path="/main" element={<MainPage />} />
           <Route
             path="/visualisation/:simulationId"
-            element={<VisualisationPage />}
+            element={<SimulationPage />}
           />
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />
           <Route path="/" element={<Navigate replace to="/main" />} />

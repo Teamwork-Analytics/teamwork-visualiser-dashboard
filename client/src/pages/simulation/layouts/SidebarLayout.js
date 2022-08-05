@@ -4,7 +4,7 @@ import SecondaryControlLayout from "./SecondaryControlLayout";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { Dropdown } from "react-bootstrap";
-import { availableTools } from "../VisualisationContext";
+import { availableTools } from "../SimulationContext";
 import EmptyPlaceholder from "../../../components/EmptyPlaceholder";
 
 /**

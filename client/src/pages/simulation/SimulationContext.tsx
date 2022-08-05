@@ -2,11 +2,12 @@ import * as React from "react";
 import * as Observation from "../../projects/observation/index";
 import * as Hive from "../../projects/hive/index";
 import * as Video from "../../projects/video/index";
-import * as Debrief from "../../projects/debriefing";
+import * as Debrief from "../../projects/debriefing/index";
+import * as Visualisation from "../../projects/visualisation/index";
 
-type VizProviderProps = { children: React.ReactNode };
+type SimProviderProps = { children: React.ReactNode };
 
-const VizContext = React.createContext<
+const SimContext = React.createContext<
   { tool: String; setTool: Function } | undefined
 >(undefined);
 const DEFAULT_VIEW = "observation";
@@ -31,31 +32,25 @@ const availableTools: any = {
   //   label: "Video Player",
   //   mainView: <Video.VideoView />,
   // },
-  "teamwork-vis": {
-    label: "Teamwork Barchart",
-  },
-  "hive-vis": {
-    label: "Position and Audio",
-    mainView: <Hive.HiveView />,
-    // primaryControlView: <Hive.HivePrimaryControlView />,
-  },
-  "audio-socnet-vis": {
-    label: "Audio Social Network",
+  visualisation: {
+    label: "Visualisations",
+    mainView: <Visualisation.VisualisationView />,
+    primaryControlView: <Visualisation.HivePrimaryControlView />,
   },
 };
 
-function VizProvider({ children }: VizProviderProps) {
+function SimProvider({ children }: SimProviderProps) {
   const [tool, setTool] = React.useState(DEFAULT_VIEW);
   const value = { tool, setTool };
-  return <VizContext.Provider value={value}>{children}</VizContext.Provider>;
+  return <SimContext.Provider value={value}>{children}</SimContext.Provider>;
 }
 
-function useViz() {
-  const context = React.useContext(VizContext);
+function useSimulation() {
+  const context = React.useContext(SimContext);
   if (context === undefined) {
     throw new Error("useViz must be used within a VizProvider");
   }
   return context;
 }
 
-export { VizProvider, useViz, availableTools };
+export { SimProvider, useSimulation, availableTools };

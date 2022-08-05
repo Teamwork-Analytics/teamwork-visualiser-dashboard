@@ -8,10 +8,14 @@ import { HiveProvider } from "../../projects/hive/HiveContext";
 import { ObservationProvider } from "../../projects/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
-import { availableTools, useViz, VizProvider } from "./VisualisationContext";
+import {
+  availableTools,
+  useSimulation,
+  SimProvider,
+} from "./SimulationContext";
 
-const VisualisationView = () => {
-  const { tool, setTool } = useViz();
+const SimulationView = () => {
+  const { tool, setTool } = useSimulation();
   const [open, setOpen] = useState(true);
 
   return (
@@ -52,16 +56,16 @@ const VisualisationPage = () => {
   const params = useParams();
 
   return (
-    <VizProvider>
+    <SimProvider>
       {/* TODO: deal with multiple stack providers later! */}
       <ObservationProvider simulationId={params.simulationId}>
         <DebriefingProvider>
           <HiveProvider simulationId={params.simulationId}>
-            <VisualisationView />
+            <SimulationView />
           </HiveProvider>
         </DebriefingProvider>
       </ObservationProvider>
-    </VizProvider>
+    </SimProvider>
   );
 };
 

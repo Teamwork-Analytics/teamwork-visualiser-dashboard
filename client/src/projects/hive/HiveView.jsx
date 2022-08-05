@@ -51,8 +51,15 @@ const HiveView = () => {
       {markers.length === 0 ? (
         <EmptyPlaceholder />
       ) : (
-        <div style={{ margin: "0 auto", textAlign: "center", display: "flex" }}>
-          <div style={{ width: "550px", height: "90vh", maxHeight: "1080px" }}>
+        <div
+          style={{
+            margin: "0 auto",
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ width: "550px", height: "82vh", maxHeight: "1080px" }}>
             <div id="hive" style={{ height: "90%", marginBottom: "50px" }} />
             <HivePrimaryControlView />
           </div>

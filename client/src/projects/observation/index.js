@@ -16,6 +16,9 @@ export const sortNotesDescending = (observationObj) => {
   return phases;
 };
 
+/**
+ * These phases are depending on the learning design.
+ */
 export const manualLabels = {
   phases: [
     { label: "Handover", description: "When doctor leaves the room" },
