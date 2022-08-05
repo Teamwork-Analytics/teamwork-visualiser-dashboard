@@ -2,12 +2,12 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = "http://localhost";
-const DOMAIN_NAME_LH =  "http://49.127.81.113";
+const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.81.113";
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,
   pos: `${DOMAIN_NAME}:7201`,
-  audio: `http://49.127.71.18:7501`,
+  audio: `${DOMAIN_NAME_SECOND_DEVICE}:7501`,
 };
 
 let eurekaAxiosStrategy = []; // each object = {axios, key}
@@ -67,7 +67,7 @@ const startAll = (simulationId) => {
   );
 };
 
-const stopAll = async (simulationId) => {
+const stopAll = async () => {
   return Promise.all(
     eurekaAxiosStrategy.map(async (s) => {
       return await s["axios"].get(`/${s.key}/stop`);
@@ -75,4 +75,26 @@ const stopAll = async (simulationId) => {
   );
 };
 
-export { startBaselineAll, startAll, stopAll };
+/**
+ * FIXME: Need to be updated when the API is clearer
+ */
+const startDebriefAudio = async (simulationId) => {
+  return await eurekaAxiosStrategy[2]["axios"].get(
+    `/audio/start-debrief/${simulationId}`
+  );
+};
+
+/**
+ * FIXME:
+ */
+const stopDebriefAudio = () => {
+  return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
+};
+
+export {
+  startBaselineAll,
+  startAll,
+  stopAll,
+  startDebriefAudio,
+  stopDebriefAudio,
+};

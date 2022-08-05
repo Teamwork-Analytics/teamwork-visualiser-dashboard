@@ -3,6 +3,7 @@ import * as Observation from "../../projects/observation/index";
 import * as Hive from "../../projects/hive/index";
 import * as Video from "../../projects/video/index";
 import { ObservationProvider } from "../../projects/observation/ObservationContext";
+import * as Debrief from "../../projects/debrief";
 
 type VizProviderProps = { children: React.ReactNode };
 
@@ -20,6 +21,11 @@ const availableTools: any = {
     mainView: <Observation.ObservationView />,
     primaryControlView: <Observation.ObservationPrimaryControlView />,
     secondaryControlView: <Observation.ObservationSecondaryControlView />,
+  },
+  debrief: {
+    label: "Debriefing",
+    mainView: <Debrief.DebriefView />,
+    primaryControlView: <Debrief.DebriefPrimaryControlView />,
   },
   // NOT IN USED ATM
   // video: {

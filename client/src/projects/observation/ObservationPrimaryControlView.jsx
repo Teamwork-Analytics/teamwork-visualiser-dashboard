@@ -43,7 +43,7 @@ const ObservationPrimaryControlView = () => {
     } else if (opt === "startTime") {
       await startAll(simulationId);
     } else if (opt === "stopTime") {
-      await stopAll(simulationId);
+      await stopAll();
     } else {
       return;
     }
