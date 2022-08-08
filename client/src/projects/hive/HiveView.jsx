@@ -59,7 +59,7 @@ const HiveView = () => {
             justifyContent: "center",
           }}
         >
-          <div style={{ width: "550px", height: "80vh", maxHeight: "1080px" }}>
+          <div style={{ width: "550px", height: "82vh", maxHeight: "1080px" }}>
             <div id="hive" style={{ height: "90%", marginBottom: "1em" }} />
             <HivePrimaryControlView />
           </div>
