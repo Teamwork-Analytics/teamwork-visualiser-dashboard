@@ -46,7 +46,7 @@ const PhaseButtons = () => {
       <ButtonGroup>
         <Button
           variant="secondary"
-          // disabled={observation.stopTime !== null}
+          // disabled={observation.stopTime !== null}  
           size="lg"
           onClick={() => addNote()}
         >

@@ -1,4 +1,4 @@
 import VisualisationView from "./VisualisationView";
-import HivePrimaryControlView from "../hive/HivePrimaryControlView";
+import HiveLegendView from "../hive/HivePrimaryControlView";
 
-export { VisualisationView, HivePrimaryControlView };
+export { VisualisationView, HiveLegendView };

@@ -35,7 +35,7 @@ const availableTools: any = {
   visualisation: {
     label: "Visualisations",
     mainView: <Visualisation.VisualisationView />,
-    primaryControlView: <Visualisation.HivePrimaryControlView />,
+    secondaryControlView: <Visualisation.HiveLegendView />,
   },
 };
 

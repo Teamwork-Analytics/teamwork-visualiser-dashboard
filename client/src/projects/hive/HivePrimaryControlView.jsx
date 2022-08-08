@@ -1,6 +1,6 @@
 import { Image } from "react-bootstrap";
 import LegendImage from "./legend.png";
-const HivePrimaryControlView = () => {
+const HiveLegendView = () => {
   return (
     <div style={{ width: "16vw", display: "flex", justifyContent: "center" }}>
       <Image src={LegendImage} fluid={true} />
@@ -8,4 +8,4 @@ const HivePrimaryControlView = () => {
   );
 };
 
-export default HivePrimaryControlView;
+export default HiveLegendView;

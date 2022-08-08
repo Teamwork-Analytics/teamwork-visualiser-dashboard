@@ -13,7 +13,7 @@ const getCsvFile = (req, res, next) => {
   try {
     const { simulationId } = req.params;
     const fileName = simulationId + "_all.csv";
-    const path = "./data/hive/" + fileName;
+    const path = "C:\\develop\\saved_data\\" + simulationId + "\\" + fileName;
 
     res.setHeader("cache-control", "max-age=8640000");
     res.setHeader("content-type", "text/csv");
