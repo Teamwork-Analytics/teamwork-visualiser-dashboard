@@ -8,6 +8,7 @@ const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,
   pos: `${DOMAIN_NAME}:7201`,
   audio: `${DOMAIN_NAME_SECOND_DEVICE}:7501`,
+  visualisations: `${DOMAIN_NAME}:5050`,
 };
 
 let eurekaAxiosStrategy = []; // each object = {axios, key}
@@ -91,10 +92,15 @@ const stopDebriefAudio = () => {
   return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
 };
 
+const processAllVisualisations = (simulationId) => {
+  return eurekaAxiosStrategy[3]["axios"].get(`/audio-pos/${simulationId}`);
+};
+
 export {
   startBaselineAll,
   startAll,
   stopAll,
   startDebriefAudio,
   stopDebriefAudio,
+  processAllVisualisations,
 };
