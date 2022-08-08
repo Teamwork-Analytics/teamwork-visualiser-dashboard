@@ -25,14 +25,15 @@ const DebriefPrimaryControlView = () => {
 
     if (opt === "startTime") {
       const res = await startDebriefAudio(simulationId);
+      
       if (res.status === 200) {
-        toast.success(res);
+        toast.success(res.data);
         setIsStarted(true);
       }
     } else if (opt === "stopTime") {
       const res = await stopDebriefAudio(simulationId);
       if (res.status === 200) {
-        toast.success(res);
+        toast.success(res.data);
         setIsStarted(false);
       }
     } else {

@@ -15,7 +15,7 @@ const getCsvFile = (req, res, next) => {
     const fileName = simulationId + "_all.csv";
     const path = "C:\\develop\\saved_data\\" + simulationId + "\\" + fileName;
 
-    res.setHeader("cache-control", "max-age=8640000");
+    // res.setHeader("cache-control", "max-age=8640000");
     res.setHeader("content-type", "text/csv");
 
     const readStream = fileSystem.createReadStream(path);

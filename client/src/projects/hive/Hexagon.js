@@ -2,13 +2,13 @@ import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 7067,
-  HEIGHT: 9464,
+  WIDTH: 6900,
+  HEIGHT: 9000,
 };
 const CONSTANTS = {
   HEX_RADIUS: 35,
-  IMG_WIDTH: 2252,
-  IMG_HEIGHT: 3093,
+  IMG_WIDTH: 2552,
+  IMG_HEIGHT: 3293,
   HEXAGON_OPACITY: "0.4",
 };
 
@@ -84,14 +84,16 @@ class HexagonComponent {
         .append("g")
         .attr(
           "transform",
-          `translate(100, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`
+          `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`,
         )
         .selectAll(".hexagon")
         .data(hexbin([subjectPos]))
         .enter()
         .append("path")
         .attr("d", function (d) {
-          return "M" + d.x + "," + d.y + hexbin.hexagon();
+          // const x = d.x - 500;
+          const y = d.y - 270; 
+          return "M" + d.x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
         .attr(
