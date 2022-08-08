@@ -3,7 +3,7 @@ import * as Hive from "../hive";
 
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
-import { Button, ButtonGroup, Carousel } from "react-bootstrap";
+import { Button, ButtonGroup, Carousel, Image } from "react-bootstrap";
 
 const VisualisationView = () => {
   const { simulationId } = useParams();
@@ -16,25 +16,33 @@ const VisualisationView = () => {
       height: "100%",
       colour: "white",
     },
-
-    carousel: { height: "90vh", width: "70vw" },
+    carousel: { height: "90vh", width:"85vw"},
+    middle: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "90vh",
+    }
   };
+  const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
 
   const visualisations = [
     {
-      id: "tw-barchart",
+      id: "teamwork-barchart",
       label: "Teamwork",
-      view: <div>Teamwork </div>,
+      view: <div style={styles.middle}>
+        <Image width={"850px"} src={`${csvUrl}/teamwork-barchart`} /> 
+        </div>,
     },
     {
-      id: "hive",
+      id: "hive-button",
       label: "Location and Speaking",
       view: <Hive.HiveView />,
     },
     {
       id: "audio-socnet",
       label: "Speaking Interaction",
-      view: <div>Speaking </div>,
+      view: <div style={styles.middle}><Image width={"700px"}  src={`${csvUrl}/audio-socnet`} /> </div>,
     },
   ];
 

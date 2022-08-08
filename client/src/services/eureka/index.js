@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = "http://localhost";
-const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.81.113";
+const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.74.67";
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,

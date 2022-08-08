@@ -6,7 +6,7 @@ const CLASSROOM_SIZE = {
   HEIGHT: 9464,
 };
 const CONSTANTS = {
-  HEX_RADIUS: 25,
+  HEX_RADIUS: 35,
   IMG_WIDTH: 2252,
   IMG_HEIGHT: 3093,
   HEXAGON_OPACITY: "0.4",
@@ -77,7 +77,7 @@ class HexagonComponent {
   render(subjectPos, shotFlag, colour, number) {
     const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
     const h2 = d3hex.hexbin().radius(30);
-    const strokeWidth = "0.05em";
+    const strokeWidth = "0.15em";
     const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
     if (!!shotFlag) {
       this.svg

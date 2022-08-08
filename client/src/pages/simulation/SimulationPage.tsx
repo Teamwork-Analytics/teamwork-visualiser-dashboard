@@ -16,7 +16,7 @@ import {
 
 const SimulationView = () => {
   const { tool, setTool } = useSimulation();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <div

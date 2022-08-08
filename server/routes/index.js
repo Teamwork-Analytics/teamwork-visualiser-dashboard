@@ -6,5 +6,6 @@ router.use("/simulations", require("./simulation"));
 router.use("/observations", require("./observation"));
 router.use("/projects", require("./project"));
 router.use("/hives", require("./hive"));
+router.use("/visualisations", require("./visualisation"));
 
 module.exports = router;

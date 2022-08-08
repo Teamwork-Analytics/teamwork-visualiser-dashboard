@@ -16,8 +16,9 @@ const HiveView = () => {
   const { simulationId } = useParams();
 
   useEffect(() => {
-    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
     d3.select("#floor-plan").remove();
+    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
+    console.log(csvUrl)
     let svgContainer = d3.select("#hive");
     d3.xml(floorPlan).then((data) => {
       if (
@@ -60,7 +61,7 @@ const HiveView = () => {
           }}
         >
           <div style={{ width: "550px", height: "82vh", maxHeight: "1080px" }}>
-            <div id="hive" style={{ height: "90%", marginBottom: "1em" }} />
+            <div id="hive" style={{ height: "90%", marginBottom: "0.5em" }} />
             <HivePrimaryControlView />
           </div>
           <HiveSlider />
