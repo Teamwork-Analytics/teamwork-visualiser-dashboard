@@ -79,8 +79,8 @@ const VisualisationView = () => {
         >
           <h1>No Visualisation 🚩</h1>
           <p>
-            Visualisations are not available due to incorrect data or missing
-            files.
+            Visualisations are not available due to incorrect data or files are
+            missing.
           </p>
         </div>
       ) : (
