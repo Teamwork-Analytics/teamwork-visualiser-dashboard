@@ -1,21 +1,22 @@
 const { fillErrorObject } = require("../middleware/error");
 const fileSystem = require("fs");
-
+const path = require("node:path");
 
 const getVisualisationFile = (req, res, next) => {
   try {
-    const { simulationId, visType} = req.params;
+    const { simulationId, visType } = req.params;
     let fileName = "";
-    if(visType === "audio-socnet"){
-        fileName =`audio_output_fig${simulationId}.png`
-    }else if(visType === "teamwork-barchart"){
-        fileName = `teamwork.png`
-    }   
-    const path = "C:\\develop\\saved_data\\" + simulationId + "\\" + fileName;
+    if (visType === "audio-socnet") {
+      fileName = `audio_output_fig${simulationId}.png`;
+    } else if (visType === "teamwork-barchart") {
+      fileName = `teamwork.png`;
+    }
+    const directory = process.env.VISUALISATION_DIR + simulationId;
+    const pathJoined = path.join(directory, path.sep, fileName);
 
     res.setHeader("content-type", "image/png");
 
-    const readStream = fileSystem.createReadStream(path);
+    const readStream = fileSystem.createReadStream(pathJoined);
 
     readStream.pipe(res);
     readStream.on("error", (err) => {
@@ -36,4 +37,4 @@ const getVisualisationFile = (req, res, next) => {
   }
 };
 
-module.exports = {getVisualisationFile}
+module.exports = { getVisualisationFile };

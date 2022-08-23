@@ -104,3 +104,4 @@ dist
 .tern-port
 *.csv
 server/config.env
+server/saved_data/
