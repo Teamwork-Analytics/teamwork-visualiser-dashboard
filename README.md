@@ -1,6 +1,6 @@
 # teamwork-visualiser-dashboard
 
-A dashboard to collect, analyse, and visualize all teamwork activities
+A dashboard to collect, analyse, and visualize all teamwork activities (i.e., multimodal learning analytics visual interfaces). Several features are adapted from previous work: https://github.com/Teamwork-Analytics/obs-rules and https://github.com/vanechev/obs-tool/
 
 # Running the application
 
