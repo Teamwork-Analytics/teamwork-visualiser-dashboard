@@ -1,6 +1,7 @@
 const fileSystem = require("fs");
 const { fillErrorObject } = require("../middleware/error");
 const hiveServices = require("../services/hive");
+const path = require("node:path");
 
 /**
  *
@@ -13,12 +14,13 @@ const getCsvFile = (req, res, next) => {
   try {
     const { simulationId } = req.params;
     const fileName = simulationId + "_all.csv";
-    const path = "C:\\develop\\saved_data\\" + simulationId + "\\" + fileName;
+    const directory = process.env.VISUALISATION_DIR + simulationId;
+    const pathJoined = path.join(directory, path.sep, fileName);
 
     // res.setHeader("cache-control", "max-age=8640000");
     res.setHeader("content-type", "text/csv");
 
-    const readStream = fileSystem.createReadStream(path);
+    const readStream = fileSystem.createReadStream(pathJoined);
 
     readStream.pipe(res);
     readStream.on("error", (err) => {
