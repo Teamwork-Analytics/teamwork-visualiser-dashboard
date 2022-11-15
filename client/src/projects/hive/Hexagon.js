@@ -3,12 +3,12 @@ import * as d3hex from "d3-hexbin";
 
 const CLASSROOM_SIZE = {
   WIDTH: 6900,
-  HEIGHT: 9000,
+  HEIGHT: 9900,
 };
 const CONSTANTS = {
   HEX_RADIUS: 35,
-  IMG_WIDTH: 2552,
-  IMG_HEIGHT: 3293,
+  IMG_WIDTH: 2350,
+  IMG_HEIGHT: 3000,
   HEXAGON_OPACITY: "0.4",
 };
 
@@ -91,9 +91,9 @@ class HexagonComponent {
         .enter()
         .append("path")
         .attr("d", function (d) {
-          // const x = d.x - 500;
-          const y = d.y - 270; 
-          return "M" + d.x + "," + y + hexbin.hexagon();
+          const x = d.x + 50;
+          const y = d.y - 50; 
+          return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
         .attr(

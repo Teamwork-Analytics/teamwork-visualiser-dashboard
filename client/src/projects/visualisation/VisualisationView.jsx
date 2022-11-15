@@ -4,6 +4,7 @@ import * as Hive from "../hive";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { Button, ButtonGroup, Carousel, Image } from "react-bootstrap";
+import Clock from "react-live-clock";
 
 const VisualisationView = () => {
   const { simulationId } = useParams();
@@ -52,7 +53,7 @@ const VisualisationView = () => {
       view: (
         <div style={styles.middle}>
           <Image
-            width={"700px"}
+            width={"650px"}
             src={`${csvUrl}/audio-socnet`}
             onError={() => setHasVisualisation(false)}
           />{" "}
@@ -67,6 +68,9 @@ const VisualisationView = () => {
 
   return (
     <div style={styles.outer}>
+      <label style={{marginRight:"20px"}}> <Clock format={"h:mm:ss a"} ticking={true} timezone={"Australia/Melbourne"} />
+
+        </label>        
       {/* <h3>Session {simulationId}</h3> */}
       {!hasVisualisation ? (
         <div
