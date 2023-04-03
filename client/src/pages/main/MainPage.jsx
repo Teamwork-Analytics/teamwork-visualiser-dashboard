@@ -61,7 +61,7 @@ const MainPage = () => {
           />
         </Form>
         <Button variant="success" disabled>
-          Add Session +
+          Manage Projects
         </Button>
       </div>
 
