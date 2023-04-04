@@ -3,9 +3,15 @@ import { Card, Col, Row } from "react-bootstrap";
 import TACard from "../../components/card/TACard";
 import { Simulation } from "./Session";
 
-const SimulationCard = ({ sim }: { sim: Simulation }) => {
+const SimulationCard = ({
+  sim,
+  onClick,
+}: {
+  sim: Simulation;
+  onClick?: (...args: any[]) => any;
+}) => {
   return (
-    <TACard height={60} width={700}>
+    <TACard height={60} width={700} onClick={onClick}>
       <Row style={{ display: "flex", flexDirection: "row" }}>
         <Col>
           <label>{sim.simulationId}</label>

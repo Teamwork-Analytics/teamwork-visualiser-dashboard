@@ -1,0 +1,9 @@
+.session-list-div {
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: "center";
+    column-gap: "2em";
+    row-gap: "1.5em";
+    padding: "1em";
+  }
+  
