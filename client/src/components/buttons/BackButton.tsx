@@ -10,6 +10,7 @@ import "./BackButton.css";
 /**
  * Return a back buttons that navigates to the given url, or previous page if url is not provided.
  * @param {string} backUrl - Url string of the target page.
+ * @param {string} className - Additional class name to add to the container
  */
 const BackButton = ({
   backUrl,

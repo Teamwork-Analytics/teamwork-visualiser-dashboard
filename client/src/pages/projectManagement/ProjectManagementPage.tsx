@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { Col, Row, Container } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import BackButton from "../../components/buttons/BackButton";
 import ContentContainer from "../../components/containers/ContentContainer";
 import { defaultStyles as styles } from "../page-styles";
@@ -18,10 +18,16 @@ const ProjectManagementPage = () => {
       <BackButton className="projects-back-button"></BackButton>
       <Row className="project-page-content-row">
         <Col xs={4}>
-          <ContentContainer className="project-list-container"></ContentContainer>
+          <ContentContainer
+            containerTitle="Projects"
+            className="project-list-container"
+          ></ContentContainer>
         </Col>
         <Col>
-          <ContentContainer className="session-list-container"></ContentContainer>
+          <ContentContainer
+            containerTitle="Sessions"
+            className="session-list-container"
+          ></ContentContainer>
         </Col>
       </Row>
     </div>
