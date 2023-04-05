@@ -10,8 +10,14 @@ import "./ContentContainer.css";
  * @param {React.ReactNode} children
  * @returns
  */
-const ContentContainer = ({ children }: { children?: React.ReactNode }) => {
-  return <div className="content-container">{children}</div>;
+const ContentContainer = ({
+  children,
+  className,
+}: {
+  children?: React.ReactNode;
+  className?: string;
+}) => {
+  return <div className={"content-container " + className}>{children}</div>;
 };
 
 export default ContentContainer;

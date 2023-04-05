@@ -5,12 +5,19 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "./BackButton.css";
 
 /**
  * Return a back buttons that navigates to the given url, or previous page if url is not provided.
  * @param {string} backUrl - Url string of the target page.
  */
-const BackButton = ({ backUrl }: { backUrl?: string }) => {
+const BackButton = ({
+  backUrl,
+  className,
+}: {
+  backUrl?: string;
+  className?: string;
+}) => {
   const navigate = useNavigate();
 
   // Navigate to url provided or previous page when button pressed.
@@ -23,7 +30,12 @@ const BackButton = ({ backUrl }: { backUrl?: string }) => {
   };
 
   return (
-    <Button size={"lg"} variant="dark" onClick={handleBackButtonPressed}>
+    <Button
+      className={"shared-back-button " + className}
+      size={"lg"}
+      variant="dark"
+      onClick={handleBackButtonPressed}
+    >
       &larr; Back
     </Button>
   );
