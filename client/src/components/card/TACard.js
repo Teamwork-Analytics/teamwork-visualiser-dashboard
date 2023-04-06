@@ -2,7 +2,13 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import "./TACard.css";
 
-const TACard = ({ size = 200, height = 200, width = 200, children }) => {
+const TACard = ({
+  size = 200,
+  height = 200,
+  width = 200,
+  children,
+  onClick,
+}) => {
   const _size = size || "200px";
 
   const styles = {
@@ -17,7 +23,7 @@ const TACard = ({ size = 200, height = 200, width = 200, children }) => {
     },
   };
   return (
-    <Card className={"ta-card"} style={styles.main}>
+    <Card className={"ta-card"} style={styles.main} onClick={onClick}>
       {children}
     </Card>
   );
