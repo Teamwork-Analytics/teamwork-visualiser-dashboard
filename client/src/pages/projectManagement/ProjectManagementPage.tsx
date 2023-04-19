@@ -6,16 +6,45 @@
  */
 
 import React, { useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Button } from "react-bootstrap";
 import BackButton from "../../components/buttons/BackButton";
 import SessionList from "../../components/cardLists/SessionList";
 import ProjectList from "../../components/cardLists/ProjectList";
 import ContentContainer from "../../components/containers/ContentContainer";
 import { defaultStyles as styles } from "../page-styles";
+import ProjectCreateModal from "./ProjectCreateModal";
+import SessionCreateModal from "./SessionCreateModal";
+import { fakeProjects } from "../../data/fakeData";
 import "./ProjectManagementPage.css";
 
 const ProjectManagementPage = () => {
   const [projectFilter, setProjectFilter] = useState(undefined);
+
+  const [showProjectModal, setShowProjectModal] = useState(false);
+
+  const handleProjectModalClose = () => {
+    setShowProjectModal(false);
+  };
+
+  const handleProjectCreate = (name: string, projectId: string) => {
+    console.log("Project created:", name, projectId);
+    // TODO: Add your logic to handle the created project here.
+  };
+
+  const [showSessionModal, setShowSessionModal] = useState(false);
+
+  const handleSessionModalClose = () => {
+    setShowSessionModal(false);
+  };
+
+  const handleSessionCreate = (
+    sessionId: string,
+    sessionName: string,
+    projectId: string
+  ) => {
+    console.log("Session created:", sessionId, sessionName, projectId);
+    // TODO: Add your logic to handle the created session here.
+  };
 
   return (
     <div style={styles.main}>
@@ -26,6 +55,15 @@ const ProjectManagementPage = () => {
             containerTitle="Projects"
             className="project-list-container"
           >
+            <Button onClick={() => setShowProjectModal(true)}>
+              {" "}
+              + Create Project
+            </Button>
+            <ProjectCreateModal
+              show={showProjectModal}
+              handleClose={handleProjectModalClose}
+              handleCreate={handleProjectCreate}
+            />
             <ProjectList cardOnClickFunction={setProjectFilter}></ProjectList>
           </ContentContainer>
         </Col>
@@ -34,6 +72,15 @@ const ProjectManagementPage = () => {
             containerTitle="Sessions"
             className="session-list-container"
           >
+            <Button onClick={() => setShowSessionModal(true)}>
+              + Create Session
+            </Button>
+            <SessionCreateModal
+              show={showSessionModal}
+              projects={fakeProjects}
+              handleClose={handleSessionModalClose}
+              handleCreate={handleSessionCreate}
+            />
             <SessionList projectIdFilter={projectFilter}></SessionList>
           </ContentContainer>
         </Col>
