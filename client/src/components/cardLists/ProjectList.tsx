@@ -34,7 +34,7 @@ const ProjectList = ({
             <ProjectCard
               key={i}
               project={project}
-              onClick={() => cardOnClickFunction?.(project.projectId)}
+              onClick={() => cardOnClickFunction?.(project)}
             />
           ))
         : null}

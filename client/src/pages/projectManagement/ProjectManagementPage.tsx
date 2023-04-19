@@ -16,9 +16,13 @@ import ProjectCreateModal from "./ProjectCreateModal";
 import SessionCreateModal from "./SessionCreateModal";
 import { fakeProjects } from "../../data/fakeData";
 import "./ProjectManagementPage.css";
+import EditProjectModal from "./EditProjectModal";
 
 const ProjectManagementPage = () => {
-  const [projectFilter, setProjectFilter] = useState(undefined);
+  const [projectFilter, setProjectFilter] = useState({
+    projectId: undefined,
+    name: undefined,
+  });
 
   const [showProjectModal, setShowProjectModal] = useState(false);
 
@@ -28,7 +32,7 @@ const ProjectManagementPage = () => {
 
   const handleProjectCreate = (name: string, projectId: string) => {
     console.log("Project created:", name, projectId);
-    // TODO: Add your logic to handle the created project here.
+    // TODO: Add logic to handle creating project
   };
 
   const [showSessionModal, setShowSessionModal] = useState(false);
@@ -43,7 +47,18 @@ const ProjectManagementPage = () => {
     projectId: string
   ) => {
     console.log("Session created:", sessionId, sessionName, projectId);
-    // TODO: Add your logic to handle the created session here.
+    // TODO: Add logic to handle creating session
+  };
+
+  const [showEditProjectModal, setShowEditProjectModal] = useState(false);
+
+  const handleEditProjectModalClose = () => {
+    setShowEditProjectModal(false);
+  };
+
+  const handleProjectSave = (newProjectId: string, newProjectName: string) => {
+    console.log("Project updated:", newProjectId, newProjectName);
+    // TODO: Add logic to handle editing project
   };
 
   return (
@@ -81,7 +96,28 @@ const ProjectManagementPage = () => {
               handleClose={handleSessionModalClose}
               handleCreate={handleSessionCreate}
             />
-            <SessionList projectIdFilter={projectFilter}></SessionList>
+            {projectFilter.name && (
+              <Button
+                onClick={() => setShowEditProjectModal(true)}
+                style={{ marginTop: 10 }}
+              >
+                Edit Project: {projectFilter.name}
+              </Button>
+            )}
+            {showEditProjectModal &&
+              projectFilter.projectId &&
+              projectFilter.name && (
+                <EditProjectModal
+                  show={showEditProjectModal}
+                  projectId={projectFilter.projectId}
+                  projectName={projectFilter.name}
+                  handleClose={handleEditProjectModalClose}
+                  handleSave={handleProjectSave}
+                />
+              )}
+            <SessionList
+              projectIdFilter={projectFilter.projectId}
+            ></SessionList>
           </ContentContainer>
         </Col>
       </Row>
