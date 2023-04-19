@@ -17,6 +17,8 @@ import SessionCreateModal from "./SessionCreateModal";
 import { fakeProjects } from "../../data/fakeData";
 import "./ProjectManagementPage.css";
 import EditProjectModal from "./EditProjectModal";
+import { Simulation } from "../../types/SimulationProps";
+import EditSessionModal from "./EditSessionModal";
 
 const ProjectManagementPage = () => {
   const [projectFilter, setProjectFilter] = useState({
@@ -60,6 +62,11 @@ const ProjectManagementPage = () => {
     console.log("Project updated:", newProjectId, newProjectName);
     // TODO: Add logic to handle editing project
   };
+
+  const [selectedSimulation, setSelectedSimulation] =
+    useState<Simulation | null>(null);
+
+  const [showEditSessionModal, setShowEditSessionModal] = useState(false);
 
   return (
     <div style={styles.main}>
@@ -117,7 +124,19 @@ const ProjectManagementPage = () => {
               )}
             <SessionList
               projectIdFilter={projectFilter.projectId}
+              edit
+              editButtonClickFunction={(sim) => {
+                setSelectedSimulation(sim);
+                setShowEditSessionModal(true);
+              }}
             ></SessionList>
+            {selectedSimulation && (
+              <EditSessionModal
+                show={showEditSessionModal}
+                handleClose={() => setShowEditSessionModal(false)}
+                simulation={selectedSimulation}
+              />
+            )}
           </ContentContainer>
         </Col>
       </Row>

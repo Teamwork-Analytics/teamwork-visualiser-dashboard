@@ -7,6 +7,16 @@ import { Simulation } from "../../types/SimulationProps";
 import SimulationCard from "../card/SimulationCard";
 import { fakeTeams } from "../../data/fakeData";
 import "./SessionList.css";
+import { Button } from "react-bootstrap";
+import { BsPencil } from "react-icons/bs";
+
+interface SessionListProps {
+  simulationsInput?: Array<Simulation>;
+  projectIdFilter?: string;
+  cardOnClickFunction?: (sim: Simulation) => void;
+  editButtonClickFunction?: (sim: Simulation) => void;
+  edit?: boolean;
+}
 
 // TODO: make simulationInput mandatory
 /**
@@ -19,11 +29,9 @@ const SessionList = ({
   simulationsInput,
   projectIdFilter,
   cardOnClickFunction,
-}: {
-  simulationsInput?: Array<Simulation>;
-  projectIdFilter?: string;
-  cardOnClickFunction?: (...args: any[]) => any;
-}) => {
+  editButtonClickFunction,
+  edit,
+}: SessionListProps) => {
   //TODO: connect to backend and not using fake data
   const simulations = simulationsInput ? simulationsInput : fakeTeams;
 
@@ -39,7 +47,24 @@ const SessionList = ({
                 !projectIdFilter || sim.project.projectId === projectIdFilter
             )
             .map((sim: Simulation, i: React.Key) => (
-              <SimulationCard key={i} simulation={sim} />
+              <div key={i} style={{ display: "flex", alignItems: "center" }}>
+                <SimulationCard
+                  simulation={sim}
+                  onClick={() =>
+                    cardOnClickFunction && cardOnClickFunction(sim)
+                  }
+                />
+                {edit && (
+                  <Button
+                    variant="link"
+                    onClick={() =>
+                      editButtonClickFunction && editButtonClickFunction(sim)
+                    }
+                  >
+                    <BsPencil />
+                  </Button>
+                )}
+              </div>
             ))
         : null}
     </div>
