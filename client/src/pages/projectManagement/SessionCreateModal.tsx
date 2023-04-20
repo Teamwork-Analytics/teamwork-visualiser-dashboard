@@ -77,14 +77,16 @@ const SessionCreateModal: React.FC<SessionCreateModalProps> = ({
               ))}
             </Form.Control>
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Create
-          </Button>
-          <Button variant="secondary" onClick={handleClose} className="ml-2">
-            Cancel
-          </Button>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" type="submit">
+          Create
+        </Button>
+        <Button variant="secondary" onClick={handleClose} className="ml-2">
+          Cancel
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };

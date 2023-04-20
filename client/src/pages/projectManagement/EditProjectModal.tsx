@@ -21,9 +21,15 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
   const [newProjectName, setNewProjectName] = useState(projectName);
 
   const handleSubmit = (event: React.FormEvent) => {
+    console.log("submit edit project button pressed");
     event.preventDefault();
     handleSave(newProjectId, newProjectName);
     handleClose();
+  };
+
+  const handleDeleteProject = () => {
+    // TODO: logic to delete project
+    console.log("Deleting project...");
   };
 
   return (
@@ -49,19 +55,24 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
               onChange={(e) => setNewProjectName(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Save Changes
-          </Button>
-          <Button variant="secondary" onClick={handleClose} className="ml-2">
-            Cancel
-          </Button>
-          <Link to={`/edit-tagging/${projectId}`}>
-            <Button variant="info" className="ml-2">
-              Edit Project Tagging
-            </Button>
-          </Link>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
+          Save Changes
+        </Button>
+        <Button variant="secondary" onClick={handleClose} className="ml-2">
+          Cancel
+        </Button>
+        <Link to={`/edit-tagging/${projectId}`}>
+          <Button variant="info" className="ml-2">
+            Edit Project Tagging
+          </Button>
+        </Link>
+        <Button variant="danger" onClick={handleDeleteProject}>
+          Delete Session
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };
