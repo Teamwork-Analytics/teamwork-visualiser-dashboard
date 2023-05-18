@@ -7,8 +7,8 @@ const CLASSROOM_SIZE = {
 };
 const CONSTANTS = {
   HEX_RADIUS: 35,
-  IMG_WIDTH: 2350,
-  IMG_HEIGHT: 3000,
+  IMG_WIDTH: 2752,
+  IMG_HEIGHT: 2593,
   HEXAGON_OPACITY: "0.4",
 };
 
@@ -82,17 +82,14 @@ class HexagonComponent {
     if (!!shotFlag) {
       this.svg
         .append("g")
-        .attr(
-          "transform",
-          `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`,
-        )
+        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
         .selectAll(".hexagon")
         .data(hexbin([subjectPos]))
         .enter()
         .append("path")
         .attr("d", function (d) {
-          const x = d.x + 50;
-          const y = d.y - 50; 
+          const x = d.x - 200;
+          const y = d.y - 350;
           return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)

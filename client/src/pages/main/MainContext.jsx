@@ -6,6 +6,7 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import * as React from "react";
+import sortBy from "lodash/sortBy";
 import SimulationSessionAPI from "../../services/api/simulations";
 
 const MainContext = React.createContext([]);
@@ -16,7 +17,9 @@ function MainProvider({ children }) {
   React.useEffect(() => {
     SimulationSessionAPI.index().then((res) => {
       if (res.status === 200) {
-        setSimulations(res.data);
+        const sortedData = sortBy(res.data, ["simulationId"]);
+        console.log(sortedData);
+        setSimulations(sortedData);
       }
     });
   }, []);
