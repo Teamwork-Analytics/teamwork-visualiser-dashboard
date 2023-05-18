@@ -60,9 +60,9 @@ const MainPage = () => {
             onChange={(e) => setQ(e.target.value)}
           />
         </Form>
-        <Button variant="success" disabled>
-          Add Session +
-        </Button>
+        <Link to="/projects" style={{ textDecoration: "none" }}>
+          <Button variant="success">Manage Projects</Button>
+        </Link>
       </div>
 
       <div style={{ overflowY: "scroll", width: "100vw" }}>
