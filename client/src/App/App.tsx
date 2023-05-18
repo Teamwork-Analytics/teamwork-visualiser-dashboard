@@ -6,6 +6,7 @@ import SimulationPage from "../pages/simulation/SimulationPage";
 import MainPage from "../pages/main/MainPage";
 import ErrorPage from "../pages/error/ErrorPage";
 import ProjectManagementPage from "../pages/projectManagement/ProjectManagementPage";
+import TaggingEditorPage from "../pages/taggingEditor/TaggingEditorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TEAM_NAME } from "../data/manualLabels";
 import { Toaster } from "react-hot-toast";
@@ -36,6 +37,9 @@ function App() {
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />
           <Route path="/" element={<Navigate replace to="/main" />} />
           <Route path="/projects" element={<ProjectManagementPage />} />
+          {/* Take project ID in when it is connected to the backend */}
+          {/* <Route path="/taggingeditor/:projectId" element={TaggingEditor} /> */}
+          <Route path="/tagging-editor" element={<TaggingEditorPage />} />
         </Routes>
       </BrowserRouter>
       <footer style={styles.footer}>
