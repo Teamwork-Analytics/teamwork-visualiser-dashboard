@@ -5,6 +5,7 @@
     "dev": "concurrently \"npm run server\" \" npm run client \""
   },
   "dependencies": {
-    "concurrently": "^7.3.0"
+    "concurrently": "^7.3.0",
+    "mongodb": "^5.5.0"
   }
 }
