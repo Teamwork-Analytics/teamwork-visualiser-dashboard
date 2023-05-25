@@ -35,7 +35,7 @@ const SimulationView = () => {
         onClick={() => setOpen(!open)}
         aria-controls="sidebar"
         aria-expanded={open}
-        variant={"dark"}
+        variant={"light"}
       >
         {open ? <ChevronDoubleLeft /> : <ChevronDoubleRight />}
       </Button>

@@ -2,7 +2,7 @@ body,
 html {
   margin: 0;
   padding: 0;
-  background: #111111 !important;
+  background: #f8f9fa !important;
 }
 * {
   box-sizing: border-box;
@@ -10,7 +10,7 @@ html {
 
 .App {
   text-align: center;
-  color: white;
+  color: rgb(18, 18, 18);
 }
 
 .App-logo {

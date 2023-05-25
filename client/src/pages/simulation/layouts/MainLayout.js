@@ -8,7 +8,7 @@ const MainLayout = ({ children }) => {
     <div
       style={{
         height: "calc(100vh - 30px)",
-        background: "#2e2e2e",
+        // background: "#",
         width: "100%",
         display: "flex",
         alignItems: "center",

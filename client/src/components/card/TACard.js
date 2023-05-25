@@ -18,7 +18,7 @@ const TACard = ({
       background: "white",
       borderRadius: "0.5em",
       padding: "1em",
-      boxShadow: "0px 2px 5px 0px #708ff3",
+      boxShadow: "0px 5px 1px 0px #aaaaaa",
       cursor: "pointer",
     },
   };

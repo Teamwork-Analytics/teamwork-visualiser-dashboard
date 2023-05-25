@@ -14,7 +14,7 @@ const DebriefView = () => {
       width: "50vw",
       maxWidth: "1440px",
       height: "100%",
-      colour: "white",
+      colour: "black",
     },
     info: { width: "20vw", margin: "0 auto" },
   };

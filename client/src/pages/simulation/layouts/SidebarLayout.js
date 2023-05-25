@@ -23,9 +23,8 @@ const SidebarLayout = ({ tool, setTool }) => {
       maxWidth: 500,
       width: "20vw",
       height: "calc(100vh - 30px)",
-      backgroundColor: "#212529",
+      backgroundColor: "#dadada",
       padding: "1em",
-      color: "white",
     },
     title: {
       display: "flex",
@@ -61,7 +60,7 @@ const SidebarLayout = ({ tool, setTool }) => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu
-              variant="dark"
+              variant="light"
               onClick={(e) => {
                 if (e.target.id !== "") {
                   setTool(e.target.id);
