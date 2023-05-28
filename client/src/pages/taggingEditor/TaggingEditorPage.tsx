@@ -7,23 +7,35 @@ import {
   Card,
   Col,
   Container,
+  Dropdown,
   Form,
   Row,
   Tab,
   Tabs,
 } from "react-bootstrap";
 import "./TaggingEditorPage.css";
+import { BsCheckSquare, BsSquare } from "react-icons/bs";
 
 const TaggingEditorPage = () => {
-  const [editActionsClicked, setEditActionsClicked] = useState<boolean>(false);
-
   const params = useParams();
   const projectId = params.projectId ? params.projectId : "001";
-  // const keyEvents = [
-  //   { id: "001", name: "Handover primary nurse" },
-  //   { id: "002", name: "Handover secondary nurse" },
-  //   { id: "003", name: "MET call" },
-  // ];
+
+  const labels = [
+    "clinical - phase 1",
+    "clinical - phase 2",
+    "clinical - phase 3",
+    "general teamwork",
+  ];
+
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+
+  const handleSelectLabel = (label: string) => {
+    if (selectedLabels.includes(label)) {
+      setSelectedLabels(selectedLabels.filter((item) => item !== label));
+    } else {
+      setSelectedLabels([...selectedLabels, label]);
+    }
+  };
 
   const [keyEvents, setKeyEvents] = useState<any[]>([
     { id: "001", name: "Primary nurse entered" },
@@ -40,18 +52,25 @@ const TaggingEditorPage = () => {
     }
   };
 
-  const actions = [
+  const [actions, setActions] = useState<any[]>([
     { id: "001", name: "Handover to primary nurse" },
     { id: "002", name: "Applying Oxygen" },
     { id: "003", name: "Reassessment" },
-  ];
+  ]);
+
+  const [newAction, setNewAction] = useState<string>("");
+  const addAction = () => {
+    if (newAction.trim() !== "") {
+      setActions([...actions, { id: "005", name: newAction }]);
+      setNewAction("");
+      setSelectedLabels([]);
+    }
+  };
 
   return (
     <>
       <div style={styles.main}>
-        <h4 className="tagging-editor-page-title">
-          Tagging editor for project {projectId}
-        </h4>
+        <h4 className="tagging-editor-page-title">Tagging Editor</h4>
         <BackButton className="tagging-editor-back-button"></BackButton>
         <Container fluid className="tagging-editor-mid-container">
           <Row className="tagging-editor-content-row">
@@ -62,11 +81,19 @@ const TaggingEditorPage = () => {
                 style={{ marginTop: "10px" }}
               >
                 <Tab eventKey="key-event" title="Key events">
-                  <h5 style={{ color: "black" }}>Key Events</h5>
+                  <h5 style={{ color: "black" }}>
+                    Manage key events in project {projectId}
+                  </h5>
                   {keyEvents.map((event) => (
                     <Card
                       key={event.id}
-                      style={{ width: "100%", margin: "3px", color: "black" }}
+                      style={{
+                        width: "80%",
+                        color: "black",
+                        margin: "auto",
+                        marginTop: "3px",
+                        marginBottom: "3px",
+                      }}
                     >
                       <Card.Body>
                         <Card.Title style={{ fontSize: "14px" }}>
@@ -78,26 +105,49 @@ const TaggingEditorPage = () => {
                         >
                           Edit key event
                         </Button>
-                        <Button
-                          style={{ fontSize: "10px", margin: "1px" }}
-                          variant="primary"
-                          onClick={() => setEditActionsClicked(true)}
-                        >
-                          Manage actions
-                        </Button>
                       </Card.Body>
                     </Card>
                   ))}
+                  <Form
+                    style={{
+                      width: "80%",
+                      margin: "auto",
+                      marginTop: "5px",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <Form.Group className="mb-3" controlId="formAddEvent">
+                      <Row style={{ width: "auto" }}>
+                        <Col>
+                          <Form.Control
+                            type="text"
+                            placeholder="Add new key event"
+                            value={newKeyEvent}
+                            onChange={(e) => setNewKeyEvent(e.target.value)}
+                          />
+                        </Col>
+                        <Col xs="auto">
+                          <Button variant="primary" onClick={addKeyEvent}>
+                            Add
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Form.Group>
+                  </Form>
                 </Tab>
                 <Tab eventKey="action" title="Actions">
-                  <h5 style={{ color: "black" }}>Actions</h5>
+                  <h5 style={{ color: "black" }}>
+                    Manage actions in project {projectId}
+                  </h5>
 
                   {actions.map((action) => (
                     <Card
                       key={action.id}
                       style={{
-                        width: "100%",
-                        margin: "3px",
+                        width: "80%",
+                        margin: "auto",
+                        marginTop: "3px",
+                        marginBottom: "3px",
                         color: "black",
                       }}
                     >
@@ -114,24 +164,53 @@ const TaggingEditorPage = () => {
                       </Card.Body>
                     </Card>
                   ))}
-                  <Form style={{ marginTop: "5px" }}>
-                    <Form.Group className="mb-3" controlId="formAddEvent">
-                      <Row style={{ width: "auto" }}>
-                        <Col>
+                  <Form
+                    style={{
+                      width: "80%",
+                      margin: "auto",
+                      marginTop: "5px",
+                      marginBottom: "60px",
+                    }}
+                  >
+                    <Row style={{ width: "auto" }}>
+                      <Col>
+                        <Form.Group className="mb-3" controlId="formAddEvent">
                           <Form.Control
                             type="text"
                             placeholder="Add new action"
-                            value={newKeyEvent}
-                            onChange={(e) => setNewKeyEvent(e.target.value)}
+                            value={newAction}
+                            onChange={(e) => setNewAction(e.target.value)}
                           />
-                        </Col>
-                        <Col xs="auto">
-                          <Button variant="primary" onClick={addKeyEvent}>
-                            Add
-                          </Button>
-                        </Col>
-                      </Row>
-                    </Form.Group>
+                        </Form.Group>
+                      </Col>
+                      <Col xs="auto">
+                        <Dropdown autoClose="outside">
+                          <Dropdown.Toggle>Assign key events</Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {labels.map((label, _) => (
+                              <Dropdown.Item
+                                onClick={() => handleSelectLabel(label)}
+                                key={label}
+                                eventKey={label}
+                                active={selectedLabels.includes(label)}
+                              >
+                                {selectedLabels.includes(label) ? (
+                                  <BsCheckSquare />
+                                ) : (
+                                  <BsSquare />
+                                )}
+                                {" " + label}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Col>
+                      <Col xs="auto">
+                        <Button variant="primary" onClick={addAction}>
+                          Add
+                        </Button>
+                      </Col>
+                    </Row>
                   </Form>
                 </Tab>
               </Tabs>

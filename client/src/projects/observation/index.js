@@ -28,4 +28,12 @@ export const manualLabels = {
       description: "When doctor enters the emergency room",
     },
   ],
+  actions: [
+    { label: "Made a plan", description: "Students made a plan" },
+    { label: "Assessed patient", description: "Students made a plan" },
+    { label: "Started to assess Ruth", description: "Students made a plan" },
+    { label: "Recognised some concerns", description: "Students made a plan" },
+    { label: "Informed team member", description: "Students made a plan" },
+    { label: "Called for help", description: "Students made a plan" },
+  ],
 };

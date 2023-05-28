@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
@@ -22,46 +22,74 @@ const PhaseButtons = () => {
     });
   };
   return (
-    <div>
-      <h1>
-        <Clock format={"h:mm:ss a"} ticking={true} timezone={"Australia/Melbourne"} />
-      </h1>
-      <ButtonGroup className="mx-2 my-2">
-        {manualLabels.phases.map((d, i) => {
-          return (
-            <Button
-              key={i}
-              variant="primary"
-              size="lg"
-              // disabled={observation.stopTime !== null}
-              onClick={() => addNote(d.label)}
-              data-tip={d.description}
-            >
-              {d.label}
-            </Button>
-          );
-        })}
-      </ButtonGroup>
+    <div style={{ marginTop: "10px" }}>
+      {/* <h1>
+        <Clock
+          format={"h:mm:ss a"}
+          ticking={true}
+          timezone={"Australia/Melbourne"}
+        />
+      </h1> */}
+      <Row>
+        <Col>
+          <h5 className="mx-2 my-2"> Key events</h5>
+          <ButtonGroup vertical="true">
+            {manualLabels.phases.map((d, i) => {
+              return (
+                <Button
+                  key={i}
+                  variant="outline-info"
+                  size="md"
+                  // disabled={observation.stopTime !== null}
+                  onClick={() => addNote(d.label)}
+                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+                >
+                  {d.label}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
+        </Col>
+        <Col md={7}>
+          <h5 className="mx-2 my-2">Actions</h5>
 
-      <ButtonGroup>
-        <Button
-          variant="secondary"
-          // disabled={observation.stopTime !== null}  
-          size="lg"
-          onClick={() => addNote()}
-        >
-          Manual Tag +
-        </Button>
-        <Button
-          variant="success"
-          size="lg"
-          onClick={() => {
-            toast.success("Notes are saved!");
-          }}
-        >
-          Save
-        </Button>
-      </ButtonGroup>
+          <ButtonGroup className="mx-2 my-2">
+            <Button
+              variant="secondary"
+              // disabled={observation.stopTime !== null}
+              size="sm"
+              onClick={() => addNote()}
+            >
+              Manual Tag +
+            </Button>
+            <Button
+              variant="success"
+              size="sm"
+              onClick={() => {
+                toast.success("Notes are saved!");
+              }}
+            >
+              Save
+            </Button>
+          </ButtonGroup>
+          <ButtonGroup className="mx-2 my-2" vertical="true">
+            {manualLabels.actions.map((d, i) => {
+              return (
+                <Button
+                  key={i}
+                  variant="outline-light"
+                  size="md"
+                  // disabled={observation.stopTime !== null}
+                  onClick={() => addNote(d.label)}
+                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+                >
+                  {d.label}
+                </Button>
+              );
+            })}
+          </ButtonGroup>
+        </Col>
+      </Row>
     </div>
   );
 };
