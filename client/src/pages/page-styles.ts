@@ -7,11 +7,11 @@ const defaultStyles = {
     height: "calc(100vh - 30px)",
     maxWidth: "1080px",
     margin: "0 auto",
-    color: "white",
+    color: "#0a0a0a",
   },
   title: {
     fontSize: "3em",
-    color: "white",
+    color: "#0a0a0a",
   },
 };
 

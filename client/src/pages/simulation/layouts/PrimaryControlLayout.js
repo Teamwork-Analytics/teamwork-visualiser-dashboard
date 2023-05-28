@@ -8,7 +8,7 @@ const PrimaryControlLayout = ({ children }) => {
     outer: {
       width: "100%",
       height: "25vh",
-      backgroundColor: "#1e1e1e", //#1a1a1a
+      backgroundColor: "#fafafa", //#1a1a1a
       borderRadius: "15px",
       overflowY: "scroll",
       padding: "1em",

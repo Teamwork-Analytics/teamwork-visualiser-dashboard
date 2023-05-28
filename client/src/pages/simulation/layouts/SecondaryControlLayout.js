@@ -8,7 +8,7 @@ const SecondaryControlLayout = ({ children }) => {
     outer: {
       width: "100%",
       height: "65vh",
-      backgroundColor: "#1e1e1e",
+      backgroundColor: "#fafafa",
       borderRadius: "15px",
       padding: "1em",
       textAlign: "left",

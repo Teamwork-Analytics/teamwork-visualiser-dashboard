@@ -34,7 +34,7 @@ const BackButton = ({
     <Button
       className={"shared-back-button " + className}
       size={"lg"}
-      variant="dark"
+      variant="light"
       onClick={handleBackButtonPressed}
     >
       &larr; Back
