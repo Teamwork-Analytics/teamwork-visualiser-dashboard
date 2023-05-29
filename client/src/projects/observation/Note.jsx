@@ -65,7 +65,7 @@ const Note = ({ initialValue, data }) => {
           <Form.Control
             type={"time"}
             value={time.toLocaleTimeString() + `.${time.getMilliseconds()}`}
-            step="0.001"
+            step="0.01"
             onChange={(e) => {
               dateFormatter(e.target.value);
             }}

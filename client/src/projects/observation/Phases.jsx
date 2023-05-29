@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Container, Row, Modal, Button } from "react-bootstrap";
+import { Container, Modal } from "react-bootstrap";
 import Note from "./Note";
 import { useObservation } from "./ObservationContext";
 import Timeline from "@mui/lab/Timeline";
@@ -37,75 +37,73 @@ const Phases = () => {
           margin: "auto",
         }}
       >
-        {notes.length === 0 ? (
-          <small>- No available notes yet. -</small>
-        ) : (
-          notes.map((d, i) => {
-            const keyString = `note-${i}`;
-            let date = new Date(d.timestamp);
-            let timeString = date.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: true,
-            });
+        {notes.length === 0
+          ? null
+          : notes.map((d, i) => {
+              const keyString = `note-${i}`;
+              let date = new Date(d.timestamp);
+              let timeString = date.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              });
 
-            return (
-              <TimelineItem key={keyString}>
-                <TimelineOppositeContent
-                  color="grey"
-                  style={{ fontSize: "12px", maxWidth: "120px" }}
-                >
-                  {timeString}
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                  <TimelineDot
-                    color={
-                      ["Ward Nurse", "Handover", "MET Doctor"].includes(
-                        d.message
-                      )
-                        ? "error"
-                        : "primary"
-                    }
-                    variant={
-                      ["Ward Nurse", "Handover", "MET Doctor"].includes(
-                        d.message
-                      )
-                        ? "filled"
-                        : "outlined"
-                    }
-                  />
-                  <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                  <Container
-                    style={{
-                      backgroundColor: "white",
-                      color: "black",
-                      padding: "2px",
-                      textAlign: "center",
-                      fontSize: "14px",
-                      borderRadius: "3px",
-                    }}
-                    onClick={() => {
-                      setSelectedNote(
-                        <Note
-                          id={keyString}
-                          initialValue={d.message}
-                          key={d._id}
-                          data={d}
-                        />
-                      );
-                      handleEditModalShow();
-                    }}
+              return (
+                <TimelineItem key={keyString}>
+                  <TimelineOppositeContent
+                    color="grey"
+                    style={{ fontSize: "12px", maxWidth: "120px" }}
                   >
-                    {d.message}
-                  </Container>
-                </TimelineContent>
-              </TimelineItem>
-            );
-          })
-        )}
+                    {timeString}
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineDot
+                      color={
+                        ["Ward Nurse", "Handover", "MET Doctor"].includes(
+                          d.message
+                        )
+                          ? "error"
+                          : "primary"
+                      }
+                      variant={
+                        ["Ward Nurse", "Handover", "MET Doctor"].includes(
+                          d.message
+                        )
+                          ? "filled"
+                          : "outlined"
+                      }
+                    />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent>
+                    <Container
+                      style={{
+                        backgroundColor: "white",
+                        color: "black",
+                        padding: "2px",
+                        textAlign: "center",
+                        fontSize: "14px",
+                        borderRadius: "3px",
+                      }}
+                      onClick={() => {
+                        setSelectedNote(
+                          <Note
+                            id={keyString}
+                            initialValue={d.message}
+                            key={d._id}
+                            data={d}
+                          />
+                        );
+                        handleEditModalShow();
+                      }}
+                    >
+                      {d.message}
+                    </Container>
+                  </TimelineContent>
+                </TimelineItem>
+              );
+            })}
         <TimelineItem>
           <TimelineOppositeContent
             style={{ minWidth: "120px", maxWidth: "120px" }}
@@ -122,14 +120,10 @@ const Phases = () => {
 
       <Modal show={showEditModal} onHide={handleEditModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Edit observation</Modal.Title>
         </Modal.Header>
         <Modal.Body> {selectedNote}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleEditModalClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
+        <Modal.Footer></Modal.Footer>
       </Modal>
     </Container>
   );
