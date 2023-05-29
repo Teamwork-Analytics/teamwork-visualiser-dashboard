@@ -1,9 +1,7 @@
-import { Button, ButtonGroup, Row, Col } from "react-bootstrap";
-import toast from "react-hot-toast";
+import { Button, Container, Row, Col } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
-import Clock from "react-live-clock";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -32,71 +30,93 @@ const PhaseButtons = () => {
       </h1> */}
       <Row>
         <Col style={{ paddingRight: "0px" }}>
-          <h5 className="mx-2 my-2"> Key events</h5>
-
-          {manualLabels.phases.map((d, i) => {
-            return (
-              <Button
-                key={i}
-                variant="outline-danger"
-                size="md"
-                // disabled={observation.stopTime !== null}
-                onClick={() => addNote(d.label)}
-                style={{
-                  width: "95%",
-                  marginBottom: "5px",
-                  marginTop: "5px",
-                  color: "black",
-                  borderWidth: "3px",
-                  fontWeight: "700",
-                }}
-                // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
-              >
-                {d.label}
-              </Button>
-            );
-          })}
-        </Col>
-        <Col md={7}>
-          <h5 className="mx-2 my-2">Actions</h5>
-
-          <Button
-            variant="success"
-            // disabled={observation.stopTime !== null}
-            size="md"
-            onClick={() => addNote()}
+          <Container
             style={{
-              width: "95%",
-              fontWeight: "600",
-              marginTop: "5px",
-              marginBottom: "5px",
+              padding: "2px",
+              borderStyle: "solid",
+              borderColor: "#CCCCCC",
+              borderRadius: "15px",
+              backgroundColor: "#F0F0F0",
+              paddingBottom: "10px",
             }}
           >
-            Add new action +
-          </Button>
+            <h5 className="mx-2 my-2"> Key events</h5>
 
-          {manualLabels.actions.map((d, i) => {
-            return (
-              <Button
-                key={i}
-                variant="outline-primary"
-                size="md"
-                // disabled={observation.stopTime !== null}
-                onClick={() => addNote(d.label)}
-                // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
-                style={{
-                  width: "95%",
-                  marginBottom: "5px",
-                  marginTop: "5px",
-                  color: "black",
-                  borderWidth: "3px",
-                  fontWeight: "500",
-                }}
-              >
-                {d.label}
-              </Button>
-            );
-          })}
+            {manualLabels.phases.map((d, i) => {
+              return (
+                <Button
+                  key={i}
+                  variant="outline-danger"
+                  size="md"
+                  // disabled={observation.stopTime !== null}
+                  onClick={() => addNote(d.label)}
+                  style={{
+                    width: "95%",
+                    marginBottom: "5px",
+                    marginTop: "5px",
+                    color: "black",
+                    borderWidth: "3px",
+                    fontWeight: "700",
+                  }}
+                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+                >
+                  {d.label}
+                </Button>
+              );
+            })}
+          </Container>
+        </Col>
+        <Col md={7}>
+          <Container
+            style={{
+              padding: "2px",
+              borderStyle: "solid",
+              borderColor: "#CCCCCC",
+              borderRadius: "15px",
+              backgroundColor: "#F0F0F0",
+              paddingBottom: "10px",
+            }}
+          >
+            <h5 className="mx-2 my-2">Actions</h5>
+
+            <Button
+              variant="success"
+              // disabled={observation.stopTime !== null}
+              size="md"
+              onClick={() => addNote()}
+              style={{
+                width: "95%",
+                fontWeight: "600",
+                marginTop: "5px",
+                marginBottom: "5px",
+              }}
+            >
+              Add new action +
+            </Button>
+
+            {manualLabels.actions.map((d, i) => {
+              return (
+                <Button
+                  key={i}
+                  variant="outline-primary"
+                  size="md"
+                  // disabled={observation.stopTime !== null}
+                  onClick={() => addNote(d.label)}
+                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+                  style={{
+                    width: "95%",
+                    marginBottom: "5px",
+                    marginTop: "5px",
+                    color: "black",
+                    borderWidth: "3px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {d.label}
+                </Button>
+              );
+            })}
+          </Container>
         </Col>
       </Row>
     </div>

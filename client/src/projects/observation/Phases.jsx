@@ -14,7 +14,7 @@ const Phases = () => {
   const { notes } = useObservation();
 
   return (
-    <Container className="mt-3">
+    <Container className="mt-3" style={{ padding: "0px" }}>
       <div style={{ fontSize: "12px" }}>
         <Clock
           format={"h:mm:ss a"}
@@ -24,8 +24,14 @@ const Phases = () => {
       </div>
 
       <Timeline
-      // position="alternate"
-      // style={{ width: "fit-content" }}
+        // position="alternate"
+        // style={{ width: "fit-content" }}
+        style={{
+          paddingLeft: "0px",
+          paddingRight: "0px",
+          maxWidth: "50vw",
+          margin: "auto",
+        }}
       >
         {notes.length === 0 ? (
           <small>- No available notes yet. -</small>
