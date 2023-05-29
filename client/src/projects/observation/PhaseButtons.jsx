@@ -31,9 +31,9 @@ const PhaseButtons = () => {
         />
       </h1> */}
       <Row>
-        <Col>
+        <Col style={{ paddingRight: "0px" }}>
           <h5 className="mx-2 my-2"> Key events</h5>
-          <ButtonGroup vertical="true">
+          <ButtonGroup vertical="true" style={{ width: "95%" }}>
             {manualLabels.phases.map((d, i) => {
               return (
                 <Button
@@ -53,7 +53,7 @@ const PhaseButtons = () => {
         <Col md={7}>
           <h5 className="mx-2 my-2">Actions</h5>
 
-          <ButtonGroup className="mx-2 my-2">
+          <ButtonGroup className="mx-2 my-2" style={{ width: "95%" }}>
             <Button
               variant="secondary"
               // disabled={observation.stopTime !== null}
@@ -72,12 +72,16 @@ const PhaseButtons = () => {
               Save
             </Button>
           </ButtonGroup>
-          <ButtonGroup className="mx-2 my-2" vertical="true">
+          <ButtonGroup
+            className="mx-2 my-2"
+            vertical="true"
+            style={{ width: "95%" }}
+          >
             {manualLabels.actions.map((d, i) => {
               return (
                 <Button
                   key={i}
-                  variant="outline-light"
+                  variant="outline-dark"
                   size="md"
                   // disabled={observation.stopTime !== null}
                   onClick={() => addNote(d.label)}

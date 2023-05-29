@@ -44,7 +44,7 @@ const Phases = () => {
               <TimelineItem key={keyString}>
                 <TimelineOppositeContent
                   color="grey"
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "12px", maxWidth: "120px" }}
                 >
                   {timeString}
                 </TimelineOppositeContent>

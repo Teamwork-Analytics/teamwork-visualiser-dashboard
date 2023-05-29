@@ -22,7 +22,7 @@ const ObservationView = () => {
   const styles = {
     outer: {
       margin: "0 auto",
-      width: "75vw",
+      width: "90vw",
       maxWidth: "1440px",
       height: "100%",
       colour: "white",
@@ -63,10 +63,10 @@ const ObservationView = () => {
       <hr />
 
       <Row>
-        <Col md={6}>
+        <Col lg={7} style={{ padding: "0px" }}>
           <PhaseButtons />
         </Col>
-        <Col>
+        <Col style={{ padding: "0px" }}>
           <Phases />
         </Col>
       </Row>
