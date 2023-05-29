@@ -57,6 +57,13 @@ const Phases = () => {
                         ? "error"
                         : "primary"
                     }
+                    variant={
+                      ["Ward Nurse", "Handover", "MET Doctor"].includes(
+                        d.message
+                      )
+                        ? "filled"
+                        : "outlined"
+                    }
                   />
                   <TimelineConnector />
                 </TimelineSeparator>
@@ -79,6 +86,10 @@ const Phases = () => {
           })
         )}
         <TimelineItem>
+          <TimelineOppositeContent
+            style={{ minWidth: "120px", maxWidth: "120px" }}
+          />
+
           <TimelineSeparator>
             <TimelineDot />
           </TimelineSeparator>

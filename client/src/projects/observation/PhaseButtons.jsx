@@ -33,65 +33,70 @@ const PhaseButtons = () => {
       <Row>
         <Col style={{ paddingRight: "0px" }}>
           <h5 className="mx-2 my-2"> Key events</h5>
-          <ButtonGroup vertical="true" style={{ width: "95%" }}>
-            {manualLabels.phases.map((d, i) => {
-              return (
-                <Button
-                  key={i}
-                  variant="outline-info"
-                  size="md"
-                  // disabled={observation.stopTime !== null}
-                  onClick={() => addNote(d.label)}
-                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
-                >
-                  {d.label}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
+
+          {manualLabels.phases.map((d, i) => {
+            return (
+              <Button
+                key={i}
+                variant="outline-danger"
+                size="md"
+                // disabled={observation.stopTime !== null}
+                onClick={() => addNote(d.label)}
+                style={{
+                  width: "95%",
+                  marginBottom: "5px",
+                  marginTop: "5px",
+                  color: "black",
+                  borderWidth: "3px",
+                  fontWeight: "700",
+                }}
+                // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+              >
+                {d.label}
+              </Button>
+            );
+          })}
         </Col>
         <Col md={7}>
           <h5 className="mx-2 my-2">Actions</h5>
 
-          <ButtonGroup className="mx-2 my-2" style={{ width: "95%" }}>
-            <Button
-              variant="secondary"
-              // disabled={observation.stopTime !== null}
-              size="sm"
-              onClick={() => addNote()}
-            >
-              Manual Tag +
-            </Button>
-            <Button
-              variant="success"
-              size="sm"
-              onClick={() => {
-                toast.success("Notes are saved!");
-              }}
-            >
-              Save
-            </Button>
-          </ButtonGroup>
-          <ButtonGroup
-            className="mx-2 my-2"
-            vertical="true"
-            style={{ width: "95%" }}
+          <Button
+            variant="success"
+            // disabled={observation.stopTime !== null}
+            size="md"
+            onClick={() => addNote()}
+            style={{
+              width: "95%",
+              fontWeight: "600",
+              marginTop: "5px",
+              marginBottom: "5px",
+            }}
           >
-            {manualLabels.actions.map((d, i) => {
-              return (
-                <Button
-                  key={i}
-                  variant="outline-dark"
-                  size="md"
-                  // disabled={observation.stopTime !== null}
-                  onClick={() => addNote(d.label)}
-                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
-                >
-                  {d.label}
-                </Button>
-              );
-            })}
-          </ButtonGroup>
+            Add new action +
+          </Button>
+
+          {manualLabels.actions.map((d, i) => {
+            return (
+              <Button
+                key={i}
+                variant="outline-primary"
+                size="md"
+                // disabled={observation.stopTime !== null}
+                onClick={() => addNote(d.label)}
+                // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+                style={{
+                  width: "95%",
+                  marginBottom: "5px",
+                  marginTop: "5px",
+                  color: "black",
+                  borderWidth: "3px",
+                  fontWeight: "500",
+                }}
+              >
+                {d.label}
+              </Button>
+            );
+          })}
         </Col>
       </Row>
     </div>
