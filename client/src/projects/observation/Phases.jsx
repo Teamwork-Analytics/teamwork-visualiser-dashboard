@@ -1,4 +1,5 @@
-import { Col, Container, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Container, Row, Modal, Button } from "react-bootstrap";
 import Note from "./Note";
 import { useObservation } from "./ObservationContext";
 import Timeline from "@mui/lab/Timeline";
@@ -13,6 +14,11 @@ import Clock from "react-live-clock";
 const Phases = () => {
   const { notes } = useObservation();
 
+  const [showEditModal, setShowEditModal] = useState(false);
+  const handleEditModalClose = () => setShowEditModal(false);
+  const handleEditModalShow = () => setShowEditModal(true);
+  const [selectedNote, setSelectedNote] = useState(null);
+
   return (
     <Container className="mt-3" style={{ padding: "0px" }}>
       <div style={{ fontSize: "12px" }}>
@@ -24,8 +30,6 @@ const Phases = () => {
       </div>
 
       <Timeline
-        // position="alternate"
-        // style={{ width: "fit-content" }}
         style={{
           paddingLeft: "0px",
           paddingRight: "0px",
@@ -83,6 +87,17 @@ const Phases = () => {
                       fontSize: "14px",
                       borderRadius: "3px",
                     }}
+                    onClick={() => {
+                      setSelectedNote(
+                        <Note
+                          id={keyString}
+                          initialValue={d.message}
+                          key={d._id}
+                          data={d}
+                        />
+                      );
+                      handleEditModalShow();
+                    }}
                   >
                     {d.message}
                   </Container>
@@ -104,39 +119,18 @@ const Phases = () => {
           </TimelineContent>
         </TimelineItem>
       </Timeline>
-      <Row style={{ marginTop: "500px" }}>
-        <Col>
-          <Row>
-            <Col sm="3">
-              <h3 style={{ fontSize: "14px" }}>Timestamp</h3>
-            </Col>
-            <Col sm="7">
-              <h3 style={{ fontSize: "14px" }}>Phase/Note</h3>
-            </Col>
-            <Col sm="2">
-              <h3 style={{ fontSize: "14px" }}>Action</h3>
-            </Col>
-          </Row>
-          <div className="mt-2">
-            {notes.length === 0 ? (
-              <small>- No available notes yet. -</small>
-            ) : (
-              notes.map((d, i) => {
-                const keyString = `note-${i}`;
-                // console.log(d);
-                return (
-                  <Note
-                    id={keyString}
-                    initialValue={d.message}
-                    key={d._id}
-                    data={d}
-                  />
-                );
-              })
-            )}
-          </div>
-        </Col>
-      </Row>
+
+      <Modal show={showEditModal} onHide={handleEditModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body> {selectedNote}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleEditModalClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

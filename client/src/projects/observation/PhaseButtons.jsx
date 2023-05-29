@@ -2,6 +2,7 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -44,24 +45,43 @@ const PhaseButtons = () => {
 
             {manualLabels.phases.map((d, i) => {
               return (
-                <Button
-                  key={i}
-                  variant="outline-danger"
-                  size="md"
-                  // disabled={observation.stopTime !== null}
-                  onClick={() => addNote(d.label)}
-                  style={{
-                    width: "95%",
-                    marginBottom: "5px",
-                    marginTop: "5px",
-                    color: "black",
-                    borderWidth: "3px",
-                    fontWeight: "700",
-                  }}
-                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
-                >
-                  {d.label}
-                </Button>
+                <div style={{}}>
+                  <Row style={{ marginBottom: "5px", marginTop: "5px" }}>
+                    <Col style={{ paddingLeft: "15px", paddingRight: "0px" }}>
+                      {" "}
+                      <Button
+                        key={i}
+                        variant="outline-danger"
+                        size="md"
+                        onClick={() => addNote(d.label)}
+                        style={{
+                          width: "100%",
+                          color: "black",
+                          borderWidth: "3px",
+                          fontWeight: "700",
+                        }}
+                        // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
+                      >
+                        {d.label}
+                      </Button>
+                    </Col>
+                    <Col
+                      xs="auto"
+                      style={{ paddingLeft: "5px", paddingRight: "15px" }}
+                    >
+                      <Button
+                        variant="outline-danger"
+                        style={{
+                          color: "black",
+                          width: "100%",
+                          borderWidth: "3px",
+                        }}
+                      >
+                        <BsThreeDotsVertical />
+                      </Button>
+                    </Col>
+                  </Row>
+                </div>
               );
             })}
           </Container>
@@ -81,7 +101,6 @@ const PhaseButtons = () => {
 
             <Button
               variant="success"
-              // disabled={observation.stopTime !== null}
               size="md"
               onClick={() => addNote()}
               style={{
@@ -100,7 +119,6 @@ const PhaseButtons = () => {
                   key={i}
                   variant="outline-primary"
                   size="md"
-                  // disabled={observation.stopTime !== null}
                   onClick={() => addNote(d.label)}
                   // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
                   style={{
