@@ -24,19 +24,16 @@ export const manualLabels = {
     {
       _id: "mockPhaseId001",
       label: "Handover ends",
-      description: "Start assessment",
     },
     {
       _id: "mockPhaseId002",
       label: "Secondary nurse enters",
-      description: "When extra nurses enter the room",
     },
     {
       _id: "mockPhaseId004",
       label: "Doctor enters",
-      description: "When doctor enters the emergency room",
     },
-    { _id: "mockPhaseId005", label: "Teamwork", description: "Soft skills" },
+    { _id: "mockPhaseId005", label: "Teamwork" },
   ],
   actions: [
     {
@@ -49,12 +46,18 @@ export const manualLabels = {
       label: "Recognised some concerns",
       phasesAssociated: ["mockPhaseId001", "mockPhaseId005"],
     },
-    { label: "Verbalisation of problem" },
-    { label: "Informing team member" },
+    {
+      label: "Verbalisation of problem",
+      phasesAssociated: ["mockPhaseId001", "mockPhaseId005"],
+    },
+    {
+      label: "Informing team member",
+      phasesAssociated: ["mockPhaseId005"],
+    },
     { label: "Applying oxygen", phasesAssociated: ["mockPhaseId001"] },
     {
       label: "Discuss about calling for help",
-      phasesAssociated: ["mockPhaseId001", "mockPhaseId002"],
+      phasesAssociated: ["mockPhaseId001", "mockPhaseId001", "mockPhaseId005"],
     },
     { label: "Called for help", phasesAssociated: ["mockPhaseId001"] },
     {
@@ -66,9 +69,10 @@ export const manualLabels = {
       phasesAssociated: ["mockPhaseId002"],
     },
     { label: "Sharing the load", phasesAssociated: ["mockPhaseId005"] },
+    { label: "MET call", phasesAssociated: ["mockPhaseId002"] },
     {
       label: "Handover to doctor",
-      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
+      phasesAssociated: ["mockPhaseId004"],
     },
     {
       label: "Reprioritisation",
