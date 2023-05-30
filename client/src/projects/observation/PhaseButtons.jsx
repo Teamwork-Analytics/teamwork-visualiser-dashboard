@@ -38,15 +38,10 @@ const PhaseButtons = () => {
     handleCreateNoteModalClose();
   };
 
+  const [filterKeyEvent, setFilterKeyEvent] = useState("");
+
   return (
     <div style={{ marginTop: "10px" }}>
-      {/* <h1>
-        <Clock
-          format={"h:mm:ss a"}
-          ticking={true}
-          timezone={"Australia/Melbourne"}
-        />
-      </h1> */}
       <Row>
         <Col style={{ paddingRight: "0px" }}>
           <Container
@@ -67,10 +62,14 @@ const PhaseButtons = () => {
                   <Row style={{ marginBottom: "5px", marginTop: "5px" }}>
                     <Col style={{ paddingLeft: "15px", paddingRight: "0px" }}>
                       <Button
-                        key={i}
+                        key={d._id}
+                        id={d._id}
                         variant="outline-danger"
                         size="md"
-                        onClick={() => addNote(d.label)}
+                        onClick={() => {
+                          setFilterKeyEvent(d._id);
+                          addNote(d.label);
+                        }}
                         style={{
                           width: "100%",
                           color: "black",
@@ -86,11 +85,16 @@ const PhaseButtons = () => {
                       style={{ paddingLeft: "5px", paddingRight: "15px" }}
                     >
                       <Button
+                        key={d._id}
+                        id={d._id}
                         variant="outline-danger"
                         style={{
                           color: "black",
                           width: "100%",
                           borderWidth: "3px",
+                        }}
+                        onClick={() => {
+                          setFilterKeyEvent(d._id);
                         }}
                       >
                         <BsThreeDotsVertical />

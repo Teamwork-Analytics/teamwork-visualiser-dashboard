@@ -21,19 +21,70 @@ export const sortNotesDescending = (observationObj) => {
  */
 export const manualLabels = {
   phases: [
-    { label: "Handover", description: "When doctor leaves the room" },
-    { label: "Ward Nurse", description: "When extra nurses enter the room" },
     {
-      label: "MET Doctor",
+      _id: "mockPhaseId001",
+      label: "Teacher leaves",
+      description: "Start assessment",
+    },
+    {
+      _id: "mockPhaseId002",
+      label: "Nurse enters",
+      description: "When extra nurses enter the room",
+    },
+    {
+      _id: "mockPhaseId004",
+      label: "Doctor enters",
       description: "When doctor enters the emergency room",
     },
+    { _id: "mockPhaseId005", label: "Teamwork", description: "Soft skills" },
   ],
   actions: [
-    { label: "Made a plan", description: "Students made a plan" },
-    { label: "Assessed patient", description: "Students made a plan" },
-    { label: "Started to assess Ruth", description: "Students made a plan" },
-    { label: "Recognised some concerns", description: "Students made a plan" },
-    { label: "Informed team member", description: "Students made a plan" },
-    { label: "Called for help", description: "Students made a plan" },
+    {
+      label: "Made a plan",
+      phasesAssociated: ["mockPhaseId001"],
+    },
+    { label: "Assessed patient", phasesAssociated: ["mockPhaseId001"] },
+    { label: "Starting to assess Ruth", phasesAssociated: ["mockPhaseId001"] },
+    {
+      label: "Recognised some concerns",
+      phasesAssociated: ["mockPhaseId001", "mockPhaseId005"],
+    },
+    { label: "Verbalisation of problem" },
+    { label: "Informing team member" },
+    { label: "Applying oxygen", phasesAssociated: ["mockPhaseId001"] },
+    {
+      label: "Discuss about calling for help",
+      phasesAssociated: ["mockPhaseId001", "mockPhaseId002"],
+    },
+    { label: "Called for help", phasesAssociated: ["mockPhaseId001"] },
+    {
+      label: "Handover to secondary nurse",
+      phasesAssociated: ["mockPhaseId002"],
+    },
+    {
+      label: "Reassessment after recognition of deterioration",
+      phasesAssociated: ["mockPhaseId002"],
+    },
+    { label: "Sharing the load", phasesAssociated: ["mockPhaseId005"] },
+    {
+      label: "Handover to doctor",
+      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
+    },
+    {
+      label: "Reprioritisation",
+      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
+    },
+    {
+      label: "Efficiency of distributing workload",
+      phasesAssociated: ["mockPhaseId005"],
+    },
+    {
+      label: "Inefficiency of distributing workload",
+      phasesAssociated: ["mockPhaseId005"],
+    },
+    { label: "Good communication", phasesAssociated: ["mockPhaseId005"] },
+    { label: "Bad communication", phasesAssociated: ["mockPhaseId005"] },
+    { label: "Good teamwork", phasesAssociated: ["mockPhaseId005"] },
+    { label: "Bad teamwork", phasesAssociated: ["mockPhaseId005"] },
   ],
 };
