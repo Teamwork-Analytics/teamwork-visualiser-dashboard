@@ -27,7 +27,7 @@ const Phases = () => {
     <Container className="mt-3" style={{ padding: "0px" }}>
       <div style={{ fontSize: "12px" }}>
         <Clock
-          format={"h:mm:ss a"}
+          format={"ddd D MMM YYYY, h:mm:ss a"}
           ticking={true}
           timezone={"Australia/Melbourne"}
         />

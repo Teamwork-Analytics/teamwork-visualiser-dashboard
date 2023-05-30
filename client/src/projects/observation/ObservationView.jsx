@@ -70,7 +70,6 @@ const ObservationView = () => {
           <Phases />
         </Col>
       </Row>
-
       <ReactTooltip />
     </div>
   );
