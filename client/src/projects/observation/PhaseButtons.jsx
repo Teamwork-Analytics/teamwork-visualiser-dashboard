@@ -1,4 +1,5 @@
-import { Button, Container, Row, Col } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
@@ -20,6 +21,23 @@ const PhaseButtons = () => {
       }
     });
   };
+
+  const [showCreateNoteModal, setShowCreateNoteModal] = useState(false);
+  const handleCreateNoteModalClose = () => {
+    setShowCreateNoteModal(false);
+    setLabel(""); // Clear the label input
+  };
+  const handleCreateNoteModalShow = () => setShowCreateNoteModal(true);
+
+  const [label, setLabel] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addNote(label);
+    console.log("Submitted label: ", label);
+    handleCreateNoteModalClose();
+  };
+
   return (
     <div style={{ marginTop: "10px" }}>
       {/* <h1>
@@ -48,7 +66,6 @@ const PhaseButtons = () => {
                 <div style={{}}>
                   <Row style={{ marginBottom: "5px", marginTop: "5px" }}>
                     <Col style={{ paddingLeft: "15px", paddingRight: "0px" }}>
-                      {" "}
                       <Button
                         key={i}
                         variant="outline-danger"
@@ -60,7 +77,6 @@ const PhaseButtons = () => {
                           borderWidth: "3px",
                           fontWeight: "700",
                         }}
-                        // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
                       >
                         {d.label}
                       </Button>
@@ -102,7 +118,9 @@ const PhaseButtons = () => {
             <Button
               variant="success"
               size="md"
-              onClick={() => addNote()}
+              onClick={() => {
+                handleCreateNoteModalShow();
+              }}
               style={{
                 width: "95%",
                 fontWeight: "600",
@@ -120,7 +138,6 @@ const PhaseButtons = () => {
                   variant="outline-primary"
                   size="md"
                   onClick={() => addNote(d.label)}
-                  // data-tip={d.description} // TODO: figure another way, ipad cant see tooltips
                   style={{
                     width: "95%",
                     marginBottom: "5px",
@@ -137,6 +154,32 @@ const PhaseButtons = () => {
           </Container>
         </Col>
       </Row>
+
+      <Modal show={showCreateNoteModal} onHide={handleCreateNoteModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create custom action</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="label">
+              <Form.Label>Action name:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Action"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+              />
+            </Form.Group>
+            <Button
+              variant="primary"
+              type="submit"
+              style={{ marginTop: "15px" }}
+            >
+              Submit
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
