@@ -76,7 +76,9 @@ const Phases = () => {
                   <TimelineSeparator>
                     <TimelineDot
                       color={
-                        phaseLabels.includes(d.message) ? "error" : "primary"
+                        phaseLabels.includes(d.message)
+                          ? "secondary"
+                          : "warning"
                       }
                       variant={
                         phaseLabels.includes(d.message) ? "filled" : "outlined"

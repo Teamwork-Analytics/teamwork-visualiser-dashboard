@@ -3,8 +3,7 @@ import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { RxDot, RxDotFilled } from "react-icons/rx";
+import { BsThreeDotsVertical, BsCircleFill, BsCircle } from "react-icons/bs";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -78,6 +77,7 @@ const PhaseButtons = () => {
                       <Button
                         key={d._id}
                         id={d._id}
+                        variant="light"
                         size="md"
                         onClick={() => {
                           setFilterKeyEvent(d._id);
@@ -85,13 +85,33 @@ const PhaseButtons = () => {
                         }}
                         style={{
                           width: "100%",
-                          fontWeight: "500",
-                          backgroundColor: "#ACACAC",
-                          borderColor: "#ACACAC",
+                          textAlign: "left",
                         }}
                       >
-                        {d.label}
-                        {/* <RxDotFilled style={{ color: "red" }} />  // ? NOTE: this does'nt look good */}
+                        <Row style={{ marginLeft: "0px", marginRight: "0px" }}>
+                          <Col
+                            xs="auto"
+                            style={{
+                              margin: "auto",
+                              paddingLeft: "5px",
+                              paddingRight: "5px",
+                            }}
+                          >
+                            <BsCircleFill
+                              size="0.5em"
+                              color="#9c27b0" // color from MUI default theme
+                            />
+                          </Col>
+                          <Col
+                            style={{
+                              margin: "auto",
+                              paddingLeft: "5px",
+                              paddingRight: "5px",
+                            }}
+                          >
+                            {d.label}
+                          </Col>
+                        </Row>
                       </Button>
                     </Col>
                     <Col
@@ -165,17 +185,40 @@ const PhaseButtons = () => {
                 return (
                   <Button
                     key={i}
-                    variant="secondary"
+                    variant="light"
                     size="md"
                     onClick={() => addNote(d.label)}
                     style={{
                       width: "95%",
                       marginBottom: "5px",
                       marginTop: "5px",
-                      fontWeight: "500",
+                      textAlign: "left",
                     }}
                   >
-                    {d.label}
+                    <Row style={{ marginLeft: "0px", marginRight: "0px" }}>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <BsCircle
+                          size="0.5em"
+                          color="#ed6c02" // color from MUI default theme
+                        />
+                      </Col>
+                      <Col
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        {d.label}
+                      </Col>
+                    </Row>
                   </Button>
                 );
               })}
