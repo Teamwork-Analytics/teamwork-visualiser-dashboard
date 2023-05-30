@@ -10,6 +10,7 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Clock from "react-live-clock";
+import { manualLabels } from ".";
 
 const Phases = () => {
   const { notes } = useObservation();
@@ -18,6 +19,8 @@ const Phases = () => {
   const handleEditModalClose = () => setShowEditModal(false);
   const handleEditModalShow = () => setShowEditModal(true);
   const [selectedNote, setSelectedNote] = useState(null);
+
+  const phaseLabels = manualLabels.phases.map((phase) => phase.label);
 
   return (
     <Container className="mt-3" style={{ padding: "0px" }}>
@@ -60,18 +63,10 @@ const Phases = () => {
                   <TimelineSeparator>
                     <TimelineDot
                       color={
-                        ["Ward Nurse", "Handover", "MET Doctor"].includes(
-                          d.message
-                        )
-                          ? "error"
-                          : "primary"
+                        phaseLabels.includes(d.message) ? "error" : "primary"
                       }
                       variant={
-                        ["Ward Nurse", "Handover", "MET Doctor"].includes(
-                          d.message
-                        )
-                          ? "filled"
-                          : "outlined"
+                        phaseLabels.includes(d.message) ? "filled" : "outlined"
                       }
                     />
                     <TimelineConnector />
@@ -113,7 +108,7 @@ const Phases = () => {
             <TimelineDot />
           </TimelineSeparator>
           <TimelineContent style={{ fontSize: "12px" }}>
-            Simulation start
+            Simulation started
           </TimelineContent>
         </TimelineItem>
       </Timeline>
