@@ -135,26 +135,35 @@ const PhaseButtons = () => {
               Add new action +
             </Button>
 
-            {manualLabels.actions.map((d, i) => {
-              return (
-                <Button
-                  key={i}
-                  variant="outline-primary"
-                  size="md"
-                  onClick={() => addNote(d.label)}
-                  style={{
-                    width: "95%",
-                    marginBottom: "5px",
-                    marginTop: "5px",
-                    color: "black",
-                    borderWidth: "3px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {d.label}
-                </Button>
-              );
-            })}
+            {manualLabels.actions
+              .filter((d) => {
+                // console.log("phasesAssociated:", d.phasesAssociated);
+                // console.log("filterKeyEvent:", filterKeyEvent);
+                return (
+                  d.phasesAssociated &&
+                  d.phasesAssociated.includes(filterKeyEvent)
+                );
+              })
+              .map((d, i) => {
+                return (
+                  <Button
+                    key={i}
+                    variant="outline-primary"
+                    size="md"
+                    onClick={() => addNote(d.label)}
+                    style={{
+                      width: "95%",
+                      marginBottom: "5px",
+                      marginTop: "5px",
+                      color: "black",
+                      borderWidth: "3px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {d.label}
+                  </Button>
+                );
+              })}
           </Container>
         </Col>
       </Row>
