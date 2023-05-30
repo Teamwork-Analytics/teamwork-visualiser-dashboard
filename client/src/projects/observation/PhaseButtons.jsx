@@ -4,6 +4,7 @@ import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { RxDot, RxDotFilled } from "react-icons/rx";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -77,7 +78,6 @@ const PhaseButtons = () => {
                       <Button
                         key={d._id}
                         id={d._id}
-                        variant="outline-danger"
                         size="md"
                         onClick={() => {
                           setFilterKeyEvent(d._id);
@@ -85,11 +85,13 @@ const PhaseButtons = () => {
                         }}
                         style={{
                           width: "100%",
-                          color: "black",
-                          fontWeight: "700",
+                          fontWeight: "500",
+                          backgroundColor: "#ACACAC",
+                          borderColor: "#ACACAC",
                         }}
                       >
                         {d.label}
+                        {/* <RxDotFilled style={{ color: "red" }} />  // ? NOTE: this does'nt look good */}
                       </Button>
                     </Col>
                     <Col
@@ -103,9 +105,8 @@ const PhaseButtons = () => {
                       <Button
                         key={d._id}
                         id={d._id}
-                        variant="outline-danger"
+                        variant="light"
                         style={{
-                          color: "black",
                           width: "100%",
                           margin: "auto",
                         }}
@@ -148,7 +149,7 @@ const PhaseButtons = () => {
                 marginBottom: "5px",
               }}
             >
-              Add new action +
+              Tag custom action +
             </Button>
 
             {manualLabels.actions
@@ -164,14 +165,13 @@ const PhaseButtons = () => {
                 return (
                   <Button
                     key={i}
-                    variant="outline-primary"
+                    variant="secondary"
                     size="md"
                     onClick={() => addNote(d.label)}
                     style={{
                       width: "95%",
                       marginBottom: "5px",
                       marginTop: "5px",
-                      color: "black",
                       fontWeight: "500",
                     }}
                   >

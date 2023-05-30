@@ -73,8 +73,14 @@ const Phases = () => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    <Row>
-                      <Col>
+                    <Row style={{ marginRight: "0", marginLeft: "0" }}>
+                      <Col
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
                         <Container
                           style={{
                             backgroundColor: "white",
@@ -99,7 +105,14 @@ const Phases = () => {
                           {d.message}
                         </Container>
                       </Col>
-                      <Col xs="auto" style={{ margin: "auto" }}>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
                         <MdDeleteForever />
                       </Col>
                     </Row>
