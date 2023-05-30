@@ -23,12 +23,12 @@ export const manualLabels = {
   phases: [
     {
       _id: "mockPhaseId001",
-      label: "Teacher leaves",
+      label: "Handover ends",
       description: "Start assessment",
     },
     {
       _id: "mockPhaseId002",
-      label: "Nurse enters",
+      label: "Secondary nurse enters",
       description: "When extra nurses enter the room",
     },
     {

@@ -59,8 +59,21 @@ const PhaseButtons = () => {
             {manualLabels.phases.map((d, i) => {
               return (
                 <div style={{}}>
-                  <Row style={{ marginBottom: "5px", marginTop: "5px" }}>
-                    <Col style={{ paddingLeft: "15px", paddingRight: "0px" }}>
+                  <Row
+                    style={{
+                      marginBottom: "10px",
+                      marginTop: "10px",
+                      marginRight: "0",
+                      marginLeft: "0",
+                    }}
+                  >
+                    <Col
+                      style={{
+                        margin: "auto",
+                        paddingLeft: "5px",
+                        paddingRight: "5px",
+                      }}
+                    >
                       <Button
                         key={d._id}
                         id={d._id}
@@ -73,7 +86,6 @@ const PhaseButtons = () => {
                         style={{
                           width: "100%",
                           color: "black",
-                          borderWidth: "3px",
                           fontWeight: "700",
                         }}
                       >
@@ -82,7 +94,11 @@ const PhaseButtons = () => {
                     </Col>
                     <Col
                       xs="auto"
-                      style={{ paddingLeft: "5px", paddingRight: "15px" }}
+                      style={{
+                        margin: "auto",
+                        paddingLeft: "5px",
+                        paddingRight: "5px",
+                      }}
                     >
                       <Button
                         key={d._id}
@@ -91,7 +107,7 @@ const PhaseButtons = () => {
                         style={{
                           color: "black",
                           width: "100%",
-                          borderWidth: "3px",
+                          margin: "auto",
                         }}
                         onClick={() => {
                           setFilterKeyEvent(d._id);
@@ -156,7 +172,6 @@ const PhaseButtons = () => {
                       marginBottom: "5px",
                       marginTop: "5px",
                       color: "black",
-                      borderWidth: "3px",
                       fontWeight: "500",
                     }}
                   >

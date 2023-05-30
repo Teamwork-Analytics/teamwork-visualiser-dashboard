@@ -70,6 +70,7 @@ const Note = ({ initialValue, data }) => {
               dateFormatter(e.target.value);
             }}
             onBlur={() => saveNote()}
+            style={{ color: "black" }}
           />
         </Col>
 

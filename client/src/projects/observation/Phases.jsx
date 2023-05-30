@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Modal } from "react-bootstrap";
+import { Container, Modal, Row, Col } from "react-bootstrap";
 import Note from "./Note";
 import { useObservation } from "./ObservationContext";
 import Timeline from "@mui/lab/Timeline";
@@ -11,6 +11,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Clock from "react-live-clock";
 import { manualLabels } from ".";
+import { MdDeleteForever } from "react-icons/md";
 
 const Phases = () => {
   const { notes } = useObservation();
@@ -72,29 +73,36 @@ const Phases = () => {
                     <TimelineConnector />
                   </TimelineSeparator>
                   <TimelineContent>
-                    <Container
-                      style={{
-                        backgroundColor: "white",
-                        color: "black",
-                        padding: "2px",
-                        textAlign: "center",
-                        fontSize: "14px",
-                        borderRadius: "3px",
-                      }}
-                      onClick={() => {
-                        setSelectedNote(
-                          <Note
-                            id={keyString}
-                            initialValue={d.message}
-                            key={d._id}
-                            data={d}
-                          />
-                        );
-                        handleEditModalShow();
-                      }}
-                    >
-                      {d.message}
-                    </Container>
+                    <Row>
+                      <Col>
+                        <Container
+                          style={{
+                            backgroundColor: "white",
+                            color: "black",
+                            padding: "2px",
+                            textAlign: "center",
+                            fontSize: "14px",
+                            borderRadius: "3px",
+                          }}
+                          onClick={() => {
+                            setSelectedNote(
+                              <Note
+                                id={keyString}
+                                initialValue={d.message}
+                                key={d._id}
+                                data={d}
+                              />
+                            );
+                            handleEditModalShow();
+                          }}
+                        >
+                          {d.message}
+                        </Container>
+                      </Col>
+                      <Col xs="auto" style={{ margin: "auto" }}>
+                        <MdDeleteForever />
+                      </Col>
+                    </Row>
                   </TimelineContent>
                 </TimelineItem>
               );
