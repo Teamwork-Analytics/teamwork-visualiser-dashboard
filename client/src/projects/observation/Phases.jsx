@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Modal, Row, Col } from "react-bootstrap";
+import { Container, Modal, Row, Col, Button } from "react-bootstrap";
 import Note from "./Note";
 import { useObservation } from "./ObservationContext";
 import Timeline from "@mui/lab/Timeline";
@@ -11,7 +11,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Clock from "react-live-clock";
 import { manualLabels } from ".";
-import { MdDeleteForever } from "react-icons/md";
+import { BsXLg } from "react-icons/bs";
 
 const Phases = () => {
   const { notes } = useObservation();
@@ -20,6 +20,18 @@ const Phases = () => {
   const handleEditModalClose = () => setShowEditModal(false);
   const handleEditModalShow = () => setShowEditModal(true);
   const [selectedNote, setSelectedNote] = useState(null);
+
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+    useState(false);
+  const handleDeleteConfirmationModalClose = () =>
+    setShowDeleteConfirmationModal(false);
+  const handleDeleteConfirmationModalShow = () =>
+    setShowDeleteConfirmationModal(true);
+  const [deletingNote, setDeletingNote] = useState(null);
+  const handleDeleteTag = () => {
+    console.log("Deleting note: ", deletingNote);
+    setDeletingNote(null);
+  };
 
   const phaseLabels = manualLabels.phases.map((phase) => phase.label);
 
@@ -113,7 +125,11 @@ const Phases = () => {
                           paddingRight: "5px",
                         }}
                       >
-                        <MdDeleteForever />
+                        <BsXLg
+                          onClick={() => {
+                            handleDeleteConfirmationModalShow();
+                          }}
+                        />
                       </Col>
                     </Row>
                   </TimelineContent>
@@ -140,6 +156,30 @@ const Phases = () => {
         </Modal.Header>
         <Modal.Body> {selectedNote}</Modal.Body>
         <Modal.Footer></Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={showDeleteConfirmationModal}
+        onHide={handleDeleteConfirmationModalClose}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this tag? This action cannot be
+          undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={handleDeleteConfirmationModalClose}
+          >
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeleteTag}>
+            Delete
+          </Button>
+        </Modal.Footer>
       </Modal>
     </Container>
   );
