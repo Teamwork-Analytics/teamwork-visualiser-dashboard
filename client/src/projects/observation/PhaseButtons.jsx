@@ -72,7 +72,7 @@ const PhaseButtons = () => {
                 <h5 style={{ margin: "auto" }}> Key events</h5>
               </Col>
               <Col
-                xs={3}
+                xs="auto"
                 style={{
                   margin: "auto",
                   paddingLeft: "5px",
@@ -81,19 +81,20 @@ const PhaseButtons = () => {
               >
                 <div
                   style={{
-                    fontSize: "12px",
+                    fontSize: "11px",
                     textAlign: "center",
                     margin: "auto",
                   }}
                 >
-                  Filter actions
+                  Filter <br />
+                  actions
                 </div>
               </Col>
             </Row>
 
             {manualLabels.phases.map((d, i) => {
               return (
-                <div style={{}}>
+                <div>
                   <Row
                     style={{
                       marginBottom: "10px",
