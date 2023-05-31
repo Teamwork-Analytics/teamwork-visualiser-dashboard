@@ -3,7 +3,7 @@ import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
-import { BsThreeDotsVertical, BsCircleFill, BsCircle } from "react-icons/bs";
+import { BsCircleFill, BsCircle, BsPinAngleFill } from "react-icons/bs";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -81,13 +81,12 @@ const PhaseButtons = () => {
               >
                 <div
                   style={{
-                    fontSize: "11px",
+                    fontSize: "12px",
                     textAlign: "center",
                     margin: "auto",
                   }}
                 >
-                  Filter <br />
-                  actions
+                  Tag <br /> event
                 </div>
               </Col>
             </Row>
@@ -119,7 +118,6 @@ const PhaseButtons = () => {
                           size="md"
                           onClick={() => {
                             setFilterKeyEvent(d._id);
-                            addNote(d.label);
                           }}
                           style={{
                             width: "100%",
@@ -172,9 +170,10 @@ const PhaseButtons = () => {
                           }}
                           onClick={() => {
                             setFilterKeyEvent(d._id);
+                            addNote(d.label);
                           }}
                         >
-                          <BsThreeDotsVertical />
+                          <BsPinAngleFill />
                         </Button>
                       </Col>
                     </Row>
@@ -208,26 +207,7 @@ const PhaseButtons = () => {
                   paddingRight: "5px",
                 }}
               >
-                <h5 style={{ margin: "auto" }}>Others</h5>
-              </Col>
-              <Col
-                xs="auto"
-                style={{
-                  margin: "auto",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "11px",
-                    textAlign: "center",
-                    margin: "auto",
-                  }}
-                >
-                  Filter <br />
-                  actions
-                </div>
+                <h5 style={{ margin: "auto" }}>Other actions</h5>
               </Col>
             </Row>
             {manualLabels.phases
@@ -257,38 +237,13 @@ const PhaseButtons = () => {
                           size="md"
                           onClick={() => {
                             setFilterKeyEvent(d._id);
-                            addNote(d.label);
                           }}
                           style={{
                             width: "100%",
                             textAlign: "left",
                           }}
-                          disabled={true}
                         >
                           {d.label}
-                        </Button>
-                      </Col>
-                      <Col
-                        xs="auto"
-                        style={{
-                          margin: "auto",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                        }}
-                      >
-                        <Button
-                          key={d._id}
-                          id={d._id}
-                          variant="light"
-                          style={{
-                            width: "100%",
-                            margin: "auto",
-                          }}
-                          onClick={() => {
-                            setFilterKeyEvent(d._id);
-                          }}
-                        >
-                          <BsThreeDotsVertical />
                         </Button>
                       </Col>
                     </Row>
