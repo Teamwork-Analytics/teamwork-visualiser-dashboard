@@ -21,6 +21,9 @@ const Note = ({ initialValue, data }) => {
     ObservationAPI.updateNote(observation._id, updateInfo).then((res) => {
       if (res.status === 200) {
         toast.success("Note has been updated!");
+        // refresh notes on the page
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
       }
     });
   };
