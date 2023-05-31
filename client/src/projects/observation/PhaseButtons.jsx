@@ -31,10 +31,8 @@ const PhaseButtons = () => {
 
   const [label, setLabel] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     addNote(label);
-    console.log("Submitted label: ", label);
     handleCreateNoteModalClose();
   };
 
@@ -342,7 +340,12 @@ const PhaseButtons = () => {
           <Modal.Title>Create custom action</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
             <Form.Group controlId="label">
               <Form.Label>Action name:</Form.Label>
               <Form.Control
@@ -352,15 +355,18 @@ const PhaseButtons = () => {
                 onChange={(e) => setLabel(e.target.value)}
               />
             </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              style={{ marginTop: "15px" }}
-            >
-              Submit
-            </Button>
           </Form>
         </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
