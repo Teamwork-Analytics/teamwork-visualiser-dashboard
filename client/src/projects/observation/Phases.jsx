@@ -12,9 +12,22 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Clock from "react-live-clock";
 import { manualLabels } from ".";
 import { BsXLg } from "react-icons/bs";
+import ObservationAPI from "../../services/api/observation";
+import { sortNotesDescending } from ".";
 
 const Phases = () => {
-  const { notes } = useObservation();
+  const { observation, notes, setNotes } = useObservation();
+
+  // TODO: migrate to somewhere else or back to Note.jsx after demo
+  const deleteNote = (noteId) => {
+    // const newArray = notes.filter((d) => d._id !== noteId);
+    ObservationAPI.deleteNote(observation._id, noteId).then((res) => {
+      if (res.status === 200) {
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
+      }
+    });
+  };
 
   const [showEditModal, setShowEditModal] = useState(false);
   const handleEditModalClose = () => setShowEditModal(false);
@@ -23,14 +36,19 @@ const Phases = () => {
 
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
     useState(false);
-  const handleDeleteConfirmationModalClose = () =>
+  const handleDeleteConfirmationModalClose = () => {
     setShowDeleteConfirmationModal(false);
+    setDeletingNoteId(null);
+  };
   const handleDeleteConfirmationModalShow = () =>
     setShowDeleteConfirmationModal(true);
-  const [deletingNote, setDeletingNote] = useState(null);
+  const [deletingNoteId, setDeletingNoteId] = useState(null);
   const handleDeleteTag = () => {
-    console.log("Deleting note: ", deletingNote);
-    setDeletingNote(null);
+    console.log("Deleting note (id): ", deletingNoteId);
+    // TODO: delete using Note.jsx function
+    deleteNote(deletingNoteId);
+    setDeletingNoteId(null);
+    handleDeleteConfirmationModalClose();
   };
 
   const phaseLabels = manualLabels.phases.map((phase) => phase.label);
@@ -129,6 +147,7 @@ const Phases = () => {
                       >
                         <BsXLg
                           onClick={() => {
+                            setDeletingNoteId(d._id);
                             handleDeleteConfirmationModalShow();
                           }}
                         />
