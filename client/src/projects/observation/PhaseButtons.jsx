@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
@@ -120,7 +120,12 @@ const PhaseButtons = () => {
                           style={{
                             width: "100%",
                             textAlign: "left",
+                            backgroundColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
+                            borderColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
                           }}
+                          active={filterKeyEvent === d._id}
                         >
                           <Row
                             style={{ marginLeft: "0px", marginRight: "0px" }}
@@ -239,7 +244,12 @@ const PhaseButtons = () => {
                           style={{
                             width: "100%",
                             textAlign: "left",
+                            backgroundColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
+                            borderColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
                           }}
+                          active={filterKeyEvent === d._id}
                         >
                           {d.label}
                         </Button>
@@ -359,7 +369,7 @@ const PhaseButtons = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="primary"
+            variant="success"
             onClick={() => {
               handleSubmit();
             }}
