@@ -54,7 +54,42 @@ const PhaseButtons = () => {
               paddingBottom: "10px",
             }}
           >
-            <h5 className="mx-2 my-2"> Key events</h5>
+            <Row
+              style={{
+                marginTop: "5px",
+                marginBottom: "5px",
+                marginRight: "0",
+                marginLeft: "0",
+              }}
+            >
+              <Col
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <h5 style={{ margin: "auto" }}> Key events</h5>
+              </Col>
+              <Col
+                xs={3}
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "12px",
+                    textAlign: "center",
+                    margin: "auto",
+                  }}
+                >
+                  Filter actions
+                </div>
+              </Col>
+            </Row>
 
             {manualLabels.phases.map((d, i) => {
               return (
