@@ -333,6 +333,10 @@ const PhaseButtons = () => {
         </Col>
       </Row>
 
+      {/* Empty line so component is not sticking bottom of screen */}
+      <br />
+      <br />
+
       <Modal show={showCreateNoteModal} onHide={handleCreateNoteModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Create custom action</Modal.Title>
