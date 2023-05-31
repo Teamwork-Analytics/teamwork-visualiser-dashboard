@@ -92,91 +92,209 @@ const PhaseButtons = () => {
               </Col>
             </Row>
 
-            {manualLabels.phases.map((d, i) => {
-              return (
-                <div>
-                  <Row
-                    style={{
-                      marginBottom: "10px",
-                      marginTop: "10px",
-                      marginRight: "0",
-                      marginLeft: "0",
-                    }}
-                  >
-                    <Col
+            {manualLabels.phases
+              .filter((d) => d.label !== "Teamwork")
+              .map((d, i) => {
+                return (
+                  <div>
+                    <Row
                       style={{
-                        margin: "auto",
-                        paddingLeft: "5px",
-                        paddingRight: "5px",
+                        marginBottom: "10px",
+                        marginTop: "10px",
+                        marginRight: "0",
+                        marginLeft: "0",
                       }}
                     >
-                      <Button
-                        key={d._id}
-                        id={d._id}
-                        variant="light"
-                        size="md"
-                        onClick={() => {
-                          setFilterKeyEvent(d._id);
-                          addNote(d.label);
-                        }}
+                      <Col
                         style={{
-                          width: "100%",
-                          textAlign: "left",
-                        }}
-                      >
-                        <Row style={{ marginLeft: "0px", marginRight: "0px" }}>
-                          <Col
-                            xs="auto"
-                            style={{
-                              margin: "auto",
-                              paddingLeft: "5px",
-                              paddingRight: "5px",
-                            }}
-                          >
-                            <BsCircleFill
-                              size="0.5em"
-                              color="#9c27b0" // color from MUI default theme
-                            />
-                          </Col>
-                          <Col
-                            style={{
-                              margin: "auto",
-                              paddingLeft: "5px",
-                              paddingRight: "5px",
-                            }}
-                          >
-                            {d.label}
-                          </Col>
-                        </Row>
-                      </Button>
-                    </Col>
-                    <Col
-                      xs="auto"
-                      style={{
-                        margin: "auto",
-                        paddingLeft: "5px",
-                        paddingRight: "5px",
-                      }}
-                    >
-                      <Button
-                        key={d._id}
-                        id={d._id}
-                        variant="light"
-                        style={{
-                          width: "100%",
                           margin: "auto",
-                        }}
-                        onClick={() => {
-                          setFilterKeyEvent(d._id);
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
                         }}
                       >
-                        <BsThreeDotsVertical />
-                      </Button>
-                    </Col>
-                  </Row>
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          size="md"
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                            addNote(d.label);
+                          }}
+                          style={{
+                            width: "100%",
+                            textAlign: "left",
+                          }}
+                        >
+                          <Row
+                            style={{ marginLeft: "0px", marginRight: "0px" }}
+                          >
+                            <Col
+                              xs="auto"
+                              style={{
+                                margin: "auto",
+                                paddingLeft: "5px",
+                                paddingRight: "5px",
+                              }}
+                            >
+                              <BsCircleFill
+                                size="0.5em"
+                                color="#9c27b0" // color from MUI default theme
+                              />
+                            </Col>
+                            <Col
+                              style={{
+                                margin: "auto",
+                                paddingLeft: "5px",
+                                paddingRight: "5px",
+                              }}
+                            >
+                              {d.label}
+                            </Col>
+                          </Row>
+                        </Button>
+                      </Col>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          style={{
+                            width: "100%",
+                            margin: "auto",
+                          }}
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                          }}
+                        >
+                          <BsThreeDotsVertical />
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                );
+              })}
+          </Container>
+          <Container
+            style={{
+              marginTop: "10px",
+              padding: "2px",
+              borderStyle: "solid",
+              borderColor: "#CCCCCC",
+              borderRadius: "15px",
+              backgroundColor: "#F0F0F0",
+              paddingBottom: "10px",
+            }}
+          >
+            <Row
+              style={{
+                marginTop: "5px",
+                marginBottom: "5px",
+                marginRight: "0",
+                marginLeft: "0",
+              }}
+            >
+              <Col
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <h5 style={{ margin: "auto" }}>Others</h5>
+              </Col>
+              <Col
+                xs="auto"
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "11px",
+                    textAlign: "center",
+                    margin: "auto",
+                  }}
+                >
+                  Filter <br />
+                  actions
                 </div>
-              );
-            })}
+              </Col>
+            </Row>
+            {manualLabels.phases
+              .filter((d) => d.label === "Teamwork")
+              .map((d, i) => {
+                return (
+                  <div>
+                    <Row
+                      style={{
+                        marginBottom: "10px",
+                        marginTop: "10px",
+                        marginRight: "0",
+                        marginLeft: "0",
+                      }}
+                    >
+                      <Col
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          size="md"
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                            addNote(d.label);
+                          }}
+                          style={{
+                            width: "100%",
+                            textAlign: "left",
+                          }}
+                          disabled={true}
+                        >
+                          {d.label}
+                        </Button>
+                      </Col>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          style={{
+                            width: "100%",
+                            margin: "auto",
+                          }}
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                          }}
+                        >
+                          <BsThreeDotsVertical />
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                );
+              })}
           </Container>
         </Col>
         <Col md={7}>
@@ -210,8 +328,6 @@ const PhaseButtons = () => {
 
             {manualLabels.actions
               .filter((d) => {
-                // console.log("phasesAssociated:", d.phasesAssociated);
-                // console.log("filterKeyEvent:", filterKeyEvent);
                 return (
                   d.phasesAssociated &&
                   d.phasesAssociated.includes(filterKeyEvent)
