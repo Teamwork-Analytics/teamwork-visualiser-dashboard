@@ -157,7 +157,11 @@ const Phases = () => {
           <Modal.Title>Edit observation</Modal.Title>
         </Modal.Header>
         <Modal.Body> {selectedNote}</Modal.Body>
-        <Modal.Footer></Modal.Footer>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleEditModalClose}>
+            Save changes
+          </Button>
+        </Modal.Footer>
       </Modal>
 
       <Modal
