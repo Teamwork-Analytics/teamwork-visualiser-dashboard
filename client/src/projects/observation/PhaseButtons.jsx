@@ -1,9 +1,9 @@
-import { Button, ButtonGroup } from "react-bootstrap";
-import toast from "react-hot-toast";
+import React, { useState, useEffect } from "react";
+import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
-import Clock from "react-live-clock";
+import { BsCircleFill, BsCircle, BsPinAngleFill } from "react-icons/bs";
 
 const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
@@ -21,47 +21,363 @@ const PhaseButtons = () => {
       }
     });
   };
-  return (
-    <div>
-      <h1>
-        <Clock format={"h:mm:ss a"} ticking={true} timezone={"Australia/Melbourne"} />
-      </h1>
-      <ButtonGroup className="mx-2 my-2">
-        {manualLabels.phases.map((d, i) => {
-          return (
-            <Button
-              key={i}
-              variant="primary"
-              size="lg"
-              // disabled={observation.stopTime !== null}
-              onClick={() => addNote(d.label)}
-              data-tip={d.description}
-            >
-              {d.label}
-            </Button>
-          );
-        })}
-      </ButtonGroup>
 
-      <ButtonGroup>
-        <Button
-          variant="secondary"
-          // disabled={observation.stopTime !== null}  
-          size="lg"
-          onClick={() => addNote()}
-        >
-          Manual Tag +
-        </Button>
-        <Button
-          variant="success"
-          size="lg"
-          onClick={() => {
-            toast.success("Notes are saved!");
-          }}
-        >
-          Save
-        </Button>
-      </ButtonGroup>
+  const [showCreateNoteModal, setShowCreateNoteModal] = useState(false);
+  const handleCreateNoteModalClose = () => {
+    setShowCreateNoteModal(false);
+    setLabel(""); // Clear the label input
+  };
+  const handleCreateNoteModalShow = () => setShowCreateNoteModal(true);
+
+  const [label, setLabel] = useState("");
+
+  const handleSubmit = () => {
+    addNote(label);
+    handleCreateNoteModalClose();
+  };
+
+  const [filterKeyEvent, setFilterKeyEvent] = useState("");
+
+  return (
+    <div style={{ marginTop: "10px" }}>
+      <Row>
+        <Col style={{ paddingRight: "0px" }}>
+          <Container
+            style={{
+              padding: "2px",
+              borderStyle: "solid",
+              borderColor: "#CCCCCC",
+              borderRadius: "15px",
+              backgroundColor: "#F0F0F0",
+              paddingBottom: "10px",
+            }}
+          >
+            <Row
+              style={{
+                marginTop: "5px",
+                marginBottom: "5px",
+                marginRight: "0",
+                marginLeft: "0",
+              }}
+            >
+              <Col
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <h5 style={{ margin: "auto" }}> Key events</h5>
+              </Col>
+              <Col
+                xs="auto"
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "12px",
+                    textAlign: "center",
+                    margin: "auto",
+                  }}
+                >
+                  Tag <br /> event
+                </div>
+              </Col>
+            </Row>
+
+            {manualLabels.phases
+              .filter((d) => d.label !== "Teamwork")
+              .map((d, i) => {
+                return (
+                  <div>
+                    <Row
+                      style={{
+                        marginBottom: "10px",
+                        marginTop: "10px",
+                        marginRight: "0",
+                        marginLeft: "0",
+                      }}
+                    >
+                      <Col
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          size="md"
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                          }}
+                          style={{
+                            width: "100%",
+                            textAlign: "left",
+                            backgroundColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
+                            borderColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
+                          }}
+                          active={filterKeyEvent === d._id}
+                        >
+                          <Row
+                            style={{ marginLeft: "0px", marginRight: "0px" }}
+                          >
+                            <Col
+                              xs="auto"
+                              style={{
+                                margin: "auto",
+                                paddingLeft: "5px",
+                                paddingRight: "5px",
+                              }}
+                            >
+                              <BsCircleFill
+                                size="0.5em"
+                                color="#9c27b0" // color from MUI default theme
+                              />
+                            </Col>
+                            <Col
+                              style={{
+                                margin: "auto",
+                                paddingLeft: "5px",
+                                paddingRight: "5px",
+                              }}
+                            >
+                              {d.label}
+                            </Col>
+                          </Row>
+                        </Button>
+                      </Col>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          style={{
+                            width: "100%",
+                            margin: "auto",
+                          }}
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                            addNote(d.label);
+                          }}
+                        >
+                          <BsPinAngleFill />
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                );
+              })}
+          </Container>
+          <Container
+            style={{
+              marginTop: "10px",
+              padding: "2px",
+              borderStyle: "solid",
+              borderColor: "#CCCCCC",
+              borderRadius: "15px",
+              backgroundColor: "#F0F0F0",
+              paddingBottom: "10px",
+            }}
+          >
+            <Row
+              style={{
+                marginTop: "5px",
+                marginBottom: "5px",
+                marginRight: "0",
+                marginLeft: "0",
+              }}
+            >
+              <Col
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                <h5 style={{ margin: "auto" }}>Other actions</h5>
+              </Col>
+            </Row>
+            {manualLabels.phases
+              .filter((d) => d.label === "Teamwork")
+              .map((d, i) => {
+                return (
+                  <div>
+                    <Row
+                      style={{
+                        marginBottom: "10px",
+                        marginTop: "10px",
+                        marginRight: "0",
+                        marginLeft: "0",
+                      }}
+                    >
+                      <Col
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <Button
+                          key={d._id}
+                          id={d._id}
+                          variant="light"
+                          size="md"
+                          onClick={() => {
+                            setFilterKeyEvent(d._id);
+                          }}
+                          style={{
+                            width: "100%",
+                            textAlign: "left",
+                            backgroundColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
+                            borderColor:
+                              filterKeyEvent === d._id ? "#e1e6eb" : "",
+                          }}
+                          active={filterKeyEvent === d._id}
+                        >
+                          {d.label}
+                        </Button>
+                      </Col>
+                    </Row>
+                  </div>
+                );
+              })}
+          </Container>
+        </Col>
+        <Col md={7}>
+          <Container
+            style={{
+              padding: "2px",
+              borderStyle: "solid",
+              borderColor: "#CCCCCC",
+              borderRadius: "15px",
+              backgroundColor: "#F0F0F0",
+              paddingBottom: "10px",
+            }}
+          >
+            <h5 className="mx-2 my-2">Actions</h5>
+
+            <Button
+              variant="success"
+              size="md"
+              onClick={() => {
+                handleCreateNoteModalShow();
+              }}
+              style={{
+                width: "95%",
+                fontWeight: "600",
+                marginTop: "5px",
+                marginBottom: "5px",
+              }}
+            >
+              Tag custom action +
+            </Button>
+
+            {manualLabels.actions
+              .filter((d) => {
+                return (
+                  d.phasesAssociated &&
+                  d.phasesAssociated.includes(filterKeyEvent)
+                );
+              })
+              .map((d, i) => {
+                return (
+                  <Button
+                    key={i}
+                    variant="light"
+                    size="md"
+                    onClick={() => addNote(d.label)}
+                    style={{
+                      width: "95%",
+                      marginBottom: "5px",
+                      marginTop: "5px",
+                      textAlign: "left",
+                    }}
+                  >
+                    <Row style={{ marginLeft: "0px", marginRight: "0px" }}>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        <BsCircle
+                          size="0.5em"
+                          color="#ed6c02" // color from MUI default theme
+                        />
+                      </Col>
+                      <Col
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                      >
+                        {d.label}
+                      </Col>
+                    </Row>
+                  </Button>
+                );
+              })}
+          </Container>
+        </Col>
+      </Row>
+
+      {/* Empty line so component is not sticking bottom of screen */}
+      <br />
+      <br />
+
+      <Modal show={showCreateNoteModal} onHide={handleCreateNoteModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Create custom action</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <Form.Group controlId="label">
+              <Form.Label>Action name:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Action"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="success"
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

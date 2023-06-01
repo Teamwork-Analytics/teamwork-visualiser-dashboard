@@ -1,0 +1,25 @@
+.tagging-editor-back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.tagging-editor-page-title {
+  position: absolute;
+  top: 10px;
+  margin: 10px;
+}
+
+.tagging-editor-mid-container {
+  height: 100%;
+  display: flex;
+}
+
+.tagging-editor-content-row {
+  width: 100vw;
+  display: flex;
+  flex: 1;
+  margin-top: 70px;
+  justify-content: center;
+  padding-bottom: 0.5em;
+}

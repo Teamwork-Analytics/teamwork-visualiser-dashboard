@@ -21,6 +21,9 @@ const Note = ({ initialValue, data }) => {
     ObservationAPI.updateNote(observation._id, updateInfo).then((res) => {
       if (res.status === 200) {
         toast.success("Note has been updated!");
+        // refresh notes on the page
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
       }
     });
   };
@@ -61,19 +64,28 @@ const Note = ({ initialValue, data }) => {
   return (
     <Form>
       <Form.Group as={Row} className="mb-3">
-        <Col sm="3">
+        <Col sm="4">
           <Form.Control
-            type={"time"}
-            value={time.toLocaleTimeString() + `.${time.getMilliseconds()}`}
-            step="0.001"
-            onChange={(e) => {
-              dateFormatter(e.target.value);
-            }}
-            onBlur={() => saveNote()}
+            disabled={true} // disabled as time form is not working on ipad
+            // type={"time"} // time form is not working on ipad
+            // value={time.toLocaleTimeString() + `.${time.getMilliseconds()}`}
+            // step="0.01"
+            // onChange={(e) => {
+            //   dateFormatter(e.target.value);
+            // }}
+            // onBlur={() => saveNote()}
+            type={"text"}
+            style={{ color: "black" }}
+            value={time.toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            })}
           />
         </Col>
 
-        <Col sm="7">
+        <Col sm="8">
           <Form.Control
             placeholder={data.message}
             onChange={(e) => setValue(e.target.value)}
@@ -81,7 +93,7 @@ const Note = ({ initialValue, data }) => {
             onBlur={() => saveNote()}
           />
         </Col>
-        <Col sm="2">
+        {/* <Col sm="2">
           <Button
             id={data._id}
             variant="danger"
@@ -91,7 +103,7 @@ const Note = ({ initialValue, data }) => {
           >
             Delete
           </Button>
-        </Col>
+        </Col> */}
       </Form.Group>
     </Form>
   );

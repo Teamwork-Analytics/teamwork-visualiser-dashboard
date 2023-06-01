@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { useObservation } from "./ObservationContext";
@@ -22,7 +22,7 @@ const ObservationView = () => {
   const styles = {
     outer: {
       margin: "0 auto",
-      width: "50vw",
+      width: "90vw",
       maxWidth: "1440px",
       height: "100%",
       colour: "white",
@@ -51,19 +51,25 @@ const ObservationView = () => {
   return (
     <div style={styles.outer}>
       <h1>Session {simulationId}</h1>
-      <div style={styles.info}>
+      {/* TODO: code commented out below moved into sidebar (hide from researcher) */}
+      {/* <div style={styles.info}>
         {observation.baselineTime !== null ? <AlertCondition /> : null}
         <label>Baseline time: {timeString(state.baselineTime)} </label>
         <br />
         <label>Start time: {timeString(state.startTime)} </label>
         <br />
         <label>Stop time: {timeString(state.stopTime)}</label>
-      </div>
+      </div> */}
       <hr />
 
-      <PhaseButtons />
-
-      <Phases />
+      <Row>
+        <Col lg={7} style={{ padding: "0px" }}>
+          <PhaseButtons />
+        </Col>
+        <Col style={{ padding: "0px" }}>
+          <Phases />
+        </Col>
+      </Row>
       <ReactTooltip />
     </div>
   );
