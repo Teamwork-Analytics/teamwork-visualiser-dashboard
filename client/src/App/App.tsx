@@ -37,12 +37,10 @@ function App() {
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />
           <Route path="/" element={<Navigate replace to="/main" />} />
           <Route path="/projects" element={<ProjectManagementPage />} />
-          {/* Take project ID in when it is connected to the backend */}
           <Route
             path="/tagging-editor/:projectId"
             element={<TaggingEditorPage />}
           />
-          <Route path="/tagging-editor" element={<TaggingEditorPage />} />
         </Routes>
       </BrowserRouter>
       <footer style={styles.footer}>
