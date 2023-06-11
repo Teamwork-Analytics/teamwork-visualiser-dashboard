@@ -3,9 +3,31 @@ import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
-import { BsCircleFill, BsCircle, BsPinAngleFill } from "react-icons/bs";
+import {
+  BsCircleFill,
+  BsCircle,
+  BsPinAngleFill,
+  BsFillMicFill,
+  BsMicMuteFill,
+} from "react-icons/bs";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 const PhaseButtons = () => {
+  // Speech recognition library
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  // Check if browser supports speech recognition
+  if (!browserSupportsSpeechRecognition) {
+    console.log("Browser doesn't support speech recognition.");
+  }
+
   const { observation, setNotes } = useObservation();
 
   const addNote = (label = "") => {
@@ -30,6 +52,10 @@ const PhaseButtons = () => {
   const handleCreateNoteModalShow = () => setShowCreateNoteModal(true);
 
   const [label, setLabel] = useState("");
+
+  useEffect(() => {
+    setLabel(transcript);
+  }, [transcript]);
 
   const handleSubmit = () => {
     addNote(label);
@@ -345,7 +371,15 @@ const PhaseButtons = () => {
       <br />
       <br />
 
-      <Modal show={showCreateNoteModal} onHide={handleCreateNoteModalClose}>
+      <Modal
+        show={showCreateNoteModal}
+        onHide={() => {
+          handleCreateNoteModalClose();
+          // reset speech recognition memory when close
+          resetTranscript();
+          SpeechRecognition.stopListening();
+        }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Create custom action</Modal.Title>
         </Modal.Header>
@@ -358,12 +392,48 @@ const PhaseButtons = () => {
           >
             <Form.Group controlId="label">
               <Form.Label>Action name:</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Action"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-              />
+              <Row>
+                <Col
+                  style={{
+                    margin: "auto",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                  }}
+                >
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Action"
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
+                  />
+                </Col>
+                <Col
+                  xs="auto"
+                  style={{
+                    margin: "auto",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                  }}
+                >
+                  {browserSupportsSpeechRecognition && listening ? (
+                    <BsFillMicFill
+                      style={{ color: "green" }}
+                      size="1.5em"
+                      onClick={() => {
+                        SpeechRecognition.stopListening();
+                      }}
+                    />
+                  ) : (
+                    <BsMicMuteFill
+                      style={{ color: "red" }}
+                      size="1.5em"
+                      onClick={() => {
+                        SpeechRecognition.startListening({ continuous: true });
+                      }}
+                    />
+                  )}
+                </Col>
+              </Row>
             </Form.Group>
           </Form>
         </Modal.Body>
