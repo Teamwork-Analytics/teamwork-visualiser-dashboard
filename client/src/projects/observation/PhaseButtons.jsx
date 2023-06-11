@@ -32,6 +32,7 @@ const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
 
   const addNote = (label = "") => {
+    const toastId = toast.loading("Loading...");
     const data = {
       message: label,
       timeString: new Date(Date.now()).toISOString(),
@@ -43,6 +44,9 @@ const PhaseButtons = () => {
         setNotes(phases);
       }
       return res.status;
+    });
+    toast.success("Action tagged", {
+      id: toastId,
     });
   };
 
@@ -60,12 +64,8 @@ const PhaseButtons = () => {
   }, [transcript]);
 
   const handleSubmit = () => {
-    const toastId = toast.loading("Loading...");
     addNote(label);
     handleCreateNoteModalClose();
-    toast.success("Action tagged", {
-      id: toastId,
-    });
   };
 
   const [filterKeyEvent, setFilterKeyEvent] = useState("");
@@ -204,12 +204,8 @@ const PhaseButtons = () => {
                             margin: "auto",
                           }}
                           onClick={() => {
-                            const toastId = toast.loading("Loading...");
                             setFilterKeyEvent(d._id);
                             addNote(d.label);
-                            toast.success("Action tagged", {
-                              id: toastId,
-                            });
                           }}
                         >
                           <BsPinAngleFill />
@@ -339,11 +335,7 @@ const PhaseButtons = () => {
                     variant="light"
                     size="md"
                     onClick={() => {
-                      const toastId = toast.loading("Loading...");
                       addNote(d.label);
-                      toast.success("Action tagged", {
-                        id: toastId,
-                      });
                     }}
                     style={{
                       width: "95%",
@@ -460,7 +452,7 @@ const PhaseButtons = () => {
               handleSubmit();
             }}
           >
-            Submit
+            Tag action
           </Button>
         </Modal.Footer>
       </Modal>
