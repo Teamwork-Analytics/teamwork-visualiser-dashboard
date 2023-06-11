@@ -13,8 +13,19 @@ import {
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import toast, { useToasterStore } from "react-hot-toast";
+
+const TOAST_LIMIT = 2; // limit for tagging actions feedback toast
 
 const PhaseButtons = () => {
+  const { toasts } = useToasterStore();
+  useEffect(() => {
+    toasts
+      .filter((t) => t.visible) // Only consider visible toasts
+      .filter((_, i) => i >= TOAST_LIMIT) // Is toast index over limit?
+      .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) for no exit animation
+  }, [toasts]);
+
   // Speech recognition library, see https://webspeechrecognition.com/
   const {
     transcript,
@@ -41,6 +52,7 @@ const PhaseButtons = () => {
         const phases = sortNotesDescending(res.data);
         setNotes(phases);
       }
+      return res.status;
     });
   };
 
@@ -58,8 +70,12 @@ const PhaseButtons = () => {
   }, [transcript]);
 
   const handleSubmit = () => {
+    const toastId = toast.loading("Loading...");
     addNote(label);
     handleCreateNoteModalClose();
+    toast.success("Action tagged", {
+      id: toastId,
+    });
   };
 
   const [filterKeyEvent, setFilterKeyEvent] = useState("");
@@ -198,8 +214,12 @@ const PhaseButtons = () => {
                             margin: "auto",
                           }}
                           onClick={() => {
+                            const toastId = toast.loading("Loading...");
                             setFilterKeyEvent(d._id);
                             addNote(d.label);
+                            toast.success("Action tagged", {
+                              id: toastId,
+                            });
                           }}
                         >
                           <BsPinAngleFill />
@@ -328,7 +348,13 @@ const PhaseButtons = () => {
                     key={i}
                     variant="light"
                     size="md"
-                    onClick={() => addNote(d.label)}
+                    onClick={() => {
+                      const toastId = toast.loading("Loading...");
+                      addNote(d.label);
+                      toast.success("Action tagged", {
+                        id: toastId,
+                      });
+                    }}
                     style={{
                       width: "95%",
                       marginBottom: "5px",
