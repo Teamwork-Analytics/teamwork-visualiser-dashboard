@@ -15,7 +15,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 
 const PhaseButtons = () => {
-  // Speech recognition library
+  // Speech recognition library, see https://webspeechrecognition.com/
   const {
     transcript,
     listening,
