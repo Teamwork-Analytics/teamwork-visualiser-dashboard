@@ -83,8 +83,20 @@ const Phases = () => {
                 hour12: true,
               });
 
+              // calculate time difference for distance between notes
+              let timeDifferenceInPx;
+              if (i < notes.length - 1) {
+                const nextDate = new Date(notes[i + 1].timestamp);
+                const timeDifferenceInSeconds = Math.abs(
+                  (nextDate - date) / 1000
+                );
+                const scaleFactor = 1; // 1 second = `scaleFactor` px
+                timeDifferenceInPx = timeDifferenceInSeconds * scaleFactor;
+                console.log(timeDifferenceInPx);
+              }
+
               return (
-                <TimelineItem key={keyString}>
+                <TimelineItem key={keyString} style={{ minHeight: "auto" }}>
                   <TimelineOppositeContent
                     color="grey"
                     style={{ fontSize: "12px", maxWidth: "120px" }}
@@ -102,7 +114,12 @@ const Phases = () => {
                         phaseLabels.includes(d.message) ? "filled" : "outlined"
                       }
                     />
-                    <TimelineConnector />
+                    <TimelineConnector
+                      style={{
+                        // for length proportion to time difference
+                        minHeight: timeDifferenceInPx + 2,
+                      }}
+                    />
                   </TimelineSeparator>
                   <TimelineContent>
                     <Row style={{ marginRight: "0", marginLeft: "0" }}>
@@ -157,6 +174,8 @@ const Phases = () => {
                 </TimelineItem>
               );
             })}
+        {/* Starting time */}
+        {/* // TODO: grab simulation start time */}
         <TimelineItem>
           <TimelineOppositeContent
             style={{ minWidth: "120px", maxWidth: "120px" }}
