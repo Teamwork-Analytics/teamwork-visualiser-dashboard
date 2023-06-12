@@ -80,19 +80,19 @@ export const manualLabels = {
     },
     {
       label: "Efficiency of distributing workload",
-      phasesAssociated: ["mockPhaseId004, mockPhaseId005"],
+      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
     },
     {
       label: "Inefficiency of distributing workload",
-      phasesAssociated: ["mockPhaseId004, mockPhaseId005"],
+      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
     },
     {
       label: "Good communication",
-      phasesAssociated: ["mockPhaseId004, mockPhaseId005"],
+      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
     },
     {
       label: "Poor communication",
-      phasesAssociated: ["mockPhaseId004, mockPhaseId005"],
+      phasesAssociated: ["mockPhaseId004", "mockPhaseId005"],
     },
     {
       label: "Good teamwork",

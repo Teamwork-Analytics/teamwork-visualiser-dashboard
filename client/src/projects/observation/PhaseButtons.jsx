@@ -42,11 +42,14 @@ const PhaseButtons = () => {
       if (res.status === 200) {
         const phases = sortNotesDescending(res.data);
         setNotes(phases);
+        toast.success("Action tagged", {
+          id: toastId,
+        });
+      } else {
+        toast.error("Error tagging action", {
+          id: toastId,
+        });
       }
-      return res.status;
-    });
-    toast.success("Action tagged", {
-      id: toastId,
     });
   };
 
