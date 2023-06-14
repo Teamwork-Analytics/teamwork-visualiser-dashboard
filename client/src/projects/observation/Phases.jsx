@@ -44,7 +44,6 @@ const Phases = () => {
     setShowDeleteConfirmationModal(true);
   const [deletingNoteId, setDeletingNoteId] = useState(null);
   const handleDeleteTag = () => {
-    console.log("Deleting note (id): ", deletingNoteId);
     // TODO: delete using Note.jsx function
     deleteNote(deletingNoteId);
     setDeletingNoteId(null);
@@ -92,7 +91,6 @@ const Phases = () => {
                 );
                 const scaleFactor = 1; // 1 second = `scaleFactor` px
                 timeDifferenceInPx = timeDifferenceInSeconds * scaleFactor;
-                console.log(timeDifferenceInPx);
               }
 
               return (
