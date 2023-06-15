@@ -62,7 +62,7 @@ const DebriefingControllerModule = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <Row style={{ margin: "3px" }}>
+      <Row style={{ margin: "3px", fontSize: "14px" }}>
         <Col className="d-flex align-items-center text-left">
           You have selected visualisations: {selectedVis.join(", ")}
         </Col>
@@ -146,8 +146,11 @@ const DebriefingControllerModule = () => {
                 padding: "5px",
               }}
               onClick={() => handleAddVis(topActiveTab)}
+              disabled={selectedVis.includes(topActiveTab)}
             >
-              Add visualisation
+              {selectedVis.includes(topActiveTab)
+                ? "Added"
+                : "Add visualisation"}
             </Button>
           </Container>
         </Col>
@@ -242,8 +245,11 @@ const DebriefingControllerModule = () => {
                         padding: "5px",
                       }}
                       onClick={() => handleAddVis(bottomLeftActiveTab)}
+                      disabled={selectedVis.includes(bottomLeftActiveTab)}
                     >
-                      Add visualisation
+                      {selectedVis.includes(bottomLeftActiveTab)
+                        ? "Added"
+                        : "Add visualisation"}
                     </Button>
                   </Tab.Content>
                 </Col>
@@ -308,8 +314,11 @@ const DebriefingControllerModule = () => {
                         padding: "5px",
                       }}
                       onClick={() => handleAddVis(bottomRightActiveTab)}
+                      disabled={selectedVis.includes(bottomRightActiveTab)}
                     >
-                      Add visualisation
+                      {selectedVis.includes(bottomRightActiveTab)
+                        ? "Added"
+                        : "Add visualisation"}
                     </Button>
                   </Tab.Content>
                 </Col>
