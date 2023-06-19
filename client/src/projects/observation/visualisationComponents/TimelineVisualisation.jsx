@@ -10,6 +10,38 @@ const eventOnePosition = 408; // Ruth entered
 const eventTwoPosition = 606; // Secondary nurse entered
 const eventThreePosition = 1365; // MET call
 const eventFourPosition = 1408; // Doctor entered
+const timelineMarks = [
+  {
+    value: eventOnePosition,
+  },
+  {
+    value: eventTwoPosition,
+  },
+  {
+    value: eventThreePosition,
+  },
+  {
+    value: eventFourPosition,
+  },
+];
+const keyEventMarks = [
+  {
+    value: eventOnePosition,
+    label: "KE1",
+  },
+  {
+    value: eventTwoPosition,
+    label: "KE2",
+  },
+  {
+    value: eventThreePosition,
+    label: "KE3",
+  },
+  {
+    value: eventFourPosition,
+    label: "KE4",
+  },
+];
 
 // styling
 const timelineStyle = {
@@ -33,6 +65,20 @@ const timelineStyle = {
       width: 3, // Thin width
       height: 35, // Height covering all track
       borderRadius: 0, // Make it rectangle
+      backgroundColor: "#1976d2", // from MUI
+    },
+    "& .MuiSlider-mark": {
+      backgroundColor: "#bfbfbf",
+      height: 25,
+    },
+  },
+  keyEventTimelineSx: {
+    "& .MuiSlider-mark": {
+      height: 15,
+    },
+    "& .MuiSlider-markLabel": {
+      top: "-5px",
+      fontSize: "0.5rem",
     },
   },
   playerContainer: {
@@ -153,6 +199,7 @@ const TimelineVisualisation = () => {
               max={totalDuration}
               style={timelineStyle.nurseTimeline}
               sx={timelineStyle.nurseTimelineSx}
+              marks={timelineMarks}
             ></Slider>
             <Slider
               aria-label="graduate-nurse-2-timeline"
@@ -163,6 +210,7 @@ const TimelineVisualisation = () => {
               max={totalDuration}
               style={timelineStyle.nurseTimeline}
               sx={timelineStyle.nurseTimelineSx}
+              marks={timelineMarks}
             ></Slider>
             <Slider
               aria-label="ward-nurse-1-timeline"
@@ -173,6 +221,7 @@ const TimelineVisualisation = () => {
               max={totalDuration}
               style={timelineStyle.nurseTimeline}
               sx={timelineStyle.nurseTimelineSx}
+              marks={timelineMarks}
             ></Slider>
             <Slider
               aria-label="ward-nurse-1-timeline"
@@ -183,6 +232,7 @@ const TimelineVisualisation = () => {
               max={totalDuration}
               style={timelineStyle.nurseTimeline}
               sx={timelineStyle.nurseTimelineSx}
+              marks={timelineMarks}
             ></Slider>
 
             <Container style={timelineStyle.playerContainer}>
@@ -229,13 +279,15 @@ const TimelineVisualisation = () => {
               value={currentPosition}
               max={totalDuration}
               onChange={(_, value) => setCurrentPosition(value)}
+              marks={keyEventMarks}
+              sx={timelineStyle.keyEventTimelineSx}
             ></Slider>
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                marginTop: "-20px",
+                marginTop: "-30px",
               }}
             >
               <div style={timelineStyle.tinyDurationText}>
