@@ -9,6 +9,7 @@ import {
   Image,
   Button,
 } from "react-bootstrap";
+import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
 
 //image references:
 import actionNetwork from "../../images/vis/action-network.png";
@@ -21,6 +22,7 @@ import priorBar from "../../images/vis/prioritisation-bar.png";
 import studentAct from "../../images/vis/student-actions.png";
 import videoVis from "../../images/vis/video.png";
 import wardMap from "../../images/vis/ward-map.png";
+import { TimelineProvider } from "./visualisationComponents/TimelineContext";
 
 // remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
@@ -112,6 +114,9 @@ const DebriefingControllerModule = () => {
                       : debriefStyles.inactiveTab,
                 }}
               >
+                <TimelineProvider>
+                  <TimelineVisualisation style={debriefStyles.imageContainer} />
+                </TimelineProvider>
                 <Image
                   src={dandelionTimeline}
                   style={debriefStyles.imageContainer}
