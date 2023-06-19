@@ -8,6 +8,7 @@ import {
   Container,
   Image,
   Button,
+  Modal,
 } from "react-bootstrap";
 import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
 
@@ -62,8 +63,41 @@ const DebriefingControllerModule = () => {
     }
   };
 
+  // preview modal before projection
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const handleClosePreviewModal = () => setShowPreviewModal(false);
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+      <Modal size="xl" show={showPreviewModal} onHide={handleClosePreviewModal}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            height: "calc(100vh - 30px)",
+            maxWidth: "1080px",
+            margin: "0 auto",
+            color: "#0a0a0a",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "3em",
+              color: "#0a0a0a",
+            }}
+          >
+            You have selected: <br />
+            {selectedVis.join(", ")}
+          </p>
+          <p>
+            By right it should show preview but the feature is not implemented
+            yet!🙊
+          </p>
+        </div>
+      </Modal>
+
       <Row style={{ margin: "3px", fontSize: "14px" }}>
         <Col className="d-flex align-items-center text-left">
           You have selected visualisations: {selectedVis.join(", ")}
@@ -72,8 +106,9 @@ const DebriefingControllerModule = () => {
           <Button
             variant="success"
             style={{ marginRight: "5px", fontSize: "14px" }}
+            onClick={() => setShowPreviewModal(true)}
           >
-            Project preview
+            Projection preview
           </Button>
           <Button
             variant="danger"
