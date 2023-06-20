@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
 import { Container, Row, Col, Badge, Button } from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
-import { FaUndoAlt, FaRedoAlt, FaPlay, FaPause } from "react-icons/fa";
+import {
+  BsFastForwardFill,
+  BsRewindFill,
+  BsSpeedometer2,
+  BsPauseFill,
+  BsPlayFill,
+} from "react-icons/bs";
 
 // fake numbers for now
 const totalDuration = 1800; // 30 mins to seconds
@@ -80,6 +86,10 @@ const timelineStyle = {
       top: "-5px",
       fontSize: "0.5rem",
     },
+    "& .MuiSlider-thumb": {
+      width: 10,
+      height: 10,
+    },
   },
   playerContainer: {
     display: "flex",
@@ -89,41 +99,34 @@ const timelineStyle = {
   },
 };
 
-// skip or rewind 5 seconds button
-const SkipIcon = () => {
+const CustomMark = ({ mark, index }) => {
+  // Add your custom styling here
   return (
-    <div style={{ position: "relative", display: "inline-block" }}>
-      <FaRedoAlt size={30} color="#bdbdbd" />
+    <div style={{ position: "relative", paddingBottom: "-200px" }}>
       <span
         style={{
           position: "absolute",
-          top: "20%",
-          left: "40%",
-          fontSize: "12px",
-          color: "#bdbdbd",
+          top: index % 2 === 0 ? "-20px" : "-70px", // example: alternating label positions
+          transform: "rotate(-45deg)",
+          marginLeft: "-5px",
         }}
       >
-        5
+        {mark.label}
       </span>
-    </div>
-  );
-};
 
-const RewindIcon = () => {
-  return (
-    <div style={{ position: "relative", display: "inline-block" }}>
-      <FaUndoAlt size={30} color="#bdbdbd" />
       <span
+        // example: alternating mark heights
         style={{
+          display: "block",
+          width: "2px",
           position: "absolute",
-          top: "20%",
-          left: "40%",
-          fontSize: "12px",
-          color: "#bdbdbd",
+          bottom: 0,
+          height: index % 2 === 0 ? "20px" : "70px",
+          backgroundColor: "#1976d2",
+          marginBottom: "-20px",
+          marginLeft: "-1px",
         }}
-      >
-        5
-      </span>
+      ></span>
     </div>
   );
 };
@@ -174,67 +177,7 @@ const TimelineVisualisation = () => {
     <>
       <Container style={{ marginTop: "15px", marginBottom: "15px" }}>
         <Row>
-          <Col xs="auto">
-            <Badge bg="info" style={{ ...timelineStyle.nurseBadge }}>
-              GN1
-            </Badge>
-            <Badge bg="danger" style={{ ...timelineStyle.nurseBadge }}>
-              GN2
-            </Badge>
-            <Badge bg="success" style={{ ...timelineStyle.nurseBadge }}>
-              WN1
-            </Badge>
-            <Badge bg="warning" style={{ ...timelineStyle.nurseBadge }}>
-              WN2
-            </Badge>
-          </Col>
-
           <Col>
-            <Slider
-              aria-label="graduate-nurse-1-timeline"
-              size="small"
-              track={false}
-              disabled
-              value={currentPosition}
-              max={totalDuration}
-              style={timelineStyle.nurseTimeline}
-              sx={timelineStyle.nurseTimelineSx}
-              marks={timelineMarks}
-            ></Slider>
-            <Slider
-              aria-label="graduate-nurse-2-timeline"
-              size="small"
-              track={false}
-              disabled
-              value={currentPosition}
-              max={totalDuration}
-              style={timelineStyle.nurseTimeline}
-              sx={timelineStyle.nurseTimelineSx}
-              marks={timelineMarks}
-            ></Slider>
-            <Slider
-              aria-label="ward-nurse-1-timeline"
-              size="small"
-              track={false}
-              disabled
-              value={currentPosition}
-              max={totalDuration}
-              style={timelineStyle.nurseTimeline}
-              sx={timelineStyle.nurseTimelineSx}
-              marks={timelineMarks}
-            ></Slider>
-            <Slider
-              aria-label="ward-nurse-1-timeline"
-              size="small"
-              track={false}
-              disabled
-              value={currentPosition}
-              max={totalDuration}
-              style={timelineStyle.nurseTimeline}
-              sx={timelineStyle.nurseTimelineSx}
-              marks={timelineMarks}
-            ></Slider>
-
             <Container style={timelineStyle.playerContainer}>
               <Button
                 style={{
@@ -242,9 +185,9 @@ const TimelineVisualisation = () => {
                   backgroundColor: "transparent",
                   border: "none",
                 }}
-                onClick={() => setCurrentPosition(currentPosition - 5)}
+                onClick={() => setCurrentPosition(currentPosition - 10)}
               >
-                <RewindIcon />
+                <BsRewindFill size={30} color="#bdbdbd" />
               </Button>
               <Button
                 style={{
@@ -257,9 +200,9 @@ const TimelineVisualisation = () => {
                 }}
               >
                 {paused ? (
-                  <FaPlay size={30} color="#bdbdbd" />
+                  <BsPlayFill size={30} color="#bdbdbd" />
                 ) : (
-                  <FaPause size={30} color="#bdbdbd" />
+                  <BsPauseFill size={30} color="#bdbdbd" />
                 )}
               </Button>
               <Button
@@ -268,9 +211,9 @@ const TimelineVisualisation = () => {
                   backgroundColor: "transparent",
                   border: "none",
                 }}
-                onClick={() => setCurrentPosition(currentPosition + 5)}
+                onClick={() => setCurrentPosition(currentPosition + 10)}
               >
-                <SkipIcon />
+                <BsFastForwardFill size={30} color="#bdbdbd" />
               </Button>
             </Container>
 
@@ -279,7 +222,10 @@ const TimelineVisualisation = () => {
               value={currentPosition}
               max={totalDuration}
               onChange={(_, value) => setCurrentPosition(value)}
-              marks={keyEventMarks}
+              marks={keyEventMarks.map((mark, index) => ({
+                ...mark,
+                label: <CustomMark mark={mark} index={index} />,
+              }))}
               sx={timelineStyle.keyEventTimelineSx}
             ></Slider>
             <div
