@@ -10,9 +10,10 @@ import * as React from "react";
 const TimelineContext = React.createContext();
 
 function TimelineProvider({ children }) {
-  const [currentPosition, setCurrentPosition] = React.useState(0); // position of the slider time in seconds
+  const [range, setRange] = React.useState([0, 20]); // range of the slider time in seconds
+  const [playHeadPosition, setPlayHeadPosition] = React.useState(range[0]); // position of the slider time in seconds
 
-  const value = { currentPosition, setCurrentPosition };
+  const value = { playHeadPosition, setPlayHeadPosition, range, setRange };
   return (
     <TimelineContext.Provider value={value}>
       {children}

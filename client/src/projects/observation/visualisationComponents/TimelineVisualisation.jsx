@@ -9,25 +9,26 @@ import {
   BsPauseFill,
   BsPlayFill,
 } from "react-icons/bs";
+import { useObservation } from "../ObservationContext";
+
+const calculateDuration = (startTime, endTime) => {
+  return Math.round(Math.abs(new Date(endTime) - new Date(startTime)) / 1000);
+};
 
 // fake numbers for now
-const totalDuration = 1800; // 30 mins to seconds
+const simStartTimestamp = "2023-06-01T00:09:38.357Z";
+const simEndTimestamp = "2023-06-01T00:25:44.896Z";
+const simDuration = calculateDuration(simStartTimestamp, simEndTimestamp);
+
 const eventOnePosition = 408; // Ruth entered
 const eventTwoPosition = 606; // Secondary nurse entered
-const eventThreePosition = 1365; // MET call
-const eventFourPosition = 1408; // Doctor entered
+
 const timelineMarks = [
   {
     value: eventOnePosition,
   },
   {
     value: eventTwoPosition,
-  },
-  {
-    value: eventThreePosition,
-  },
-  {
-    value: eventFourPosition,
   },
 ];
 const keyEventMarks = [
@@ -38,14 +39,6 @@ const keyEventMarks = [
   {
     value: eventTwoPosition,
     label: "KE2",
-  },
-  {
-    value: eventThreePosition,
-    label: "KE3",
-  },
-  {
-    value: eventFourPosition,
-    label: "KE4",
   },
 ];
 
@@ -95,7 +88,8 @@ const timelineStyle = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: "-1px",
+    marginTop: "-5px",
+    marginBottom: "15px",
   },
 };
 
@@ -139,89 +133,87 @@ const formatDuration = (value) => {
 };
 
 const TimelineVisualisation = () => {
-  const { currentPosition, setCurrentPosition } = useTimeline();
-  // play or pause button
-  const [paused, setPaused] = useState(true);
-  const [intervalId, setIntervalId] = useState(null);
+  const { notes } = useObservation();
+
+  const [intervalID, setInteralID] = useState(null);
+
+  // timeline range and playhead
+  const { range, setRange, playHeadPosition, setPlayHeadPosition } =
+    useTimeline();
+  // play or pause state
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlayPause = () => {
-    if (paused) {
+    if (!isPlaying) {
       // Start playing
       const id = setInterval(() => {
-        setCurrentPosition((current) => {
+        setPlayHeadPosition((current) => {
           // Stop increasing if at max value
-          if (current >= totalDuration) {
+          if (current >= range[1]) {
             clearInterval(id);
             return current;
           }
-
           return current + 1;
         });
-      }, 1000); // Execute every 1 second
-      setIntervalId(id);
+      }, 1000);
+      setInteralID(id);
     } else {
-      // Pause playing
-      clearInterval(intervalId);
+      clearInterval(intervalID);
     }
-    setPaused(!paused);
+    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
   };
 
-  // clear interval when the component is unmounted
+  // clear interval when component unmounted
   useEffect(() => {
     return () => {
-      clearInterval(intervalId);
+      clearInterval(intervalID);
     };
-  }, [intervalId]);
+  }, [intervalID]);
 
   return (
     <>
-      <Container style={{ marginTop: "15px", marginBottom: "15px" }}>
+      <Container
+        style={{
+          marginTop: "15px",
+          marginBottom: "10px",
+          paddingTop: "70px",
+          position: "relative",
+        }}
+      >
         <Row>
           <Col>
-            <Container style={timelineStyle.playerContainer}>
-              <Button
-                style={{
-                  margin: "5px",
-                  backgroundColor: "transparent",
-                  border: "none",
-                }}
-                onClick={() => setCurrentPosition(currentPosition - 10)}
-              >
-                <BsRewindFill size={30} color="#bdbdbd" />
-              </Button>
-              <Button
-                style={{
-                  margin: "5px",
-                  backgroundColor: "transparent",
-                  border: "none",
-                }}
-                onClick={() => {
-                  handlePlayPause();
-                }}
-              >
-                {paused ? (
-                  <BsPlayFill size={30} color="#bdbdbd" />
-                ) : (
-                  <BsPauseFill size={30} color="#bdbdbd" />
-                )}
-              </Button>
-              <Button
-                style={{
-                  margin: "5px",
-                  backgroundColor: "transparent",
-                  border: "none",
-                }}
-                onClick={() => setCurrentPosition(currentPosition + 10)}
-              >
-                <BsFastForwardFill size={30} color="#bdbdbd" />
-              </Button>
-            </Container>
+            <Slider
+              value={range}
+              max={simDuration}
+              onChange={(_, newValue) => {
+                setRange(newValue);
+                setPlayHeadPosition(newValue[0]);
+              }}
+              valueLabelDisplay="auto"
+              aria-labelledby="range-slider"
+              marks={keyEventMarks.map((mark, index) => ({
+                ...mark,
+                label: <CustomMark mark={mark} index={index} />,
+              }))}
+              sx={timelineStyle.keyEventTimelineSx}
+            />
+
+            <Slider
+              value={playHeadPosition}
+              max={simDuration}
+              onChange={(_, newValue) => setPlayHeadPosition(newValue)}
+              valueLabelDisplay="auto"
+              aria-labelledby="playhead-slider"
+              disabled
+              //   style={{ color: "blue", height: "10px", marginTop: "-20px" }}
+              sx={timelineStyle.keyEventTimelineSx}
+            />
 
             <Slider
               aria-label="controller-timeline"
-              value={currentPosition}
-              max={totalDuration}
-              onChange={(_, value) => setCurrentPosition(value)}
+              value={playHeadPosition}
+              max={simDuration}
+              onChange={(_, value) => setPlayHeadPosition(value)}
               marks={keyEventMarks.map((mark, index) => ({
                 ...mark,
                 label: <CustomMark mark={mark} index={index} />,
@@ -237,14 +229,52 @@ const TimelineVisualisation = () => {
               }}
             >
               <div style={timelineStyle.tinyDurationText}>
-                {formatDuration(currentPosition)}
+                {formatDuration(playHeadPosition)}
               </div>
               <div style={timelineStyle.tinyDurationText}>
-                -{formatDuration(totalDuration - currentPosition)}
+                -{formatDuration(simDuration - playHeadPosition)}
               </div>
             </div>
           </Col>
         </Row>
+      </Container>
+      <Container style={timelineStyle.playerContainer}>
+        <Button
+          style={{
+            margin: "5px",
+            backgroundColor: "transparent",
+            border: "none",
+          }}
+          onClick={() => setPlayHeadPosition(playHeadPosition - 10)}
+        >
+          <BsRewindFill size={30} color="#bdbdbd" />
+        </Button>
+        <Button
+          style={{
+            margin: "5px",
+            backgroundColor: "transparent",
+            border: "none",
+          }}
+          onClick={() => {
+            handlePlayPause();
+          }}
+        >
+          {isPlaying ? (
+            <BsPauseFill size={30} color="#bdbdbd" />
+          ) : (
+            <BsPlayFill size={30} color="#bdbdbd" />
+          )}
+        </Button>
+        <Button
+          style={{
+            margin: "5px",
+            backgroundColor: "transparent",
+            border: "none",
+          }}
+          onClick={() => setPlayHeadPosition(playHeadPosition + 10)}
+        >
+          <BsFastForwardFill size={30} color="#bdbdbd" />
+        </Button>
       </Container>
     </>
   );
