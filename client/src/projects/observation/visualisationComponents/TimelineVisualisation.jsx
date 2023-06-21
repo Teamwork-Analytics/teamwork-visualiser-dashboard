@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
-import { Container, Row, Col, Badge, Button } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
 import {
   BsFastForwardFill,
@@ -9,38 +9,6 @@ import {
   BsPauseFill,
   BsPlayFill,
 } from "react-icons/bs";
-import { useObservation } from "../ObservationContext";
-
-const calculateDuration = (startTime, endTime) => {
-  return Math.round(Math.abs(new Date(endTime) - new Date(startTime)) / 1000);
-};
-
-// fake numbers for now
-const simStartTimestamp = "2023-06-01T00:09:38.357Z";
-const simEndTimestamp = "2023-06-01T00:25:44.896Z";
-const simDuration = calculateDuration(simStartTimestamp, simEndTimestamp);
-
-const eventOnePosition = 408; // Ruth entered
-const eventTwoPosition = 606; // Secondary nurse entered
-
-const timelineMarks = [
-  {
-    value: eventOnePosition,
-  },
-  {
-    value: eventTwoPosition,
-  },
-];
-const keyEventMarks = [
-  {
-    value: eventOnePosition,
-    label: "KE1",
-  },
-  {
-    value: eventTwoPosition,
-    label: "KE2",
-  },
-];
 
 // styling
 const timelineStyle = {
@@ -133,15 +101,19 @@ const formatDuration = (value) => {
 };
 
 const TimelineVisualisation = () => {
-  const { notes } = useObservation();
-
-  const [intervalID, setInteralID] = useState(null);
-
   // timeline range and playhead
-  const { range, setRange, playHeadPosition, setPlayHeadPosition } =
-    useTimeline();
+  const {
+    range,
+    setRange,
+    playHeadPosition,
+    setPlayHeadPosition,
+    simDuration,
+    timelineTags,
+  } = useTimeline();
   // play or pause state
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const [intervalID, setInteralID] = useState(null);
 
   const handlePlayPause = () => {
     if (!isPlaying) {
@@ -191,14 +163,14 @@ const TimelineVisualisation = () => {
               }}
               valueLabelDisplay="auto"
               aria-labelledby="range-slider"
-              marks={keyEventMarks.map((mark, index) => ({
+              marks={timelineTags.map((mark, index) => ({
                 ...mark,
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
             />
 
-            <Slider
+            {/* <Slider
               value={playHeadPosition}
               max={simDuration}
               onChange={(_, newValue) => setPlayHeadPosition(newValue)}
@@ -214,13 +186,13 @@ const TimelineVisualisation = () => {
               value={playHeadPosition}
               max={simDuration}
               onChange={(_, value) => setPlayHeadPosition(value)}
-              marks={keyEventMarks.map((mark, index) => ({
+              marks={timelineTags.map((mark, index) => ({
                 ...mark,
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
-            ></Slider>
-            <div
+            ></Slider> */}
+            {/* <div
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -234,11 +206,11 @@ const TimelineVisualisation = () => {
               <div style={timelineStyle.tinyDurationText}>
                 -{formatDuration(simDuration - playHeadPosition)}
               </div>
-            </div>
+            </div> */}
           </Col>
         </Row>
       </Container>
-      <Container style={timelineStyle.playerContainer}>
+      {/* <Container style={timelineStyle.playerContainer}>
         <Button
           style={{
             margin: "5px",
@@ -275,7 +247,7 @@ const TimelineVisualisation = () => {
         >
           <BsFastForwardFill size={30} color="#bdbdbd" />
         </Button>
-      </Container>
+      </Container> */}
     </>
   );
 };
