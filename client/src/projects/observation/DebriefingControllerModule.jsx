@@ -11,6 +11,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
+import { FaPlus, FaCheckSquare } from "react-icons/fa";
 
 //image references:
 import actionNetwork from "../../images/vis/action-network.png";
@@ -189,7 +190,15 @@ const DebriefingControllerModule = () => {
                 onClick={() => handleAddVis("video")}
                 disabled={selectedVis.includes("video")}
               >
-                {selectedVis.includes("video") ? "Added" : "Add video"}
+                {selectedVis.includes("video") ? (
+                  <>
+                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
+                  </>
+                ) : (
+                  <>
+                    <FaPlus style={{ marginBottom: "2px" }} /> Add video
+                  </>
+                )}
               </Button>
             </Container>
           </Col>
@@ -283,9 +292,17 @@ const DebriefingControllerModule = () => {
                         }}
                         onClick={() => handleAddVis(bottomLeftActiveTab)}
                       >
-                        {selectedVis.includes(bottomLeftActiveTab)
-                          ? "Added"
-                          : "Add to project"}
+                        {selectedVis.includes(bottomLeftActiveTab) ? (
+                          <>
+                            <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
+                            Added
+                          </>
+                        ) : (
+                          <>
+                            <FaPlus style={{ marginBottom: "2px" }} /> Add to
+                            projection
+                          </>
+                        )}
                       </Button>
                     </Tab.Content>
                   </Col>
@@ -377,9 +394,17 @@ const DebriefingControllerModule = () => {
                         }}
                         onClick={() => handleAddVis(bottomRightActiveTab)}
                       >
-                        {selectedVis.includes(bottomRightActiveTab)
-                          ? "Added"
-                          : "Add to project"}
+                        {selectedVis.includes(bottomRightActiveTab) ? (
+                          <>
+                            <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
+                            Added
+                          </>
+                        ) : (
+                          <>
+                            <FaPlus style={{ marginBottom: "2px" }} /> Add to
+                            projection
+                          </>
+                        )}
                       </Button>
                     </Tab.Content>
                   </Col>

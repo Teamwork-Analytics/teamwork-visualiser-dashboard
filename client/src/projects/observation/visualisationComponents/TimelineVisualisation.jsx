@@ -217,6 +217,14 @@ const TimelineVisualisation = () => {
                 setPlayHeadPosition(newValue[0]);
               }}
               valueLabelDisplay="auto"
+              // show tooltip in MM:SS format
+              valueLabelFormat={(value) => {
+                const minutes = Math.floor(value / 60);
+                const seconds = value % 60;
+                return `${minutes.toString().padStart(2, "0")}:${seconds
+                  .toString()
+                  .padStart(2, "0")}`;
+              }}
               aria-labelledby="range-slider"
               marks={timelineTags.map((mark, index) => ({
                 ...mark,
