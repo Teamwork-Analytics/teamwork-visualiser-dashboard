@@ -34,7 +34,6 @@ function TimelineProvider({ children }) {
   const [range, setRange] = React.useState([0, 20]); // range of the slider time in seconds
   const [playHeadPosition, setPlayHeadPosition] = React.useState(range[0]); // position of the slider time in seconds
 
-  console.log("timelineTags", timelineTags);
   const value = {
     playHeadPosition,
     setPlayHeadPosition,

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
 import {
   BsFastForwardFill,
@@ -9,6 +9,13 @@ import {
   BsPauseFill,
   BsPlayFill,
 } from "react-icons/bs";
+import Timeline from "@mui/lab/Timeline";
+import TimelineItem from "@mui/lab/TimelineItem";
+import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import TimelineConnector from "@mui/lab/TimelineConnector";
+import TimelineContent from "@mui/lab/TimelineContent";
+import TimelineDot from "@mui/lab/TimelineDot";
+import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 
 // styling
 const timelineStyle = {
@@ -69,7 +76,7 @@ const CustomMark = ({ mark, index }) => {
         style={{
           position: "absolute",
           top: index % 2 === 0 ? "-20px" : "-70px", // example: alternating label positions
-          //   transform: "rotate(-45deg)",
+          transform: "rotate(-45deg)",
           marginLeft: "-20px",
           maxWidth: "40px",
           wordWrap: "break-word", // enable word wrapping
@@ -101,6 +108,52 @@ const formatDuration = (value) => {
   const minute = Math.floor(value / 60);
   const secondLeft = value - minute * 60;
   return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
+};
+
+const FilteredMarksComponent = ({ marks, range }) => {
+  // Filter marks within the range
+  const filteredMarks = marks.filter((mark) => {
+    return mark.value >= range[0] && mark.value <= range[1];
+  });
+
+  // Sort the filtered marks
+  filteredMarks.sort((a, b) => a.value - b.value);
+
+  // Convert value to MM:SS format
+  const formattedMarks = filteredMarks.map((mark) => {
+    return { ...mark, value: formatDuration(mark.value) };
+  });
+
+  // Render the formatted marks
+  return (
+    <Card style={{ height: "30vh", overflowY: "scroll", fontSize: "12px" }}>
+      <Card.Body>
+        <Timeline>
+          {formattedMarks.map((mark, index) => (
+            <TimelineItem
+              key={index}
+              style={{
+                marginTop: "1px",
+                marginBottom: "1px",
+                minHeight: "20px",
+              }}
+            >
+              <TimelineOppositeContent style={{ fontSize: "12px" }}>
+                {mark.value}
+              </TimelineOppositeContent>
+
+              <TimelineSeparator>
+                <TimelineDot />
+              </TimelineSeparator>
+              <TimelineContent style={{ fontSize: "12px" }}>
+                {mark.label}
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </Timeline>
+      </Card.Body>
+    </Card>
+  );
 };
 
 const TimelineVisualisation = () => {
@@ -149,9 +202,8 @@ const TimelineVisualisation = () => {
     <>
       <Container
         style={{
-          marginTop: "35px",
+          marginTop: "15px",
           marginBottom: "10px",
-          paddingTop: "70px",
           position: "relative",
         }}
       >
@@ -171,6 +223,7 @@ const TimelineVisualisation = () => {
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
+              style={{ marginTop: "150px" }}
             />
 
             {/* <Slider
@@ -210,6 +263,9 @@ const TimelineVisualisation = () => {
                 -{formatDuration(simDuration - playHeadPosition)}
               </div>
             </div> */}
+          </Col>
+          <Col xs={3}>
+            <FilteredMarksComponent marks={timelineTags} range={range} />
           </Col>
         </Row>
       </Container>

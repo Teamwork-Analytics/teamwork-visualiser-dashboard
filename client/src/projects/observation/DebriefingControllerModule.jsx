@@ -43,6 +43,14 @@ const debriefStyles = {
     objectFit: "scale-down",
     maxHeight: "33vh",
   },
+  addVisButton: {
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    zIndex: 100,
+    fontSize: "14px",
+    padding: "5px",
+  },
 };
 
 const DebriefingControllerModule = () => {
@@ -56,10 +64,12 @@ const DebriefingControllerModule = () => {
     console.log(id);
     if (!selectedVis.includes(id) && selectedVis.length < 3) {
       setSelectedVis([...selectedVis, id]);
+    } else if (selectedVis.includes(id)) {
+      setSelectedVis(selectedVis.filter((item) => item !== id));
+    } else if (selectedVis.length >= 3) {
+      alert("You've already selected the maximum of 3 visualisations.");
     } else {
-      alert(
-        "You're selecting same vis or you've already selected the maximum of 3 visualisations."
-      );
+      alert("Something went wrong.");
     }
   };
 
@@ -174,21 +184,12 @@ const DebriefingControllerModule = () => {
                 </Tab>
               </Tabs>
               <Button
-                variant="info"
-                style={{
-                  position: "absolute",
-                  bottom: "10px",
-                  zIndex: 100,
-                  marginLeft: "-70px",
-                  fontSize: "14px",
-                  padding: "5px",
-                }}
-                onClick={() => handleAddVis(topActiveTab)}
-                disabled={selectedVis.includes(topActiveTab)}
+                variant="success"
+                style={debriefStyles.addVisButton}
+                onClick={() => handleAddVis("video")}
+                disabled={selectedVis.includes("video")}
               >
-                {selectedVis.includes(topActiveTab)
-                  ? "Added"
-                  : "Add visualisation"}
+                {selectedVis.includes("video") ? "Added" : "Add video"}
               </Button>
             </Container>
           </Col>
@@ -273,21 +274,18 @@ const DebriefingControllerModule = () => {
                         />
                       </Tab.Pane>
                       <Button
-                        variant="info"
+                        variant="success"
                         style={{
-                          position: "absolute",
-                          bottom: "10px",
-                          zIndex: 100,
-                          marginLeft: "-70px",
-                          fontSize: "14px",
-                          padding: "5px",
+                          ...debriefStyles.addVisButton,
+                          opacity: selectedVis.includes(bottomLeftActiveTab)
+                            ? "0.65"
+                            : "1",
                         }}
                         onClick={() => handleAddVis(bottomLeftActiveTab)}
-                        disabled={selectedVis.includes(bottomLeftActiveTab)}
                       >
                         {selectedVis.includes(bottomLeftActiveTab)
                           ? "Added"
-                          : "Add visualisation"}
+                          : "Add to project"}
                       </Button>
                     </Tab.Content>
                   </Col>
@@ -334,29 +332,20 @@ const DebriefingControllerModule = () => {
                           fluid
                         />
                       </Tab.Pane>
-                      <Tab.Pane eventKey="calloutCount">
-                        <Image
-                          src={calloutCount}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
-                      </Tab.Pane>
+
                       <Button
-                        variant="info"
+                        variant="success"
                         style={{
-                          position: "absolute",
-                          bottom: "10px",
-                          zIndex: 100,
-                          marginLeft: "-70px",
-                          fontSize: "14px",
-                          padding: "5px",
+                          ...debriefStyles.addVisButton,
+                          opacity: selectedVis.includes(bottomRightActiveTab)
+                            ? "0.65"
+                            : "1",
                         }}
                         onClick={() => handleAddVis(bottomRightActiveTab)}
-                        disabled={selectedVis.includes(bottomRightActiveTab)}
                       >
                         {selectedVis.includes(bottomRightActiveTab)
                           ? "Added"
-                          : "Add visualisation"}
+                          : "Add to project"}
                       </Button>
                     </Tab.Content>
                   </Col>
@@ -390,18 +379,6 @@ const DebriefingControllerModule = () => {
                           }
                         >
                           Communication Behaviour
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="calloutCount"
-                          style={
-                            bottomRightActiveTab === "calloutCount"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Callout Count
                         </Nav.Link>
                       </Nav.Item>
                     </Nav>
