@@ -311,6 +311,40 @@ const DebriefingControllerModule = () => {
               >
                 <Row style={{ marginRight: "0", marginLeft: "0" }}>
                   <Col
+                    sm={3}
+                    style={{
+                      paddingLeft: "5px",
+                      paddingRight: "5px",
+                    }}
+                  >
+                    <Nav variant="pills" className="flex-column">
+                      <Nav.Item>
+                        <Nav.Link
+                          eventKey="commNetwork"
+                          style={
+                            bottomRightActiveTab === "commNetwork"
+                              ? debriefStyles.activeTab
+                              : debriefStyles.inactiveTab
+                          }
+                        >
+                          Communication Network
+                        </Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link
+                          eventKey="commBehaviour"
+                          style={
+                            bottomRightActiveTab === "commBehaviour"
+                              ? debriefStyles.activeTab
+                              : debriefStyles.inactiveTab
+                          }
+                        >
+                          Communication Behaviour
+                        </Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                  </Col>
+                  <Col
                     sm={9}
                     style={{
                       paddingLeft: "5px",
@@ -348,40 +382,6 @@ const DebriefingControllerModule = () => {
                           : "Add to project"}
                       </Button>
                     </Tab.Content>
-                  </Col>
-                  <Col
-                    sm={3}
-                    style={{
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                    }}
-                  >
-                    <Nav variant="pills" className="flex-column">
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="commNetwork"
-                          style={
-                            bottomRightActiveTab === "commNetwork"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Communication Network
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="commBehaviour"
-                          style={
-                            bottomRightActiveTab === "commBehaviour"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Communication Behaviour
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
                   </Col>
                 </Row>
               </Tab.Container>
