@@ -69,8 +69,11 @@ const CustomMark = ({ mark, index }) => {
         style={{
           position: "absolute",
           top: index % 2 === 0 ? "-20px" : "-70px", // example: alternating label positions
-          transform: "rotate(-45deg)",
-          marginLeft: "-5px",
+          //   transform: "rotate(-45deg)",
+          marginLeft: "-20px",
+          maxWidth: "40px",
+          wordWrap: "break-word", // enable word wrapping
+          overflowWrap: "break-word", // break long strings of text // not working
         }}
       >
         {mark.label}
@@ -146,7 +149,7 @@ const TimelineVisualisation = () => {
     <>
       <Container
         style={{
-          marginTop: "15px",
+          marginTop: "35px",
           marginBottom: "10px",
           paddingTop: "70px",
           position: "relative",
