@@ -8,6 +8,8 @@ import {
   BsSpeedometer2,
   BsPauseFill,
   BsPlayFill,
+  BsCircleFill,
+  BsCircle,
 } from "react-icons/bs";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
@@ -16,6 +18,7 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import { manualLabels } from "../index.js";
 
 // styling
 const timelineStyle = {
@@ -68,19 +71,26 @@ const timelineStyle = {
   },
 };
 
+const isKeyEvent = (label) =>
+  manualLabels.phases.some((item) => item.label === label);
+
 const CustomMark = ({ mark, index }) => {
-  // Add your custom styling here
+  const markStyle = isKeyEvent(mark.label)
+    ? { fontWeight: "bold", fontSize: "1.3em" }
+    : {};
+
   return (
     <div style={{ position: "relative", paddingBottom: "-200px" }}>
       <span
         style={{
           position: "absolute",
-          top: index % 2 === 0 ? "-20px" : "-70px", // example: alternating label positions
+          top: index % 2 === 0 ? "-20px" : "-70px", // alternating label positions
           transform: "rotate(-45deg)",
           marginLeft: "-20px",
           maxWidth: "40px",
-          wordWrap: "break-word", // enable word wrapping
+          wordWrap: "break-word", // enable word wrapping // not working
           overflowWrap: "break-word", // break long strings of text // not working
+          ...markStyle,
         }}
       >
         {mark.label}
@@ -128,29 +138,34 @@ const FilteredMarksComponent = ({ marks, range }) => {
   return (
     <Card style={{ height: "30vh", overflowY: "scroll", fontSize: "12px" }}>
       <Card.Body>
-        <Timeline>
-          {formattedMarks.map((mark, index) => (
-            <TimelineItem
-              key={index}
+        {formattedMarks.map((mark, index) => (
+          <Row style={{ marginLeft: "0px", marginRight: "0px" }} key={index}>
+            <Col
+              xs="auto"
               style={{
-                marginTop: "1px",
-                marginBottom: "1px",
-                minHeight: "20px",
+                margin: "auto",
+                paddingLeft: "5px",
+                paddingRight: "5px",
               }}
             >
-              <TimelineOppositeContent style={{ fontSize: "12px" }}>
-                {mark.value}
-              </TimelineOppositeContent>
-
-              <TimelineSeparator>
-                <TimelineDot />
-              </TimelineSeparator>
-              <TimelineContent style={{ fontSize: "12px" }}>
-                {mark.label}
-              </TimelineContent>
-            </TimelineItem>
-          ))}
-        </Timeline>
+              {isKeyEvent(mark.label) ? (
+                <BsCircleFill size="0.5em" color="#9c27b0" />
+              ) : (
+                <BsCircle size="0.5em" color="#ed6c02" />
+              )}
+            </Col>
+            <Col
+              style={{
+                margin: "auto",
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                textAlign: "left",
+              }}
+            >
+              {mark.label} - {mark.value}
+            </Col>
+          </Row>
+        ))}
       </Card.Body>
     </Card>
   );
@@ -205,10 +220,13 @@ const TimelineVisualisation = () => {
           marginTop: "15px",
           marginBottom: "10px",
           position: "relative",
+          maxWidth: "none",
+          paddingLeft: "10px",
+          paddingRight: "10px",
         }}
       >
         <Row>
-          <Col>
+          <Col style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <Slider
               value={range}
               max={simDuration}
@@ -233,6 +251,21 @@ const TimelineVisualisation = () => {
               sx={timelineStyle.keyEventTimelineSx}
               style={{ marginTop: "150px" }}
             />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: "-30px",
+              }}
+            >
+              <div style={timelineStyle.tinyDurationText}>
+                {formatDuration(0)}
+              </div>
+              <div style={timelineStyle.tinyDurationText}>
+                {formatDuration(simDuration)}
+              </div>
+            </div>
 
             {/* <Slider
               value={playHeadPosition}
@@ -272,7 +305,7 @@ const TimelineVisualisation = () => {
               </div>
             </div> */}
           </Col>
-          <Col xs={3}>
+          <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <FilteredMarksComponent marks={timelineTags} range={range} />
           </Col>
         </Row>

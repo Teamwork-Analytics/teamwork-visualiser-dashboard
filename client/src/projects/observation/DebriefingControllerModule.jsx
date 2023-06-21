@@ -186,9 +186,11 @@ const DebriefingControllerModule = () => {
               </Tabs>
               <Button
                 variant="success"
-                style={debriefStyles.addVisButton}
+                style={{
+                  ...debriefStyles.addVisButton,
+                  opacity: selectedVis.includes("video") ? "0.65" : "1",
+                }}
                 onClick={() => handleAddVis("video")}
-                disabled={selectedVis.includes("video")}
               >
                 {selectedVis.includes("video") ? (
                   <>
