@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Row,
   Col,
@@ -12,6 +12,11 @@ import {
 } from "react-bootstrap";
 import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
+import { TimelineProvider } from "./visualisationComponents/TimelineContext";
+import { socket } from "./socket";
+import { ConnectionState } from "./socketComponents/ConnectionState";
+import { ConnectionManager } from "./socketComponents/ConnectionManager";
+import DisplayViz from "./socketComponents/DisplayViz";
 
 //image references:
 import actionNetwork from "../../images/vis/action-network.png";
@@ -24,7 +29,12 @@ import priorBar from "../../images/vis/prioritisation-bar.png";
 import studentAct from "../../images/vis/student-actions.png";
 import videoVis from "../../images/vis/video.png";
 import wardMap from "../../images/vis/ward-map.png";
-import { TimelineProvider } from "./visualisationComponents/TimelineContext";
+import samplePreview from "../../images/sample-preview.png";
+
+import behaviourVis from "../../images/vis/com-behaviour.png";
+import communicationVis from "../../images/vis/communication-network.png";
+import mapVis from "../../images/vis/ward-map.png";
+import { set } from "date-fns";
 
 // remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
@@ -55,6 +65,52 @@ const debriefStyles = {
 };
 
 const DebriefingControllerModule = () => {
+  // from socket io poc repo
+  const [isConnected, setIsConnected] = useState(socket.connected);
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+      console.log("Connected to " + socket.id);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+      console.log("Disconnected from " + socket.id);
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+    };
+  }, []);
+
+  const hideConnectButton = true;
+
+  const handleConfirmProjection = () => {
+    console.log(selectedVis);
+    //['video', 'priorBar', 'commNetwork']
+    const sentJson = JSON.stringify(selectedVis);
+    socket.emit("send-disp-list", sentJson, () => {
+      console.log(
+        "Socket sent selected displays to server in a form of a list."
+      );
+    });
+    setShowPreviewModal(false);
+    setSelectedVis([]);
+  };
+
+  const handleRevertAllProjections = () => {
+    setSelectedVis([]);
+    const sentJson = JSON.stringify([]);
+    socket.emit("send-disp-list", sentJson, () => {
+      console.log("Socket sent empty list to revert displays.");
+    });
+  };
+
   const [topActiveTab, setTopActiveTab] = useState("timeline");
   const [bottomLeftActiveTab, setBottomLeftActiveTab] = useState("priorBar");
   const [bottomRightActiveTab, setBottomRightActiveTab] =
@@ -62,11 +118,10 @@ const DebriefingControllerModule = () => {
 
   const [selectedVis, setSelectedVis] = useState([]);
   const handleAddVis = (id) => {
-    console.log(id);
-    if (!selectedVis.includes(id) && selectedVis.length < 3) {
-      setSelectedVis([...selectedVis, id]);
-    } else if (selectedVis.includes(id)) {
-      setSelectedVis(selectedVis.filter((item) => item !== id));
+    if (!selectedVis.some((item) => item.id === id) && selectedVis.length < 3) {
+      setSelectedVis([...selectedVis, { id: id }]);
+    } else if (selectedVis.some((item) => item.id === id)) {
+      setSelectedVis(selectedVis.filter((item) => item.id !== id));
     } else if (selectedVis.length >= 3) {
       alert("You've already selected the maximum of 3 visualisations.");
     } else {
@@ -78,59 +133,112 @@ const DebriefingControllerModule = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const handleClosePreviewModal = () => setShowPreviewModal(false);
 
+  // duplicated - preview stuff
+  const imageReferences = {
+    commBehaviour: { size: "small", imageUrl: behaviourVis },
+    commNetwork: { size: "small", imageUrl: communicationVis },
+    priorBar: { size: "small", imageUrl: priorBar },
+    wardMap: { size: "medium", imageUrl: mapVis },
+    video: { size: "large", imageUrl: videoVis },
+    // circleENA: {
+    //   size: "small",
+    //   imageUrl: circleENA,
+    // },
+  };
+
+  const decideSize = (d) => {
+    if (selectedVis.length === 1 && d.id !== "videoVis") {
+      return "single";
+    }
+    return imageReferences[d.id].size;
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
+      <ConnectionState isConnected={isConnected} />
+      {!hideConnectButton && <ConnectionManager />}
       <TimelineProvider>
         <Modal
           size="xl"
           show={showPreviewModal}
           onHide={handleClosePreviewModal}
+          fullscreen={true}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              height: "calc(100vh - 30px)",
-              maxWidth: "1080px",
-              margin: "0 auto",
-              color: "#0a0a0a",
-            }}
-          >
+          <Modal.Header>
+            <Modal.Title>Preview if you selected the visualisation</Modal.Title>
+            <div>
+              <Button
+                variant="warning"
+                style={{ fontSize: "12px", margin: "2px" }}
+                onClick={handleClosePreviewModal}
+              >
+                Edit selection
+              </Button>
+              <Button
+                variant="success"
+                style={{ fontSize: "12px", margin: "2px" }}
+                onClick={handleConfirmProjection}
+              >
+                Send to projector
+              </Button>
+            </div>
+          </Modal.Header>
+          <Modal.Body>
             <p
               style={{
-                fontSize: "3em",
-                color: "#0a0a0a",
+                fontSize: "10px",
               }}
             >
-              You have selected: <br />
-              {selectedVis.join(", ")}
+              You have selected:
+              {selectedVis.map((vis) => vis.id).join(", ")}
             </p>
-            <p>
-              By right it should show preview but the feature is not implemented
-              yet!🙊
-            </p>
-          </div>
+            <div
+              style={{
+                display: "flex",
+                alignContent: "center",
+                justifyContent: "center",
+                width: "100vw",
+                height: "90vh",
+                maxHeight: "90vh",
+                flexWrap: "wrap",
+              }}
+            >
+              {selectedVis.length !== 0 ? (
+                selectedVis.map((d) => (
+                  <DisplayViz
+                    size={decideSize(d)}
+                    image={imageReferences[d.id].imageUrl}
+                  />
+                ))
+              ) : (
+                <div align="center">
+                  <h1>🔍No visualisations</h1>
+                  <p>Please select up to three visualisations</p>
+                </div>
+              )}
+            </div>
+          </Modal.Body>
         </Modal>
 
         <Row style={{ margin: "3px", fontSize: "14px" }}>
           <Col className="d-flex align-items-center text-left">
-            You have selected visualisations: {selectedVis.join(", ")}
+            You have selected visualisations:{" "}
+            {selectedVis.map((vis) => vis.id).join(", ")}
           </Col>
           <Col className="d-flex justify-content-end text-right">
+            <Button
+              variant="danger"
+              style={{ marginRight: "5px", fontSize: "14px" }}
+              onClick={handleRevertAllProjections}
+            >
+              Revert all projections
+            </Button>
             <Button
               variant="success"
               style={{ marginRight: "5px", fontSize: "14px" }}
               onClick={() => setShowPreviewModal(true)}
             >
               Projection preview
-            </Button>
-            <Button
-              variant="danger"
-              style={{ marginRight: "5px", fontSize: "14px" }}
-            >
-              Revert all projections
             </Button>
           </Col>
         </Row>
@@ -188,11 +296,13 @@ const DebriefingControllerModule = () => {
                 variant="success"
                 style={{
                   ...debriefStyles.addVisButton,
-                  opacity: selectedVis.includes("video") ? "0.65" : "1",
+                  opacity: selectedVis.some((vis) => vis.id === "video")
+                    ? "0.65"
+                    : "1",
                 }}
                 onClick={() => handleAddVis("video")}
               >
-                {selectedVis.includes("video") ? (
+                {selectedVis.some((vis) => vis.id === "video") ? (
                   <>
                     <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
                   </>
@@ -288,13 +398,17 @@ const DebriefingControllerModule = () => {
                         variant="success"
                         style={{
                           ...debriefStyles.addVisButton,
-                          opacity: selectedVis.includes(bottomLeftActiveTab)
+                          opacity: selectedVis.some(
+                            (vis) => vis.id === bottomLeftActiveTab
+                          )
                             ? "0.65"
                             : "1",
                         }}
                         onClick={() => handleAddVis(bottomLeftActiveTab)}
                       >
-                        {selectedVis.includes(bottomLeftActiveTab) ? (
+                        {selectedVis.some(
+                          (vis) => vis.id === bottomLeftActiveTab
+                        ) ? (
                           <>
                             <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
                             Added
@@ -390,13 +504,17 @@ const DebriefingControllerModule = () => {
                         variant="success"
                         style={{
                           ...debriefStyles.addVisButton,
-                          opacity: selectedVis.includes(bottomRightActiveTab)
+                          opacity: selectedVis.some(
+                            (vis) => vis.id === bottomRightActiveTab
+                          )
                             ? "0.65"
                             : "1",
                         }}
                         onClick={() => handleAddVis(bottomRightActiveTab)}
                       >
-                        {selectedVis.includes(bottomRightActiveTab) ? (
+                        {selectedVis.some(
+                          (vis) => vis.id === bottomRightActiveTab
+                        ) ? (
                           <>
                             <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
                             Added
