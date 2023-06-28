@@ -1,23 +1,8 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
-import {
-  BsFastForwardFill,
-  BsRewindFill,
-  BsSpeedometer2,
-  BsPauseFill,
-  BsPlayFill,
-  BsCircleFill,
-  BsCircle,
-} from "react-icons/bs";
-import Timeline from "@mui/lab/Timeline";
-import TimelineItem from "@mui/lab/TimelineItem";
-import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import TimelineConnector from "@mui/lab/TimelineConnector";
-import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineDot from "@mui/lab/TimelineDot";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import { BsCircleFill, BsCircle } from "react-icons/bs";
 import { manualLabels } from "../index.js";
 
 // styling
@@ -162,7 +147,7 @@ const FilteredMarksComponent = ({ marks, range }) => {
                 textAlign: "left",
               }}
             >
-              {mark.label} - {mark.value}
+              {mark.value} - {mark.label}
             </Col>
           </Row>
         ))}
@@ -266,88 +251,12 @@ const TimelineVisualisation = () => {
                 {formatDuration(simDuration)}
               </div>
             </div>
-
-            {/* <Slider
-              value={playHeadPosition}
-              max={simDuration}
-              onChange={(_, newValue) => setPlayHeadPosition(newValue)}
-              valueLabelDisplay="auto"
-              aria-labelledby="playhead-slider"
-              disabled
-              //   style={{ color: "blue", height: "10px", marginTop: "-20px" }}
-              sx={timelineStyle.keyEventTimelineSx}
-            />
-
-            <Slider
-              aria-label="controller-timeline"
-              value={playHeadPosition}
-              max={simDuration}
-              onChange={(_, value) => setPlayHeadPosition(value)}
-              marks={timelineTags.map((mark, index) => ({
-                ...mark,
-                label: <CustomMark mark={mark} index={index} />,
-              }))}
-              sx={timelineStyle.keyEventTimelineSx}
-            ></Slider> */}
-            {/* <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: "-30px",
-              }}
-            >
-              <div style={timelineStyle.tinyDurationText}>
-                {formatDuration(playHeadPosition)}
-              </div>
-              <div style={timelineStyle.tinyDurationText}>
-                -{formatDuration(simDuration - playHeadPosition)}
-              </div>
-            </div> */}
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <FilteredMarksComponent marks={timelineTags} range={range} />
           </Col>
         </Row>
       </Container>
-      {/* <Container style={timelineStyle.playerContainer}>
-        <Button
-          style={{
-            margin: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-          }}
-          onClick={() => setPlayHeadPosition(playHeadPosition - 10)}
-        >
-          <BsRewindFill size={30} color="#bdbdbd" />
-        </Button>
-        <Button
-          style={{
-            margin: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-          }}
-          onClick={() => {
-            handlePlayPause();
-          }}
-        >
-          {isPlaying ? (
-            <BsPauseFill size={30} color="#bdbdbd" />
-          ) : (
-            <BsPlayFill size={30} color="#bdbdbd" />
-          )}
-        </Button>
-        <Button
-          style={{
-            margin: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-          }}
-          onClick={() => setPlayHeadPosition(playHeadPosition + 10)}
-        >
-          <BsFastForwardFill size={30} color="#bdbdbd" />
-        </Button>
-      </Container> */}
     </>
   );
 };

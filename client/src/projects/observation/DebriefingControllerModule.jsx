@@ -8,7 +8,6 @@ import {
   Container,
   Image,
   Button,
-  Modal,
 } from "react-bootstrap";
 import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
@@ -16,25 +15,15 @@ import { TimelineProvider } from "./visualisationComponents/TimelineContext";
 import { socket } from "./socket";
 import { ConnectionState } from "./socketComponents/ConnectionState";
 import { ConnectionManager } from "./socketComponents/ConnectionManager";
-import DisplayViz from "./socketComponents/DisplayViz";
+import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
+import toast from "react-hot-toast";
 
 //image references:
-import actionNetwork from "../../images/vis/action-network.png";
-import calloutCount from "../../images/vis/callout-count.png";
 import comBehaviour from "../../images/vis/com-behaviour.png";
 import comNetwork from "../../images/vis/communication-network.png";
-import dandelionTimeline from "../../images/vis/dandelion-timeline.png";
-import keywordVis from "../../images/vis/keyword.png";
 import priorBar from "../../images/vis/prioritisation-bar.png";
-import studentAct from "../../images/vis/student-actions.png";
 import videoVis from "../../images/vis/video.png";
 import wardMap from "../../images/vis/ward-map.png";
-import samplePreview from "../../images/sample-preview.png";
-
-import behaviourVis from "../../images/vis/com-behaviour.png";
-import communicationVis from "../../images/vis/communication-network.png";
-import mapVis from "../../images/vis/ward-map.png";
-import { set } from "date-fns";
 
 // remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
@@ -61,6 +50,14 @@ const debriefStyles = {
     zIndex: 100,
     fontSize: "14px",
     padding: "5px",
+  },
+  bottomTabContainer: {
+    borderStyle: "solid",
+    borderWidth: "1px",
+    borderColor: "lightgrey",
+    borderRadius: "10px",
+    padding: "5px",
+    minHeight: "34vh",
   },
 };
 
@@ -104,10 +101,14 @@ const DebriefingControllerModule = () => {
   };
 
   const handleRevertAllProjections = () => {
+    const toastId = toast.loading("Loading...");
     setSelectedVis([]);
     const sentJson = JSON.stringify([]);
     socket.emit("send-disp-list", sentJson, () => {
       console.log("Socket sent empty list to revert displays.");
+    });
+    toast.success("Reverted projections", {
+      id: toastId,
     });
   };
 
@@ -133,93 +134,15 @@ const DebriefingControllerModule = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const handleClosePreviewModal = () => setShowPreviewModal(false);
 
-  // duplicated - preview stuff
-  const imageReferences = {
-    commBehaviour: { size: "small", imageUrl: behaviourVis },
-    commNetwork: { size: "small", imageUrl: communicationVis },
-    priorBar: { size: "small", imageUrl: priorBar },
-    wardMap: { size: "medium", imageUrl: mapVis },
-    video: { size: "large", imageUrl: videoVis },
-    // circleENA: {
-    //   size: "small",
-    //   imageUrl: circleENA,
-    // },
-  };
-
-  const decideSize = (d) => {
-    if (selectedVis.length === 1 && d.id !== "videoVis") {
-      return "single";
-    }
-    return imageReferences[d.id].size;
-  };
-
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <ConnectionState isConnected={isConnected} />
-      {!hideConnectButton && <ConnectionManager />}
       <TimelineProvider>
-        <Modal
-          size="xl"
-          show={showPreviewModal}
-          onHide={handleClosePreviewModal}
-          fullscreen={true}
-        >
-          <Modal.Header>
-            <Modal.Title>Preview if you selected the visualisation</Modal.Title>
-            <div>
-              <Button
-                variant="warning"
-                style={{ fontSize: "12px", margin: "2px" }}
-                onClick={handleClosePreviewModal}
-              >
-                Edit selection
-              </Button>
-              <Button
-                variant="success"
-                style={{ fontSize: "12px", margin: "2px" }}
-                onClick={handleConfirmProjection}
-              >
-                Send to projector
-              </Button>
-            </div>
-          </Modal.Header>
-          <Modal.Body>
-            <p
-              style={{
-                fontSize: "10px",
-              }}
-            >
-              You have selected:
-              {selectedVis.map((vis) => vis.id).join(", ")}
-            </p>
-            <div
-              style={{
-                display: "flex",
-                alignContent: "center",
-                justifyContent: "center",
-                width: "100vw",
-                height: "90vh",
-                maxHeight: "90vh",
-                flexWrap: "wrap",
-              }}
-            >
-              {selectedVis.length !== 0 ? (
-                selectedVis.map((d) => (
-                  <DisplayViz
-                    size={decideSize(d)}
-                    image={imageReferences[d.id].imageUrl}
-                  />
-                ))
-              ) : (
-                <div align="center">
-                  <h1>🔍No visualisations</h1>
-                  <p>Please select up to three visualisations</p>
-                </div>
-              )}
-            </div>
-          </Modal.Body>
-        </Modal>
-
+        <PreviewProjectionModal
+          showPreviewModal={showPreviewModal}
+          handleClosePreviewModal={handleClosePreviewModal}
+          handleConfirmProjection={handleConfirmProjection}
+          selectedVis={selectedVis}
+        />
         <Row style={{ margin: "3px", fontSize: "14px" }}>
           <Col className="d-flex align-items-center text-left">
             You have selected visualisations:{" "}
@@ -315,23 +238,15 @@ const DebriefingControllerModule = () => {
             </Container>
           </Col>
         </Row>
-        <Row style={{ minHeight: "35vh" }}>
+        <Row style={{ minHeight: "35vh", marginTop: "5px" }}>
           <Col
             lg={6}
             style={{
               padding: "1px",
+              marginRight: "5px",
             }}
           >
-            <Container
-              style={{
-                borderStyle: "solid",
-                borderWidth: "1px",
-                borderColor: "lightgrey",
-                borderRadius: "10px",
-                padding: "5px",
-                minHeight: "34vh",
-              }}
-            >
+            <Container style={debriefStyles.bottomTabContainer}>
               <Tab.Container
                 id="bottom-left-tabs"
                 defaultActiveKey={bottomLeftActiveTab}
@@ -426,17 +341,8 @@ const DebriefingControllerModule = () => {
               </Tab.Container>
             </Container>
           </Col>
-          <Col style={{ padding: "1px" }}>
-            <Container
-              style={{
-                borderStyle: "solid",
-                borderWidth: "1px",
-                borderColor: "lightgrey",
-                borderRadius: "10px",
-                padding: "5px",
-                minHeight: "34vh",
-              }}
-            >
+          <Col style={{ padding: "1px", marginLeft: "5px" }}>
+            <Container style={debriefStyles.bottomTabContainer}>
               <Tab.Container
                 id="bottom-right-tabs"
                 defaultActiveKey={bottomRightActiveTab}
@@ -534,6 +440,8 @@ const DebriefingControllerModule = () => {
           </Col>
         </Row>
       </TimelineProvider>
+      <ConnectionState isConnected={isConnected} />
+      {!hideConnectButton && <ConnectionManager />}
     </div>
   );
 };
