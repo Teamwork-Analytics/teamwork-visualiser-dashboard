@@ -11,7 +11,7 @@ const deviceObs = {
   syncTime: { type: Date, default: null },
 };
 
-const phaseNote = {
+const noteTemplate = {
   timestamp: Date,
   message: String,
   phaseKey: String,
@@ -30,7 +30,8 @@ const obsSchema = new mongoose.Schema(
     baselineTime: { type: Date, default: null },
     startTime: { type: Date, default: null },
     stopTime: { type: Date, default: null },
-    phases: [phaseNote],
+    phases: [noteTemplate], // i.e., key events
+    actions: [noteTemplate],
     synchronisations: [deviceObs],
     //TODO: add validation that empatica is from the correct project
   },

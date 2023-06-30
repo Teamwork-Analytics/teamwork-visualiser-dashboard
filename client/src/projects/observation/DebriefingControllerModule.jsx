@@ -23,8 +23,9 @@ import keywordVis from "../../images/vis/keyword.png";
 import priorBar from "../../images/vis/prioritisation-bar.png";
 import studentAct from "../../images/vis/student-actions.png";
 import videoVis from "../../images/vis/video.png";
-import wardMap from "../../images/vis/ward-map.png";
+// import wardMap from "../../images/vis/ward-map.png";
 import { TimelineProvider } from "./visualisationComponents/TimelineContext";
+import { HiveView } from "../hive";
 
 // remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
@@ -57,8 +58,7 @@ const debriefStyles = {
 const DebriefingControllerModule = () => {
   const [topActiveTab, setTopActiveTab] = useState("timeline");
   const [bottomLeftActiveTab, setBottomLeftActiveTab] = useState("priorBar");
-  const [bottomRightActiveTab, setBottomRightActiveTab] =
-    useState("commNetwork");
+  const [bottomRightActiveTab, setBottomRightActiveTab] = useState("wardMap");
 
   const [selectedVis, setSelectedVis] = useState([]);
   const handleAddVis = (id) => {
@@ -207,7 +207,7 @@ const DebriefingControllerModule = () => {
         </Row>
         <Row style={{ minHeight: "35vh" }}>
           <Col
-            lg={6}
+            lg={5}
             style={{
               padding: "1px",
             }}
@@ -248,18 +248,6 @@ const DebriefingControllerModule = () => {
                           Prioritisation Bar
                         </Nav.Link>
                       </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="wardMap"
-                          style={
-                            bottomLeftActiveTab === "wardMap"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Ward Map
-                        </Nav.Link>
-                      </Nav.Item>
                     </Nav>
                   </Col>
                   <Col
@@ -273,13 +261,6 @@ const DebriefingControllerModule = () => {
                       <Tab.Pane eventKey="priorBar">
                         <Image
                           src={priorBar}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="wardMap">
-                        <Image
-                          src={wardMap}
                           style={debriefStyles.imageContainer}
                           fluid
                         />
@@ -312,7 +293,7 @@ const DebriefingControllerModule = () => {
               </Tab.Container>
             </Container>
           </Col>
-          <Col style={{ padding: "1px" }}>
+          <Col lg={7} style={{ padding: "1px" }}>
             <Container
               style={{
                 borderStyle: "solid",
@@ -337,6 +318,18 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Nav variant="pills" className="flex-column">
+                      <Nav.Item>
+                        <Nav.Link
+                          eventKey="wardMap"
+                          style={
+                            bottomRightActiveTab === "wardMap"
+                              ? debriefStyles.activeTab
+                              : debriefStyles.inactiveTab
+                          }
+                        >
+                          Audio-activity map
+                        </Nav.Link>
+                      </Nav.Item>
                       <Nav.Item>
                         <Nav.Link
                           eventKey="commNetwork"
@@ -371,6 +364,9 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Tab.Content style={{ position: "relative" }}>
+                      <Tab.Pane eventKey="wardMap">
+                        <HiveView />
+                      </Tab.Pane>
                       <Tab.Pane eventKey="commNetwork">
                         <Image
                           src={comNetwork}

@@ -5,15 +5,15 @@ import "./Hive.css";
 import { cssColourMatcher } from "./Hexagon";
 
 const ParticipantFilter = ({ colourCode }) => {
-  const { state, setState } = useHive();
+  const { hiveState, hiveSetState } = useHive();
 
-  const [checked, setChecked] = useState(state.participants[colourCode]);
+  const [checked, setChecked] = useState(hiveState.participants[colourCode]);
   const handleChange = (nextChecked) => {
     setChecked(nextChecked);
-    let modifiedParticipants = { ...state.participants };
+    let modifiedParticipants = { ...hiveState.participants };
     modifiedParticipants[colourCode] = nextChecked;
-    setState({
-      ...state,
+    hiveSetState({
+      ...hiveState,
       participants: modifiedParticipants,
     });
   };
@@ -25,8 +25,9 @@ const ParticipantFilter = ({ colourCode }) => {
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
-        margin: "0.2em 0.2em",
-        width: "40%",
+        // margin: "0.2em 0.2em",
+        width: "35%",
+        fontSize: "0.8em",
       }}
     >
       <span>{colourCode}:</span>
@@ -36,13 +37,13 @@ const ParticipantFilter = ({ colourCode }) => {
 };
 
 const HivePrimaryControlView = () => {
-  const { state } = useHive();
-  const participantsKeys = Object.keys(state.participants);
+  const { hiveState } = useHive();
+  const participantsKeys = Object.keys(hiveState.participants);
 
   return (
     <div>
       <div className={"box"}>
-        <label style={{ color: "#a1a1a1" }}>FILTER:</label>
+        {/* <label style={{ color: "#5a5a5a" }}>FILTER:</label> */}
         {participantsKeys.map((k, i) => (
           <ParticipantFilter key={i} colourCode={k} />
         ))}

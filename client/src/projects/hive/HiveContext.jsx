@@ -12,14 +12,19 @@ import { cleanRawPhases } from "./utils";
 const HiveContext = React.createContext();
 
 function HiveProvider({ simulationId, children }) {
-  const [state, setState] = React.useState({
+  const [hiveState, hiveSetState] = React.useState({
     participants: { RED: true, BLUE: true, YELLOW: true, GREEN: true },
     phase: [0, 100],
     isPositionOnly: false,
   });
   const [markers, setMarkers] = React.useState([]);
 
-  const value = { state, setState, markers, setMarkers };
+  const value = {
+    hiveState,
+    hiveSetState,
+    markers,
+    setMarkers,
+  };
   return <HiveContext.Provider value={value}>{children}</HiveContext.Provider>;
 }
 

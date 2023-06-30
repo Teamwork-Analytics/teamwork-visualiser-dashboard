@@ -15,7 +15,7 @@ const calculateDuration = (startTime, endTime) => {
 };
 
 function TimelineProvider({ children }) {
-  // TODO: use hard coded start time and end time here for now
+  // TODO: use hard coded start time and end time here for now, use API later.
   const { notes } = useObservation();
   const simStartTimestamp = "2023-06-01T00:09:38.357Z";
   const simEndTimestamp = "2023-06-01T00:25:44.896Z";

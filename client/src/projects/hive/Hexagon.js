@@ -2,14 +2,14 @@ import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 6900,
-  HEIGHT: 9900,
+  WIDTH: 6960,
+  HEIGHT: 9500,
 };
 const CONSTANTS = {
   HEX_RADIUS: 35,
-  IMG_WIDTH: 2752,
-  IMG_HEIGHT: 2593,
-  HEXAGON_OPACITY: "0.4",
+  IMG_WIDTH: 2502,
+  IMG_HEIGHT: 3183,
+  HEXAGON_OPACITY: "0.5",
 };
 
 export const cssColourMatcher = {
@@ -29,8 +29,11 @@ class HexagonComponent {
 
     d3.csv(csvData).then(
       function (d, i) {
-        const startTime = timeParser(timeStart);
-        const endTime = timeParser(timeEnd);
+        // const startTime = timeParser(timeStart);
+        // const endTime = timeParser(timeEnd);
+        const startTime = timeStart * 1000;
+        const endTime = timeEnd * 1000;
+
         const clean = d.filter((data) => {
           const currTime = timeParser(data["audio time"]);
           if (startTime <= currTime && currTime <= endTime) return data;
@@ -88,8 +91,10 @@ class HexagonComponent {
         .enter()
         .append("path")
         .attr("d", function (d) {
-          const x = d.x - 200;
-          const y = d.y - 350;
+          // const x = d.y + 0;
+          // const y = -d.x + CONSTANTS.IMG_HEIGHT;
+          const x = d.x;
+          const y = d.y;
           return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
