@@ -10,6 +10,7 @@ import {
   Button,
 } from "react-bootstrap";
 import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
+import VideoVisualisation from "./visualisationComponents/VideoVisualisation";
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
 import { TimelineProvider } from "./visualisationComponents/TimelineContext";
 import { socket } from "./socket";
@@ -134,6 +135,8 @@ const DebriefingControllerModule = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const handleClosePreviewModal = () => setShowPreviewModal(false);
 
+  const [isVideoTabActive, setIsVideoTabActive] = useState(false);
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <TimelineProvider>
@@ -183,7 +186,10 @@ const DebriefingControllerModule = () => {
               <Tabs
                 id="top-tabs"
                 defaultActiveKey={topActiveTab}
-                onSelect={(key) => setTopActiveTab(key)}
+                onSelect={(key) => {
+                  setTopActiveTab(key);
+                  setIsVideoTabActive(key === "video");
+                }}
                 variant="pills"
               >
                 <Tab
@@ -207,10 +213,14 @@ const DebriefingControllerModule = () => {
                         ? debriefStyles.activeTab
                         : debriefStyles.inactiveTab,
                   }}
+                  style={{ minHeight: "30vh" }}
                 >
-                  <Image
-                    src={videoVis}
-                    style={debriefStyles.imageContainer}
+                  <VideoVisualisation
+                    style={{
+                      ...debriefStyles.imageContainer,
+                      minHeight: "30vh",
+                    }}
+                    isVideoTabActive={isVideoTabActive}
                     fluid
                   />
                 </Tab>

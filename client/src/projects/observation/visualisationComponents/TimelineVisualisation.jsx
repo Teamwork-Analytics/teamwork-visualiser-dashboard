@@ -59,42 +59,48 @@ const timelineStyle = {
 const isKeyEvent = (label) =>
   manualLabels.phases.some((item) => item.label === label);
 
-const CustomMark = ({ mark, index }) => {
+const CustomMark = ({ mark }) => {
   const markStyle = isKeyEvent(mark.label)
     ? { fontWeight: "bold", fontSize: "1.3em" }
     : {};
 
-  return (
-    <div style={{ position: "relative", paddingBottom: "-200px" }}>
-      <span
-        style={{
-          position: "absolute",
-          top: index % 2 === 0 ? "-20px" : "-70px", // alternating label positions
-          transform: "rotate(-45deg)",
-          marginLeft: "-20px",
-          maxWidth: "40px",
-          wordWrap: "break-word", // enable word wrapping // not working
-          overflowWrap: "break-word", // break long strings of text // not working
-          ...markStyle,
-        }}
-      >
-        {mark.label}
-      </span>
+  const markHeight = isKeyEvent(mark.label) ? "50px" : "10px";
+  const markTop = isKeyEvent(mark.label) ? "-50px" : "-10px";
 
-      <span
-        // example: alternating mark heights
-        style={{
-          display: "block",
-          width: "2px",
-          position: "absolute",
-          bottom: 0,
-          height: index % 2 === 0 ? "20px" : "70px",
-          backgroundColor: "#1976d2",
-          marginBottom: "-20px",
-          marginLeft: "-1px",
-        }}
-      ></span>
-    </div>
+  return (
+    <>
+      {isKeyEvent(mark.label) ? (
+        <div style={{ position: "relative", paddingBottom: "-200px" }}>
+          <span
+            style={{
+              position: "absolute",
+              top: markTop, // top position based on whether it's a key event
+              // transform: "rotate(-45deg)",
+              marginLeft: "-30px",
+              maxWidth: "40px",
+              wordWrap: "break-word", // enable word wrapping
+              overflowWrap: "break-word", // break long strings of text
+              ...markStyle,
+            }}
+          >
+            {mark.label}
+          </span>
+          <span
+            // mark heights depend on whether it's a key event
+            style={{
+              display: "block",
+              width: "2px",
+              position: "absolute",
+              bottom: 0,
+              height: markHeight,
+              backgroundColor: "#1976d2",
+              marginBottom: "-20px",
+              marginLeft: "-1px",
+            }}
+          ></span>
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -105,7 +111,12 @@ const formatDuration = (value) => {
   return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
 };
 
-const FilteredMarksComponent = ({ marks, range }) => {
+const reverseFormatDuration = (formattedDuration) => {
+  const [minutes, seconds] = formattedDuration.split(":").map(Number);
+  return minutes * 60 + seconds;
+};
+
+const FilteredMarksComponent = ({ marks, range, setRange }) => {
   // Filter marks within the range
   const filteredMarks = marks.filter((mark) => {
     return mark.value >= range[0] && mark.value <= range[1];
@@ -124,7 +135,18 @@ const FilteredMarksComponent = ({ marks, range }) => {
     <Card style={{ height: "30vh", overflowY: "scroll", fontSize: "12px" }}>
       <Card.Body>
         {formattedMarks.map((mark, index) => (
-          <Row style={{ marginLeft: "0px", marginRight: "0px" }} key={index}>
+          <Row
+            style={{ marginLeft: "0px", marginRight: "0px" }}
+            key={index}
+            onClick={() => {
+              console.log(range);
+              setRange([
+                reverseFormatDuration(mark.value) - 40,
+                reverseFormatDuration(mark.value) + 10,
+              ]); // this is wrong, mark value is time
+              console.log(range);
+            }}
+          >
             <Col
               xs="auto"
               style={{
@@ -166,6 +188,19 @@ const TimelineVisualisation = () => {
     simDuration,
     timelineTags,
   } = useTimeline();
+
+  // keep value only for non key event tags
+  const filterTimelineTagsForKeyEvent = (tags) => {
+    return tags.map((tag) => {
+      if (isKeyEvent(tag.label)) {
+        return tag; // return the tag as is if it is a key event
+      } else {
+        return { value: tag.value }; // return the tag without the label if it is not a key event
+      }
+    });
+  };
+  const modifiedTimelineTags = filterTimelineTagsForKeyEvent(timelineTags);
+
   // play or pause state
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -229,7 +264,7 @@ const TimelineVisualisation = () => {
                   .padStart(2, "0")}`;
               }}
               aria-labelledby="range-slider"
-              marks={timelineTags.map((mark, index) => ({
+              marks={modifiedTimelineTags.map((mark, index) => ({
                 ...mark,
                 label: <CustomMark mark={mark} index={index} />,
               }))}
@@ -253,7 +288,11 @@ const TimelineVisualisation = () => {
             </div>
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
-            <FilteredMarksComponent marks={timelineTags} range={range} />
+            <FilteredMarksComponent
+              marks={timelineTags}
+              range={range}
+              setRange={setRange}
+            />
           </Col>
         </Row>
       </Container>
