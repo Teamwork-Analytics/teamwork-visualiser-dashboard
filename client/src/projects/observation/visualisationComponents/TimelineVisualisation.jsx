@@ -141,7 +141,7 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
             onClick={() => {
               console.log(range);
               setRange([
-                reverseFormatDuration(mark.value) - 40,
+                reverseFormatDuration(mark.value) - 10,
                 reverseFormatDuration(mark.value) + 10,
               ]); // this is wrong, mark value is time
               console.log(range);

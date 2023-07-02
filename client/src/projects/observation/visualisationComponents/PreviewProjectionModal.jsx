@@ -15,10 +15,6 @@ const imageReferences = {
   priorBar: { size: "small", imageUrl: priorBar },
   wardMap: { size: "medium", imageUrl: mapVis },
   video: { size: "large", imageUrl: videoVis },
-  // circleENA: {
-  //   size: "small",
-  //   imageUrl: circleENA,
-  // },
 };
 
 const PreviewProjectionModal = ({
