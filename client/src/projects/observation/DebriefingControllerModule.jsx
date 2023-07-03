@@ -1,16 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  Row,
-  Col,
-  Tab,
-  Tabs,
-  Nav,
-  Container,
-  Image,
-  Button,
-} from "react-bootstrap";
-import TimelineVisualisation from "./visualisationComponents/TimelineVisualisation";
-import VideoVisualisation from "./visualisationComponents/VideoVisualisation";
+import { Row, Col, Tab, Tabs, Nav, Container, Button } from "react-bootstrap";
+
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
 import { TimelineProvider } from "./visualisationComponents/TimelineContext";
 import { socket } from "./socket";
@@ -18,12 +8,11 @@ import { ConnectionState } from "./socketComponents/ConnectionState";
 import { ConnectionManager } from "./socketComponents/ConnectionManager";
 import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
 import toast from "react-hot-toast";
-
-//image references:
-import comBehaviour from "../../images/vis/com-behaviour.png";
-import comNetwork from "../../images/vis/communication-network.png";
-import priorBar from "../../images/vis/prioritisation-bar.png";
-import wardMap from "../../images/vis/ward-map.png";
+import {
+  topTabVisualisations,
+  bottomLeftVisualisations,
+  bottomRightVisualisations,
+} from "./visualisationComponents/VisualisationsList";
 
 // remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
@@ -38,11 +27,6 @@ const debriefStyles = {
     padding: "5px",
   },
   inactiveTab: { color: "gray", fontSize: "14px", padding: "5px" },
-  imageContainer: {
-    width: "auto",
-    objectFit: "scale-down",
-    maxHeight: "33vh",
-  },
   addVisButton: {
     position: "absolute",
     top: "10px",
@@ -149,6 +133,7 @@ const DebriefingControllerModule = () => {
           handleConfirmProjection={handleConfirmProjection}
           selectedVis={selectedVis}
         />
+        {/* Row to show selected list and projection control buttons */}
         <Row style={{ margin: "3px", fontSize: "14px" }}>
           <Col
             className="d-flex align-items-center text-left"
@@ -174,6 +159,7 @@ const DebriefingControllerModule = () => {
             </Button>
           </Col>
         </Row>
+        {/* Top row viz */}
         <Row style={{ minHeight: "35vh" }}>
           <Col style={{ padding: "1px" }}>
             <Container
@@ -198,49 +184,36 @@ const DebriefingControllerModule = () => {
                 }}
                 variant="pills"
               >
-                <Tab
-                  eventKey="timeline"
-                  title="Timeline"
-                  tabAttrs={{
-                    style:
-                      topActiveTab === "timeline"
-                        ? debriefStyles.activeTab
-                        : debriefStyles.inactiveTab,
-                  }}
-                >
-                  <TimelineVisualisation style={debriefStyles.imageContainer} />
-                </Tab>
-                <Tab
-                  eventKey="video"
-                  title="Video"
-                  tabAttrs={{
-                    style:
-                      topActiveTab === "video"
-                        ? debriefStyles.activeTab
-                        : debriefStyles.inactiveTab,
-                  }}
-                  style={{ minHeight: "30vh" }}
-                >
-                  <VideoVisualisation
-                    style={{
-                      ...debriefStyles.imageContainer,
-                      minHeight: "30vh",
+                {topTabVisualisations.map((tab, index) => (
+                  <Tab
+                    key={index}
+                    eventKey={tab.eventKey}
+                    title={tab.title}
+                    tabAttrs={{
+                      style:
+                        topActiveTab === tab.eventKey
+                          ? debriefStyles.activeTab
+                          : debriefStyles.inactiveTab,
                     }}
-                    isVideoTabActive={isVideoTabActive}
-                    fluid
-                  />
-                </Tab>
+                    style={tab.tabStyle ? tab.tabStyle : null}
+                  >
+                    {tab.component(
+                      debriefStyles.imageContainer,
+                      isVideoTabActive
+                    )}
+                  </Tab>
+                ))}
               </Tabs>
               <Button
                 variant="success"
                 style={{
                   ...debriefStyles.addVisButton,
-                  opacity: selectedVis.some((vis) => vis.id === "video")
+                  opacity: selectedVis.some((vis) => vis.id === topActiveTab)
                     ? "0.65"
                     : "1",
                   display: isVideoTabActive ? "block" : "none", // button will be hidden when the video tab is not active
                 }}
-                onClick={() => handleAddVis("video")}
+                onClick={() => handleAddVis(topActiveTab)}
               >
                 {selectedVis.some((vis) => vis.id === "video") ? (
                   <>
@@ -255,7 +228,9 @@ const DebriefingControllerModule = () => {
             </Container>
           </Col>
         </Row>
+        {/* Bottom row viz */}
         <Row style={{ minHeight: "35vh", marginTop: "5px" }}>
+          {/* Bottom left viz */}
           <Col
             lg={6}
             style={{
@@ -278,30 +253,20 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Nav variant="pills" className="flex-column">
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="priorBar"
-                          style={
-                            bottomLeftActiveTab === "priorBar"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Prioritisation Bar
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="wardMap"
-                          style={
-                            bottomLeftActiveTab === "wardMap"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Ward Map
-                        </Nav.Link>
-                      </Nav.Item>
+                      {bottomLeftVisualisations.map((tab, index) => (
+                        <Nav.Item key={index}>
+                          <Nav.Link
+                            eventKey={tab.eventKey}
+                            style={
+                              bottomLeftActiveTab === tab.eventKey
+                                ? debriefStyles.activeTab
+                                : debriefStyles.inactiveTab
+                            }
+                          >
+                            {tab.title}
+                          </Nav.Link>
+                        </Nav.Item>
+                      ))}
                     </Nav>
                   </Col>
                   <Col
@@ -312,20 +277,11 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Tab.Content style={{ position: "relative" }}>
-                      <Tab.Pane eventKey="priorBar">
-                        <Image
-                          src={priorBar}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="wardMap">
-                        <Image
-                          src={wardMap}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
-                      </Tab.Pane>
+                      {bottomLeftVisualisations.map((tab, index) => (
+                        <Tab.Pane eventKey={tab.eventKey} key={index}>
+                          {tab.component()}
+                        </Tab.Pane>
+                      ))}
                       <Button
                         variant="success"
                         style={{
@@ -358,6 +314,8 @@ const DebriefingControllerModule = () => {
               </Tab.Container>
             </Container>
           </Col>
+
+          {/* Bottom right viz */}
           <Col style={{ padding: "1px", marginLeft: "5px" }}>
             <Container style={debriefStyles.bottomTabContainer}>
               <Tab.Container
@@ -374,30 +332,20 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Nav variant="pills" className="flex-column">
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="commNetwork"
-                          style={
-                            bottomRightActiveTab === "commNetwork"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Communication Network
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="commBehaviour"
-                          style={
-                            bottomRightActiveTab === "commBehaviour"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Communication Behaviour
-                        </Nav.Link>
-                      </Nav.Item>
+                      {bottomRightVisualisations.map((tab, index) => (
+                        <Nav.Item key={index}>
+                          <Nav.Link
+                            eventKey={tab.eventKey}
+                            style={
+                              bottomRightActiveTab === tab.eventKey
+                                ? debriefStyles.activeTab
+                                : debriefStyles.inactiveTab
+                            }
+                          >
+                            {tab.title}
+                          </Nav.Link>
+                        </Nav.Item>
+                      ))}
                     </Nav>
                   </Col>
                   <Col
@@ -408,21 +356,11 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Tab.Content style={{ position: "relative" }}>
-                      <Tab.Pane eventKey="commNetwork">
-                        <Image
-                          src={comNetwork}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="commBehaviour">
-                        <Image
-                          src={comBehaviour}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
-                      </Tab.Pane>
-
+                      {bottomRightVisualisations.map((tab, index) => (
+                        <Tab.Pane eventKey={tab.eventKey} key={index}>
+                          {tab.component()}
+                        </Tab.Pane>
+                      ))}
                       <Button
                         variant="success"
                         style={{

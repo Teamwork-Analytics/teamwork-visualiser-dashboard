@@ -132,19 +132,24 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
 
   // Render the formatted marks
   return (
-    <Card style={{ height: "30vh", overflowY: "scroll", fontSize: "12px" }}>
+    <Card
+      style={{
+        height: "30vh",
+        overflowY: "scroll",
+        fontSize: "12px",
+        marginTop: "-30px",
+      }}
+    >
       <Card.Body>
         {formattedMarks.map((mark, index) => (
           <Row
             style={{ marginLeft: "0px", marginRight: "0px" }}
             key={index}
             onClick={() => {
-              console.log(range);
               setRange([
                 reverseFormatDuration(mark.value) - 10,
                 reverseFormatDuration(mark.value) + 10,
               ]);
-              console.log(range);
             }}
           >
             <Col
@@ -263,7 +268,7 @@ const TimelineVisualisation = () => {
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
-              style={{ marginTop: "150px" }}
+              style={{ marginTop: "120px" }}
             />
             <div
               style={{
@@ -280,6 +285,7 @@ const TimelineVisualisation = () => {
                 {formatDuration(simDuration)}
               </div>
             </div>
+            <div>Quick filter buttons.</div>
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <FilteredMarksComponent
