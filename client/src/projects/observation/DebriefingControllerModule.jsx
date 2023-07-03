@@ -124,6 +124,73 @@ const DebriefingControllerModule = () => {
 
   const [isVideoTabActive, setIsVideoTabActive] = useState(false);
 
+  // component for bottom two tabs group
+  const BottomVizTabContainer = ({
+    visualisations,
+    activeTab,
+    setActiveTab,
+  }) => {
+    return (
+      <Container style={debriefStyles.bottomTabContainer}>
+        <Tab.Container
+          defaultActiveKey={activeTab}
+          onSelect={(key) => setActiveTab(key)}
+        >
+          <Row style={{ marginRight: "0", marginLeft: "0" }}>
+            <Col sm={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
+              <Nav variant="pills" className="flex-column">
+                {visualisations.map((tab, index) => (
+                  <Nav.Item key={index}>
+                    <Nav.Link
+                      eventKey={tab.eventKey}
+                      style={
+                        activeTab === tab.eventKey
+                          ? debriefStyles.activeTab
+                          : debriefStyles.inactiveTab
+                      }
+                    >
+                      {tab.title}
+                    </Nav.Link>
+                  </Nav.Item>
+                ))}
+              </Nav>
+            </Col>
+            <Col sm={9} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
+              <Tab.Content style={{ position: "relative" }}>
+                {visualisations.map((tab, index) => (
+                  <Tab.Pane eventKey={tab.eventKey} key={index}>
+                    {tab.component()}
+                  </Tab.Pane>
+                ))}
+                <Button
+                  variant="success"
+                  style={{
+                    ...debriefStyles.addVisButton,
+                    opacity: selectedVis.some((vis) => vis.id === activeTab)
+                      ? "0.65"
+                      : "1",
+                  }}
+                  onClick={() => handleAddVis(activeTab)}
+                >
+                  {selectedVis.some((vis) => vis.id === activeTab) ? (
+                    <>
+                      <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
+                    </>
+                  ) : (
+                    <>
+                      <FaPlus style={{ marginBottom: "2px" }} /> Add to
+                      projection
+                    </>
+                  )}
+                </Button>
+              </Tab.Content>
+            </Col>
+          </Row>
+        </Tab.Container>
+      </Container>
+    );
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <TimelineProvider>
@@ -231,167 +298,21 @@ const DebriefingControllerModule = () => {
         {/* Bottom row viz */}
         <Row style={{ minHeight: "35vh", marginTop: "5px" }}>
           {/* Bottom left viz */}
-          <Col
-            lg={6}
-            style={{
-              padding: "1px",
-              marginRight: "5px",
-            }}
-          >
-            <Container style={debriefStyles.bottomTabContainer}>
-              <Tab.Container
-                id="bottom-left-tabs"
-                defaultActiveKey={bottomLeftActiveTab}
-                onSelect={(key) => setBottomLeftActiveTab(key)}
-              >
-                <Row style={{ marginRight: "0", marginLeft: "0" }}>
-                  <Col
-                    sm={3}
-                    style={{
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                    }}
-                  >
-                    <Nav variant="pills" className="flex-column">
-                      {bottomLeftVisualisations.map((tab, index) => (
-                        <Nav.Item key={index}>
-                          <Nav.Link
-                            eventKey={tab.eventKey}
-                            style={
-                              bottomLeftActiveTab === tab.eventKey
-                                ? debriefStyles.activeTab
-                                : debriefStyles.inactiveTab
-                            }
-                          >
-                            {tab.title}
-                          </Nav.Link>
-                        </Nav.Item>
-                      ))}
-                    </Nav>
-                  </Col>
-                  <Col
-                    sm={9}
-                    style={{
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                    }}
-                  >
-                    <Tab.Content style={{ position: "relative" }}>
-                      {bottomLeftVisualisations.map((tab, index) => (
-                        <Tab.Pane eventKey={tab.eventKey} key={index}>
-                          {tab.component()}
-                        </Tab.Pane>
-                      ))}
-                      <Button
-                        variant="success"
-                        style={{
-                          ...debriefStyles.addVisButton,
-                          opacity: selectedVis.some(
-                            (vis) => vis.id === bottomLeftActiveTab
-                          )
-                            ? "0.65"
-                            : "1",
-                        }}
-                        onClick={() => handleAddVis(bottomLeftActiveTab)}
-                      >
-                        {selectedVis.some(
-                          (vis) => vis.id === bottomLeftActiveTab
-                        ) ? (
-                          <>
-                            <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
-                            Added
-                          </>
-                        ) : (
-                          <>
-                            <FaPlus style={{ marginBottom: "2px" }} /> Add to
-                            projection
-                          </>
-                        )}
-                      </Button>
-                    </Tab.Content>
-                  </Col>
-                </Row>
-              </Tab.Container>
-            </Container>
+          <Col lg={6} style={{ padding: "1px", marginRight: "5px" }}>
+            <BottomVizTabContainer
+              visualisations={bottomLeftVisualisations}
+              activeTab={bottomLeftActiveTab}
+              setActiveTab={setBottomLeftActiveTab}
+            />
           </Col>
 
           {/* Bottom right viz */}
           <Col style={{ padding: "1px", marginLeft: "5px" }}>
-            <Container style={debriefStyles.bottomTabContainer}>
-              <Tab.Container
-                id="bottom-right-tabs"
-                defaultActiveKey={bottomRightActiveTab}
-                onSelect={(key) => setBottomRightActiveTab(key)}
-              >
-                <Row style={{ marginRight: "0", marginLeft: "0" }}>
-                  <Col
-                    sm={3}
-                    style={{
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                    }}
-                  >
-                    <Nav variant="pills" className="flex-column">
-                      {bottomRightVisualisations.map((tab, index) => (
-                        <Nav.Item key={index}>
-                          <Nav.Link
-                            eventKey={tab.eventKey}
-                            style={
-                              bottomRightActiveTab === tab.eventKey
-                                ? debriefStyles.activeTab
-                                : debriefStyles.inactiveTab
-                            }
-                          >
-                            {tab.title}
-                          </Nav.Link>
-                        </Nav.Item>
-                      ))}
-                    </Nav>
-                  </Col>
-                  <Col
-                    sm={9}
-                    style={{
-                      paddingLeft: "5px",
-                      paddingRight: "5px",
-                    }}
-                  >
-                    <Tab.Content style={{ position: "relative" }}>
-                      {bottomRightVisualisations.map((tab, index) => (
-                        <Tab.Pane eventKey={tab.eventKey} key={index}>
-                          {tab.component()}
-                        </Tab.Pane>
-                      ))}
-                      <Button
-                        variant="success"
-                        style={{
-                          ...debriefStyles.addVisButton,
-                          opacity: selectedVis.some(
-                            (vis) => vis.id === bottomRightActiveTab
-                          )
-                            ? "0.65"
-                            : "1",
-                        }}
-                        onClick={() => handleAddVis(bottomRightActiveTab)}
-                      >
-                        {selectedVis.some(
-                          (vis) => vis.id === bottomRightActiveTab
-                        ) ? (
-                          <>
-                            <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
-                            Added
-                          </>
-                        ) : (
-                          <>
-                            <FaPlus style={{ marginBottom: "2px" }} /> Add to
-                            projection
-                          </>
-                        )}
-                      </Button>
-                    </Tab.Content>
-                  </Col>
-                </Row>
-              </Tab.Container>
-            </Container>
+            <BottomVizTabContainer
+              visualisations={bottomRightVisualisations}
+              activeTab={bottomRightActiveTab}
+              setActiveTab={setBottomRightActiveTab}
+            />
           </Col>
         </Row>
       </TimelineProvider>
