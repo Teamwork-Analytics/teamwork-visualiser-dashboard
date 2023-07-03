@@ -180,14 +180,8 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
 
 const TimelineVisualisation = () => {
   // timeline range and playhead
-  const {
-    range,
-    setRange,
-    playHeadPosition,
-    setPlayHeadPosition,
-    simDuration,
-    timelineTags,
-  } = useTimeline();
+  const { range, setRange, setPlayHeadPosition, simDuration, timelineTags } =
+    useTimeline();
 
   // keep value only for non key event tags
   const filterTimelineTagsForKeyEvent = (tags) => {

@@ -23,7 +23,6 @@ import toast from "react-hot-toast";
 import comBehaviour from "../../images/vis/com-behaviour.png";
 import comNetwork from "../../images/vis/communication-network.png";
 import priorBar from "../../images/vis/prioritisation-bar.png";
-import videoVis from "../../images/vis/video.png";
 import wardMap from "../../images/vis/ward-map.png";
 
 // remember to change the css file as well for the styling of bottom two tabs group
@@ -63,7 +62,7 @@ const debriefStyles = {
 };
 
 const DebriefingControllerModule = () => {
-  // from socket io poc repo
+  // socket connection
   const [isConnected, setIsConnected] = useState(socket.connected);
 
   useEffect(() => {
@@ -88,6 +87,7 @@ const DebriefingControllerModule = () => {
 
   const hideConnectButton = true;
 
+  // send selected Vis
   const handleConfirmProjection = () => {
     console.log(selectedVis);
     //['video', 'priorBar', 'commNetwork']
@@ -101,6 +101,7 @@ const DebriefingControllerModule = () => {
     setSelectedVis([]);
   };
 
+  // send empty list
   const handleRevertAllProjections = () => {
     const toastId = toast.loading("Loading...");
     setSelectedVis([]);
@@ -113,11 +114,13 @@ const DebriefingControllerModule = () => {
     });
   };
 
+  // tabs default active
   const [topActiveTab, setTopActiveTab] = useState("timeline");
   const [bottomLeftActiveTab, setBottomLeftActiveTab] = useState("priorBar");
   const [bottomRightActiveTab, setBottomRightActiveTab] =
     useState("commNetwork");
 
+  // visualisations selection
   const [selectedVis, setSelectedVis] = useState([]);
   const handleAddVis = (id) => {
     if (!selectedVis.some((item) => item.id === id) && selectedVis.length < 3) {
@@ -147,7 +150,10 @@ const DebriefingControllerModule = () => {
           selectedVis={selectedVis}
         />
         <Row style={{ margin: "3px", fontSize: "14px" }}>
-          <Col className="d-flex align-items-center text-left">
+          <Col
+            className="d-flex align-items-center text-left"
+            style={{ fontSize: "12px" }}
+          >
             You have selected visualisations:{" "}
             {selectedVis.map((vis) => vis.id).join(", ")}
           </Col>
