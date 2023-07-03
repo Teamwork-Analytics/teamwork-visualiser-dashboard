@@ -75,7 +75,6 @@ const CustomMark = ({ mark }) => {
             style={{
               position: "absolute",
               top: markTop, // top position based on whether it's a key event
-              // transform: "rotate(-45deg)",
               marginLeft: "-30px",
               maxWidth: "40px",
               wordWrap: "break-word", // enable word wrapping
@@ -111,6 +110,7 @@ const formatDuration = (value) => {
   return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
 };
 
+// convert to seconds from duration
 const reverseFormatDuration = (formattedDuration) => {
   const [minutes, seconds] = formattedDuration.split(":").map(Number);
   return minutes * 60 + seconds;
@@ -143,7 +143,7 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
               setRange([
                 reverseFormatDuration(mark.value) - 10,
                 reverseFormatDuration(mark.value) + 10,
-              ]); // this is wrong, mark value is time
+              ]);
               console.log(range);
             }}
           >
