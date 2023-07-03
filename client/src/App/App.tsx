@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-
 import SimulationPage from "../pages/simulation/SimulationPage";
 import MainPage from "../pages/main/MainPage";
 import ErrorPage from "../pages/error/ErrorPage";
@@ -9,7 +8,9 @@ import ProjectManagementPage from "../pages/projectManagement/ProjectManagementP
 import TaggingEditorPage from "../pages/taggingEditor/TaggingEditorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TEAM_NAME } from "../data/manualLabels";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster, useToasterStore } from "react-hot-toast";
+
+const TOAST_LIMIT = 2; // feedback toast limit
 
 function App() {
   const styles = {
@@ -24,6 +25,15 @@ function App() {
     },
   };
 
+  // workaround for limiting toast
+  const { toasts } = useToasterStore();
+  useEffect(() => {
+    toasts
+      .filter((t) => t.visible) // Only consider visible toasts
+      .filter((_, i) => i >= TOAST_LIMIT) // Is toast index over limit?
+      .forEach((t) => toast.dismiss(t.id)); // Dismiss – Use toast.remove(t.id) for no exit animation
+  }, [toasts]);
+
   return (
     <div className="App">
       <Toaster />
@@ -37,12 +47,10 @@ function App() {
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />
           <Route path="/" element={<Navigate replace to="/main" />} />
           <Route path="/projects" element={<ProjectManagementPage />} />
-          {/* Take project ID in when it is connected to the backend */}
           <Route
             path="/tagging-editor/:projectId"
             element={<TaggingEditorPage />}
           />
-          <Route path="/tagging-editor" element={<TaggingEditorPage />} />
         </Routes>
       </BrowserRouter>
       <footer style={styles.footer}>
