@@ -285,7 +285,6 @@ const TimelineVisualisation = () => {
                 {formatDuration(simDuration)}
               </div>
             </div>
-            <div>Quick filter buttons.</div>
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <FilteredMarksComponent
