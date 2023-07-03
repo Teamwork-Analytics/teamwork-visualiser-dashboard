@@ -222,6 +222,7 @@ const DebriefingControllerModule = () => {
                 minHeight: "34vh",
               }}
             >
+              <h3 style={{ color: "grey" }}>Noninteractive</h3>
               <Tab.Container
                 id="bottom-left-tabs"
                 defaultActiveKey={bottomLeftActiveTab}
@@ -304,6 +305,8 @@ const DebriefingControllerModule = () => {
                 minHeight: "34vh",
               }}
             >
+              <h3 style={{ color: "grey" }}>Interactive</h3>
+
               <Tab.Container
                 id="bottom-right-tabs"
                 defaultActiveKey={bottomRightActiveTab}

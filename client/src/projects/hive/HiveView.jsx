@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import HexagonComponent from "./Hexagon";
 
 //TODO: make the following floor plan much more dynamic
-import floorPlan from "./floor-plan/nursing-small.svg";
+import floorPlan from "./floor-plan/floor-plan.svg";
 import { useHive } from "./HiveContext";
 import HiveSlider from "./HiveSlider";
 import { HivePrimaryControlView } from "./HiveControlView";
@@ -68,7 +68,7 @@ const HiveView = () => {
               width: "550px",
               height: "25vh",
               maxHeight: "1080px",
-              backgroundColor: "#303030",
+              // backgroundColor: "#303030",
               borderRadius: "1em",
             }}
           >
