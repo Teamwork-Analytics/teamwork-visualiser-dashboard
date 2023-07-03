@@ -66,6 +66,7 @@ const PreviewProjectionModal = ({
             You have selected:
             {selectedVis && selectedVis.map((vis) => vis.id).join(", ")}
           </p>
+
           <div
             style={{
               display: "flex",

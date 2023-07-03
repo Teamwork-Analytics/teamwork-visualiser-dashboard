@@ -7,24 +7,11 @@ import DisplayViz from "./socketComponents/DisplayViz";
 // images
 import behaviourVis from "./images/behaviour-vis.png";
 import communicationVis from "./images/communication-vis.png";
-import keywordVis from "./images/keyword-vis.png";
 import mapVis from "./images/ward-map.png";
 import videoVis from "./images/video-vis.png";
-import circleENA from "./images/circle-ena.png";
 import priorBar from "../../images/vis/prioritisation-bar.png";
 
 const DebriefView = () => {
-  const styles = {
-    outer: {
-      margin: "0 auto",
-      width: "50vw",
-      maxWidth: "1440px",
-      height: "100%",
-      colour: "black",
-    },
-    info: { width: "20vw", margin: "0 auto" },
-  };
-
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [dispList, setDispList] = useState([]);
 
@@ -34,10 +21,6 @@ const DebriefView = () => {
     priorBar: { size: "small", imageUrl: priorBar },
     wardMap: { size: "medium", imageUrl: mapVis },
     video: { size: "large", imageUrl: videoVis },
-    // circleENA: {
-    //   size: "small",
-    //   imageUrl: circleENA,
-    // },
   };
 
   useEffect(() => {
@@ -78,10 +61,7 @@ const DebriefView = () => {
   const hideConnectButton = true;
 
   return (
-    <div style={styles.outer}>
-      <ConnectionState isConnected={isConnected} />
-      {!hideConnectButton && <ConnectionManager />}
-
+    <>
       <div
         style={{
           display: "flex",
@@ -107,7 +87,9 @@ const DebriefView = () => {
           </div>
         )}
       </div>
-    </div>
+      <ConnectionState isConnected={isConnected} />
+      {!hideConnectButton && <ConnectionManager />}
+    </>
   );
 };
 
