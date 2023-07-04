@@ -38,7 +38,7 @@ const ENANetworkView = () => {
     name: "circle",
     fit: true, // whether to fit the viewport to the graph
     padding: 5, // the padding on fit
-    boundingBox: { x1: 50, y1: 50, x2: 1000, y2: 800 }, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+    boundingBox: { x1: 0, y1: 0, x2: 600, y2: 300 }, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
     avoidOverlap: true, // prevents node overlap, may overflow boundingBox and radius if not enough space
     nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
     spacingFactor: undefined, // Applies a multiplicative factor (>0) to expand or compress the overall area that the nodes take up
@@ -89,7 +89,7 @@ const ENANetworkView = () => {
       fit={true}
       stylesheet={stylesheet}
       elements={networkData}
-      style={{ textAlign: "left", width: "100%", height: "30vh" }}
+      style={{ textAlign: "left", width: "100%", height: "25vh" }}
     />
   );
 };
