@@ -1,59 +1,95 @@
-import React from "react";
-import { Alert, Form } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
-import { useDebriefing } from "./DebriefContext";
+import { useState, useEffect } from "react";
+import { socket } from "./socket";
+import { ConnectionState } from "./socketComponents/ConnectionState";
+import { ConnectionManager } from "./socketComponents/ConnectionManager";
+import DisplayViz from "./socketComponents/DisplayViz";
+
+// images
+import behaviourVis from "./images/behaviour-vis.png";
+import communicationVis from "./images/communication-vis.png";
+import mapVis from "./images/ward-map.png";
+import videoVis from "./images/video-vis.png";
+import priorBar from "../../images/vis/prioritisation-bar.png";
 
 const DebriefView = () => {
-  const { simulationId } = useParams();
-  const { isStarted } = useDebriefing();
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [dispList, setDispList] = useState([]);
 
-  const styles = {
-    outer: {
-      margin: "0 auto",
-      width: "50vw",
-      maxWidth: "1440px",
-      height: "100%",
-      colour: "black",
-    },
-    info: { width: "20vw", margin: "0 auto" },
+  const imageReferences = {
+    commBehaviour: { size: "small", imageUrl: behaviourVis },
+    commNetwork: { size: "small", imageUrl: communicationVis },
+    priorBar: { size: "small", imageUrl: priorBar },
+    wardMap: { size: "medium", imageUrl: mapVis },
+    video: { size: "large", imageUrl: videoVis },
   };
 
-  const AlertCondition = () => {
-    let alertColour = "secondary";
-    let message = "Audio system hasn't started.";
-    if (isStarted === true) {
-      alertColour = "success";
-      message = "Audio system has started.";
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+      console.log("Connected to " + socket.id);
     }
-    return <Alert variant={alertColour}>{`${message}`}</Alert>;
+
+    function onDisconnect() {
+      setIsConnected(false);
+      console.log("Disconnected from " + socket.id);
+    }
+
+    function onUpdateList(list) {
+      console.log("Received controller change to display: " + list);
+      const parsedList = JSON.parse(list);
+      setDispList(parsedList); // WARNING: abrupt mutation
+    }
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+    socket.on("receive-disp-list", onUpdateList);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("receive-disp-list", onUpdateList);
+    };
+  }, []);
+
+  const decideSize = (d) => {
+    if (dispList.length === 1 && d.id !== "videoVis") {
+      return "single";
+    }
+    return imageReferences[d.id].size;
   };
+
+  const hideConnectButton = true;
 
   return (
-    <div style={styles.outer}>
-      <h1>Session {simulationId}</h1>
-      <div style={styles.info}>
-        <AlertCondition />
-        <p>Pre-debriefing Checklist</p>
+    <>
+      <div
+        style={{
+          display: "flex",
+          alignContent: "center",
+          justifyContent: "center",
+          width: "100vw",
+          height: "90vh",
+          maxHeight: "90vh",
+          flexWrap: "wrap",
+        }}
+      >
+        {dispList.length !== 0 ? (
+          dispList.map((d) => (
+            <DisplayViz
+              size={decideSize(d)}
+              image={imageReferences[d.id].imageUrl}
+            />
+          ))
+        ) : (
+          <div align="center">
+            <h1>🔍No visualisations</h1>
+            <p>Please select up to three visualisations</p>
+          </div>
+        )}
       </div>
-      <hr />
-      <Form style={{ width: "20vw", margin: "0 auto", textAlign: "left" }}>
-        <Form.Group className="mb-3" controlId="zoom">
-          <Form.Check type="checkbox" label="Connected to Zoom" />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="share-screen">
-          <Form.Check
-            type="checkbox"
-            label="Screen in the debriefing room is shared"
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="screen-recording">
-          <Form.Check type="checkbox" label="Screen recording is on" />
-        </Form.Group>
-      </Form>
-
-      <ReactTooltip />
-    </div>
+      <ConnectionState isConnected={isConnected} />
+      {!hideConnectButton && <ConnectionManager />}
+    </>
   );
 };
 

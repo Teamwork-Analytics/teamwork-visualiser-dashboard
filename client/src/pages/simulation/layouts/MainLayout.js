@@ -11,6 +11,7 @@ const MainLayout = ({ children }) => {
         // background: "#",
         width: "100%",
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         overflowY: "auto",
         padding: "1em",

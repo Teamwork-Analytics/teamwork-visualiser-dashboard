@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from "react";
+/**
+ * @file SimulationPage.tsx
+ * @description This page is used by teachers while tagging and debriefing.
+ * It consists of a sidebar and a main view. Main view can be switched
+ * between different tools.
+ */
+import { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useParams } from "react-router-dom";
