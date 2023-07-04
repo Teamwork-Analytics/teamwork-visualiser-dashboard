@@ -26,6 +26,7 @@ import videoVis from "../../images/vis/video.png";
 // import wardMap from "../../images/vis/ward-map.png";
 import { TimelineProvider } from "./visualisationComponents/TimelineContext";
 import { HiveView } from "../hive";
+import { ENANetworkView, SocialNetworkView } from "../sna";
 
 // remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
@@ -57,8 +58,9 @@ const debriefStyles = {
 
 const DebriefingControllerModule = () => {
   const [topActiveTab, setTopActiveTab] = useState("timeline");
-  const [bottomLeftActiveTab, setBottomLeftActiveTab] = useState("priorBar");
-  const [bottomRightActiveTab, setBottomRightActiveTab] = useState("wardMap");
+  const [bottomLeftActiveTab, setBottomLeftActiveTab] = useState("wardMap");
+  const [bottomRightActiveTab, setBottomRightActiveTab] =
+    useState("commNetwork");
 
   const [selectedVis, setSelectedVis] = useState([]);
   const handleAddVis = (id) => {
@@ -207,7 +209,7 @@ const DebriefingControllerModule = () => {
         </Row>
         <Row style={{ minHeight: "35vh" }}>
           <Col
-            lg={5}
+            lg={6}
             style={{
               padding: "1px",
             }}
@@ -222,7 +224,7 @@ const DebriefingControllerModule = () => {
                 minHeight: "34vh",
               }}
             >
-              <h3 style={{ color: "grey" }}>Noninteractive</h3>
+              <h3 style={{ color: "grey" }}>Space Utilisation</h3>
               <Tab.Container
                 id="bottom-left-tabs"
                 defaultActiveKey={bottomLeftActiveTab}
@@ -239,6 +241,18 @@ const DebriefingControllerModule = () => {
                     <Nav variant="pills" className="flex-column">
                       <Nav.Item>
                         <Nav.Link
+                          eventKey="wardMap"
+                          style={
+                            bottomLeftActiveTab === "wardMap"
+                              ? debriefStyles.activeTab
+                              : debriefStyles.inactiveTab
+                          }
+                        >
+                          Audio-activity map
+                        </Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link
                           eventKey="priorBar"
                           style={
                             bottomLeftActiveTab === "priorBar"
@@ -246,7 +260,7 @@ const DebriefingControllerModule = () => {
                               : debriefStyles.inactiveTab
                           }
                         >
-                          Prioritisation Bar
+                          Tasks Prioritisation
                         </Nav.Link>
                       </Nav.Item>
                     </Nav>
@@ -259,6 +273,9 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Tab.Content style={{ position: "relative" }}>
+                      <Tab.Pane eventKey="wardMap">
+                        <HiveView />
+                      </Tab.Pane>
                       <Tab.Pane eventKey="priorBar">
                         <Image
                           src={priorBar}
@@ -294,7 +311,7 @@ const DebriefingControllerModule = () => {
               </Tab.Container>
             </Container>
           </Col>
-          <Col lg={7} style={{ padding: "1px" }}>
+          <Col lg={6} style={{ padding: "1px" }}>
             <Container
               style={{
                 borderStyle: "solid",
@@ -305,7 +322,7 @@ const DebriefingControllerModule = () => {
                 minHeight: "34vh",
               }}
             >
-              <h3 style={{ color: "grey" }}>Interactive</h3>
+              <h3 style={{ color: "grey" }}>Team Communication</h3>
 
               <Tab.Container
                 id="bottom-right-tabs"
@@ -321,18 +338,6 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Nav variant="pills" className="flex-column">
-                      <Nav.Item>
-                        <Nav.Link
-                          eventKey="wardMap"
-                          style={
-                            bottomRightActiveTab === "wardMap"
-                              ? debriefStyles.activeTab
-                              : debriefStyles.inactiveTab
-                          }
-                        >
-                          Audio-activity map
-                        </Nav.Link>
-                      </Nav.Item>
                       <Nav.Item>
                         <Nav.Link
                           eventKey="commNetwork"
@@ -367,22 +372,11 @@ const DebriefingControllerModule = () => {
                     }}
                   >
                     <Tab.Content style={{ position: "relative" }}>
-                      <Tab.Pane eventKey="wardMap">
-                        <HiveView />
-                      </Tab.Pane>
                       <Tab.Pane eventKey="commNetwork">
-                        <Image
-                          src={comNetwork}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
+                        <SocialNetworkView />
                       </Tab.Pane>
                       <Tab.Pane eventKey="commBehaviour">
-                        <Image
-                          src={comBehaviour}
-                          style={debriefStyles.imageContainer}
-                          fluid
-                        />
+                        <ENANetworkView />
                       </Tab.Pane>
 
                       <Button

@@ -1,0 +1,62 @@
+import json
+from flask_cors import CORS
+from flask import Flask, jsonify, request
+import pandas as pd
+from ena_replacement_algo import calculate_ena_metric
+from pathlib import Path
+
+
+app = Flask(__name__)
+DIRECTORY = Path("../../server/saved_data/")
+
+CORS(app)
+
+
+@app.route("/get_data", methods=['GET'])
+def give_sna_test_data():
+    id = request.args['sessionId']
+
+    """
+    This function is to return the testing data for the sna graph
+    The returned json is created by pandas, using "records" format.
+    :return:
+    """
+    id = request.args['sessionId']
+    file = "%s_ena_testing.xlsx" % id
+    file_path = DIRECTORY / id / file
+    print(file_path)
+
+    df = pd.read_excel(file_path)
+    df.fillna("", inplace=True)
+    output_data = df.to_dict(orient="records")
+    return jsonify(output_data)
+
+
+@app.route("/get_ena_data", methods=['GET'])
+def give_ena_test_data():
+    """
+    This function is to return the testing data for mimic ena.
+    The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
+    :return:
+    """
+
+    id = request.args['sessionId']
+    file = "%s_ena_testing.xlsx" % id
+    file_path = DIRECTORY / id / file
+    print(file_path)
+    all_df = pd.read_excel(file_path)
+    window_size = 3
+
+    # session_view = pd.DataFrame(all_df[all_df["session_id"] == id])
+    output_data = calculate_ena_metric(all_df, window_size)
+
+    return jsonify(output_data)
+
+
+if __name__ == '__main__':
+    # with open("output.json", "w") as fp:
+    #     json.dump(give_test_data(), fp)
+    # json_data = give_test_data()
+    # print(give_test_data())
+    # print()
+    app.run()

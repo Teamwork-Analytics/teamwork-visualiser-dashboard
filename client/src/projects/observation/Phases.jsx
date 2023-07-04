@@ -91,7 +91,6 @@ const Phases = () => {
                 );
                 const scaleFactor = 1; // 1 second = `scaleFactor` px
                 timeDifferenceInPx = timeDifferenceInSeconds * scaleFactor;
-                console.log(timeDifferenceInPx);
               }
 
               return (

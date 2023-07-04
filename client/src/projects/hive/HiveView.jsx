@@ -2,10 +2,8 @@ import React, { Fragment, useEffect } from "react";
 import * as d3 from "d3";
 import HexagonComponent from "./Hexagon";
 
-//TODO: make the following floor plan much more dynamic
 import floorPlan from "./floor-plan/floor-plan.svg";
 import { useHive } from "./HiveContext";
-import HiveSlider from "./HiveSlider";
 import { HivePrimaryControlView } from "./HiveControlView";
 import { useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
@@ -39,7 +37,7 @@ const HiveView = () => {
         );
       }
     });
-  }, [hiveState, markers, range]);
+  }, [simulationId, hiveState, markers, range]);
 
   useEffect(() => {
     HiveAPI.phases(simulationId).then((res) => {
