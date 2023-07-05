@@ -1,23 +1,8 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
-import {
-  BsFastForwardFill,
-  BsRewindFill,
-  BsSpeedometer2,
-  BsPauseFill,
-  BsPlayFill,
-  BsCircleFill,
-  BsCircle,
-} from "react-icons/bs";
-import Timeline from "@mui/lab/Timeline";
-import TimelineItem from "@mui/lab/TimelineItem";
-import TimelineSeparator from "@mui/lab/TimelineSeparator";
-import TimelineConnector from "@mui/lab/TimelineConnector";
-import TimelineContent from "@mui/lab/TimelineContent";
-import TimelineDot from "@mui/lab/TimelineDot";
-import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
+import { BsCircleFill, BsCircle } from "react-icons/bs";
 import { manualLabels } from "../index.js";
 
 // styling
@@ -74,42 +59,47 @@ const timelineStyle = {
 const isKeyEvent = (label) =>
   manualLabels.phases.some((item) => item.label === label);
 
-const CustomMark = ({ mark, index }) => {
+const CustomMark = ({ mark }) => {
   const markStyle = isKeyEvent(mark.label)
     ? { fontWeight: "bold", fontSize: "1.3em" }
     : {};
 
-  return (
-    <div style={{ position: "relative", paddingBottom: "-200px" }}>
-      <span
-        style={{
-          position: "absolute",
-          top: index % 2 === 0 ? "-20px" : "-70px", // alternating label positions
-          transform: "rotate(-45deg)",
-          marginLeft: "-20px",
-          maxWidth: "40px",
-          wordWrap: "break-word", // enable word wrapping // not working
-          overflowWrap: "break-word", // break long strings of text // not working
-          ...markStyle,
-        }}
-      >
-        {mark.label}
-      </span>
+  const markHeight = isKeyEvent(mark.label) ? "50px" : "10px";
+  const markTop = isKeyEvent(mark.label) ? "-50px" : "-10px";
 
-      <span
-        // example: alternating mark heights
-        style={{
-          display: "block",
-          width: "2px",
-          position: "absolute",
-          bottom: 0,
-          height: index % 2 === 0 ? "20px" : "70px",
-          backgroundColor: "#1976d2",
-          marginBottom: "-20px",
-          marginLeft: "-1px",
-        }}
-      ></span>
-    </div>
+  return (
+    <>
+      {isKeyEvent(mark.label) ? (
+        <div style={{ position: "relative", paddingBottom: "-200px" }}>
+          <span
+            style={{
+              position: "absolute",
+              top: markTop, // top position based on whether it's a key event
+              marginLeft: "-30px",
+              maxWidth: "40px",
+              wordWrap: "break-word", // enable word wrapping
+              overflowWrap: "break-word", // break long strings of text
+              ...markStyle,
+            }}
+          >
+            {mark.label}
+          </span>
+          <span
+            // mark heights depend on whether it's a key event
+            style={{
+              display: "block",
+              width: "2px",
+              position: "absolute",
+              bottom: 0,
+              height: markHeight,
+              backgroundColor: "#1976d2",
+              marginBottom: "-20px",
+              marginLeft: "-1px",
+            }}
+          ></span>
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -120,7 +110,13 @@ const formatDuration = (value) => {
   return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
 };
 
-const FilteredMarksComponent = ({ marks, range }) => {
+// convert to seconds from duration
+const reverseFormatDuration = (formattedDuration) => {
+  const [minutes, seconds] = formattedDuration.split(":").map(Number);
+  return minutes * 60 + seconds;
+};
+
+const FilteredMarksComponent = ({ marks, range, setRange }) => {
   // Filter marks within the range
   const filteredMarks = marks.filter((mark) => {
     return mark.value >= range[0] && mark.value <= range[1];
@@ -136,10 +132,26 @@ const FilteredMarksComponent = ({ marks, range }) => {
 
   // Render the formatted marks
   return (
-    <Card style={{ height: "30vh", overflowY: "scroll", fontSize: "12px" }}>
+    <Card
+      style={{
+        height: "30vh",
+        overflowY: "scroll",
+        fontSize: "12px",
+        marginTop: "-30px",
+      }}
+    >
       <Card.Body>
         {formattedMarks.map((mark, index) => (
-          <Row style={{ marginLeft: "0px", marginRight: "0px" }} key={index}>
+          <Row
+            style={{ marginLeft: "0px", marginRight: "0px" }}
+            key={index}
+            onClick={() => {
+              setRange([
+                reverseFormatDuration(mark.value) - 10,
+                reverseFormatDuration(mark.value) + 10,
+              ]);
+            }}
+          >
             <Col
               xs="auto"
               style={{
@@ -162,7 +174,7 @@ const FilteredMarksComponent = ({ marks, range }) => {
                 textAlign: "left",
               }}
             >
-              {mark.label} - {mark.value}
+              {mark.value} - {mark.label}
             </Col>
           </Row>
         ))}
@@ -173,14 +185,21 @@ const FilteredMarksComponent = ({ marks, range }) => {
 
 const TimelineVisualisation = () => {
   // timeline range and playhead
-  const {
-    range,
-    setRange,
-    playHeadPosition,
-    setPlayHeadPosition,
-    simDuration,
-    timelineTags,
-  } = useTimeline();
+  const { range, setRange, setPlayHeadPosition, simDuration, timelineTags } =
+    useTimeline();
+
+  // keep value only for non key event tags
+  const filterTimelineTagsForKeyEvent = (tags) => {
+    return tags.map((tag) => {
+      if (isKeyEvent(tag.label)) {
+        return tag; // return the tag as is if it is a key event
+      } else {
+        return { value: tag.value }; // return the tag without the label if it is not a key event
+      }
+    });
+  };
+  const modifiedTimelineTags = filterTimelineTagsForKeyEvent(timelineTags);
+
   // play or pause state
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -244,12 +263,12 @@ const TimelineVisualisation = () => {
                   .padStart(2, "0")}`;
               }}
               aria-labelledby="range-slider"
-              marks={timelineTags.map((mark, index) => ({
+              marks={modifiedTimelineTags.map((mark, index) => ({
                 ...mark,
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
-              style={{ marginTop: "150px" }}
+              style={{ marginTop: "120px" }}
             />
             <div
               style={{
@@ -266,88 +285,16 @@ const TimelineVisualisation = () => {
                 {formatDuration(simDuration)}
               </div>
             </div>
-
-            {/* <Slider
-              value={playHeadPosition}
-              max={simDuration}
-              onChange={(_, newValue) => setPlayHeadPosition(newValue)}
-              valueLabelDisplay="auto"
-              aria-labelledby="playhead-slider"
-              disabled
-              //   style={{ color: "blue", height: "10px", marginTop: "-20px" }}
-              sx={timelineStyle.keyEventTimelineSx}
-            />
-
-            <Slider
-              aria-label="controller-timeline"
-              value={playHeadPosition}
-              max={simDuration}
-              onChange={(_, value) => setPlayHeadPosition(value)}
-              marks={timelineTags.map((mark, index) => ({
-                ...mark,
-                label: <CustomMark mark={mark} index={index} />,
-              }))}
-              sx={timelineStyle.keyEventTimelineSx}
-            ></Slider> */}
-            {/* <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: "-30px",
-              }}
-            >
-              <div style={timelineStyle.tinyDurationText}>
-                {formatDuration(playHeadPosition)}
-              </div>
-              <div style={timelineStyle.tinyDurationText}>
-                -{formatDuration(simDuration - playHeadPosition)}
-              </div>
-            </div> */}
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
-            <FilteredMarksComponent marks={timelineTags} range={range} />
+            <FilteredMarksComponent
+              marks={timelineTags}
+              range={range}
+              setRange={setRange}
+            />
           </Col>
         </Row>
       </Container>
-      {/* <Container style={timelineStyle.playerContainer}>
-        <Button
-          style={{
-            margin: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-          }}
-          onClick={() => setPlayHeadPosition(playHeadPosition - 10)}
-        >
-          <BsRewindFill size={30} color="#bdbdbd" />
-        </Button>
-        <Button
-          style={{
-            margin: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-          }}
-          onClick={() => {
-            handlePlayPause();
-          }}
-        >
-          {isPlaying ? (
-            <BsPauseFill size={30} color="#bdbdbd" />
-          ) : (
-            <BsPlayFill size={30} color="#bdbdbd" />
-          )}
-        </Button>
-        <Button
-          style={{
-            margin: "5px",
-            backgroundColor: "transparent",
-            border: "none",
-          }}
-          onClick={() => setPlayHeadPosition(playHeadPosition + 10)}
-        >
-          <BsFastForwardFill size={30} color="#bdbdbd" />
-        </Button>
-      </Container> */}
     </>
   );
 };
