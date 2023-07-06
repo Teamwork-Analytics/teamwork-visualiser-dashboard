@@ -6,7 +6,7 @@ const CLASSROOM_SIZE = {
   HEIGHT: 6960,
 };
 const CONSTANTS = {
-  HEX_RADIUS: 40,
+  HEX_RADIUS: 50,
   IMG_WIDTH: 2297,
   IMG_HEIGHT: 1715,
   HEXAGON_OPACITY: "0.5",
@@ -16,7 +16,7 @@ export const cssColourMatcher = {
   GREEN: "#00FF00", //lime
   RED: "#ff0000", //red
   BLUE: "#088FFA", // blue
-  YELLOW: "#ffdf00", // gold
+  YELLOW: "#ffcf00", // gold
 };
 
 const timeParser = (timestamp) => {
@@ -91,8 +91,8 @@ class HexagonComponent {
         .enter()
         .append("path")
         .attr("d", function (d) {
-          const x = d.y + 0;
-          const y = -d.x + CONSTANTS.IMG_HEIGHT;
+          const x = -d.y + CONSTANTS.IMG_WIDTH;
+          const y = d.x;
           // const x = d.x;
           // const y = d.y;
           return "M" + x + "," + y + hexbin.hexagon();

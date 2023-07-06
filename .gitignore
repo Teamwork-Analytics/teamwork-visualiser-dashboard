@@ -108,3 +108,4 @@ dist
 server/config.env
 server/saved_data/
 *.env
+*.mp4

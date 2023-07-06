@@ -14,22 +14,22 @@ CORS(app)
 
 @app.route("/get_data", methods=['GET'])
 def give_sna_test_data():
-    id = request.args['sessionId']
-
     """
     This function is to return the testing data for the sna graph
     The returned json is created by pandas, using "records" format.
     :return:
     """
-    id = request.args['sessionId']
-    file = "%s_ena_testing.xlsx" % id
-    file_path = DIRECTORY / id / file
-    print(file_path)
-
-    df = pd.read_excel(file_path)
-    df.fillna("", inplace=True)
-    output_data = df.to_dict(orient="records")
-    return jsonify(output_data)
+    try:
+        id = request.args['sessionId']
+        file = "%s_network_data.csv" % id
+        file_path = DIRECTORY / id / file
+        df = pd.read_csv(file_path)
+        df.fillna("", inplace=True)
+        output_data = df.to_dict(orient="records")
+        return jsonify(output_data)
+    except Exception:
+        print("Error happened when extracting GET params: maybe not all arguments are provided.")
+        return "error"
 
 
 @app.route("/get_ena_data", methods=['GET'])

@@ -1,23 +1,23 @@
 import React, { Fragment, useEffect } from "react";
 import * as d3 from "d3";
-import HexagonComponent from "./Hexagon";
 
+import HiveAPI from "../../services/api/hive";
 import floorPlan from "./floor-plan/floor-plan.svg";
+import HexagonComponent from "./Hexagon";
+import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
-import { useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
-import HiveAPI from "../../services/api/hive";
-import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
+import { useParams } from "react-router-dom";
 
 const HiveView = () => {
-  const { hiveState, markers, setMarkers } = useHive();
+  const { hiveState, markers } = useHive();
   const { range } = useTimeline();
   const { simulationId } = useParams();
+  const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
   useEffect(() => {
     d3.select("#floor-plan").remove();
-    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
     let svgContainer = d3.select("#hive");
     d3.xml(floorPlan).then((data) => {
       if (
@@ -37,16 +37,7 @@ const HiveView = () => {
         );
       }
     });
-  }, [simulationId, hiveState, markers, range]);
-
-  useEffect(() => {
-    HiveAPI.phases(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setMarkers(res.data);
-      }
-    });
-  }, []);
+  }, [csvUrl, hiveState, markers, range]);
 
   return (
     <Fragment>

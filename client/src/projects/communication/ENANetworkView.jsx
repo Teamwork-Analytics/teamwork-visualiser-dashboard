@@ -1,46 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
-import { processing_csv } from "./cyto_control";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { getSNAdata } from "../../services/communication";
+import { useDebriefing } from "../debriefing/DebriefContext";
 
-const SocialNetworkView = () => {
-  const [data, setData] = useState([]);
-  const [netData, setNetData] = useState([]);
-  const { range } = useTimeline();
-  const { simulationId } = useParams();
-
-  /* getData from backend */
-  useEffect(() => {
-    getSNAdata(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setData(res.data);
-      }
-    });
-  }, [simulationId]);
-
-  useEffect(() => {
-    try {
-      const startTime = range[0];
-      const endTime = range[1];
-      const net_data = processing_csv(data, startTime, endTime, 3, 100);
-      if (data.length !== 0) {
-        setNetData(net_data["nodes"].concat(net_data["edges"]));
-      }
-    } catch (err) {
-      toast.error(`SNA error: unable to change visualisation based on time`);
-      console.error(err);
-    }
-  }, [data, range]);
-
+const ENANetworkView = () => {
+  const { networkENAData } = useDebriefing();
   const net_options = {
     name: "circle",
     fit: true, // whether to fit the viewport to the graph
-    padding: 10, // the padding on fit
-    boundingBox: { x1: 50, y1: 50, x2: 600, y2: 300 }, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
+    padding: 5, // the padding on fit
+    boundingBox: { x1: 0, y1: 0, x2: 600, y2: 300 }, // constrain layout bounds; { x1, y1, x2, y2 } or { x1, y1, w, h }
     avoidOverlap: true, // prevents node overlap, may overflow boundingBox and radius if not enough space
     nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
     spacingFactor: undefined, // Applies a multiplicative factor (>0) to expand or compress the overall area that the nodes take up
@@ -63,39 +31,37 @@ const SocialNetworkView = () => {
   };
 
   const stylesheet = [
-    // the stylesheet for the graph
     {
       selector: "node",
       style: {
         "background-color": "#666",
         label: "data(id)",
+        size: "3em",
       },
     },
-
     {
       selector: "edge",
       style: {
         // 'width': 3,
-        "line-color": "black",
+        "line-color": "rgb(33, 159, 217)",
+        // 'line-color': 'red',
         "target-arrow-color": "black",
-        "target-arrow-shape": "triangle-backcurve",
+        "target-arrow-shape": "none",
         "curve-style": "bezier",
-        "arrow-scale": 1.3,
+        "arrow-scale": 1.5,
       },
     },
   ];
 
   return (
-    <div>
-      <CytoscapeComponent
-        elements={netData}
-        fit={true}
-        stylesheet={stylesheet}
-        layout={net_options}
-        style={{ textAlign: "left", width: "100%", height: "30vh" }}
-      />
-    </div>
+    <CytoscapeComponent
+      layout={net_options}
+      fit={true}
+      stylesheet={stylesheet}
+      elements={networkENAData}
+      style={{ textAlign: "left", width: "100%", height: "25vh" }}
+    />
   );
 };
 
-export default SocialNetworkView;
+export default ENANetworkView;

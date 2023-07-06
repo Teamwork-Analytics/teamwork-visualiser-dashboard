@@ -4,6 +4,13 @@ import { useHive } from "./HiveContext";
 import "./Hive.css";
 import { cssColourMatcher } from "./Hexagon";
 
+const colourLabels = {
+  RED: "GN1",
+  BLUE: "GN2",
+  GREEN: "WN1",
+  YELLOW: "WN2",
+};
+
 const ParticipantFilter = ({ colourCode }) => {
   const { hiveState, hiveSetState } = useHive();
 
@@ -30,7 +37,7 @@ const ParticipantFilter = ({ colourCode }) => {
         fontSize: "0.8em",
       }}
     >
-      <span>{colourCode}:</span>
+      <span>{colourLabels[colourCode]}:</span>
       <ReactSwitch onChange={handleChange} checked={checked} onColor={colour} />
     </label>
   );
