@@ -1,24 +1,23 @@
 import React, { Fragment, useEffect } from "react";
 import * as d3 from "d3";
-import HexagonComponent from "./Hexagon";
 
-//TODO: make the following floor plan much more dynamic
-import floorPlan from "./floor-plan/nursing-small.svg";
-import { useHive } from "./HiveContext";
-import HiveSlider from "./HiveSlider";
-import { HivePrimaryControlView } from "./HiveControlView";
-import { useParams } from "react-router-dom";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import HiveAPI from "../../services/api/hive";
+import floorPlan from "./floor-plan/floor-plan.svg";
+import HexagonComponent from "./Hexagon";
+import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
+import { useHive } from "./HiveContext";
+import { HivePrimaryControlView } from "./HiveControlView";
+import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import { useParams } from "react-router-dom";
 
 const HiveView = () => {
-  const { state, markers, setMarkers } = useHive();
+  const { hiveState, markers } = useHive();
+  const { range } = useTimeline();
   const { simulationId } = useParams();
+  const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
   useEffect(() => {
     d3.select("#floor-plan").remove();
-    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
-    console.log(csvUrl)
     let svgContainer = d3.select("#hive");
     d3.xml(floorPlan).then((data) => {
       if (
@@ -30,22 +29,15 @@ const HiveView = () => {
           svgContainer.select("#floor-plan"),
           csvUrl,
           false,
-          state.participants,
-          markers[state.phase[0]].timestamp,
-          markers[state.phase[1]].timestamp
+          hiveState.participants,
+          range[0],
+          range[1]
+          // markers[hiveState.phase[0]].timestamp, //start
+          // markers[hiveState.phase[1]].timestamp //end
         );
       }
     });
-  }, [state, markers]);
-
-  useEffect(() => {
-    HiveAPI.phases(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setMarkers(res.data);
-      }
-    });
-  }, []);
+  }, [csvUrl, hiveState, markers, range]);
 
   return (
     <Fragment>
@@ -60,11 +52,19 @@ const HiveView = () => {
             justifyContent: "center",
           }}
         >
-          <div style={{ width: "550px", height: "82vh", maxHeight: "1080px" }}>
-            <div id="hive" style={{ height: "90%", marginBottom: "0.5em" }} />
+          <div
+            style={{
+              width: "550px",
+              height: "25vh",
+              maxHeight: "1080px",
+              // backgroundColor: "#303030",
+              borderRadius: "1em",
+            }}
+          >
+            <div id="hive" style={{ height: "99%" }} />
             <HivePrimaryControlView />
           </div>
-          <HiveSlider />
+          {/* <HiveSlider /> removed slider, replaced with main controller*/}
         </div>
       )}
     </Fragment>

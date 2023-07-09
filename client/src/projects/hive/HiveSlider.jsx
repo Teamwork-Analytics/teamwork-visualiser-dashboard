@@ -3,15 +3,16 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useHive } from "./HiveContext";
 
+/** Original slider, unused */
 const HiveSlider = () => {
   const wrapperStyle = {
     width: "5vw",
     margin: 50,
   };
-  const { state, setState, markers } = useHive();
+  const { state: hiveState, setState: hiveSetState, markers } = useHive();
 
   const onDrag = (value) => {
-    setState({ ...state, phase: value });
+    hiveSetState({ ...hiveState, phase: value });
   };
 
   return (

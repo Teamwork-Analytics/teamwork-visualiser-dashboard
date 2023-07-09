@@ -5,21 +5,34 @@
 
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
-import * as React from "react";
+import React, { useEffect } from "react";
 import HiveAPI from "../../services/api/hive";
-import { cleanRawPhases } from "./utils";
 
 const HiveContext = React.createContext();
 
 function HiveProvider({ simulationId, children }) {
-  const [state, setState] = React.useState({
-    participants: { RED: true, BLUE: true, YELLOW: true, GREEN: true },
+  const [hiveState, hiveSetState] = React.useState({
+    participants: { RED: true, BLUE: true, GREEN: true, YELLOW: true },
     phase: [0, 100],
     isPositionOnly: false,
   });
   const [markers, setMarkers] = React.useState([]);
+  useEffect(() => {
+    HiveAPI.phases(simulationId).then((res) => {
+      if (res.status === 200) {
+        // const cleanedPhases = cleanRawPhases(phases);
+        setMarkers(res.data);
+      }
+    });
+  }, [simulationId]);
 
-  const value = { state, setState, markers, setMarkers };
+  const value = {
+    hiveState,
+    hiveSetState,
+    markers,
+    setMarkers,
+  };
+
   return <HiveContext.Provider value={value}>{children}</HiveContext.Provider>;
 }
 

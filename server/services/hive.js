@@ -12,6 +12,11 @@ const _timeToPercentage = (phases) => {
   });
 };
 
+const _calculateTimeStamp = (d, startTime) => {
+  // if (d.timestamp == null || startTime == null) return Date.now;
+  return d.timestamp.valueOf() - startTime.valueOf();
+};
+
 const constructPhasesArrayFromObservation = async (simId) => {
   let result = [];
   const sim = await simService.singleBySimulationId(simId);
@@ -22,6 +27,7 @@ const constructPhasesArrayFromObservation = async (simId) => {
   if (phases.length === 0) {
     return [];
   }
+
   //prepare all data
   const start = { label: "Start", timestamp: startTime };
   const stop = { label: "End", timestamp: stopTime };
@@ -36,7 +42,7 @@ const constructPhasesArrayFromObservation = async (simId) => {
   const durationPhases = fullPhases.map((d) => {
     return {
       label: d.label,
-      timestamp: d.timestamp.valueOf() - startTime.valueOf(),
+      timestamp: _calculateTimeStamp(d, startTime),
     };
   });
 

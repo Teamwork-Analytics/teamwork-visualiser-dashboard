@@ -65,7 +65,7 @@ const VisualisationPage = () => {
     <SimProvider>
       {/* TODO: deal with multiple stack providers later! */}
       <ObservationProvider simulationId={params.simulationId}>
-        <DebriefingProvider>
+        <DebriefingProvider simulationId={params.simulationId}>
           <HiveProvider simulationId={params.simulationId}>
             <SimulationView />
           </HiveProvider>

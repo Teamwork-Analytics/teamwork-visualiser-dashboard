@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 
+/**
+ * These are phases.
+ */
 const keyEventSchema = new mongoose.Schema(
   {
     name: {

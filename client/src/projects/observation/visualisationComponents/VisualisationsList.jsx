@@ -1,12 +1,10 @@
 import TimelineVisualisation from "./TimelineVisualisation";
 import VideoVisualisation from "./VideoVisualisation";
-import { Image } from "react-bootstrap";
 
-// placeholder images
-import priorBar from "../../../images/vis/prioritisation-bar.png";
-import wardMap from "../../../images/vis/ward-map.png";
-import comBehaviour from "../../../images/vis/com-behaviour.png";
-import comNetwork from "../../../images/vis/communication-network.png";
+// visualisations
+import { ENANetworkView, SocialNetworkView } from "../../communication";
+import { HiveView } from "../../hive";
+import TeamworkBarchart from "../../teamwork/TeamworkBarchart";
 
 const visStyles = {
   imageContainer: {
@@ -65,10 +63,15 @@ const topTabVisualisations = [
 // Bottom left visualisation list
 const bottomLeftVisualisations = [
   {
+    eventKey: "wardMap",
+    title: "Ward Map",
+    component: () => <HiveView />,
+  },
+  {
     eventKey: "priorBar",
     title: "Prioritisation Bar",
     component: () => (
-      <Image src={priorBar} style={visStyles.imageContainer} fluid />
+      <TeamworkBarchart style={visStyles.imageContainer} fluid />
     ),
   },
 ];
@@ -78,23 +81,12 @@ const bottomRightVisualisations = [
   {
     eventKey: "commNetwork",
     title: "Communication Network",
-    component: () => (
-      <Image src={comNetwork} style={visStyles.imageContainer} fluid />
-    ),
+    component: () => <SocialNetworkView />,
   },
   {
     eventKey: "commBehaviour",
     title: "Communication Behaviour",
-    component: () => (
-      <Image src={comBehaviour} style={visStyles.imageContainer} fluid />
-    ),
-  },
-  {
-    eventKey: "wardMap",
-    title: "Ward Map",
-    component: () => (
-      <Image src={wardMap} style={visStyles.imageContainer} fluid />
-    ),
+    component: () => <ENANetworkView />,
   },
 ];
 
