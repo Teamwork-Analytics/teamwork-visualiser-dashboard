@@ -17,8 +17,8 @@ const calculateDuration = (startTime, endTime) => {
 function TimelineProvider({ children }) {
   // TODO: use hard coded start time and end time here for now
   const { notes } = useObservation();
-  const simStartTimestamp = "2023-06-01T00:10:08.357Z";
-  const simEndTimestamp = "2023-06-01T00:26:14.896Z";
+  const simStartTimestamp = "2023-06-01T00:09:38.357Z";
+  const simEndTimestamp = "2023-06-01T00:25:44.896Z";
   const simDuration = calculateDuration(simStartTimestamp, simEndTimestamp);
 
   const [timelineTags, setTimelineTags] = React.useState([]); // notes that have been processed to be displayed on the timeline

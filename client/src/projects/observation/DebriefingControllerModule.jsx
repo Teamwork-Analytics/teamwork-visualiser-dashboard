@@ -34,8 +34,9 @@ const debriefStyles = {
   inactiveTab: { color: "gray", fontSize: "14px", padding: "5px" },
   addVisButton: {
     position: "absolute",
-    top: "10px",
-    right: "10px",
+    bottom: "10px",
+    left: "50%",
+    transform: "translateX(-50%)",
     zIndex: 100,
     fontSize: "14px",
     padding: "5px",

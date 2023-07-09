@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { useTimeline } from "./TimelineContext";
-import videoFile from "./sim-video.mp4";
 
 const VideoPlayer = ({ isVideoTabActive }) => {
   const { range } = useTimeline();
