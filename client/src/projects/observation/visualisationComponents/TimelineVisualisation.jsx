@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  ButtonGroup,
+} from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
 import { BsCircleFill, BsCircle } from "react-icons/bs";
 import { manualLabels } from "../index.js";
@@ -191,37 +198,30 @@ const TimelineVisualisation = () => {
   };
   const modifiedTimelineTags = filterTimelineTagsForKeyEvent(timelineTags);
 
-  // play or pause state
-  const [isPlaying, setIsPlaying] = useState(false);
+  // generate phases list
+  const keyEvents = [
+    ...modifiedTimelineTags.filter((item) => item.label),
+  ].reverse();
 
-  const [intervalID, setInteralID] = useState(null);
+  const phases = [
+    {
+      name: "All",
+      start: 0,
+      end: simDuration,
+    },
+    ...keyEvents.map((event, index, self) => ({
+      name: event.label,
+      start: event.value,
+      end: self[index + 1]?.value || simDuration,
+    })),
+  ];
 
-  const handlePlayPause = () => {
-    if (!isPlaying) {
-      // Start playing
-      const id = setInterval(() => {
-        setPlayHeadPosition((current) => {
-          // Stop increasing if at max value
-          if (current >= range[1]) {
-            clearInterval(id);
-            return current;
-          }
-          return current + 1;
-        });
-      }, 1000);
-      setInteralID(id);
-    } else {
-      clearInterval(intervalID);
-    }
-    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+  // quick select phases
+  const [selectedPhase, setSelectedPhase] = useState(null);
+  const handleSelectPhase = (phase) => {
+    setSelectedPhase(phase);
+    setRange([phase.start, phase.end]);
   };
-
-  // clear interval when component unmounted
-  useEffect(() => {
-    return () => {
-      clearInterval(intervalID);
-    };
-  }, [intervalID]);
 
   return (
     <>
@@ -259,7 +259,7 @@ const TimelineVisualisation = () => {
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
-              style={{ marginTop: "120px" }}
+              style={{ marginTop: "100px" }}
             />
             <div
               style={{
@@ -275,6 +275,57 @@ const TimelineVisualisation = () => {
               <div style={timelineStyle.tinyDurationText}>
                 {formatDuration(simDuration)}
               </div>
+            </div>
+            <div>
+              <Row
+                style={{
+                  marginLeft: "5px",
+                  marginRight: "5px",
+                  marginTop: "5px",
+                }}
+              >
+                <Col
+                  xs="auto"
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <p
+                    style={{
+                      color: "#6C757D",
+                      fontSize: "12px",
+                      margin: "auto",
+                    }}
+                  >
+                    Quick select phase:
+                  </p>
+                </Col>
+
+                <Col
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    textAlign: "left",
+                  }}
+                >
+                  <ButtonGroup aria-label="Phases">
+                    {phases.map((phase, index) => (
+                      <Button
+                        key={index}
+                        variant="outline-secondary"
+                        onClick={() => handleSelectPhase(phase)}
+                        style={{ fontSize: "12px" }}
+                      >
+                        {phase.name}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </Col>
+              </Row>
             </div>
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
