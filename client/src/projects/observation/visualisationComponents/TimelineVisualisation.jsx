@@ -62,21 +62,21 @@ const CustomMark = ({ mark }) => {
     <>
       {isKeyEvent(mark.label) ? (
         <div style={{ position: "relative", paddingBottom: "-200px" }}>
-          <span
+          <div
             style={{
               position: "absolute",
-              top: "-40px", // top position based on whether it's a key event
-              marginLeft: "-30px",
-              maxWidth: "40px",
-              wordWrap: "break-word", // enable word wrapping
-              overflowWrap: "break-word", // break long strings of text
+              top: "-40px",
+              minWidth: "80px",
+              maxWidth: "120px",
+              transform: `translateX(-50%) translateY(-65%)`,
               ...markStyle,
             }}
           >
-            {mark.label}
-          </span>
+            <span>{formatDuration(mark.value)}</span>
+            <br />
+            <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
+          </div>
           <span
-            // mark heights depend on whether it's a key event
             style={{
               display: "block",
               width: "2px",
