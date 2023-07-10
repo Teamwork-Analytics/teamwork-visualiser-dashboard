@@ -22,21 +22,15 @@ const timelineStyle = {
     marginTop: "3px",
     marginBottom: "3px",
   },
-  nurseTimelineSx: {
-    "& .MuiSlider-thumb": {
-      width: 3, // Thin width
-      height: 35, // Height covering all track
-      borderRadius: 0, // Make it rectangle
-      backgroundColor: "#1976d2", // from MUI
-    },
-    "& .MuiSlider-mark": {
-      backgroundColor: "#bfbfbf",
-      height: 25,
-    },
-  },
   keyEventTimelineSx: {
     "& .MuiSlider-mark": {
+      backgroundColor: "#ED6C02",
       height: 15,
+      width: "1.5px",
+      "&.MuiSlider-markActive": {
+        opacity: 1,
+        backgroundColor: "#ED6C02",
+      },
     },
     "& .MuiSlider-markLabel": {
       top: "-5px",
@@ -64,9 +58,6 @@ const CustomMark = ({ mark }) => {
     ? { fontWeight: "bold", fontSize: "1.3em" }
     : {};
 
-  const markHeight = isKeyEvent(mark.label) ? "50px" : "10px";
-  const markTop = isKeyEvent(mark.label) ? "-50px" : "-10px";
-
   return (
     <>
       {isKeyEvent(mark.label) ? (
@@ -74,7 +65,7 @@ const CustomMark = ({ mark }) => {
           <span
             style={{
               position: "absolute",
-              top: markTop, // top position based on whether it's a key event
+              top: "-40px", // top position based on whether it's a key event
               marginLeft: "-30px",
               maxWidth: "40px",
               wordWrap: "break-word", // enable word wrapping
@@ -90,9 +81,9 @@ const CustomMark = ({ mark }) => {
               display: "block",
               width: "2px",
               position: "absolute",
-              bottom: 0,
-              height: markHeight,
-              backgroundColor: "#1976d2",
+              bottom: -8,
+              height: "50px",
+              backgroundColor: "#9C27B0",
               marginBottom: "-20px",
               marginLeft: "-1px",
             }}
