@@ -1,7 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const DOMAIN_NAME = "http://localhost";
+// const DOMAIN_NAME = "http://localhost";
+const DOMAIN_NAME = "http://127.0.0.1";
 
 const communicationAPI = axios.create({
   baseURL: `${DOMAIN_NAME}:5000`, //Change this if the port is being used.
