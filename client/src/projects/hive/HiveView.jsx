@@ -4,15 +4,13 @@ import * as d3 from "d3";
 import HiveAPI from "../../services/api/hive";
 import floorPlan from "./floor-plan/floor-plan.svg";
 import HexagonComponent from "./Hexagon";
-import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
 
-const HiveView = () => {
+const HiveView = ({ timeRange }) => {
   const { hiveState, markers } = useHive();
-  const { range } = useTimeline();
   const { simulationId } = useParams();
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
@@ -30,14 +28,14 @@ const HiveView = () => {
           csvUrl,
           false,
           hiveState.participants,
-          range[0],
-          range[1]
+          timeRange[0],
+          timeRange[1]
           // markers[hiveState.phase[0]].timestamp, //start
           // markers[hiveState.phase[1]].timestamp //end
         );
       }
     });
-  }, [csvUrl, hiveState, markers, range]);
+  }, [csvUrl, hiveState, markers, timeRange]);
 
   return (
     <Fragment>

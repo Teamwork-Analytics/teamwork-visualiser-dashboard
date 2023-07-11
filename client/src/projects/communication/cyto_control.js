@@ -259,6 +259,10 @@ let processing_csv = function (
     //   rows: init_slice["start_time"].le(end_time),
     // });
 
+    console.log("Start time: ", start_time, " type: ", typeof start_time);
+    console.log("End time: ", end_time, " type: ", typeof end_time);
+    console.log("DataFrame start_time column: ", test_df["start_time"]);
+
     const new_df_slice = test_df.query(
       test_df["start_time"]
         .ge(start_time)

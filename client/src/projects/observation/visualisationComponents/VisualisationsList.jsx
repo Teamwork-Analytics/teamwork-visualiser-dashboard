@@ -61,11 +61,11 @@ const topTabVisualisations = [
 ];
 
 // Bottom left visualisation list
-const bottomLeftVisualisations = [
+const bottomLeftVisualisations = (timeRange) => [
   {
     eventKey: "wardMap",
     title: "Ward Map",
-    component: () => <HiveView />,
+    component: () => <HiveView timeRange={timeRange} />,
   },
   {
     eventKey: "priorBar",
@@ -77,11 +77,11 @@ const bottomLeftVisualisations = [
 ];
 
 // Bottom right visualisation list
-const bottomRightVisualisations = [
+const bottomRightVisualisations = (timeRange) => [
   {
     eventKey: "commNetwork",
     title: "Communication Network",
-    component: () => <SocialNetworkView />,
+    component: () => <SocialNetworkView timeRange={timeRange} />,
   },
   {
     eventKey: "commBehaviour",

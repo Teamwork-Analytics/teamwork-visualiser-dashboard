@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 import { processing_csv } from "./cyto_control";
 import { useDebriefing } from "../debriefing-projection/DebriefContext";
 
@@ -70,22 +69,21 @@ const CytoComponent = ({ netData }) => {
   );
 };
 
-const SocialNetworkView = () => {
+const SocialNetworkView = ({ timeRange }) => {
   const { snaData } = useDebriefing();
-  const { range } = useTimeline();
+  const startTime = timeRange[0];
+  const endTime = timeRange[1];
   const [netData, setNetData] = useState([]);
 
   /* getData from backend */
   useEffect(() => {
-    const startTime = range[0];
-    const endTime = range[1];
     if (snaData.length !== 0) {
       const net_data = processing_csv(snaData, startTime, endTime, 3, 100);
       if (net_data !== undefined) {
         setNetData(net_data["nodes"].concat(net_data["edges"]));
       }
     }
-  }, [snaData, range]);
+  }, [snaData, startTime, endTime]);
 
   return (
     <div>{netData !== undefined && <CytoComponent netData={netData} />}</div>
