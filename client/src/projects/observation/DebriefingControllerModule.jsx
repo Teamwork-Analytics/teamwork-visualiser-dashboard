@@ -16,8 +16,8 @@ import {
 } from "./visualisationComponents/VisualisationsList";
 import { DebriefingProvider } from "../debriefing-projection/DebriefContext";
 import { HiveProvider } from "../hive/HiveContext";
+import { prepareData } from "../../utils/socketUtils";
 
-// remember to change the css file as well for the styling of bottom two tabs group
 const debriefStyles = {
   activeTab: {
     backgroundColor: "white",
@@ -79,9 +79,9 @@ const DebriefingControllerModule = () => {
   // send selected Vis
   const handleConfirmProjection = () => {
     console.log(selectedVis);
-    //['video', 'priorBar', 'commNetwork']
-    const sentJson = JSON.stringify(selectedVis);
-    socket.emit("send-disp-list", sentJson, () => {
+    const range = [120, 200]; // replace this with actual range
+    const preparedData = prepareData(range, selectedVis, simulationId);
+    socket.emit("send-disp-list", preparedData, () => {
       console.log(
         "Socket sent selected displays to server in a form of a list."
       );
@@ -94,8 +94,9 @@ const DebriefingControllerModule = () => {
   const handleRevertAllProjections = () => {
     const toastId = toast.loading("Loading...");
     setSelectedVis([]);
-    const sentJson = JSON.stringify([]);
-    socket.emit("send-disp-list", sentJson, () => {
+    const range = [120, 200]; // replace this with actual range
+    const preparedData = prepareData(range, [], simulationId);
+    socket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
     toast.success("Reverted projections", {

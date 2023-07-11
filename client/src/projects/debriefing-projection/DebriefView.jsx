@@ -7,6 +7,7 @@ import { socket } from "./socket";
 import { ConnectionState } from "./socketComponents/ConnectionState";
 import { ConnectionManager } from "./socketComponents/ConnectionManager";
 import DisplayViz from "./socketComponents/DisplayViz";
+import { unpackData } from "../../utils/socketUtils";
 
 // images
 import behaviourVis from "./images/behaviour-vis.png";
@@ -38,9 +39,10 @@ const DebriefView = () => {
       console.log("Disconnected from " + socket.id);
     }
 
-    function onUpdateList(list) {
-      console.log("Received controller change to display: " + list);
-      const parsedList = JSON.parse(list);
+    function onUpdateList(data) {
+      console.log("Received controller change to display: " + data);
+      const unpackedData = unpackData(data);
+      const parsedList = unpackedData.vizSelected;
       setDispList(parsedList); // WARNING: abrupt mutation
     }
 
