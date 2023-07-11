@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file defines the DebriefView component. This component shows
+ * the visualisations selected by the controller on the **Projection screen**.
+ */
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
 import { ConnectionState } from "./socketComponents/ConnectionState";
