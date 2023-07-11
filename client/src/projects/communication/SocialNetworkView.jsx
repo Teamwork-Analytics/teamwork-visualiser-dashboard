@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 import { processing_csv } from "./cyto_control";
-import { useDebriefing } from "../debriefing/DebriefContext";
+import { useDebriefing } from "../debriefing-projection/DebriefContext";
 
 const CytoComponent = ({ netData }) => {
   const net_options = {

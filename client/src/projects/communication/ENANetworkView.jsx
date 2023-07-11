@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-import { useDebriefing } from "../debriefing/DebriefContext";
+import { useDebriefing } from "../debriefing-projection/DebriefContext";
 
 const ENANetworkView = () => {
   const { networkENAData } = useDebriefing();

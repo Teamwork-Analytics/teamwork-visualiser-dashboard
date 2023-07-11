@@ -14,9 +14,7 @@ import {
   bottomLeftVisualisations,
   bottomRightVisualisations,
 } from "./visualisationComponents/VisualisationsList";
-import { getENAdata } from "../../services/communication";
-import { processing_adjacent_matrix } from "../communication/mimic_ena_control";
-import { DebriefingProvider } from "../debriefing/DebriefContext";
+import { DebriefingProvider } from "../debriefing-projection/DebriefContext";
 import { HiveProvider } from "../hive/HiveContext";
 
 // remember to change the css file as well for the styling of bottom two tabs group

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Observation from "../../projects/observation/index";
 import * as Hive from "../../projects/hive/index";
 import * as Video from "../../projects/video/index";
-import * as Debrief from "../../projects/debriefing/index";
+import * as Debrief from "../../projects/debriefing-projection/index";
 import * as Visualisation from "../../projects/visualisation/index";
 
 type SimProviderProps = { children: React.ReactNode };
