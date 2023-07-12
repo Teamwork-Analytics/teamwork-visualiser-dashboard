@@ -149,6 +149,7 @@ const DebriefingControllerView = () => {
                     opacity: selectedVis.some((vis) => vis.id === activeTab)
                       ? "0.65"
                       : "1",
+                    marginLeft: "-250px",
                   }}
                   onClick={() => handleAddVis(activeTab)}
                 >
