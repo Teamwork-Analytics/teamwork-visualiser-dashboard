@@ -61,7 +61,6 @@ function ObservationProvider({ simulationId, children }) {
     setNotes,
     observation,
     setObservation,
-    networkData,
     obsStartTime,
     obsEndTime,
   };

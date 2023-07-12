@@ -64,4 +64,4 @@ if __name__ == '__main__':
     # json_data = give_test_data()
     # print(give_test_data())
     # print()
-    app.run(host="49.127.16.8")
+    app.run(host="49.127.43.80")
