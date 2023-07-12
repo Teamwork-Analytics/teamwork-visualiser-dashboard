@@ -19,7 +19,7 @@ const PreviewProjectionModal = ({
   const imageReferences = {
     commBehaviour: {
       size: "small",
-      viz: <ENANetworkView />,
+      viz: <ENANetworkView timeRange={range} />,
     },
 
     commNetwork: {
