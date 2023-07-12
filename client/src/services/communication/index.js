@@ -1,8 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const DOMAIN_NAME = "http://49.127.43.80";
-// const DOMAIN_NAME = "http://127.0.0.1";
+// const DOMAIN_NAME = "http://localhost";
+const DOMAIN_NAME = "http://49.127.16.8";
 
 const communicationAPI = axios.create({
   baseURL: `${DOMAIN_NAME}:5000`, //Change this if the port is being used.
@@ -48,8 +48,11 @@ const getSNAdata = (simulationId) => {
   return communicationAPI.get(`/get_data?sessionId=${simulationId}`);
 };
 
-const getENAdata = (simulationId) => {
-  return communicationAPI.get(`/get_ena_data?sessionId=${simulationId}`);
+const getENAdata = (body) => {
+  const { simulationId, startTime, endTime } = body;
+  return communicationAPI.get(
+    `/get_ena_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}`
+  );
 };
 
 export { getSNAdata, getENAdata };

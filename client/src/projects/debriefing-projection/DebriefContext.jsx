@@ -4,27 +4,25 @@
 // * with audio (default) or position only
 
 import React, { useState, useEffect } from "react";
-import { getENAdata, getSNAdata } from "../../services/communication";
-import { processing_adjacent_matrix } from "../communication/mimic_ena_control";
-import { toast } from "react-hot-toast";
+import { getSNAdata } from "../../services/communication";
 
 const DebriefingContext = React.createContext();
 
 function DebriefingProvider({ simulationId, children }) {
   const [isStarted, setIsStarted] = React.useState(false);
-  const [enaData, setENAdata] = useState([]);
+  // const [enaData, setENAdata] = useState([]);
   const [snaData, setSNAdata] = useState([]);
-  const [networkENAData, setNetworkENAData] = useState([]);
+  // const [networkENAData, setNetworkENAData] = useState([]);
 
   /* getData from backend */
-  useEffect(() => {
-    getENAdata(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setENAdata(res.data);
-      }
-    });
-  }, [simulationId]);
+  // useEffect(() => {
+  //   getENAdata(simulationId).then((res) => {
+  //     if (res.status === 200) {
+  //       // const cleanedPhases = cleanRawPhases(phases);
+  //       setENAdata(res.data);
+  //     }
+  //   });
+  // }, [simulationId]);
 
   useEffect(() => {
     getSNAdata(simulationId).then((res) => {
@@ -35,19 +33,19 @@ function DebriefingProvider({ simulationId, children }) {
     });
   }, []);
 
-  useEffect(() => {
-    try {
-      const net_data = processing_adjacent_matrix(enaData);
-      if (enaData.length !== 0) {
-        setNetworkENAData(net_data["nodes"].concat(net_data["edges"]));
-      }
-    } catch (err) {
-      toast.error(`SNA error: unable to change visualisation based on time`);
-      console.error(err);
-    }
-  }, [enaData]);
+  // useEffect(() => {
+  //   try {
+  //     const net_data = processing_adjacent_matrix(enaData);
+  //     if (enaData.length !== 0) {
+  //       setNetworkENAData(net_data["nodes"].concat(net_data["edges"]));
+  //     }
+  //   } catch (err) {
+  //     toast.error(`SNA error: unable to change visualisation based on time`);
+  //     console.error(err);
+  //   }
+  // }, [enaData]);
 
-  const value = { isStarted, setIsStarted, networkENAData, snaData };
+  const value = { isStarted, setIsStarted, snaData };
   return (
     <DebriefingContext.Provider value={value}>
       {children}

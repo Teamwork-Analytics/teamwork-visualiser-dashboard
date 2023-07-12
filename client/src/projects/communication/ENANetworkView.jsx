@@ -1,8 +1,43 @@
+import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-import { useDebriefing } from "../debriefing-projection/DebriefContext";
+import { processing_adjacent_matrix } from "./mimic_ena_control";
+import { toast } from "react-hot-toast";
+import { getENAdata } from "../../services/communication";
+import { useParams } from "react-router-dom";
 
-const ENANetworkView = () => {
-  const { networkENAData } = useDebriefing();
+const ENANetworkView = ({ timeRange }) => {
+  const { simulationId } = useParams();
+  const [enaData, setENAdata] = useState([]);
+  const [networkENAData, setNetworkENAData] = useState([]);
+
+  const startTime = timeRange[0];
+  const endTime = timeRange[1];
+
+  useEffect(() => {
+    getENAdata({
+      simulationId: simulationId,
+      startTime: startTime,
+      endTime: endTime,
+    }).then((res) => {
+      if (res.status === 200) {
+        // const cleanedPhases = cleanRawPhases(phases);
+        setENAdata(res.data);
+      }
+    });
+  }, [simulationId]);
+
+  useEffect(() => {
+    try {
+      const net_data = processing_adjacent_matrix(enaData);
+      if (enaData.length !== 0) {
+        setNetworkENAData(net_data["nodes"].concat(net_data["edges"]));
+      }
+    } catch (err) {
+      toast.error(`SNA error: unable to change visualisation based on time`);
+      console.error(err);
+    }
+  }, [enaData]);
+
   const net_options = {
     name: "circle",
     fit: true, // whether to fit the viewport to the graph

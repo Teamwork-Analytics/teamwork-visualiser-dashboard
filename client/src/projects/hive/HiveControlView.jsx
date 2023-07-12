@@ -33,7 +33,7 @@ const ParticipantFilter = ({ colourCode }) => {
         justifyContent: "flex-start",
         alignItems: "center",
         // margin: "0.2em 0.2em",
-        width: "35%",
+        // width: "35%",
         fontSize: "0.8em",
       }}
     >

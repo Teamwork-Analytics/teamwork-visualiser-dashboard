@@ -41,7 +41,7 @@ const PreviewProjectionModal = ({
     },
     wardMap: {
       size: "medium",
-      viz: <HiveView timeRange={range} />,
+      viz: <HiveView timeRange={range} showFilter={false} height="50vh" />,
     },
     video: {
       size: "large",

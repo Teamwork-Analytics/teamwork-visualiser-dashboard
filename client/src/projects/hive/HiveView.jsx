@@ -8,7 +8,12 @@ import { HivePrimaryControlView } from "./HiveControlView";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
 
-const HiveView = ({ timeRange }) => {
+const HiveView = ({
+  timeRange,
+  showFilter = true,
+  height = "40vh",
+  width = "30vw",
+}) => {
   const hiveRef = useRef();
   const { hiveState, markers } = useHive();
   const { simulationId } = useParams();
@@ -52,17 +57,17 @@ const HiveView = ({ timeRange }) => {
         >
           <div
             style={{
-              width: "550px",
-              height: "25vh",
+              // minWidth: "550px",
+              width: width,
+              height: height,
               maxHeight: "1080px",
               // backgroundColor: "#303030",
               borderRadius: "1em",
             }}
           >
             <div ref={hiveRef} style={{ height: "99%" }} />
-            <HivePrimaryControlView />
           </div>
-          {/* <HiveSlider /> removed slider, replaced with main controller*/}
+          {showFilter && <HivePrimaryControlView />}
         </div>
       )}
     </Fragment>

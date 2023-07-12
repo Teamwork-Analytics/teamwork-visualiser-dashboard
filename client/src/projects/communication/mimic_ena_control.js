@@ -70,7 +70,7 @@ let generate_a_ena_node_dict = function (
   };
 };
 
-let processing_adjacent_matrix = function (raw_json_data) {
+let processing_adjacent_matrix = function (raw_json_data, startTime, end) {
   let node_size = [];
   let edge_width = [];
 

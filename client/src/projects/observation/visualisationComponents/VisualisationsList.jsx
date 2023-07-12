@@ -87,7 +87,7 @@ const bottomRightVisualisations = (timeRange) => [
   {
     eventKey: "commBehaviour",
     title: "Communication Behaviour",
-    component: () => <ENANetworkView />,
+    component: () => <ENANetworkView timeRange={timeRange} />,
   },
 ];
 
