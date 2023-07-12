@@ -52,7 +52,6 @@ const CytoComponent = ({ netData }) => {
       },
     },
   ];
-  console.log(netData);
 
   return (
     <CytoscapeComponent
@@ -86,7 +85,9 @@ const SocialNetworkView = ({ timeRange }) => {
   }, [snaData, startTime, endTime]);
 
   return (
-    <div>{netData !== undefined && <CytoComponent netData={netData} />}</div>
+    <div style={{ minWidth: "300px", width: "100%" }}>
+      {netData !== undefined && <CytoComponent netData={netData} />}
+    </div>
   );
 };
 

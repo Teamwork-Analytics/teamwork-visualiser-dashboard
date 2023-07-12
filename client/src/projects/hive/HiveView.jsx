@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 import floorPlan from "./floor-plan/floor-plan.svg";
@@ -9,13 +9,14 @@ import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
 
 const HiveView = ({ timeRange }) => {
+  const hiveRef = useRef();
   const { hiveState, markers } = useHive();
   const { simulationId } = useParams();
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
   useEffect(() => {
     d3.select("#floor-plan").remove();
-    let svgContainer = d3.select("#hive");
+    const svgContainer = d3.select(hiveRef.current);
     d3.xml(floorPlan).then((data) => {
       if (
         svgContainer.node() !== null &&
@@ -58,7 +59,7 @@ const HiveView = ({ timeRange }) => {
               borderRadius: "1em",
             }}
           >
-            <div id="hive" style={{ height: "99%" }} />
+            <div ref={hiveRef} style={{ height: "99%" }} />
             <HivePrimaryControlView />
           </div>
           {/* <HiveSlider /> removed slider, replaced with main controller*/}
