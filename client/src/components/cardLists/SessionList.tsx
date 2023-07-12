@@ -5,7 +5,6 @@
 import React from "react";
 import { Simulation } from "../../types/SimulationProps";
 import SimulationCard from "../card/SimulationCard";
-import { fakeTeams } from "../../data/fakeData";
 import "./SessionList.css";
 import { Button } from "react-bootstrap";
 import { BsPencil } from "react-icons/bs";
@@ -33,7 +32,7 @@ const SessionList = ({
   edit,
 }: SessionListProps) => {
   //TODO: connect to backend and not using fake data
-  const simulations = simulationsInput ? simulationsInput : fakeTeams;
+  const simulations = simulationsInput 
 
   return (
     <div

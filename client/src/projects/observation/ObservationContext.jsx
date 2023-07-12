@@ -16,6 +16,8 @@ function ObservationProvider({ simulationId, children }) {
   const [observation, setObservation] = React.useState({
     synchronisations: [],
   });
+  const [obsStartTime, setObsStartTime] = useState();
+  const [obsEndTime, setObsEndTime] = useState();
 
   // const [enaData, setENAdata] = useState([]);
   // const [networkData, setNetworkData] = useState([]);
@@ -46,13 +48,23 @@ function ObservationProvider({ simulationId, children }) {
     ObservationAPI.single(simulationId).then((res) => {
       if (res.status === 200) {
         setObservation(res.data);
+        setObsStartTime(res.data.startTime);
+        setObsEndTime(res.data.stopTime);
         const phases = sortNotesDescending(res.data);
         setNotes(phases);
       }
     });
   }, []);
 
-  const value = { notes, setNotes, observation, setObservation };
+  const value = {
+    notes,
+    setNotes,
+    observation,
+    setObservation,
+    networkData,
+    obsStartTime,
+    obsEndTime,
+  };
   return (
     <ObservationContext.Provider value={value}>
       {children}
