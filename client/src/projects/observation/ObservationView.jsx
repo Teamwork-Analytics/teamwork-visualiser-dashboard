@@ -4,9 +4,11 @@ import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
+import { useObservation } from "./ObservationContext";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
+  const { obsStartTime, obsEndTime } = useObservation();
 
   // const { observation } = useObservation();
   // const [state, setState] = useState({
@@ -91,7 +93,18 @@ const ObservationView = () => {
           }}
         >
           <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-          <DebriefingControllerModule />
+          {obsStartTime && obsEndTime ? (
+            <DebriefingControllerModule />
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "20px",
+              }}
+            >
+              Debriefing tool in preparation
+            </div>
+          )}
         </Tab>
       </Tabs>
       <ReactTooltip />
