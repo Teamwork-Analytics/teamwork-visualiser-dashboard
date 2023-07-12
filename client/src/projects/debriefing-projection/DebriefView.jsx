@@ -9,23 +9,60 @@ import { ConnectionManager } from "./socketComponents/ConnectionManager";
 import DisplayViz from "./socketComponents/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
 
-// images
-import behaviourVis from "./images/behaviour-vis.png";
-import communicationVis from "./images/communication-vis.png";
-import mapVis from "./images/ward-map.png";
-import videoVis from "./images/video-vis.png";
-import priorBar from "../../images/vis/prioritisation-bar.png";
+import { SocialNetworkView, ENANetworkView } from "../communication";
+import TeamworkBarchart from "../teamwork/TeamworkBarchart";
+import HiveView from "../hive/HiveView";
+import VideoVisualisation from "../observation/visualisationComponents/VideoVisualisation";
 
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [dispList, setDispList] = useState([]);
+  const [range, setRange] = useState([0, 0]);
 
+  // duplicated - preview stuff
   const imageReferences = {
-    commBehaviour: { size: "small", imageUrl: behaviourVis },
-    commNetwork: { size: "small", imageUrl: communicationVis },
-    priorBar: { size: "small", imageUrl: priorBar },
-    wardMap: { size: "medium", imageUrl: mapVis },
-    video: { size: "large", imageUrl: videoVis },
+    commBehaviour: {
+      size: "small",
+      viz: <ENANetworkView />,
+    },
+
+    commNetwork: {
+      size: "small",
+      viz: <SocialNetworkView timeRange={range} />,
+    },
+    priorBar: {
+      size: "small",
+      viz: (
+        <TeamworkBarchart
+          style={{
+            width: "auto",
+            objectFit: "scale-down",
+            maxHeight: "33vh",
+          }}
+          fluid
+        />
+      ),
+    },
+    wardMap: {
+      size: "medium",
+      viz: <HiveView timeRange={range} />,
+    },
+    video: {
+      size: "large",
+      viz: (
+        <VideoVisualisation
+          style={{
+            width: "auto",
+            objectFit: "scale-down",
+            maxHeight: "33vh",
+            minHeight: "30vh",
+          }}
+          isVideoTabActive={true}
+          fluid
+          timeRange={range}
+        />
+      ),
+    },
   };
 
   useEffect(() => {
@@ -43,6 +80,7 @@ const DebriefView = () => {
       console.log("Received controller change to display: " + data);
       const unpackedData = unpackData(data);
       const parsedList = unpackedData.vizSelected;
+      setRange(unpackedData.range);
       setDispList(parsedList); // WARNING: abrupt mutation
     }
 
@@ -65,7 +103,6 @@ const DebriefView = () => {
   };
 
   const hideConnectButton = true;
-
   return (
     <>
       <div
@@ -80,10 +117,11 @@ const DebriefView = () => {
         }}
       >
         {dispList.length !== 0 ? (
-          dispList.map((d) => (
+          dispList.map((d, i) => (
             <DisplayViz
               size={decideSize(d)}
-              image={imageReferences[d.id].imageUrl}
+              viz={imageReferences[d.id].viz}
+              key={i}
             />
           ))
         ) : (

@@ -26,7 +26,7 @@ const visStyles = {
 };
 
 // Top tab visualisation list
-const topTabVisualisations = [
+const topTabVisualisations = (timeRange) => [
   {
     eventKey: "timeline",
     title: "Timeline",
@@ -50,6 +50,7 @@ const topTabVisualisations = [
         style={{ ...style, ...visStyles.imageContainer, minHeight: "30vh" }}
         isVideoTabActive={isVideoTabActive}
         fluid
+        timeRange={timeRange}
       />
     ),
     tabAttrs: (topActiveTab) => ({

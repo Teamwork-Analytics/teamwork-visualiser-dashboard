@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import * as d3 from "d3";
 
-import HiveAPI from "../../services/api/hive";
 import floorPlan from "./floor-plan/floor-plan.svg";
 import HexagonComponent from "./Hexagon";
 import { useHive } from "./HiveContext";

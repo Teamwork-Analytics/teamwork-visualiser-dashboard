@@ -1,7 +1,6 @@
 import Card from "react-bootstrap/Card";
-import Image from "react-bootstrap/Image";
 
-const DisplayViz = ({ size, image }) => {
+const DisplayViz = ({ size, viz }) => {
   const sizeDecider = {
     small: {
       width: "40vw",
@@ -29,17 +28,6 @@ const DisplayViz = ({ size, image }) => {
     },
   };
 
-  const styles = {
-    imageContainer: {
-      // display: "block",
-      width: "auto",
-      height: "100%",
-      objectFit: "cover",
-      position: " absolute",
-      top: 0,
-    },
-  };
-
   return (
     <Card style={sizeDecider[size]} className="customCard">
       <Card.Body
@@ -49,7 +37,7 @@ const DisplayViz = ({ size, image }) => {
           justifyContent: "center",
         }}
       >
-        <Image src={image} style={styles.imageContainer} fluid />
+        {viz}
       </Card.Body>
     </Card>
   );

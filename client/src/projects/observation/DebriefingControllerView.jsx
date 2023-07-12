@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Row, Col, Tab, Tabs, Nav, Container, Button } from "react-bootstrap";
 
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { socket } from "./socket";
-import { ConnectionState } from "./socketComponents/ConnectionState";
-import { ConnectionManager } from "./socketComponents/ConnectionManager";
 import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -72,7 +70,7 @@ const DebriefingControllerView = () => {
     socket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
-    toast.success("Reverted projections", {
+    toast.success("Clear selections", {
       id: toastId,
     });
   };
@@ -160,8 +158,7 @@ const DebriefingControllerView = () => {
                     </>
                   ) : (
                     <>
-                      <FaPlus style={{ marginBottom: "2px" }} /> Add to
-                      projection
+                      <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
                     </>
                   )}
                 </Button>
@@ -196,7 +193,7 @@ const DebriefingControllerView = () => {
             style={{ marginRight: "5px", fontSize: "14px" }}
             onClick={handleRevertAllProjections}
           >
-            Revert all projections
+            Clear selections
           </Button>
           <Button
             variant="success"
@@ -232,7 +229,7 @@ const DebriefingControllerView = () => {
               }}
               variant="pills"
             >
-              {topTabVisualisations.map((tab, index) => (
+              {topTabVisualisations(range).map((tab, index) => (
                 <Tab
                   key={index}
                   eventKey={tab.eventKey}
@@ -269,7 +266,7 @@ const DebriefingControllerView = () => {
                 </>
               ) : (
                 <>
-                  <FaPlus style={{ marginBottom: "2px" }} /> Add video
+                  <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
                 </>
               )}
             </Button>

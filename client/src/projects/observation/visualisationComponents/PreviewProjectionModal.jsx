@@ -2,20 +2,11 @@ import { Modal, Button } from "react-bootstrap";
 import DisplayViz from "../socketComponents/DisplayViz";
 
 //image references:
-import priorBar from "../../../images/vis/prioritisation-bar.png";
-import videoVis from "../../../images/vis/video.png";
-import behaviourVis from "../../../images/vis/com-behaviour.png";
-import communicationVis from "../../../images/vis/communication-network.png";
-import mapVis from "../../../images/vis/ward-map.png";
-
-// duplicated - preview stuff
-const imageReferences = {
-  commBehaviour: { size: "small", imageUrl: behaviourVis },
-  commNetwork: { size: "small", imageUrl: communicationVis },
-  priorBar: { size: "small", imageUrl: priorBar },
-  wardMap: { size: "medium", imageUrl: mapVis },
-  video: { size: "large", imageUrl: videoVis },
-};
+import { SocialNetworkView, ENANetworkView } from "../../communication";
+import TeamworkBarchart from "../../teamwork/TeamworkBarchart";
+import HiveView from "../../hive/HiveView";
+import { useTimeline } from "./TimelineContext";
+import VideoVisualisation from "./VideoVisualisation";
 
 const PreviewProjectionModal = ({
   showPreviewModal,
@@ -23,6 +14,53 @@ const PreviewProjectionModal = ({
   handleConfirmProjection,
   selectedVis,
 }) => {
+  const { range } = useTimeline();
+  // duplicated - preview stuff
+  const imageReferences = {
+    commBehaviour: {
+      size: "small",
+      viz: <ENANetworkView />,
+    },
+
+    commNetwork: {
+      size: "small",
+      viz: <SocialNetworkView timeRange={range} />,
+    },
+    priorBar: {
+      size: "small",
+      viz: (
+        <TeamworkBarchart
+          style={{
+            width: "auto",
+            objectFit: "scale-down",
+            maxHeight: "33vh",
+          }}
+          fluid
+        />
+      ),
+    },
+    wardMap: {
+      size: "medium",
+      viz: <HiveView timeRange={range} />,
+    },
+    video: {
+      size: "large",
+      viz: (
+        <VideoVisualisation
+          style={{
+            width: "auto",
+            objectFit: "scale-down",
+            maxHeight: "33vh",
+            minHeight: "30vh",
+          }}
+          isVideoTabActive={true}
+          fluid
+          timeRange={range}
+        />
+      ),
+    },
+  };
+
   const decideSize = (d) => {
     if (selectedVis.length === 1 && d.id !== "videoVis") {
       return "single";
@@ -39,7 +77,7 @@ const PreviewProjectionModal = ({
         fullscreen={true}
       >
         <Modal.Header>
-          <Modal.Title>Preview if you selected the visualisation</Modal.Title>
+          <Modal.Title>Preview selected visualisations</Modal.Title>
           <div>
             <Button
               variant="warning"
@@ -53,20 +91,11 @@ const PreviewProjectionModal = ({
               style={{ fontSize: "12px", margin: "2px" }}
               onClick={handleConfirmProjection}
             >
-              Send to projector
+              Send to screen
             </Button>
           </div>
         </Modal.Header>
         <Modal.Body>
-          <p
-            style={{
-              fontSize: "10px",
-            }}
-          >
-            You have selected:
-            {selectedVis && selectedVis.map((vis) => vis.id).join(", ")}
-          </p>
-
           <div
             style={{
               display: "flex",
@@ -82,7 +111,7 @@ const PreviewProjectionModal = ({
               selectedVis.map((d) => (
                 <DisplayViz
                   size={decideSize(d)}
-                  image={imageReferences[d.id].imageUrl}
+                  viz={imageReferences[d.id].viz}
                 />
               ))
             ) : (

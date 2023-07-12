@@ -1,6 +1,5 @@
 import * as dfd from "danfojs";
 import { toast } from "react-hot-toast";
-import cytoscape from "cytoscape";
 import { cssColourMatcher } from "../hive/Hexagon";
 
 // const value for the social network visualisation

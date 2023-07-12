@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
-import { useTimeline } from "./TimelineContext";
 
-const VideoPlayer = ({ isVideoTabActive }) => {
-  const { range } = useTimeline();
+const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
+  const range = timeRange;
   const playerRef = useRef(null);
   const startTime = range[0]; // start time in seconds
   const endTime = range[1]; // end time in seconds
@@ -60,4 +59,4 @@ const VideoPlayer = ({ isVideoTabActive }) => {
   );
 };
 
-export default VideoPlayer;
+export default VideoVisualisation;
