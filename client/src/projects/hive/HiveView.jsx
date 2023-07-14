@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 const HiveView = ({
   timeRange,
   showFilter = true,
-  height = "40vh",
+  height = "32vh",
   width = "30vw",
 }) => {
   const hiveRef = useRef();

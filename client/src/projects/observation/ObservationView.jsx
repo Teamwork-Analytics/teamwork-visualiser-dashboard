@@ -76,7 +76,7 @@ const ObservationView = () => {
       >
         <Tab
           eventKey="observation"
-          title="Tagging"
+          title="1. Tagging"
           // style cant be used directly in Tab as its nested too deep
           tabAttrs={{
             style: currentTab === "observation" ? {} : { color: "black" },
@@ -86,8 +86,19 @@ const ObservationView = () => {
           <ObservationTaggingModule />
         </Tab>
         <Tab
+          eventKey="assessment"
+          title="2. Team Assessment"
+          // style cant be used directly in Tab as its nested too deep
+          tabAttrs={{
+            style: currentTab === "assessment" ? {} : { color: "black" },
+          }}
+        >
+          <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
+          <div> </div>
+        </Tab>
+        <Tab
           eventKey="debriefing"
-          title="Debriefing"
+          title="3. Debriefing"
           tabAttrs={{
             style: currentTab === "debriefing" ? {} : { color: "black" },
           }}
