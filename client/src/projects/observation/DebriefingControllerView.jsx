@@ -34,6 +34,8 @@ const debriefStyles = {
     zIndex: 100,
     fontSize: "14px",
     padding: "5px",
+    // width: "80%",
+    whiteSpace: "nowrap",
   },
   bottomTabContainer: {
     borderStyle: "solid",
@@ -42,6 +44,7 @@ const debriefStyles = {
     borderRadius: "10px",
     padding: "5px",
     minHeight: "34vh",
+    backgroundColor: "white",
   },
 };
 
@@ -114,12 +117,23 @@ const DebriefingControllerView = () => {
           <h3 style={{ color: "grey" }}>{title}</h3>
 
           <Row style={{ marginRight: "0", marginLeft: "0" }}>
-            <Col sm={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
+            <Col
+              sm={3}
+              style={{
+                paddingLeft: "5px",
+                paddingRight: "5px",
+                position: "relative",
+              }}
+            >
               <ButtonGroup vertical={true} aria-label="Tab label">
                 {visualisations.map((tab, index) => (
                   <Button
                     key={index}
-                    variant="outline-secondary"
+                    variant={
+                      activeTab === tab.eventKey
+                        ? "secondary"
+                        : "outline-secondary"
+                    }
                     onClick={() => setActiveTab(tab.eventKey)}
                     style={{ fontSize: "14px" }}
                   >
@@ -127,6 +141,26 @@ const DebriefingControllerView = () => {
                   </Button>
                 ))}
               </ButtonGroup>
+              <Button
+                variant="success"
+                style={{
+                  ...debriefStyles.addVisButton,
+                  opacity: selectedVis.some((vis) => vis.id === activeTab)
+                    ? "0.65"
+                    : "1",
+                }}
+                onClick={() => handleAddVis(activeTab)}
+              >
+                {selectedVis.some((vis) => vis.id === activeTab) ? (
+                  <>
+                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
+                  </>
+                ) : (
+                  <>
+                    <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
+                  </>
+                )}
+              </Button>
             </Col>
             <Col sm={9} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
               <Tab.Content style={{ position: "relative" }}>
@@ -135,27 +169,6 @@ const DebriefingControllerView = () => {
                     {tab.component()}
                   </Tab.Pane>
                 ))}
-                <Button
-                  variant="success"
-                  style={{
-                    ...debriefStyles.addVisButton,
-                    opacity: selectedVis.some((vis) => vis.id === activeTab)
-                      ? "0.65"
-                      : "1",
-                    marginLeft: "-250px",
-                  }}
-                  onClick={() => handleAddVis(activeTab)}
-                >
-                  {selectedVis.some((vis) => vis.id === activeTab) ? (
-                    <>
-                      <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
-                    </>
-                  ) : (
-                    <>
-                      <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
-                    </>
-                  )}
-                </Button>
               </Tab.Content>
             </Col>
           </Row>
@@ -177,16 +190,21 @@ const DebriefingControllerView = () => {
           width: "100%",
           maxWidth: "100%",
           position: "relative",
+          backgroundColor: "white",
         }}
       >
         <Tab.Container defaultActiveKey={topActiveTab}>
-          <Row>
+          <Row style={{ marginBottom: "5px" }}>
             <Col xs="auto">
               <ButtonGroup aria-label="Top area tab label">
                 {topTabVisualisations(range).map((tab, index) => (
                   <Button
                     key={index}
-                    variant="outline-secondary"
+                    variant={
+                      topActiveTab === tab.eventKey
+                        ? "secondary"
+                        : "outline-secondary"
+                    }
                     onClick={() => {
                       setTopActiveTab(tab.eventKey);
                       setIsVideoTabActive(tab.eventKey === "video");
