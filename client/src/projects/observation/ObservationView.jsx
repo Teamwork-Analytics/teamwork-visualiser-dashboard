@@ -96,7 +96,7 @@ const ObservationView = () => {
           <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
           <div style={{ width: "100%", height: "80vh" }}>
             <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLSccp8XB8vaYgB1oe5uNmRfDUikiX2Ch3BCx1AewqYc-POoGnw/viewform?embedded=true"
+              src="https://docs.google.com/forms/d/e/1FAIpQLSdTYC_SXeUUka2WXpiH1Fglfz7KmEa86Ca-iM3pB5HnvolRCQ/viewform?embedded=true"
               title="Team Assessment Google Form"
               style={{ width: "100%", height: "100%" }}
             ></iframe>{" "}
