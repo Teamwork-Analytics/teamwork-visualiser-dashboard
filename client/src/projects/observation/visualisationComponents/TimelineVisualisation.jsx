@@ -242,9 +242,7 @@ const TimelineVisualisation = () => {
   ];
 
   // quick select phases
-  const [selectedPhase, setSelectedPhase] = useState(null);
   const handleSelectPhase = (phase) => {
-    setSelectedPhase(phase);
     setRange([phase.start, phase.end]);
   };
 
@@ -342,7 +340,11 @@ const TimelineVisualisation = () => {
                     {phases.map((phase, index) => (
                       <Button
                         key={index}
-                        variant="outline-secondary"
+                        variant={
+                          phase.start === range[0] && phase.end === range[1]
+                            ? "secondary"
+                            : "outline-secondary"
+                        }
                         onClick={() => handleSelectPhase(phase)}
                         style={{ fontSize: "12px" }}
                       >
