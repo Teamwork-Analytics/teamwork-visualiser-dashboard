@@ -196,8 +196,20 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
 
 const TimelineVisualisation = () => {
   // timeline range and playhead
-  const { range, setRange, setPlayHeadPosition, simDuration, timelineTags } =
-    useTimeline();
+  const {
+    range,
+    setRange,
+    setPlayHeadPosition,
+    simDuration,
+    timelineTags,
+    index,
+    lastIndex,
+    undoTimeline,
+    redoTimeline,
+  } = useTimeline();
+
+  const canUndo = index > 0;
+  const canRedo = index < lastIndex;
 
   // keep value only for non key event tags
   const filterTimelineTagsForKeyEvent = (tags) => {
@@ -351,12 +363,16 @@ const TimelineVisualisation = () => {
                     <Button
                       variant="outline-secondary"
                       style={{ fontSize: "12px" }}
+                      onClick={() => undoTimeline()}
+                      disabled={!canUndo}
                     >
                       Undo <BsArrowCounterclockwise size="1.2em" />
                     </Button>
                     <Button
                       variant="outline-secondary"
                       style={{ fontSize: "12px" }}
+                      onClick={() => redoTimeline()}
+                      disabled={!canRedo}
                     >
                       Redo <BsArrowClockwise size="1.2em" />
                     </Button>
