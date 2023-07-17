@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row, Col, Tab, Tabs, Nav, Container, Button } from "react-bootstrap";
+import { Row, Col, Tab, Container, Button, ButtonGroup } from "react-bootstrap";
 
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
@@ -110,30 +110,23 @@ const DebriefingControllerView = () => {
   }) => {
     return (
       <Container style={debriefStyles.bottomTabContainer}>
-        <Tab.Container
-          defaultActiveKey={activeTab}
-          onSelect={(key) => setActiveTab(key)}
-        >
+        <Tab.Container defaultActiveKey={activeTab}>
           <h3 style={{ color: "grey" }}>{title}</h3>
 
           <Row style={{ marginRight: "0", marginLeft: "0" }}>
             <Col sm={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
-              <Nav variant="pills" className="flex-column">
+              <ButtonGroup vertical={true} aria-label="Tab label">
                 {visualisations.map((tab, index) => (
-                  <Nav.Item key={index}>
-                    <Nav.Link
-                      eventKey={tab.eventKey}
-                      style={
-                        activeTab === tab.eventKey
-                          ? debriefStyles.activeTab
-                          : debriefStyles.inactiveTab
-                      }
-                    >
-                      {tab.title}
-                    </Nav.Link>
-                  </Nav.Item>
+                  <Button
+                    key={index}
+                    variant="outline-secondary"
+                    onClick={() => setActiveTab(tab.eventKey)}
+                    style={{ fontSize: "14px" }}
+                  >
+                    {tab.title}
+                  </Button>
                 ))}
-              </Nav>
+              </ButtonGroup>
             </Col>
             <Col sm={9} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
               <Tab.Content style={{ position: "relative" }}>
@@ -166,6 +159,80 @@ const DebriefingControllerView = () => {
               </Tab.Content>
             </Col>
           </Row>
+        </Tab.Container>
+      </Container>
+    );
+  };
+
+  const TopVizTabContainer = () => {
+    return (
+      <Container
+        style={{
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: "lightgrey",
+          borderRadius: "10px",
+          padding: "5px",
+          minHeight: "34vh",
+          width: "100%",
+          maxWidth: "100%",
+          position: "relative",
+        }}
+      >
+        <Tab.Container defaultActiveKey={topActiveTab}>
+          <Row>
+            <Col xs="auto">
+              <ButtonGroup aria-label="Top area tab label">
+                {topTabVisualisations(range).map((tab, index) => (
+                  <Button
+                    key={index}
+                    variant="outline-secondary"
+                    onClick={() => {
+                      setTopActiveTab(tab.eventKey);
+                      setIsVideoTabActive(tab.eventKey === "video");
+                    }}
+                    style={{ fontSize: "14px" }}
+                  >
+                    {tab.title}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Tab.Content style={{ position: "relative" }}>
+              {topTabVisualisations(range).map((tab, index) => (
+                <Tab.Pane eventKey={tab.eventKey} key={index}>
+                  {console.log(tab)}
+                  {tab.component(
+                    debriefStyles.imageContainer,
+                    isVideoTabActive
+                  )}
+                </Tab.Pane>
+              ))}
+            </Tab.Content>
+          </Row>
+          <Button
+            variant="success"
+            style={{
+              ...debriefStyles.addVisButton,
+              opacity: selectedVis.some((vis) => vis.id === topActiveTab)
+                ? "0.65"
+                : "1",
+              display: isVideoTabActive ? "block" : "none", // button will be hidden when the video tab is not active
+            }}
+            onClick={() => handleAddVis(topActiveTab)}
+          >
+            {selectedVis.some((vis) => vis.id === "video") ? (
+              <>
+                <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
+              </>
+            ) : (
+              <>
+                <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
+              </>
+            )}
+          </Button>
         </Tab.Container>
       </Container>
     );
@@ -208,70 +275,7 @@ const DebriefingControllerView = () => {
       {/* Top row viz */}
       <Row style={{ minHeight: "35vh" }}>
         <Col style={{ padding: "1px" }}>
-          <Container
-            style={{
-              borderStyle: "solid",
-              borderWidth: "1px",
-              borderColor: "lightgrey",
-              borderRadius: "10px",
-              padding: "5px",
-              minHeight: "34vh",
-              width: "100%",
-              maxWidth: "100%",
-              position: "relative",
-            }}
-          >
-            <Tabs
-              id="top-tabs"
-              defaultActiveKey={topActiveTab}
-              onSelect={(key) => {
-                setTopActiveTab(key);
-                setIsVideoTabActive(key === "video");
-              }}
-              variant="pills"
-            >
-              {topTabVisualisations(range).map((tab, index) => (
-                <Tab
-                  key={index}
-                  eventKey={tab.eventKey}
-                  title={tab.title}
-                  tabAttrs={{
-                    style:
-                      topActiveTab === tab.eventKey
-                        ? debriefStyles.activeTab
-                        : debriefStyles.inactiveTab,
-                  }}
-                  style={tab.tabStyle ? tab.tabStyle : null}
-                >
-                  {tab.component(
-                    debriefStyles.imageContainer,
-                    isVideoTabActive
-                  )}
-                </Tab>
-              ))}
-            </Tabs>
-            <Button
-              variant="success"
-              style={{
-                ...debriefStyles.addVisButton,
-                opacity: selectedVis.some((vis) => vis.id === topActiveTab)
-                  ? "0.65"
-                  : "1",
-                display: isVideoTabActive ? "block" : "none", // button will be hidden when the video tab is not active
-              }}
-              onClick={() => handleAddVis(topActiveTab)}
-            >
-              {selectedVis.some((vis) => vis.id === "video") ? (
-                <>
-                  <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
-                </>
-              ) : (
-                <>
-                  <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
-                </>
-              )}
-            </Button>
-          </Container>
+          <TopVizTabContainer />
         </Col>
       </Row>
       {/* Bottom row viz */}

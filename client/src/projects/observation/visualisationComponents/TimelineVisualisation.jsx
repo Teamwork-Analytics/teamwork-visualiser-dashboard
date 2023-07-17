@@ -9,7 +9,12 @@ import {
   ButtonGroup,
 } from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
-import { BsCircleFill, BsCircle } from "react-icons/bs";
+import {
+  BsCircleFill,
+  BsCircle,
+  BsArrowClockwise,
+  BsArrowCounterclockwise,
+} from "react-icons/bs";
 import { manualLabels } from "../index.js";
 
 // styling
@@ -301,7 +306,7 @@ const TimelineVisualisation = () => {
                       margin: "auto",
                     }}
                   >
-                    Quick select phase:
+                    Quick select:
                   </p>
                 </Col>
 
@@ -311,6 +316,7 @@ const TimelineVisualisation = () => {
                     paddingRight: "5px",
                     textAlign: "left",
                   }}
+                  xs="auto"
                 >
                   <ButtonGroup aria-label="Phases">
                     {phases.map((phase, index) => (
@@ -323,6 +329,29 @@ const TimelineVisualisation = () => {
                         {phase.name}
                       </Button>
                     ))}
+                  </ButtonGroup>
+                </Col>
+                <Col
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    textAlign: "left",
+                  }}
+                  xs="auto"
+                >
+                  <ButtonGroup aria-label="Phases">
+                    <Button
+                      variant="outline-secondary"
+                      style={{ fontSize: "12px" }}
+                    >
+                      Undo <BsArrowCounterclockwise size="1.2em" />
+                    </Button>
+                    <Button
+                      variant="outline-secondary"
+                      style={{ fontSize: "12px" }}
+                    >
+                      Redo <BsArrowClockwise size="1.2em" />
+                    </Button>
                   </ButtonGroup>
                 </Col>
               </Row>
