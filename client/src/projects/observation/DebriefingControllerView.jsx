@@ -45,6 +45,7 @@ const debriefStyles = {
     padding: "5px",
     minHeight: "34vh",
     backgroundColor: "white",
+    height: "100%",
   },
 };
 
