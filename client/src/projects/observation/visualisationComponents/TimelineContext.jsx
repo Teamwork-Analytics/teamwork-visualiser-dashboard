@@ -25,6 +25,16 @@ const calculateDuration = (startTime, endTime) => {
   return Math.round(Math.abs(new Date(endTime) - new Date(startTime)) / 1000);
 };
 
+/**
+ * Helper function to compare two arrays for equality
+ * @param {Array} a - First array to compare
+ * @param {Array} b - Second array to compare
+ * @returns {boolean} - Returns true if the arrays are equal, false otherwise
+ */
+const arraysAreEqual = (a, b) => {
+  return a.length === b.length && a.every((value, index) => value === b[index]);
+};
+
 function TimelineProvider({ children }) {
   const { notes, obsStartTime, obsEndTime } = useObservation();
 
@@ -56,8 +66,9 @@ function TimelineProvider({ children }) {
     [historyRanges, index]
   );
 
+  // SetRange function using array comparison
   const setRange = (value) => {
-    if (range === value) {
+    if (arraysAreEqual(range, value)) {
       return;
     }
     const copy = historyRanges.slice(0, index + 1);
