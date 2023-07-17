@@ -141,12 +141,20 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
         overflowY: "scroll",
         fontSize: "12px",
         marginTop: "-30px",
+        backgroundColor: "#f0f0f0",
       }}
     >
       <Card.Body>
         {formattedMarks.map((mark, index) => (
           <Row
-            style={{ marginLeft: "0px", marginRight: "0px" }}
+            style={{
+              marginLeft: "0px",
+              marginRight: "0px",
+              marginTop: "2px",
+              marginBottom: "2px",
+              backgroundColor: "white",
+              borderRadius: "0.8em",
+            }}
             key={index}
             onClick={() => {
               setRange([

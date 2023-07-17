@@ -114,7 +114,7 @@ const DebriefingControllerView = () => {
     return (
       <Container style={debriefStyles.bottomTabContainer}>
         <Tab.Container defaultActiveKey={activeTab}>
-          <h3 style={{ color: "grey" }}>{title}</h3>
+          <h4 style={{ color: "grey" }}>{title}</h4>
 
           <Row style={{ marginRight: "0", marginLeft: "0" }}>
             <Col
