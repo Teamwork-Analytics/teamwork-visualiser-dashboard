@@ -349,11 +349,18 @@ const TimelineVisualisation = () => {
                         key={index}
                         variant={
                           phase.start === range[0] && phase.end === range[1]
-                            ? "secondary"
-                            : "outline-dark"
+                            ? "primary"
+                            : "outline-primary"
                         }
                         onClick={() => handleSelectPhase(phase)}
-                        style={{ fontSize: "12px" }}
+                        style={{
+                          fontSize: "12px",
+                          borderColor: "rgb(33, 37, 41)",
+                          color:
+                            phase.start === range[0] && phase.end === range[1]
+                              ? "rgb(255, 255, 255)"
+                              : "rgb(33, 37, 41)",
+                        }}
                       >
                         {phase.name}
                       </Button>
