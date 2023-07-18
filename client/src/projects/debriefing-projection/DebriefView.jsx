@@ -1,15 +1,13 @@
 /**
- * DebriefView Component
+ * @file DebriefView Component
  *
+ * @description
  * This component manages and displays visualizations selected by the controller on the Projection screen.
- *
  * It establishes a socket connection, and on connection receives data that determines which visualizations to display.
  * The component also manages the connection state and displays the connection status.
- *
- * ConnectionManager component is optional and can be displayed based on the `hideConnectButton` flag.
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { socket } from "./socket";
 import ConnectionState from "./socketComponents/ConnectionState";
 import ConnectionManager from "./socketComponents/ConnectionManager";
@@ -62,8 +60,8 @@ const DebriefView = () => {
           display: "flex",
           alignContent: "center",
           justifyContent: "center",
-          width: "100vw",
-          height: "90vh",
+          width: "100%",
+          height: "100%",
           maxHeight: "90vh",
           flexWrap: "wrap",
         }}

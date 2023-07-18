@@ -80,16 +80,35 @@ const DisplayViz = ({ selectedVis, range }) => {
     return imageReferences[d.id].size;
   };
 
+  // Sort array so large items are always first
+  const sortedVis = selectedVis.sort((a, b) => {
+    if (
+      imageReferences[a.id].size === "large" &&
+      imageReferences[b.id].size !== "large"
+    ) {
+      return -1;
+    } else if (
+      imageReferences[b.id].size === "large" &&
+      imageReferences[a.id].size !== "large"
+    ) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+
   return (
     <div
       style={{
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "space-around",
+        height: "100%",
+        width: "100%",
       }}
     >
-      {selectedVis.length !== 0 ? (
-        selectedVis.map((d) => (
+      {sortedVis.length !== 0 ? (
+        sortedVis.map((d) => (
           <Card style={SIZE_STYLES[decideSize(d)]} className="customCard">
             <Card.Body
               style={{
