@@ -383,16 +383,24 @@ const TimelineVisualisation = () => {
                     }}
                   >
                     <Button
-                      variant="outline-dark"
-                      style={{ fontSize: "12px" }}
+                      variant="outline-primary"
+                      style={{
+                        fontSize: "12px",
+                        borderColor: "rgb(33, 37, 41)",
+                        color: "rgb(33, 37, 41)",
+                      }}
                       onClick={() => undoTimeline()}
                       disabled={!canUndo}
                     >
                       Undo <BsArrowCounterclockwise size="1.2em" />
                     </Button>
                     <Button
-                      variant="outline-dark"
-                      style={{ fontSize: "12px" }}
+                      variant="outline-primary"
+                      style={{
+                        fontSize: "12px",
+                        borderColor: "rgb(33, 37, 41)",
+                        color: "rgb(33, 37, 41)",
+                      }}
                       onClick={() => redoTimeline()}
                       disabled={!canRedo}
                     >
