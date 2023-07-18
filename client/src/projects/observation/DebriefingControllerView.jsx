@@ -114,7 +114,7 @@ const DebriefingControllerView = () => {
   }) => {
     return (
       <Container style={debriefStyles.bottomTabContainer}>
-        <Tab.Container defaultActiveKey={activeTab}>
+        <Tab.Container activeKey={activeTab}>
           <h4 style={{ color: "grey" }}>{title}</h4>
 
           <Row style={{ marginRight: "0", marginLeft: "0" }}>
@@ -229,7 +229,7 @@ const DebriefingControllerView = () => {
               backgroundColor: "white",
             }}
           >
-            <Tab.Container defaultActiveKey={topActiveTab}>
+            <Tab.Container activeKey={topActiveTab}>
               <Row style={{ marginBottom: "5px" }}>
                 <Col xs="auto">
                   <ButtonGroup aria-label="Top area tab label">
@@ -257,7 +257,6 @@ const DebriefingControllerView = () => {
                 <Tab.Content style={{ position: "relative" }}>
                   {topTabVisualisations(range).map((tab, index) => (
                     <Tab.Pane eventKey={tab.eventKey} key={index}>
-                      {console.log(tab)}
                       {tab.component(
                         debriefStyles.imageContainer,
                         isVideoTabActive
