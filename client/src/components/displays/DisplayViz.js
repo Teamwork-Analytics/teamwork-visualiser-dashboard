@@ -109,7 +109,7 @@ const DisplayViz = ({ selectedVis, range }) => {
     >
       {sortedVis.length !== 0 ? (
         sortedVis.map((d) => (
-          <Card style={SIZE_STYLES[decideSize(d)]} className="customCard">
+          <Card style={SIZE_STYLES[decideSize(d)]}>
             <Card.Body
               style={{
                 display: "flex",
