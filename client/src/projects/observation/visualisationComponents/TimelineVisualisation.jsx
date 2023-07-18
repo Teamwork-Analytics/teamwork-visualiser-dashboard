@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
 import {
   Container,
