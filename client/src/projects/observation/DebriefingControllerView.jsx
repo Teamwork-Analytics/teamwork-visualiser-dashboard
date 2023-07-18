@@ -206,7 +206,10 @@ const DebriefingControllerView = () => {
           <Button
             variant="success"
             style={{ marginRight: "5px", fontSize: "14px" }}
-            onClick={() => setShowPreviewModal(true)}
+            onClick={() => {
+              setIsVideoTabActive(false);
+              setShowPreviewModal(true);
+            }}
           >
             Projection preview
           </Button>

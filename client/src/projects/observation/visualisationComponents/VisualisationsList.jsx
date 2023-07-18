@@ -67,6 +67,7 @@ const bottomLeftVisualisations = (timeRange) => [
     eventKey: "wardMap",
     title: "Ward Map",
     component: () => <HiveView timeRange={timeRange} />,
+    info: "Each hexagon represents a position of a student. The colour-filled hexagon represents the student talking in that position. ",
   },
   {
     eventKey: "priorBar",
@@ -74,6 +75,7 @@ const bottomLeftVisualisations = (timeRange) => [
     component: () => (
       <TeamworkBarchart style={visStyles.imageContainer} fluid />
     ),
+    info: "Each bar represents the percentage of time that the team spent on a specific task during that time frame.",
   },
 ];
 
@@ -83,11 +85,13 @@ const bottomRightVisualisations = (timeRange) => [
     eventKey: "commNetwork",
     title: "Communication Network",
     component: () => <SocialNetworkView timeRange={timeRange} />,
+    info: "The size of the circle represents the time a student spent talking. The arrow thickness represents the talking time a student spent with another student.",
   },
   {
     eventKey: "commBehaviour",
     title: "Communication Behaviour",
     component: () => <ENANetworkView timeRange={timeRange} />,
+    info: "",
   },
 ];
 
