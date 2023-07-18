@@ -275,7 +275,7 @@ const DebriefingControllerView = () => {
                   opacity: selectedVis.some((vis) => vis.id === topActiveTab)
                     ? "0.65"
                     : "1",
-                  display: isVideoTabActive ? "block" : "none", // button will be hidden when the video tab is not active
+                  display: topActiveTab === "video" ? "block" : "none", // button will be hidden when the video tab is not active
                 }}
                 onClick={() => handleAddVis(topActiveTab)}
               >
