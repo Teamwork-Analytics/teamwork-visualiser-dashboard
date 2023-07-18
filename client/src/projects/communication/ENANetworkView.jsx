@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { processing_adjacent_matrix } from "./mimic_ena_control";
 import { toast } from "react-hot-toast";
-import { getENAdata } from "../../services/communication";
+import { getENAdata } from "../../services/py-server";
 import { useParams } from "react-router-dom";
 
 const ENANetworkView = ({ timeRange }) => {
@@ -14,16 +14,18 @@ const ENANetworkView = ({ timeRange }) => {
   const endTime = timeRange[1];
 
   useEffect(() => {
-    getENAdata({
-      simulationId: simulationId,
-      startTime: startTime,
-      endTime: endTime,
-    }).then((res) => {
+    async function callData() {
+      const res = await getENAdata({
+        simulationId: simulationId,
+        startTime: startTime,
+        endTime: endTime,
+      });
       if (res.status === 200) {
         // const cleanedPhases = cleanRawPhases(phases);
         setENAdata(res.data);
       }
-    });
+    }
+    callData();
   }, [simulationId]);
 
   useEffect(() => {

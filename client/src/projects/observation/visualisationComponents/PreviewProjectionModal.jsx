@@ -3,7 +3,7 @@ import DisplayViz from "../socketComponents/DisplayViz";
 
 //image references:
 import { SocialNetworkView, ENANetworkView } from "../../communication";
-import TeamworkBarchart from "../../teamwork/TeamworkBarchart";
+import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
 import HiveView from "../../hive/HiveView";
 import { useTimeline } from "./TimelineContext";
 import VideoVisualisation from "./VideoVisualisation";
@@ -30,6 +30,7 @@ const PreviewProjectionModal = ({
       size: "small",
       viz: (
         <TeamworkBarchart
+          // timeRange={range}
           style={{
             width: "auto",
             objectFit: "scale-down",

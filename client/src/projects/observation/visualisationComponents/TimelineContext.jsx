@@ -14,13 +14,14 @@ const calculateDuration = (startTime, endTime) => {
   return Math.round(Math.abs(new Date(endTime) - new Date(startTime)) / 1000);
 };
 
-function TimelineProvider({ children }) {
+function TimelineProvider({ simulationId, children }) {
   const { notes, obsStartTime, obsEndTime } = useObservation();
   const simStartTimestamp = obsStartTime;
   const simEndTimestamp = obsEndTime;
   const simDuration = calculateDuration(simStartTimestamp, simEndTimestamp);
 
   const [timelineTags, setTimelineTags] = React.useState([]); // notes that have been processed to be displayed on the timeline
+
   React.useEffect(() => {
     setTimelineTags(
       notes.map((note) => {

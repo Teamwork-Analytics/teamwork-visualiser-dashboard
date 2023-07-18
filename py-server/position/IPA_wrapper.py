@@ -1,7 +1,7 @@
 import pandas as pd
 from datetime import datetime
 
-from new_task_prioritisation_algo.IPA import numberTrackers, enumerate_trackers, asignEnumTrackers, pivot_table, \
+from position.IPA import numberTrackers, enumerate_trackers, asignEnumTrackers, pivot_table, \
     fillmissing, proxemicsSpaces, proximitylabel, proxemicsCollaboration, learningActions, GroupBehaviours
 
 dicLA = {11: 'CP',
@@ -22,7 +22,8 @@ behaviour_name_mapper = {"CP": ['Working together', 'on tasks for Ruth'],
 
 def IPA_for_front_end(df_import: pd.DataFrame, sessionid: int, positioning_start_timestamp: float,
                       start_time: float, end_time: float):
-    df = df_import[df_import.y >= 0]  # filter out two warden nurses outside at the begining
+    # filter out two warden nurses outside at the begining
+    df = df_import[df_import.y >= 0]
     '''Import coordinates of meaningful spaces'''
 
     coindir = 'new_task_prioritisation_algo/Coordinates.csv'
@@ -42,8 +43,10 @@ def IPA_for_front_end(df_import: pd.DataFrame, sessionid: int, positioning_start
     df["sessional_timestamp"] = df["timestamp"] - positioning_start_timestamp
 
     '''added 2023/6/13 Change timestamp and normalise to one second'''
-    used_timestamp = df[(df["sessional_timestamp"] >= start_time) & (df["sessional_timestamp"] <= end_time)]
-    df.timestamp = used_timestamp.timestamp.map(lambda x: datetime.utcfromtimestamp(x).replace(microsecond=0))
+    used_timestamp = df[(df["sessional_timestamp"] >= start_time) & (
+        df["sessional_timestamp"] <= end_time)]
+    df.timestamp = used_timestamp.timestamp.map(
+        lambda x: datetime.utcfromtimestamp(x).replace(microsecond=0))
 
     # df.timestamp = df.timestamp.map(lambda x: datetime.utcfromtimestamp(x).replace(microsecond=0))
 
@@ -95,10 +98,12 @@ def IPA_for_front_end(df_import: pd.DataFrame, sessionid: int, positioning_start
     df_proxemics = proxemicsSpaces(df_pivoted, numberOfTrackers, dfco)
 
     # assign a space for each student and for each second
-    df_proxemicsLabel = proximitylabel(df_proxemics, EnumtoIdDct, numberOfTrackers)
+    df_proxemicsLabel = proximitylabel(
+        df_proxemics, EnumtoIdDct, numberOfTrackers)
 
     # calculate collaboration status for each students
-    df_proxemicsCo = proxemicsCollaboration(df_pivoted, numberOfTrackers, EnumtoIdDct)
+    df_proxemicsCo = proxemicsCollaboration(
+        df_pivoted, numberOfTrackers, EnumtoIdDct)
 
     # identify learning actions from proximity to spaces and students
     dfLA = learningActions(df_proxemicsLabel, df_proxemicsCo, scenario)
@@ -119,5 +124,6 @@ def IPA_for_front_end(df_import: pd.DataFrame, sessionid: int, positioning_start
     return_list = []
 
     for i, row in dfresult.iterrows():
-        return_list.append({"label": behaviour_name_mapper[row["behaviours"]], "value": row["percentage"]})
+        return_list.append(
+            {"label": behaviour_name_mapper[row["behaviours"]], "value": row["percentage"]})
     return return_list

@@ -4,7 +4,7 @@
 // * with audio (default) or position only
 
 import React, { useState, useEffect } from "react";
-import { getSNAdata } from "../../services/communication";
+import { getSNAdata } from "../../services/py-server";
 
 const DebriefingContext = React.createContext();
 
@@ -25,12 +25,14 @@ function DebriefingProvider({ simulationId, children }) {
   // }, [simulationId]);
 
   useEffect(() => {
-    getSNAdata(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setSNAdata(res.data);
-      }
-    });
+    getSNAdata(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setSNAdata(res.data);
+        }
+      })
+      .catch((e) => {});
   }, []);
 
   // useEffect(() => {

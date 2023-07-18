@@ -10,7 +10,7 @@ import DisplayViz from "./socketComponents/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
 
 import { SocialNetworkView, ENANetworkView } from "../communication";
-import TeamworkBarchart from "../teamwork/TeamworkBarchart";
+import TeamworkBarchart from "../teamwork-prio/TeamworkBarchart";
 import HiveView from "../hive/HiveView";
 import VideoVisualisation from "../observation/visualisationComponents/VideoVisualisation";
 
@@ -34,6 +34,7 @@ const DebriefView = () => {
       size: "small",
       viz: (
         <TeamworkBarchart
+          // timeRange={range}
           style={{
             width: "auto",
             objectFit: "scale-down",

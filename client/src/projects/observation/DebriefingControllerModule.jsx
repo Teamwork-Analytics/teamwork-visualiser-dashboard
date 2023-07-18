@@ -37,7 +37,7 @@ const DebriefingControllerModule = () => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <TimelineProvider>
+      <TimelineProvider simulationId={simulationId}>
         <DebriefingProvider simulationId={simulationId}>
           <HiveProvider simulationId={simulationId}>
             <DebriefingControllerView />
