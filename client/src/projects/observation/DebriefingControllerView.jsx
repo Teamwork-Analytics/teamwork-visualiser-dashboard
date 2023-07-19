@@ -6,7 +6,7 @@ import {
   Container,
   Button,
   ButtonGroup,
-  ModalTitle,
+  Card,
 } from "react-bootstrap";
 
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
@@ -273,80 +273,87 @@ const DebriefingControllerView = () => {
               backgroundColor: "white",
             }}
           >
-            <Tab.Container activeKey={bottomActiveKey}>
-              <Row style={{ marginBottom: "5px" }}>
-                <Col xs="auto">
-                  <ButtonGroup aria-label="Bottom area tab label">
-                    {bottomVisualisations(range).map((tab, index) => (
-                      <Button
-                        key={index}
-                        variant={
-                          bottomActiveKey === tab.eventKey
-                            ? "secondary"
-                            : "outline-secondary"
-                        }
-                        onClick={() => {
-                          setBottomActiveKey(tab.eventKey);
-                        }}
+            <div
+              className="scrollable-div"
+              style={{
+                display: "flex",
+                overflowX: "auto",
+                whiteSpace: "nowrap",
+                marginBottom: "5px",
+              }}
+            >
+              {bottomVisualisations(range).map((tab, index) => (
+                <>
+                  <Card style={{ minWidth: "25rem", position: "relative" }}>
+                    <BsInfoCircle
+                      style={{
+                        zIndex: "100",
+                        position: "absolute",
+                        top: "5",
+                        right: "5",
+                      }}
+                      onClick={() => {
+                        handleInfoShow(tab.title, tab.info());
+                      }}
+                    />
+                    <Container style={{ margin: "5px" }}>
+                      {tab.component()}
+                    </Container>
+                    <Card.Body>
+                      <Card.Title
                         style={{
-                          fontSize: "14px",
-                          color:
-                            bottomActiveKey === tab.eventKey
-                              ? "white"
-                              : "rgb(33, 37, 41)",
+                          textAlign: "start",
+                          marginTop: "15px",
+                          marginBottom: "15px",
                         }}
                       >
                         {tab.title}
-                      </Button>
-                    ))}
-                  </ButtonGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Tab.Content style={{ position: "relative" }}>
-                  {bottomVisualisations(range).map((tab, index) => (
-                    <Tab.Pane
-                      eventKey={tab.eventKey}
-                      key={index}
-                      style={{ position: "relative" }}
-                    >
-                      <BsInfoCircle
+                      </Card.Title>
+
+                      <Button
+                        variant="success"
                         style={{
-                          zIndex: "100",
-                          position: "absolute",
-                          top: "-20",
-                          right: "20",
+                          ...debriefStyles.addVisButton,
+                          opacity: selectedVis.some(
+                            (vis) => vis.id === tab.eventKey
+                          )
+                            ? "0.65"
+                            : "1",
                         }}
-                        onClick={() => {
-                          handleInfoShow(tab.title, tab.info());
-                        }}
-                      />
-                      {tab.component()}
-                    </Tab.Pane>
-                  ))}
-                </Tab.Content>
-              </Row>
-              <Button
-                variant="success"
-                style={{
-                  ...debriefStyles.addVisButton,
-                  opacity: selectedVis.some((vis) => vis.id === bottomActiveKey)
-                    ? "0.65"
-                    : "1",
-                }}
-                onClick={() => handleAddVis(bottomActiveKey)}
-              >
-                {selectedVis.some((vis) => vis.id === bottomActiveKey) ? (
-                  <>
-                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
-                  </>
-                ) : (
-                  <>
-                    <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
-                  </>
-                )}
-              </Button>
-            </Tab.Container>
+                        onClick={() => handleAddVis(tab.eventKey)}
+                      >
+                        {selectedVis.some((vis) => vis.id === tab.eventKey) ? (
+                          <>
+                            <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
+                            Added
+                          </>
+                        ) : (
+                          <>
+                            <FaPlus style={{ marginBottom: "2px" }} /> Add to
+                            preview
+                          </>
+                        )}
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setBottomActiveKey(tab.eventKey);
+                    }}
+                    style={{
+                      display: "inline-block",
+                      fontSize: "14px",
+                      color:
+                        bottomActiveKey === tab.eventKey
+                          ? "white"
+                          : "rgb(33, 37, 41)",
+                      marginRight: "5px",
+                    }}
+                  ></div>
+                </>
+              ))}
+            </div>
           </Container>
         </Col>
       </Row>
