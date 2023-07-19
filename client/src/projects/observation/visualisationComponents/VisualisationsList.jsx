@@ -93,7 +93,7 @@ const bottomLeftVisualisations = (timeRange) => [
     title: "Prioritisation Bar",
     component: () => (
       <TeamworkBarchart
-        // timeRange={timeRange}
+        timeRange={timeRange}
         style={visStyles.imageContainer}
         fluid
       />
@@ -220,7 +220,11 @@ const bottomVisualisations = (timeRange) => [
     eventKey: "priorBar",
     title: "Prioritisation Bar",
     component: () => (
-      <TeamworkBarchart style={visStyles.imageContainer} fluid />
+      <TeamworkBarchart
+        style={visStyles.imageContainer}
+        timeRange={timeRange}
+        fluid
+      />
     ),
     info: () => (
       <div>

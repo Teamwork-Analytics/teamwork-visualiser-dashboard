@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { getENAdata } from "../../services/py-server";
 import { useParams } from "react-router-dom";
 
-const ENANetworkView = ({ timeRange }) => {
+const ENANetworkView = ({ timeRange, height = "30vh" }) => {
   const { simulationId } = useParams();
   const [enaData, setENAdata] = useState([]);
   const [networkENAData, setNetworkENAData] = useState([]);
@@ -95,7 +95,7 @@ const ENANetworkView = ({ timeRange }) => {
       fit={true}
       stylesheet={stylesheet}
       elements={networkENAData}
-      style={{ textAlign: "left", width: "100%", height: "25vh" }}
+      style={{ textAlign: "left", width: "100%", height: height }}
     />
   );
 };

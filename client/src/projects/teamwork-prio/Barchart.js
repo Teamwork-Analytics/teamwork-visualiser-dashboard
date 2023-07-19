@@ -1,9 +1,6 @@
 import { Bar } from "react-chartjs-2";
-import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 
-const Barchart = ({ data }) => {
-  console.log(data);
-
+const Barchart = ({ data, height = "25vh", width = "100%" }) => {
   const chartData = {
     labels: data.map((row) => row.label),
     datasets: [
@@ -15,7 +12,7 @@ const Barchart = ({ data }) => {
   };
 
   return (
-    <div style={{ width: "100%", height: "25vh" }}>
+    <div style={{ width: width, height: height }}>
       <Bar
         data={chartData}
         options={{
