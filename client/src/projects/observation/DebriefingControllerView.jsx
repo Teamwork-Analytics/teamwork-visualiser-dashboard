@@ -20,6 +20,7 @@ import {
   topTabVisualisations,
   bottomLeftVisualisations,
   bottomRightVisualisations,
+  bottomVisualisations,
 } from "./visualisationComponents/VisualisationsList";
 import { prepareData } from "../../utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
@@ -91,9 +92,7 @@ const DebriefingControllerView = () => {
 
   // tabs default active
   const [topActiveTab, setTopActiveTab] = useState("timeline");
-  const [bottomLeftActiveTab, setBottomLeftActiveTab] = useState("wardMap");
-  const [bottomRightActiveTab, setBottomRightActiveTab] =
-    useState("commNetwork");
+  const [bottomActiveKey, setBottomActiveKey] = useState("wardMap");
 
   // visualisations selection
   const [selectedVis, setSelectedVis] = useState([]);
@@ -115,120 +114,29 @@ const DebriefingControllerView = () => {
 
   const [isVideoTabActive, setIsVideoTabActive] = useState(false);
 
-  // component for bottom two tabs group
-  const BottomVizTabContainer = ({
-    visualisations,
-    activeTab,
-    setActiveTab,
-    title,
-  }) => {
-    // info modal handler for each visualisation
-    const [infoModalContent, setInfoModalContent] = useState(null);
-    const [infoModalTitle, setInfoModalTitle] = useState(null);
-    const [showInfoModal, setShowInfoModal] = useState(false);
-    const handleInfoClose = () => {
-      setShowInfoModal(false);
-      setInfoModalTitle(null);
-      setInfoModalContent(null);
-    };
-    const handleInfoShow = (title, infoContent) => {
-      setInfoModalTitle(title);
-      setInfoModalContent(infoContent);
-      setShowInfoModal(true);
-    };
-
-    return (
-      <Container style={debriefStyles.bottomTabContainer}>
-        <VisualisationInfoModal
-          infoDiv={infoModalContent}
-          show={showInfoModal}
-          handleClose={handleInfoClose}
-          vizTitle={infoModalTitle}
-        />
-        <Tab.Container activeKey={activeTab}>
-          <h4 style={{ color: "grey" }}>{title}</h4>
-
-          <Row style={{ marginRight: "0", marginLeft: "0" }}>
-            <Col
-              sm={3}
-              style={{
-                paddingLeft: "5px",
-                paddingRight: "5px",
-                position: "relative",
-              }}
-            >
-              <ButtonGroup vertical={true} aria-label="Tab label">
-                {visualisations.map((tab, index) => (
-                  <Button
-                    key={index}
-                    variant={
-                      activeTab === tab.eventKey
-                        ? "secondary"
-                        : "outline-secondary"
-                    }
-                    onClick={() => setActiveTab(tab.eventKey)}
-                    style={{
-                      fontSize: "14px",
-                      color:
-                        activeTab === tab.eventKey
-                          ? "white"
-                          : "rgb(33, 37, 41)",
-                    }}
-                  >
-                    {tab.title}
-                  </Button>
-                ))}
-              </ButtonGroup>
-              <Button
-                variant="success"
-                style={{
-                  ...debriefStyles.addVisButton,
-                  opacity: selectedVis.some((vis) => vis.id === activeTab)
-                    ? "0.65"
-                    : "1",
-                }}
-                onClick={() => handleAddVis(activeTab)}
-              >
-                {selectedVis.some((vis) => vis.id === activeTab) ? (
-                  <>
-                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
-                  </>
-                ) : (
-                  <>
-                    <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
-                  </>
-                )}
-              </Button>
-            </Col>
-            <Col sm={9} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
-              <Tab.Content style={{ position: "relative" }}>
-                {visualisations.map((tab, index) => (
-                  <Tab.Pane eventKey={tab.eventKey} key={index}>
-                    <BsInfoCircle
-                      style={{
-                        zIndex: "100",
-                        position: "absolute",
-                        top: "-20",
-                        right: "20",
-                      }}
-                      onClick={() => {
-                        handleInfoShow(tab.title, tab.info());
-                      }}
-                    />
-
-                    {tab.component()}
-                  </Tab.Pane>
-                ))}
-              </Tab.Content>
-            </Col>
-          </Row>
-        </Tab.Container>
-      </Container>
-    );
+  // info modal handler for each visualisation
+  const [infoModalContent, setInfoModalContent] = useState(null);
+  const [infoModalTitle, setInfoModalTitle] = useState(null);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const handleInfoClose = () => {
+    setShowInfoModal(false);
+    setInfoModalTitle(null);
+    setInfoModalContent(null);
+  };
+  const handleInfoShow = (title, infoContent) => {
+    setInfoModalTitle(title);
+    setInfoModalContent(infoContent);
+    setShowInfoModal(true);
   };
 
   return (
     <>
+      <VisualisationInfoModal
+        infoDiv={infoModalContent}
+        show={showInfoModal}
+        handleClose={handleInfoClose}
+        vizTitle={infoModalTitle}
+      />
       <PreviewProjectionModal
         showPreviewModal={showPreviewModal}
         handleClosePreviewModal={handleClosePreviewModal}
@@ -350,24 +258,96 @@ const DebriefingControllerView = () => {
       </Row>
       {/* Bottom row viz */}
       <Row style={{ minHeight: "35vh", marginTop: "5px" }}>
-        {/* Bottom left viz */}
-        <Col lg={6} style={{ padding: "1px", marginRight: "5px" }}>
-          <BottomVizTabContainer
-            title={"Space Utilisation"}
-            visualisations={bottomLeftVisualisations(range)}
-            activeTab={bottomLeftActiveTab}
-            setActiveTab={setBottomLeftActiveTab}
-          />
-        </Col>
-
-        {/* Bottom right viz */}
-        <Col style={{ padding: "1px", marginLeft: "5px" }}>
-          <BottomVizTabContainer
-            title={"Team Communication"}
-            visualisations={bottomRightVisualisations(range)}
-            activeTab={bottomRightActiveTab}
-            setActiveTab={setBottomRightActiveTab}
-          />
+        <Col style={{ padding: "1px" }}>
+          <Container
+            style={{
+              borderStyle: "solid",
+              borderWidth: "1px",
+              borderColor: "lightgrey",
+              borderRadius: "10px",
+              padding: "5px",
+              minHeight: "34vh",
+              width: "100%",
+              maxWidth: "100%",
+              position: "relative",
+              backgroundColor: "white",
+            }}
+          >
+            <Tab.Container activeKey={bottomActiveKey}>
+              <Row style={{ marginBottom: "5px" }}>
+                <Col xs="auto">
+                  <ButtonGroup aria-label="Bottom area tab label">
+                    {bottomVisualisations(range).map((tab, index) => (
+                      <Button
+                        key={index}
+                        variant={
+                          bottomActiveKey === tab.eventKey
+                            ? "secondary"
+                            : "outline-secondary"
+                        }
+                        onClick={() => {
+                          setBottomActiveKey(tab.eventKey);
+                        }}
+                        style={{
+                          fontSize: "14px",
+                          color:
+                            bottomActiveKey === tab.eventKey
+                              ? "white"
+                              : "rgb(33, 37, 41)",
+                        }}
+                      >
+                        {tab.title}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Tab.Content style={{ position: "relative" }}>
+                  {bottomVisualisations(range).map((tab, index) => (
+                    <Tab.Pane
+                      eventKey={tab.eventKey}
+                      key={index}
+                      style={{ position: "relative" }}
+                    >
+                      <BsInfoCircle
+                        style={{
+                          zIndex: "100",
+                          position: "absolute",
+                          top: "-20",
+                          right: "20",
+                        }}
+                        onClick={() => {
+                          handleInfoShow(tab.title, tab.info());
+                        }}
+                      />
+                      {tab.component()}
+                    </Tab.Pane>
+                  ))}
+                </Tab.Content>
+              </Row>
+              <Button
+                variant="success"
+                style={{
+                  ...debriefStyles.addVisButton,
+                  opacity: selectedVis.some((vis) => vis.id === bottomActiveKey)
+                    ? "0.65"
+                    : "1",
+                }}
+                onClick={() => handleAddVis(bottomActiveKey)}
+              >
+                {selectedVis.some((vis) => vis.id === bottomActiveKey) ? (
+                  <>
+                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
+                  </>
+                ) : (
+                  <>
+                    <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
+                  </>
+                )}
+              </Button>
+            </Tab.Container>
+          </Container>
         </Col>
       </Row>
     </>
