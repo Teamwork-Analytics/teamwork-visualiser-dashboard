@@ -2,6 +2,7 @@
  * @file VisualisationInfoModal Component
  */
 
+import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
 
 const VisualisationInfoModal = ({ infoDiv, show, handleClose, vizTitle }) => {
@@ -13,6 +14,13 @@ const VisualisationInfoModal = ({ infoDiv, show, handleClose, vizTitle }) => {
       <Modal.Body>{infoDiv}</Modal.Body>
     </Modal>
   );
+};
+
+VisualisationInfoModal.propTypes = {
+  infoDiv: PropTypes.node.isRequired,
+  show: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  vizTitle: PropTypes.string.isRequired,
 };
 
 export default VisualisationInfoModal;
