@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import os
 
 from position.IPA import numberTrackers, enumerate_trackers, asignEnumTrackers, pivot_table, \
     fillmissing, proxemicsSpaces, proximitylabel, proxemicsCollaboration, learningActions, GroupBehaviours
@@ -20,24 +21,29 @@ behaviour_name_mapper = {"CP": ['Working together', 'on tasks for Ruth'],
                          "TT": ['Moving around', 'the beds']}
 
 
-def IPA_for_front_end(df_import: pd.DataFrame, sessionid: int, positioning_start_timestamp: float,
+def IPA_for_front_end(df_import: pd.DataFrame, sessionid: str, positioning_start_timestamp: float,
                       start_time: float, end_time: float):
     # filter out two warden nurses outside at the begining
     df = df_import[df_import.y >= 0]
     '''Import coordinates of meaningful spaces'''
 
-    coindir = 'new_task_prioritisation_algo/Coordinates.csv'
-    dfco = pd.read_csv(coindir, delimiter=",")
+    # TODO: instead of relying on csv configuration like this, we should put it in database.
+    coordinate_file = os.path.join(
+        os.path.dirname(__file__), "coordinates.csv")
+    print(coordinate_file)
+    dfco = pd.read_csv(coordinate_file, delimiter=",")
 
     '''Output PNG figure'''
 
     # outputfig = 'Team Task Prioritisation'
 
     '''Import scenario of the current simulation'''
-    if sessionid % 2 == 0:
-        scenario = 'B'
-    else:
-        scenario = 'A'
+    # if sessionid % 2 == 0:
+    #     scenario = 'B'
+    # else:
+    #     scenario = 'A'
+    # TODO: please remove this line once we're done with the trial.
+    scenario = 'A'
 
     """ add a new column for the timestamp starting at the beginning of session """
     df["sessional_timestamp"] = df["timestamp"] - positioning_start_timestamp

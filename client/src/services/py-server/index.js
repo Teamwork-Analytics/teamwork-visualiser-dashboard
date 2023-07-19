@@ -2,9 +2,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = process.env.REACT_APP_PYSERVER_IP;
+const PORT_NUMBER = process.env.REACT_APP_PYSERVER_PORT;
 
 const communicationAPI = axios.create({
-  baseURL: `${DOMAIN_NAME}:5000`, //Change this if the port is being used.
+  baseURL: `${DOMAIN_NAME}:${PORT_NUMBER}`, //Change this if the port is being used.
 });
 
 communicationAPI.interceptors.request.use(
@@ -39,7 +40,7 @@ communicationAPI.interceptors.response.use(
 
     // toast.error(`${message} (${error})`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
     // Do something with response error
-    return Promise.reject(error);
+    return Promise.reject(message);
   }
 );
 

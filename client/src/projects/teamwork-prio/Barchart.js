@@ -1,13 +1,14 @@
 import { Bar } from "react-chartjs-2";
 import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
-const Barchart = () => {
-  const { teamworkData } = useTimeline();
+
+const Barchart = ({ data }) => {
+  console.log(data);
 
   const chartData = {
-    labels: teamworkData.map((row) => row.label),
+    labels: data.map((row) => row.label),
     datasets: [
       {
-        data: teamworkData.map((row) => row.value),
+        data: data.map((row) => row.value),
         backgroundColor: "rgba(30,144,255, 0.8)",
       },
     ],

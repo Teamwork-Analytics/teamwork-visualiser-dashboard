@@ -8,7 +8,8 @@ from position.IPA_wrapper import IPA_for_front_end
 
 from pathlib import Path
 
-IP_ADDRESS = "192.168.20.8"  # "49.127.43.80"
+IP_ADDRESS = "0.0.0.0"  # "49.127.43.80"
+PORT = "5003"
 
 app = Flask(__name__)
 DIRECTORY = Path("../server/saved_data/")
@@ -34,7 +35,7 @@ def give_prioritisation_test_data():
         return error_message, 500
 
     # todo: this path should be changed once used in actual scenario
-    file = "%s_network_data.csv" % session_id
+    file = "%s.csv" % session_id
     dir_path = DIRECTORY / session_id
     file_path = dir_path / file
     # test_data_path = "test_data/{}.csv".format(session_id)
@@ -44,9 +45,8 @@ def give_prioritisation_test_data():
     processed_pozyx_data = pd.read_csv(file_path)
     # session_id_int = int(session_id)  # TODO: please change me!
 
-    output_data = IPA_for_front_end(processed_pozyx_data, 101, positioning_start_timestamp,
+    output_data = IPA_for_front_end(processed_pozyx_data, session_id, positioning_start_timestamp,
                                     start_time, end_time)
-
     return jsonify(output_data)
 
 
@@ -102,4 +102,4 @@ if __name__ == '__main__':
     # json_data = give_test_data()
     # print(give_test_data())
     # print()
-    app.run(host=IP_ADDRESS)
+    app.run(host=IP_ADDRESS, port=PORT)
