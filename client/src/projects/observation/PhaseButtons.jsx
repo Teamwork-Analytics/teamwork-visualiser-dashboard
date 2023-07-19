@@ -125,7 +125,7 @@ const PhaseButtons = () => {
             </Row>
 
             {manualLabels.phases
-              .filter((d) => d.label !== "Teamwork")
+              .filter((d) => d.label !== "Teamwork actions") // TODO: remove hardcoded value
               .map((d, i) => {
                 return (
                   <div>
@@ -249,7 +249,7 @@ const PhaseButtons = () => {
               </Col>
             </Row>
             {manualLabels.phases
-              .filter((d) => d.label === "Teamwork")
+              .filter((d) => d.label === "Teamwork actions") // TODO: remove hardcoded value
               .map((d, i) => {
                 return (
                   <div>
