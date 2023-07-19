@@ -122,9 +122,19 @@ const DisplayViz = ({ selectedVis, range }) => {
           </Card>
         ))
       ) : (
-        <div align="center">
-          <h1>🔍No visualisations</h1>
-          <p>Please select up to three visualisations</p>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <div align="center">
+            <h1>🔍No visualisations</h1>
+            <p>Please select up to three visualisations</p>
+          </div>
         </div>
       )}
     </div>
