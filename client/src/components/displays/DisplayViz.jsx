@@ -17,14 +17,25 @@ import {
   SocialNetworkView,
   ENANetworkView,
 } from "../../projects/communication";
-import TeamworkBarchart from "../../projects/teamwork/TeamworkBarchart";
+import TeamworkBarchart from "../../projects/teamwork-prio/TeamworkBarchart";
 import HiveView from "../../projects/hive/HiveView";
 import VideoVisualisation from "../../projects/observation/visualisationComponents/VideoVisualisation";
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {
-  small: { width: "40%", minWidth: 300, height: "50%", minHeight: 300 },
-  medium: { width: "55%", minWidth: 300, height: "50%", minHeight: 300 },
+  general: { border: 0, backgroundColor: "white" },
+  small: {
+    width: "40%",
+    minWidth: 300,
+    height: "50%",
+    minHeight: 300,
+  },
+  medium: {
+    width: "55%",
+    minWidth: 300,
+    height: "50%",
+    minHeight: 300,
+  },
   large: { width: "100%", minWidth: 400, minHeight: 300 },
   single: { width: "100%", height: "90%", margin: "auto" },
 };
@@ -35,19 +46,16 @@ const DisplayViz = ({ selectedVis, range }) => {
   const imageReferences = {
     commBehaviour: {
       size: "small",
-      viz: <ENANetworkView timeRange={range} />,
+      viz: <ENANetworkView timeRange={range} height={"50vh"} />,
     },
     commNetwork: {
       size: "small",
-      viz: <SocialNetworkView timeRange={range} />,
+      viz: <SocialNetworkView timeRange={range} height={"50vh"} />,
     },
     priorBar: {
       size: "small",
       viz: (
-        <TeamworkBarchart
-          style={{ width: "auto", objectFit: "scale-down", maxHeight: "33vh" }}
-          fluid
-        />
+        <TeamworkBarchart height={""} width={"55vw"} timeRange={range} fluid />
       ),
     },
     wardMap: {
@@ -102,6 +110,7 @@ const DisplayViz = ({ selectedVis, range }) => {
       style={{
         display: "flex",
         flexWrap: "wrap",
+        alignItems: "center",
         justifyContent: "space-around",
         height: "100%",
         width: "100%",
@@ -109,7 +118,9 @@ const DisplayViz = ({ selectedVis, range }) => {
     >
       {sortedVis.length !== 0 ? (
         sortedVis.map((d) => (
-          <Card style={SIZE_STYLES[decideSize(d)]}>
+          <Card
+            style={{ ...SIZE_STYLES["general"], ...SIZE_STYLES[decideSize(d)] }}
+          >
             <Card.Body
               style={{
                 display: "flex",

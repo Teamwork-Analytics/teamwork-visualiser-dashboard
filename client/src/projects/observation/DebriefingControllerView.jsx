@@ -162,9 +162,7 @@ const DebriefingControllerView = () => {
                   <Button
                     key={index}
                     variant={
-                      activeTab === tab.eventKey
-                        ? "secondary"
-                        : "outline-secondary"
+                      activeTab === tab.eventKey ? "dark" : "outline-dark"
                     }
                     onClick={() => setActiveTab(tab.eventKey)}
                     style={{
@@ -206,6 +204,7 @@ const DebriefingControllerView = () => {
                   <Tab.Pane eventKey={tab.eventKey} key={index}>
                     <BsInfoCircle
                       style={{
+                        cursor: "pointer",
                         zIndex: "100",
                         position: "absolute",
                         top: "-20",
@@ -290,8 +289,8 @@ const DebriefingControllerView = () => {
                         key={index}
                         variant={
                           topActiveTab === tab.eventKey
-                            ? "secondary"
-                            : "outline-secondary"
+                            ? "dark"
+                            : "outline-dark"
                         }
                         onClick={() => {
                           setTopActiveTab(tab.eventKey);

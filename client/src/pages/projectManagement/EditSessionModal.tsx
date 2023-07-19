@@ -53,7 +53,7 @@ const EditSessionModal: React.FC<EditSessionModalProps> = ({
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="dark" onClick={handleClose}>
           Cancel
         </Button>
         <Button variant="danger" onClick={handleDeleteSession}>

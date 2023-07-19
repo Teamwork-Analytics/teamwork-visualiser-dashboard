@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { processing_adjacent_matrix } from "./mimic_ena_control";
 import { toast } from "react-hot-toast";
-import { getENAdata } from "../../services/communication";
+import { getENAdata } from "../../services/py-server";
 import { useParams } from "react-router-dom";
 
-const ENANetworkView = ({ timeRange }) => {
+const ENANetworkView = ({ timeRange, height = "30vh" }) => {
   const { simulationId } = useParams();
   const [enaData, setENAdata] = useState([]);
   const [networkENAData, setNetworkENAData] = useState([]);
@@ -14,16 +14,18 @@ const ENANetworkView = ({ timeRange }) => {
   const endTime = timeRange[1];
 
   useEffect(() => {
-    getENAdata({
-      simulationId: simulationId,
-      startTime: startTime,
-      endTime: endTime,
-    }).then((res) => {
+    async function callData() {
+      const res = await getENAdata({
+        simulationId: simulationId,
+        startTime: startTime,
+        endTime: endTime,
+      });
       if (res.status === 200) {
         // const cleanedPhases = cleanRawPhases(phases);
         setENAdata(res.data);
       }
-    });
+    }
+    callData();
   }, [simulationId]);
 
   useEffect(() => {
@@ -93,7 +95,7 @@ const ENANetworkView = ({ timeRange }) => {
       fit={true}
       stylesheet={stylesheet}
       elements={networkENAData}
-      style={{ textAlign: "left", width: "100%", height: "25vh" }}
+      style={{ textAlign: "left", width: "100%", height: height }}
     />
   );
 };

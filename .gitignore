@@ -110,4 +110,10 @@ server/saved_data/
 *.env
 *.mp4
 
+
+# python server
+py-server/__pycache__
+py-server/position/__pycache__
+*.pyc
+
 .DS_Store
