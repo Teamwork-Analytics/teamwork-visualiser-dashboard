@@ -1,8 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const DOMAIN_NAME = "http://localhost";
-const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.78.132";
+const DOMAIN_NAME = process.env.REACT_APP_EUREKA_IP;
+const DOMAIN_NAME_SECOND_DEVICE = process.env.REACT_APP_AUDIO_IP;
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,

@@ -17,7 +17,7 @@ import VideoVisualisation from "./VideoVisualisation";
 // visualisations
 import { ENANetworkView, SocialNetworkView } from "../../communication";
 import { HiveView } from "../../hive";
-import TeamworkBarchart from "../../teamwork/TeamworkBarchart";
+import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
 
 // Styles for different visualisation components
 const visStyles = {
@@ -92,7 +92,11 @@ const bottomLeftVisualisations = (timeRange) => [
     eventKey: "priorBar",
     title: "Prioritisation Bar",
     component: () => (
-      <TeamworkBarchart style={visStyles.imageContainer} fluid />
+      <TeamworkBarchart
+        timeRange={timeRange}
+        style={visStyles.imageContainer}
+        fluid
+      />
     ),
     info: () => (
       <div>
@@ -216,7 +220,11 @@ const bottomVisualisations = (timeRange) => [
     eventKey: "priorBar",
     title: "Prioritisation Bar",
     component: () => (
-      <TeamworkBarchart style={visStyles.imageContainer} fluid />
+      <TeamworkBarchart
+        style={visStyles.imageContainer}
+        timeRange={timeRange}
+        fluid
+      />
     ),
     info: () => (
       <div>

@@ -64,6 +64,7 @@ const DebriefView = () => {
           height: "100%",
           maxHeight: "90vh",
           flexWrap: "wrap",
+          backgroundColor: "white",
         }}
       >
         {/* Display the selected visualisations with the received range */}

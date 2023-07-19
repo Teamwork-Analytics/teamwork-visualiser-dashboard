@@ -3,7 +3,7 @@ import CytoscapeComponent from "react-cytoscapejs";
 import { processing_csv } from "./cyto_control";
 import { useDebriefing } from "../debriefing-projection/DebriefContext";
 
-const CytoComponent = ({ netData }) => {
+const CytoComponent = ({ netData, height = "30vh" }) => {
   const net_options = {
     name: "circle",
     fit: true, // whether to fit the viewport to the graph
@@ -63,12 +63,12 @@ const CytoComponent = ({ netData }) => {
         const layout = cy.layout(net_options);
         layout.run();
       }}
-      style={{ textAlign: "left", width: "100%", height: "30vh" }}
+      style={{ textAlign: "left", width: "100%", height: height }}
     />
   );
 };
 
-const SocialNetworkView = ({ timeRange }) => {
+const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
   const { snaData } = useDebriefing();
   const startTime = timeRange[0];
   const endTime = timeRange[1];
@@ -85,8 +85,10 @@ const SocialNetworkView = ({ timeRange }) => {
   }, [snaData, startTime, endTime]);
 
   return (
-    <div style={{ minWidth: "300px", width: "100%" }}>
-      {netData !== undefined && <CytoComponent netData={netData} />}
+    <div style={{ minWidth: "300px", width: "100%", height: height }}>
+      {netData !== undefined && (
+        <CytoComponent netData={netData} height={height} />
+      )}
     </div>
   );
 };

@@ -198,8 +198,8 @@ const DebriefingControllerView = () => {
                         key={index}
                         variant={
                           topActiveTab === tab.eventKey
-                            ? "secondary"
-                            : "outline-secondary"
+                            ? "dark"
+                            : "outline-dark"
                         }
                         onClick={() => {
                           setTopActiveTab(tab.eventKey);

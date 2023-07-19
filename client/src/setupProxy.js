@@ -13,7 +13,7 @@ module.exports = (app) => {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "http://localhost:5001",
+      target: process.env.REACT_APP_EXPRESS_IP_PORT,
       changeOrigin: true,
     })
   );

@@ -12,6 +12,7 @@
  *  - selectedVis: Array of selected visualisation data to be displayed.
  */
 
+//image references:
 import { Modal, Button } from "react-bootstrap";
 
 import DisplayViz from "../../../components/displays/DisplayViz";
