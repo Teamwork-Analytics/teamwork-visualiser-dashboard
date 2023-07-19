@@ -41,8 +41,9 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
       <ReactPlayer
         key={Date.now()} // force re-render
         ref={playerRef}
-        // url="https://youtu.be/vLI-6sLZTbI" // 101R sim
-        url="https://youtu.be/vCo1QyWKdPM" // 225 sim
+        // url="https://youtu.be/vLI-6sLZTbI" // 101R sim (251?)
+        // url="https://youtu.be/vCo1QyWKdPM" // 225 sim
+        url="https://youtu.be/3fve4RsNxkY" // 239 sim
         // url={videoFile} // TODO: not working, inspection needed
         playing={isPlaying} // use isPlaying state
         onProgress={handleProgress}
