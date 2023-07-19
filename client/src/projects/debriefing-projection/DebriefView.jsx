@@ -1,94 +1,49 @@
 /**
- * @fileoverview This file defines the DebriefView component. This component shows
- * the visualisations selected by the controller on the **Projection screen**.
+ * @file DebriefView Component
+ *
+ * @description
+ * This component manages and displays visualizations selected by the controller on the Projection screen.
+ * It establishes a socket connection, and on connection receives data that determines which visualizations to display.
+ * The component also manages the connection state and displays the connection status.
  */
+
 import { useState, useEffect } from "react";
 import { socket } from "./socket";
-import { ConnectionState } from "./socketComponents/ConnectionState";
-import { ConnectionManager } from "./socketComponents/ConnectionManager";
-import DisplayViz from "./socketComponents/DisplayViz";
+import ConnectionState from "./socketComponents/ConnectionState";
+import ConnectionManager from "./socketComponents/ConnectionManager";
+import DisplayViz from "../../components/displays/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
-
-import { SocialNetworkView, ENANetworkView } from "../communication";
-import TeamworkBarchart from "../teamwork-prio/TeamworkBarchart";
-import HiveView from "../hive/HiveView";
-import VideoVisualisation from "../observation/visualisationComponents/VideoVisualisation";
 
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [dispList, setDispList] = useState([]);
   const [range, setRange] = useState([0, 0]);
 
-  // duplicated - preview stuff
-  const imageReferences = {
-    commBehaviour: {
-      size: "small",
-      viz: <ENANetworkView timeRange={range} />,
-    },
-
-    commNetwork: {
-      size: "small",
-      viz: <SocialNetworkView timeRange={range} />,
-    },
-    priorBar: {
-      size: "small",
-      viz: (
-        <TeamworkBarchart
-          // timeRange={range}
-          style={{
-            width: "auto",
-            objectFit: "scale-down",
-            maxHeight: "33vh",
-          }}
-          fluid
-        />
-      ),
-    },
-    wardMap: {
-      size: "medium",
-      viz: <HiveView timeRange={range} showFilter={false} height="50vh" />,
-    },
-    video: {
-      size: "large",
-      viz: (
-        <VideoVisualisation
-          style={{
-            width: "auto",
-            objectFit: "scale-down",
-            maxHeight: "33vh",
-            minHeight: "30vh",
-          }}
-          isVideoTabActive={true}
-          fluid
-          timeRange={range}
-        />
-      ),
-    },
-  };
-
+  // Connection and data update events handlers
   useEffect(() => {
-    function onConnect() {
+    const onConnect = () => {
       setIsConnected(true);
-      console.log("Connected to " + socket.id);
-    }
+      console.log(`Connected to ${socket.id}`);
+    };
 
-    function onDisconnect() {
+    const onDisconnect = () => {
       setIsConnected(false);
-      console.log("Disconnected from " + socket.id);
-    }
+      console.log(`Disconnected from ${socket.id}`);
+    };
 
-    function onUpdateList(data) {
-      console.log("Received controller change to display: " + data);
+    const onUpdateList = (data) => {
+      console.log(`Received controller change to display: ${data}`);
       const unpackedData = unpackData(data);
       const parsedList = unpackedData.vizSelected;
       setRange(unpackedData.range);
       setDispList(parsedList); // WARNING: abrupt mutation
-    }
+    };
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("receive-disp-list", onUpdateList);
 
+    // Cleanup function for useEffect
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
@@ -96,14 +51,8 @@ const DebriefView = () => {
     };
   }, []);
 
-  const decideSize = (d) => {
-    if (dispList.length === 1 && d.id !== "videoVis") {
-      return "single";
-    }
-    return imageReferences[d.id].size;
-  };
-
   const hideConnectButton = true;
+
   return (
     <>
       <div
@@ -111,28 +60,18 @@ const DebriefView = () => {
           display: "flex",
           alignContent: "center",
           justifyContent: "center",
-          width: "100vw",
-          height: "90vh",
+          width: "100%",
+          height: "100%",
           maxHeight: "90vh",
           flexWrap: "wrap",
         }}
       >
-        {dispList.length !== 0 ? (
-          dispList.map((d, i) => (
-            <DisplayViz
-              size={decideSize(d)}
-              viz={imageReferences[d.id].viz}
-              key={i}
-            />
-          ))
-        ) : (
-          <div align="center">
-            <h1>🔍No visualisations</h1>
-            <p>Please select up to three visualisations</p>
-          </div>
-        )}
+        {/* Display the selected visualisations with the received range */}
+        <DisplayViz selectedVis={dispList} range={range} />
       </div>
+      {/* Display connection state */}
       <ConnectionState isConnected={isConnected} />
+      {/* Optionally display ConnectionManager */}
       {!hideConnectButton && <ConnectionManager />}
     </>
   );
