@@ -1,7 +1,16 @@
 import { useState } from "react";
-import { Row, Col, Tab, Container, Button, ButtonGroup } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Tab,
+  Container,
+  Button,
+  ButtonGroup,
+  ModalTitle,
+} from "react-bootstrap";
 
 import { FaPlus, FaCheckSquare } from "react-icons/fa";
+import { BsInfoCircle } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { socket } from "./socket";
 import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
@@ -13,6 +22,7 @@ import {
   bottomRightVisualisations,
 } from "./visualisationComponents/VisualisationsList";
 import { prepareData } from "../../utils/socketUtils";
+import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
 
 const debriefStyles = {
   activeTab: {
@@ -112,8 +122,29 @@ const DebriefingControllerView = () => {
     setActiveTab,
     title,
   }) => {
+    // info modal handler for each visualisation
+    const [infoModalContent, setInfoModalContent] = useState(null);
+    const [infoModalTitle, setInfoModalTitle] = useState(null);
+    const [showInfoModal, setShowInfoModal] = useState(false);
+    const handleInfoClose = () => {
+      setShowInfoModal(false);
+      setInfoModalTitle(null);
+      setInfoModalContent(null);
+    };
+    const handleInfoShow = (title, infoContent) => {
+      setInfoModalTitle(title);
+      setInfoModalContent(infoContent);
+      setShowInfoModal(true);
+    };
+
     return (
       <Container style={debriefStyles.bottomTabContainer}>
+        <VisualisationInfoModal
+          infoDiv={infoModalContent}
+          show={showInfoModal}
+          handleClose={handleInfoClose}
+          vizTitle={infoModalTitle}
+        />
         <Tab.Container activeKey={activeTab}>
           <h4 style={{ color: "grey" }}>{title}</h4>
 
@@ -167,6 +198,18 @@ const DebriefingControllerView = () => {
               <Tab.Content style={{ position: "relative" }}>
                 {visualisations.map((tab, index) => (
                   <Tab.Pane eventKey={tab.eventKey} key={index}>
+                    <BsInfoCircle
+                      style={{
+                        zIndex: "100",
+                        position: "absolute",
+                        top: "-20",
+                        right: "20",
+                      }}
+                      onClick={() => {
+                        handleInfoShow(tab.title, tab.info());
+                      }}
+                    />
+
                     {tab.component()}
                   </Tab.Pane>
                 ))}
