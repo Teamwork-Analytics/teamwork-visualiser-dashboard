@@ -56,7 +56,7 @@ const ProjectCreateModal: React.FC<ProjectCreateModalProps> = ({
         <Button variant="primary" type="submit">
           Create
         </Button>
-        <Button variant="secondary" onClick={handleClose} className="ml-2">
+        <Button variant="dark" onClick={handleClose} className="ml-2">
           Cancel
         </Button>
       </Modal.Footer>

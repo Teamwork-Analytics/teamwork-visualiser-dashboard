@@ -141,6 +141,7 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
         fontSize: "12px",
         marginTop: "-30px",
         backgroundColor: "#f0f0f0",
+        cursor: "pointer",
       }}
     >
       <Card.Body>
@@ -152,9 +153,10 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
               marginTop: "4px",
               marginBottom: "4px",
               backgroundColor: "white",
-              borderRadius: "0.8em",
+              borderRadius: "0.5em",
+              padding: "0.5em 0",
               boxShadow:
-                "0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
+                "0px 4px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
             }}
             key={index}
             onClick={() => {
@@ -339,27 +341,27 @@ const TimelineVisualisation = () => {
                 >
                   <ButtonGroup
                     aria-label="Phases"
-                    style={{
-                      boxShadow:
-                        "0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
-                    }}
+                    // style={{
+                    //   boxShadow:
+                    //     "0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
+                    // }}
                   >
                     {phases.map((phase, index) => (
                       <Button
                         key={index}
                         variant={
                           phase.start === range[0] && phase.end === range[1]
-                            ? "primary"
-                            : "outline-primary"
+                            ? "dark"
+                            : "outline-dark"
                         }
                         onClick={() => handleSelectPhase(phase)}
                         style={{
                           fontSize: "12px",
-                          borderColor: "rgb(33, 37, 41)",
-                          color:
-                            phase.start === range[0] && phase.end === range[1]
-                              ? "rgb(255, 255, 255)"
-                              : "rgb(33, 37, 41)",
+                          // borderColor: "rgb(33, 37, 41)",
+                          // color:
+                          //   phase.start === range[0] && phase.end === range[1]
+                          //     ? "rgb(255, 255, 255)"
+                          //     : "rgb(33, 37, 41)",
                         }}
                       >
                         {phase.name}
@@ -375,19 +377,13 @@ const TimelineVisualisation = () => {
                   }}
                   xs="auto"
                 >
-                  <ButtonGroup
-                    aria-label="Phases"
-                    style={{
-                      boxShadow:
-                        "0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
-                    }}
-                  >
+                  <ButtonGroup aria-label="Phases">
                     <Button
-                      variant="outline-primary"
+                      variant="outline-dark"
                       style={{
                         fontSize: "12px",
-                        borderColor: "rgb(33, 37, 41)",
-                        color: "rgb(33, 37, 41)",
+                        // borderColor: "rgb(33, 37, 41)",
+                        // color: "rgb(33, 37, 41)",
                       }}
                       onClick={() => undoTimeline()}
                       disabled={!canUndo}
@@ -395,11 +391,11 @@ const TimelineVisualisation = () => {
                       Undo <BsArrowCounterclockwise size="1.2em" />
                     </Button>
                     <Button
-                      variant="outline-primary"
+                      variant="outline-dark"
                       style={{
                         fontSize: "12px",
-                        borderColor: "rgb(33, 37, 41)",
-                        color: "rgb(33, 37, 41)",
+                        // borderColor: "rgb(33, 37, 41)",
+                        // color: "rgb(33, 37, 41)",
                       }}
                       onClick={() => redoTimeline()}
                       disabled={!canRedo}

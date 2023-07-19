@@ -28,11 +28,7 @@ const FullResetButton = () => {
       {isReady ? (
         <div style={{ display: "flex", columnGap: "1em" }}>
           <label>Are you sure? </label>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setIsReady(false)}
-          >
+          <Button variant="dark" size="sm" onClick={() => setIsReady(false)}>
             Cancel
           </Button>
           <Button

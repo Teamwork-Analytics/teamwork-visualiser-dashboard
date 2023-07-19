@@ -25,7 +25,7 @@ const DebriefPrimaryControlView = () => {
 
     if (opt === "startTime") {
       const res = await startDebriefAudio(simulationId);
-      
+
       if (res.status === 200) {
         toast.success(res.data);
         setIsStarted(true);
@@ -52,7 +52,7 @@ const DebriefPrimaryControlView = () => {
         Start Audio Recording
       </Button>
       <Button
-        variant="secondary"
+        variant="dark"
         // disabled={observation.stopTime !== null}
         value={"stopTime"}
         onClick={sendRecordedTime}
