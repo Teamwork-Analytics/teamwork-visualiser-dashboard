@@ -31,6 +31,7 @@
     "react-bootstrap-icons": "^1.8.4",
     "react-bootstrap-time-picker": "^2.0.1",
     "react-cytoscapejs": "^2.0.0",
+    "react-datetime-picker": "^5.2.2",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.9.0",
