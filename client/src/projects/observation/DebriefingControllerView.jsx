@@ -18,8 +18,6 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   topTabVisualisations,
-  bottomLeftVisualisations,
-  bottomRightVisualisations,
   bottomVisualisations,
 } from "./visualisationComponents/VisualisationsList";
 import { prepareData } from "../../utils/socketUtils";
@@ -75,6 +73,7 @@ const DebriefingControllerView = () => {
     });
     setShowPreviewModal(false);
     setSelectedVis([]);
+    toast.success("Visualisations projected to the screen.");
   };
 
   // send empty list

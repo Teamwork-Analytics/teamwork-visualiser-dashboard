@@ -13,11 +13,14 @@ import ConnectionState from "./socketComponents/ConnectionState";
 import ConnectionManager from "./socketComponents/ConnectionManager";
 import DisplayViz from "../../components/displays/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
+import { useParams } from "react-router-dom";
 
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [dispList, setDispList] = useState([]);
   const [range, setRange] = useState([0, 0]);
+
+  const params = useParams();
 
   // Connection and data update events handlers
   useEffect(() => {
@@ -34,6 +37,10 @@ const DebriefView = () => {
     const onUpdateList = (data) => {
       console.log(`Received controller change to display: ${data}`);
       const unpackedData = unpackData(data);
+
+      if (unpackedData.simId !== params.simulationId) {
+        return;
+      }
       const parsedList = unpackedData.vizSelected;
       setRange(unpackedData.range);
       setDispList(parsedList); // WARNING: abrupt mutation
