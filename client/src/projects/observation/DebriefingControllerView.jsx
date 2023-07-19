@@ -167,7 +167,13 @@ const DebriefingControllerView = () => {
                         : "outline-secondary"
                     }
                     onClick={() => setActiveTab(tab.eventKey)}
-                    style={{ fontSize: "14px" }}
+                    style={{
+                      fontSize: "14px",
+                      color:
+                        activeTab === tab.eventKey
+                          ? "white"
+                          : "rgb(33, 37, 41)",
+                    }}
                   >
                     {tab.title}
                   </Button>
@@ -291,7 +297,13 @@ const DebriefingControllerView = () => {
                           setTopActiveTab(tab.eventKey);
                           setIsVideoTabActive(tab.eventKey === "video");
                         }}
-                        style={{ fontSize: "14px" }}
+                        style={{
+                          fontSize: "14px",
+                          color:
+                            topActiveTab === tab.eventKey
+                              ? "white"
+                              : "rgb(33, 37, 41)",
+                        }}
                       >
                         {tab.title}
                       </Button>
