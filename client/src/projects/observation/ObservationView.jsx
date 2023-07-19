@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
+import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
@@ -113,14 +114,9 @@ const ObservationView = () => {
           {obsStartTime && obsEndTime ? (
             <DebriefingControllerModule />
           ) : (
-            <div
-              style={{
-                textAlign: "center",
-                marginTop: "20px",
-              }}
-            >
-              Debriefing tool in preparation
-            </div>
+            <Container style={{ display: "flex", minHeight: "60vh" }}>
+              <ToolInPrep />
+            </Container>
           )}
         </Tab>
       </Tabs>
