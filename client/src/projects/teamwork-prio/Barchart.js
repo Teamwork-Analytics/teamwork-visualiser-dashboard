@@ -1,6 +1,6 @@
 import { Bar } from "react-chartjs-2";
 
-const Barchart = ({ data, height = "25vh", width = "100%" }) => {
+const Barchart = ({ data, height = "25vh", width = "40vw" }) => {
   const chartData = {
     labels: data.map((row) => row.label),
     datasets: [
@@ -19,6 +19,9 @@ const Barchart = ({ data, height = "25vh", width = "100%" }) => {
           indexAxis: "y",
           plugins: {
             legend: {
+              labels: {
+                font: { size: 10 },
+              },
               display: false,
             },
           },

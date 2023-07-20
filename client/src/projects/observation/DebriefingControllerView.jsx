@@ -41,7 +41,7 @@ const debriefStyles = {
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 100,
-    fontSize: "14px",
+    fontSize: "13px",
     padding: "5px",
     // width: "80%",
     whiteSpace: "nowrap",
@@ -79,12 +79,12 @@ const DebriefingControllerView = () => {
   // send empty list
   const handleRevertAllProjections = () => {
     const toastId = toast.loading("Loading...");
-    setSelectedVis([]);
+    // setSelectedVis([]);
     const preparedData = prepareData(range, [], simulationId);
     socket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
-    toast.success("Clear selections", {
+    toast.success("Sharing stopped", {
       id: toastId,
     });
   };
@@ -157,7 +157,7 @@ const DebriefingControllerView = () => {
             style={{ marginRight: "5px", fontSize: "14px" }}
             onClick={handleRevertAllProjections}
           >
-            Clear selections
+            Stop sharing
           </Button>
           <Button
             variant="success"

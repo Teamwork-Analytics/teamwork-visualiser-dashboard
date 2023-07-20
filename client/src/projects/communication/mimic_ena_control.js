@@ -19,7 +19,7 @@ const LOGGING = false;
 const NODE_NAME_MAPPER = {
   "task allocation": "Task allocation",
   handover: "Handover",
-  "call-out": "Call-out",
+  "call-out": "Sharing information",
   escalation: "Escalation",
   questioning: "Questioning",
   responding: "Responding",

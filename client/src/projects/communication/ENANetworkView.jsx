@@ -26,7 +26,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
       }
     }
     callData();
-  }, [simulationId]);
+  }, [simulationId, startTime, endTime]);
 
   useEffect(() => {
     try {
@@ -91,6 +91,14 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
 
   return (
     <CytoscapeComponent
+      cy={(cy) => {
+        cy.remove("nodes['*']");
+        cy.add(networkENAData);
+        cy.style(stylesheet);
+        cy.fit();
+        const layout = cy.layout(net_options);
+        layout.run();
+      }}
       layout={net_options}
       fit={true}
       stylesheet={stylesheet}

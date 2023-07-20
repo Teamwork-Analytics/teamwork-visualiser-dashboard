@@ -177,28 +177,28 @@ const bottomVisualisations = (timeRange) => [
     component: () => <ENANetworkView timeRange={timeRange} />,
     info: () => (
       <div>
-        <h3>Call-out</h3>
+        <h5>Call-out</h5>
         <ul>
           <li>Her blood pressure's really low and then her oxygen.</li>
           <li>Everything seems intact.</li>
           <li>He's got a lot of pain as well.</li>
         </ul>
-        <h3>Task allocation</h3>
+        <h5>Task allocation</h5>
         <ul>
           <li>I can do Imani, I can do the obs and the antibiotic.</li>
           <li>Can you count respirate, please?</li>
         </ul>
-        <h3>Questioning & Acknowledging</h3>
+        <h5>Questioning & Acknowledging</h5>
         <ul>
           <li>(Questioning): Do you remember how many grams we need?</li>
           <li>(Responding): It's one gram.</li>
         </ul>
-        <h3>Escalation</h3>
+        <h5>Escalation</h5>
         <ul>
           <li>Should we just call both of them so that we get more help?</li>
           <li>Just going to call a MET call on Ruth.</li>
         </ul>
-        <h3>Handover</h3>
+        <h5>Handover</h5>
         <ul>
           <li>Number two, Bailey. The theatre has just picked…</li>
         </ul>

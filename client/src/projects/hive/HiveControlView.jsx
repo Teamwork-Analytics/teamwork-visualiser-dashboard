@@ -5,10 +5,10 @@ import "./Hive.css";
 import { cssColourMatcher } from "./Hexagon";
 
 const colourLabels = {
-  RED: "GN1",
-  BLUE: "GN2",
-  GREEN: "WN1",
-  YELLOW: "WN2",
+  RED: "PN1",
+  BLUE: "PN2",
+  GREEN: "SN1",
+  YELLOW: "SN2",
 };
 
 const ParticipantFilter = ({ colourCode }) => {
