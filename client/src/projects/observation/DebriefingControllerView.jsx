@@ -9,7 +9,7 @@ import {
   Card,
 } from "react-bootstrap";
 
-import { FaPlus, FaCheckSquare } from "react-icons/fa";
+import { FaCheckSquare, FaSquare } from "react-icons/fa";
 import { BsInfoCircle } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { socket } from "./socket";
@@ -72,7 +72,6 @@ const DebriefingControllerView = () => {
       );
     });
     setShowPreviewModal(false);
-    setSelectedVis([]);
     toast.success("Visualisations projected to the screen.");
   };
 
@@ -206,10 +205,6 @@ const DebriefingControllerView = () => {
                         }}
                         style={{
                           fontSize: "14px",
-                          color:
-                            topActiveTab === tab.eventKey
-                              ? "white"
-                              : "rgb(33, 37, 41)",
                         }}
                       >
                         {tab.title}
@@ -243,11 +238,12 @@ const DebriefingControllerView = () => {
               >
                 {selectedVis.some((vis) => vis.id === "video") ? (
                   <>
-                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Added
+                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Remove
+                    from preview
                   </>
                 ) : (
                   <>
-                    <FaPlus style={{ marginBottom: "2px" }} /> Add to preview
+                    <FaSquare style={{ marginBottom: "2px" }} /> Add to preview
                   </>
                 )}
               </Button>
@@ -310,25 +306,24 @@ const DebriefingControllerView = () => {
                       </Card.Title>
 
                       <Button
-                        variant="success"
+                        variant={
+                          selectedVis.some((vis) => vis.id === tab.eventKey)
+                            ? "danger"
+                            : "success"
+                        }
                         style={{
                           ...debriefStyles.addVisButton,
-                          opacity: selectedVis.some(
-                            (vis) => vis.id === tab.eventKey
-                          )
-                            ? "0.65"
-                            : "1",
                         }}
                         onClick={() => handleAddVis(tab.eventKey)}
                       >
                         {selectedVis.some((vis) => vis.id === tab.eventKey) ? (
                           <>
                             <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
-                            Added
+                            Remove from preview
                           </>
                         ) : (
                           <>
-                            <FaPlus style={{ marginBottom: "2px" }} /> Add to
+                            <FaSquare style={{ marginBottom: "2px" }} /> Add to
                             preview
                           </>
                         )}
