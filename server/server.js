@@ -18,6 +18,7 @@ const corsOptions = {
       : process.env.CURRENT_URL,
   credentials: false,
 };
+
 // Use the custom error handling middleware
 app.use(errorHandler);
 app.use(cors(corsOptions));
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routers
 app.use("/api", require("./routes/index"));
+app.use("/data", express.static(path.join(__dirname, "/saved_data"))); // Serve static files from the "saved_data" directory
 app.use(express.static(path.join(__dirname, "client", "build")));
 app.get("*", (req, res) => {
   // if (process.env.NODE_ENV !== "development") {
