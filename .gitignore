@@ -102,7 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
-*.csv
+
 
 # environment variables
 server/config.env
