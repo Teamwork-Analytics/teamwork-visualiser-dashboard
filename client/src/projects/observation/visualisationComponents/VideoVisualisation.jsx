@@ -1,35 +1,47 @@
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 
+// Component responsible for visualizing the video
 const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
+  // The range in which the video should play
   const range = timeRange;
-  const playerRef = useRef(null);
-  const startTime = range[0]; // start time in seconds
-  const endTime = range[1]; // end time in seconds
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false); // new state variable
 
+  // The start and end time for video playback in seconds
+  const startTime = range[0];
+  const endTime = range[1];
+
+  // Reference to the ReactPlayer component
+  const playerRef = useRef(null);
+
+  // State variables for keeping track of the video playback and initialization
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  // Function to handle video progress
   const handleProgress = ({ playedSeconds }) => {
-    console.log("handleProgress called", { playedSeconds, endTime });
+    // Pause the video once the played seconds exceed the end time
     if (playedSeconds > endTime) {
       setIsPlaying(false);
     }
   };
 
+  // Function to handle video readiness
   const handleReady = () => {
-    console.log("handleReady called");
-    // only seek to startTime on the first ready event
+    // Only seek to start time on the first ready event ---- or will keep loading
     if (!hasStarted) {
       playerRef.current.seekTo(startTime, "seconds");
-      setHasStarted(true); // mark that we've started the video
+      setHasStarted(true); // Indicate that we have started the video
     }
   };
 
+  // Effect to handle tab activity and video initialization
   useEffect(() => {
-    console.log("useEffect called", { isVideoTabActive, startTime });
     setIsPlaying(isVideoTabActive);
+  }, [isVideoTabActive]); // Add dependencies for effect
+
+  useEffect(() => {
     playerRef.current.seekTo(startTime, "seconds");
-  }, [isVideoTabActive, startTime, hasStarted]); // add hasStarted to dependencies
+  }, [startTime]);
 
   return (
     <div
@@ -54,7 +66,7 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
         style={{ position: "absolute", top: "-25%", left: "0" }}
         playbackRate={1}
         controls={true}
-        playsInline={true} // needed for ios and ipadOS
+        playsInline={true} // Ensures compatibility with iOS and iPadOS
       />
     </div>
   );
