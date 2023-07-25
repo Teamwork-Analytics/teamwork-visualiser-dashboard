@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
+import { COLOURS } from "../../config/colours";
 
 const CLASSROOM_SIZE = {
   WIDTH: 9500,
@@ -13,10 +14,10 @@ const CONSTANTS = {
 };
 
 export const cssColourMatcher = {
-  GREEN: "#00FF00", //lime
-  RED: "#ff0000", //red
-  BLUE: "#088FFA", // blue
-  YELLOW: "#ffcf00", // gold
+  GREEN: COLOURS.SECONDARY_NURSE_1, //lime
+  RED: COLOURS.PRIMARY_NURSE_1, //red
+  BLUE: COLOURS.PRIMARY_NURSE_2, // blue
+  YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
 };
 
 const timeParser = (timestamp) => {

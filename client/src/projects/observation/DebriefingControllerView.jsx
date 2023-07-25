@@ -22,6 +22,7 @@ import {
 } from "./visualisationComponents/VisualisationsList";
 import { prepareData } from "../../utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
+import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
 
 const debriefStyles = {
   activeTab: {
@@ -147,10 +148,11 @@ const DebriefingControllerView = () => {
           className="d-flex align-items-center text-left"
           style={{ fontSize: "12px" }}
         >
-          You have selected visualisations:{" "}
-          {selectedVis.map((vis) => vis.id).join(", ")}
+          <NurseNameBadges />
+          {/* You have selected visualisations:{" "}
+          {selectedVis.map((vis) => vis.id).join(", ")} */}
         </Col>
-        <Col className="d-flex justify-content-end text-right">
+        <Col className="d-flex justify-content-end text-right" xs="auto">
           <Button
             variant="danger"
             style={{ marginRight: "5px", fontSize: "14px" }}
