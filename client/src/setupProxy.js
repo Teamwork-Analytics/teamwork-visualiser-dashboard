@@ -10,10 +10,11 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 module.exports = (app) => {
+  const targetAddress = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`;
   app.use(
     "/api",
     createProxyMiddleware({
-      target: process.env.REACT_APP_EXPRESS_IP_PORT,
+      target: targetAddress,
       changeOrigin: true,
     })
   );

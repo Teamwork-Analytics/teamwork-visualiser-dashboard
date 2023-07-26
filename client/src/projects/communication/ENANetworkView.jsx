@@ -15,14 +15,18 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
 
   useEffect(() => {
     async function callData() {
-      const res = await getENAdata({
-        simulationId: simulationId,
-        startTime: startTime,
-        endTime: endTime,
-      });
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setENAdata(res.data);
+      try {
+        const res = await getENAdata({
+          simulationId: simulationId,
+          startTime: startTime,
+          endTime: endTime,
+        });
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setENAdata(res.data);
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
     callData();

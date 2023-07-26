@@ -32,7 +32,9 @@ function DebriefingProvider({ simulationId, children }) {
           setSNAdata(res.data);
         }
       })
-      .catch((e) => {});
+      .catch((e) => {
+        console.error(e);
+      });
   }, []);
 
   // useEffect(() => {

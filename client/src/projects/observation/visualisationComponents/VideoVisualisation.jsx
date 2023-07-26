@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
+import { useParams } from "react-router-dom";
 
 // Component responsible for visualizing the video
 const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
   // The range in which the video should play
   const range = timeRange;
+  const { sessionId } = useParams();
 
   // The start and end time for video playback in seconds
   const startTime = range[0];
@@ -43,6 +45,10 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
     playerRef.current.seekTo(startTime, "seconds");
   }, [startTime]);
 
+  const expressAddress = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`;
+
+  const urlTarget = `${expressAddress}/data/${sessionId}/trancoded_output.mp4`;
+
   return (
     <div
       style={{
@@ -57,7 +63,7 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
         // url="https://youtu.be/vLI-6sLZTbI" // 101R sim (251?)
         // url="https://youtu.be/vCo1QyWKdPM" // 225 sim
         // url="https://youtu.be/3fve4RsNxkY" // 239 sim
-        url="http://49.127.43.80:5002/data/101R/trancoded_output.mp4"
+        url={urlTarget}
         playing={isPlaying}
         onProgress={handleProgress}
         onReady={handleReady}

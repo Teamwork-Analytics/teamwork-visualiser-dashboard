@@ -7,6 +7,7 @@
 
 import React, { useEffect } from "react";
 import HiveAPI from "../../services/api/hive";
+import { toast } from "react-hot-toast";
 
 const HiveContext = React.createContext();
 
@@ -18,12 +19,16 @@ function HiveProvider({ simulationId, children }) {
   });
   const [markers, setMarkers] = React.useState([]);
   useEffect(() => {
-    HiveAPI.phases(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setMarkers(res.data);
-      }
-    });
+    HiveAPI.phases(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setMarkers(res.data);
+        }
+      })
+      .catch((e) => {
+        toast.error(e);
+      });
   }, [simulationId]);
 
   const value = {

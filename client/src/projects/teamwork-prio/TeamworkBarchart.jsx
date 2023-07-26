@@ -28,6 +28,7 @@ const TeamworkBarchart = ({ height, width, timeRange }) => {
       })
       .catch((e) => {
         setIsError(true);
+        console.error(e);
         // toast.error("Teamwork Barchart error");
       });
   }, [simulationId, startTime, endTime]);
