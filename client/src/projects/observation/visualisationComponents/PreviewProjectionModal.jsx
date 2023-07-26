@@ -17,7 +17,6 @@ import { Modal, Button } from "react-bootstrap";
 
 import DisplayViz from "../../../components/displays/DisplayViz";
 import { useTimeline } from "./TimelineContext";
-import toast from "react-hot-toast";
 
 const PreviewProjectionModal = ({
   showPreviewModal,

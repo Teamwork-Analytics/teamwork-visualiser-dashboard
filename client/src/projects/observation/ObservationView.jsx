@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Tabs, Tab, Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
+import { ArrowLeft } from "react-bootstrap-icons";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
@@ -30,6 +31,9 @@ const ObservationView = () => {
       height: "100%",
       colour: "white",
     },
+    backButton: {
+      position: "absolute",
+    },
     info: { width: "20vw", margin: "0 auto" },
   };
 
@@ -52,9 +56,18 @@ const ObservationView = () => {
   // };
 
   const [currentTab, setCurrentTab] = useState("observation");
+  const navigate = useNavigate();
 
   return (
     <div style={styles.outer}>
+      <div style={styles.backButton}>
+        <ArrowLeft
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/main")}
+          size={"30px"}
+        />
+      </div>
+
       {/* TODO: code commented out below moved into sidebar (hide from researcher) */}
       {/* <div style={styles.info}>
           {observation.baselineTime !== null ? <AlertCondition /> : null}
@@ -87,8 +100,24 @@ const ObservationView = () => {
           <ObservationTaggingModule />
         </Tab>
         <Tab
+          eventKey="debriefing"
+          title="2. Debriefing"
+          tabAttrs={{
+            style: currentTab === "debriefing" ? {} : { color: "black" },
+          }}
+        >
+          <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
+          {obsStartTime && obsEndTime ? (
+            <DebriefingControllerModule />
+          ) : (
+            <Container style={{ display: "flex", minHeight: "60vh" }}>
+              <ToolInPrep />
+            </Container>
+          )}
+        </Tab>
+        <Tab
           eventKey="assessment"
-          title="2. Team Assessment"
+          title="3. Team Assessment"
           // style cant be used directly in Tab as its nested too deep
           tabAttrs={{
             style: currentTab === "assessment" ? {} : { color: "black" },
@@ -102,22 +131,6 @@ const ObservationView = () => {
               style={{ width: "100%", height: "100%" }}
             ></iframe>{" "}
           </div>
-        </Tab>
-        <Tab
-          eventKey="debriefing"
-          title="3. Debriefing"
-          tabAttrs={{
-            style: currentTab === "debriefing" ? {} : { color: "black" },
-          }}
-        >
-          <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-          {obsStartTime && obsEndTime ? (
-            <DebriefingControllerModule />
-          ) : (
-            <Container style={{ display: "flex", minHeight: "60vh" }}>
-              <ToolInPrep />
-            </Container>
-          )}
         </Tab>
       </Tabs>
       <ReactTooltip />

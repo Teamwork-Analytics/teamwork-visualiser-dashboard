@@ -8,6 +8,8 @@
 import React, { useState, useEffect } from "react";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
+import SimulationSessionAPI from "../../services/api/simulations";
+import { toast } from "react-hot-toast";
 
 const ObservationContext = React.createContext();
 
@@ -18,31 +20,6 @@ function ObservationProvider({ simulationId, children }) {
   });
   const [obsStartTime, setObsStartTime] = useState();
   const [obsEndTime, setObsEndTime] = useState();
-
-  // const [enaData, setENAdata] = useState([]);
-  // const [networkData, setNetworkData] = useState([]);
-
-  // /* getData from backend */
-  // useEffect(() => {
-  //   getENAdata(simulationId).then((res) => {
-  //     if (res.status === 200) {
-  //       // const cleanedPhases = cleanRawPhases(phases);
-  //       setENAdata(res.data);
-  //     }
-  //   });
-  // }, [simulationId]);
-
-  // useEffect(() => {
-  //   try {
-  //     const net_data = processing_adjacent_matrix(enaData);
-  //     if (enaData.length !== 0) {
-  //       setNetworkData(net_data["nodes"].concat(net_data["edges"]));
-  //     }
-  //   } catch (err) {
-  //     toast.error(`SNA error: unable to change visualisation based on time`);
-  //     console.error(err);
-  //   }
-  // }, [enaData]);
 
   React.useEffect(() => {
     ObservationAPI.single(simulationId).then((res) => {
@@ -56,6 +33,18 @@ function ObservationProvider({ simulationId, children }) {
     });
   }, []);
 
+  const [isDataReady, setIsDataReady] = React.useState(false);
+  React.useEffect(() => {
+    SimulationSessionAPI.isReady(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setIsDataReady(true);
+        }
+      })
+      .catch((e) => {});
+  }, [simulationId]);
+
   const value = {
     notes,
     setNotes,
@@ -63,6 +52,7 @@ function ObservationProvider({ simulationId, children }) {
     setObservation,
     obsStartTime,
     obsEndTime,
+    isDataReady,
   };
   return (
     <ObservationContext.Provider value={value}>

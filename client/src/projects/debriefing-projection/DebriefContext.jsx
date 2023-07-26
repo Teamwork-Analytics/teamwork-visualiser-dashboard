@@ -35,7 +35,7 @@ function DebriefingProvider({ simulationId, children }) {
       .catch((e) => {
         console.error(e);
       });
-  }, []);
+  }, [simulationId]);
 
   // useEffect(() => {
   //   try {

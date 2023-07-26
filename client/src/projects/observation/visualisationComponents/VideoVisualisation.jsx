@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
   // The range in which the video should play
   const range = timeRange;
-  const { sessionId } = useParams();
+  const { simulationId } = useParams();
 
   // The start and end time for video playback in seconds
   const startTime = range[0];
@@ -47,7 +47,7 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
 
   const expressAddress = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`;
 
-  const urlTarget = `${expressAddress}/data/${sessionId}/trancoded_output.mp4`;
+  const urlTarget = `${expressAddress}/data/${simulationId}/trancoded_output.mp4`;
 
   return (
     <div

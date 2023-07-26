@@ -7,6 +7,8 @@ import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { useObservation } from "../observation/ObservationContext";
 
 const HiveView = ({
   timeRange,
@@ -15,36 +17,44 @@ const HiveView = ({
   width = "30vw",
 }) => {
   const hiveRef = useRef();
-  const { hiveState, markers } = useHive();
+  const { hiveState, isHiveReady } = useHive();
   const { simulationId } = useParams();
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
   useEffect(() => {
-    d3.select("#floor-plan").remove();
-    const svgContainer = d3.select(hiveRef.current);
-    d3.xml(floorPlan).then((data) => {
-      if (
-        svgContainer.node() !== null &&
-        !svgContainer.node().hasChildNodes()
-      ) {
-        svgContainer.node().append(data.documentElement);
-        new HexagonComponent(
-          svgContainer.select("#floor-plan"),
-          csvUrl,
-          false,
-          hiveState.participants,
-          timeRange[0],
-          timeRange[1]
-          // markers[hiveState.phase[0]].timestamp, //start
-          // markers[hiveState.phase[1]].timestamp //end
-        );
-      }
-    });
-  }, [csvUrl, hiveState, markers, timeRange]);
+    console.log(isHiveReady);
+    try {
+      d3.select("#floor-plan").remove();
+      const svgContainer = d3.select(hiveRef.current);
+      d3.xml(floorPlan)
+        .then((data) => {
+          if (
+            isHiveReady &&
+            svgContainer.node() !== null &&
+            !svgContainer.node().hasChildNodes()
+          ) {
+            svgContainer.node().append(data.documentElement);
+            new HexagonComponent(
+              svgContainer.select("#floor-plan"),
+              csvUrl,
+              false,
+              hiveState.participants,
+              timeRange[0],
+              timeRange[1]
+              // markers[hiveState.phase[0]].timestamp, //start
+              // markers[hiveState.phase[1]].timestamp //end
+            );
+          }
+        })
+        .catch((e) => {
+          toast.error(e);
+        });
+    } catch (err) {}
+  }, [csvUrl, hiveState, isHiveReady, timeRange]);
 
   return (
     <Fragment>
-      {markers.length === 0 ? (
+      {!isHiveReady ? (
         <EmptyPlaceholder />
       ) : (
         <div

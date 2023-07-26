@@ -1,4 +1,5 @@
 const { fillErrorObject } = require("../middleware/error");
+const logger = require("winston");
 const fileSystem = require("fs");
 const path = require("node:path");
 
@@ -37,4 +38,69 @@ const getVisualisationFile = (req, res, next) => {
   }
 };
 
-module.exports = { getVisualisationFile };
+const checkDataReadiness = async (req, res, next) => {
+  try {
+    const { simulationId } = req.params;
+    const directory = process.env.VISUALISATION_DIR + simulationId;
+    const pathJoined = path.join(directory, path.sep);
+
+    const hiveFileName = `${simulationId}_all.csv`;
+    const positionFileName = `${simulationId}_network_data.csv`;
+    const communicationFileName = `${simulationId}.csv`;
+    const syncFileName = "sync.txt";
+
+    if (fileSystem.existsSync(pathJoined)) {
+      if (
+        !fileSystem.existsSync(path.join(directory, path.sep, hiveFileName))
+      ) {
+        res
+          .status(500)
+          .send(fillErrorObject(500, "Ward map data is missing/not ready"));
+        return;
+      }
+      if (
+        !fileSystem.existsSync(path.join(directory, path.sep, positionFileName))
+      ) {
+        res
+          .status(500)
+          .send(fillErrorObject(500, "Position data is missing/not ready"));
+        return;
+      }
+      if (
+        !fileSystem.existsSync(
+          path.join(directory, path.sep, communicationFileName)
+        )
+      ) {
+        res
+          .status(500)
+          .send(
+            fillErrorObject(500, "Communication data is missing/not ready")
+          );
+        return;
+      }
+      if (
+        !fileSystem.existsSync(path.join(directory, path.sep, syncFileName))
+      ) {
+        res.status(500).send(fillErrorObject(500, "Sync file is missing"));
+        return;
+      }
+
+      res.status(200).send("visualisation data is ready!");
+      return;
+    } else {
+      res
+        .status(500)
+        .send(fillErrorObject(500, "Visualisation directory is missing"));
+      return;
+    }
+  } catch (err) {
+    logger.error(err);
+    return res
+      .status(500)
+      .send(
+        fillErrorObject(500, "Visualisation data is not ready (missing)", err)
+      );
+  }
+};
+
+module.exports = { getVisualisationFile, checkDataReadiness };

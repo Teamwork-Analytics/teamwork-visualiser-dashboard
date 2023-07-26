@@ -57,4 +57,28 @@ const getPhaseMarkers = async (req, res, next) => {
   }
 };
 
-module.exports = { getCsvFile, getPhaseMarkers };
+const isDataExist = async (req, res, next) => {
+  try {
+    const { simulationId } = req.params;
+    const directory = process.env.VISUALISATION_DIR + simulationId;
+    const hiveFileName = `${simulationId}_all.csv`;
+
+    if (!fileSystem.existsSync(path.join(directory, path.sep, hiveFileName))) {
+      res
+        .status(500)
+        .send(fillErrorObject(500, "Ward map data is missing/not ready"));
+      return;
+    }
+    res.status(200).send("Ward map data is ready!");
+    return;
+  } catch (err) {
+    logger.error(err);
+    return res
+      .status(500)
+      .send(
+        fillErrorObject(500, "Visualisation data is not ready (missing)", err)
+      );
+  }
+};
+
+module.exports = { getCsvFile, getPhaseMarkers, isDataExist };

@@ -1,9 +1,10 @@
 import * as React from "react";
 import * as Observation from "../../projects/observation/index";
 import * as Debrief from "../../projects/debriefing-projection/index";
-import * as Visualisation from "../../projects/visualisation/index";
 
-type SimProviderProps = { children: React.ReactNode };
+type SimProviderProps = {
+  children: React.ReactNode;
+};
 
 const SimContext = React.createContext<
   { tool: String; setTool: Function } | undefined
@@ -35,6 +36,7 @@ const availableTools: any = {
 
 function SimProvider({ children }: SimProviderProps) {
   const [tool, setTool] = React.useState(DEFAULT_VIEW);
+
   const value = { tool, setTool };
   return <SimContext.Provider value={value}>{children}</SimContext.Provider>;
 }

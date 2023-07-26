@@ -26,7 +26,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
           setENAdata(res.data);
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }
     callData();

@@ -9,7 +9,7 @@ const HiveSlider = () => {
     width: "5vw",
     margin: 50,
   };
-  const { state: hiveState, setState: hiveSetState, markers } = useHive();
+  const { state: hiveState, setState: hiveSetState } = useHive();
 
   const onDrag = (value) => {
     hiveSetState({ ...hiveState, phase: value });
@@ -25,7 +25,7 @@ const HiveSlider = () => {
         min={0}
         max={100}
         defaultValue={[0, 100]}
-        marks={markers}
+        // marks={markers}
         step={null}
         vertical={true}
         onChange={onDrag}
