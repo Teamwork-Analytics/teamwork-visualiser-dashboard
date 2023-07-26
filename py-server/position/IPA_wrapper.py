@@ -132,4 +132,21 @@ def IPA_for_front_end(df_import: pd.DataFrame, sessionid: str, positioning_start
     for i, row in dfresult.iterrows():
         return_list.append(
             {"label": behaviour_name_mapper[row["behaviours"]], "value": row["percentage"]})
+
+
+    # switch the position of labels, to group the bars for ruth and others
+    poped_data = return_list.pop(1)
+    return_list.insert(2, poped_data)
+
+    # recalculate the percentage
+    return_list.pop(4)
+
+    total_percentage = 0
+    for an_element in return_list:
+        total_percentage += an_element["value"]
+
+    for an_element in return_list:
+        an_element["value"] = an_element["value"] / total_percentage * 100
+
+
     return return_list
