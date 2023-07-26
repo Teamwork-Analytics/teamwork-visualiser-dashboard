@@ -228,7 +228,11 @@ const DebriefingControllerView = () => {
                 </Tab.Content>
               </Row>
               <Button
-                variant="success"
+                variant={
+                  selectedVis.some((vis) => vis.id === topActiveTab)
+                    ? "danger"
+                    : "success"
+                }
                 style={{
                   ...debriefStyles.addVisButton,
                   opacity: selectedVis.some((vis) => vis.id === topActiveTab)
@@ -279,7 +283,7 @@ const DebriefingControllerView = () => {
                 marginBottom: "5px",
               }}
             >
-              {bottomVisualisations(range).map((tab, index) => (
+              {bottomVisualisations(range, showPreviewModal).map((tab, index) => (
                 <>
                   <Card style={{ minWidth: "25rem", position: "relative" }}>
                     <BsInfoCircle

@@ -13,6 +13,7 @@ const HiveView = ({
   showFilter = true,
   height = "32vh",
   width = "30vw",
+  showModal // pass in showPreviewModal as a prop to trigger rerender
 }) => {
   const hiveRef = useRef();
   const { hiveState, markers } = useHive();
@@ -35,12 +36,11 @@ const HiveView = ({
           hiveState.participants,
           timeRange[0],
           timeRange[1]
-          // markers[hiveState.phase[0]].timestamp, //start
-          // markers[hiveState.phase[1]].timestamp //end
         );
       }
     });
-  }, [csvUrl, hiveState, markers, timeRange]);
+    
+  }, [csvUrl, hiveState, markers, timeRange, showModal]);
 
   return (
     <Fragment>
@@ -57,11 +57,9 @@ const HiveView = ({
         >
           <div
             style={{
-              // minWidth: "550px",
               width: width,
               height: height,
               maxHeight: "1080px",
-              // backgroundColor: "#303030",
               borderRadius: "1em",
             }}
           >
