@@ -11,17 +11,6 @@ const ObservationView = () => {
   const { simulationId } = useParams();
   const { obsStartTime, obsEndTime } = useObservation();
 
-  // const { observation } = useObservation();
-  // const [state, setState] = useState({
-  //   baselineTime: null,
-  //   startTime: null,
-  //   stopTime: null,
-  // });
-
-  // useEffect(() => {
-  //   setState({ ...observation });
-  // }, [observation]);
-
   const styles = {
     outer: {
       margin: "0 auto",
@@ -32,24 +21,6 @@ const ObservationView = () => {
     },
     info: { width: "20vw", margin: "0 auto" },
   };
-
-  // const timeString = (time) => {
-  //   return time === null ? "-" : new Date(time).toLocaleString();
-  // };
-
-  // const AlertCondition = () => {
-  //   let alertColour = "secondary";
-  //   let message = "Baseline has started, but simulation hasn't started yet.";
-  //   if (state.stopTime !== null) {
-  //     alertColour = "success";
-  //     message = "Simulation has stopped & is complete.";
-  //   } else if (state.startTime !== null) {
-  //     alertColour = "warning";
-  //     message = "Simulation has started.";
-  //   }
-
-  //   return <Alert variant={alertColour}>{`${message}`}</Alert>;
-  // };
 
   const [currentTab, setCurrentTab] = useState("observation");
 
@@ -86,9 +57,26 @@ const ObservationView = () => {
           <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
           <ObservationTaggingModule />
         </Tab>
+
+        <Tab
+          eventKey="debriefing"
+          title="2. Debriefing"
+          tabAttrs={{
+            style: currentTab === "debriefing" ? {} : { color: "black" },
+          }}
+        >
+          <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
+          {obsStartTime && obsEndTime ? (
+            <DebriefingControllerModule />
+          ) : (
+            <Container style={{ display: "flex", minHeight: "60vh" }}>
+              <ToolInPrep />
+            </Container>
+          )}
+        </Tab>
         <Tab
           eventKey="assessment"
-          title="2. Team Assessment"
+          title="3. Team Assessment"
           // style cant be used directly in Tab as its nested too deep
           tabAttrs={{
             style: currentTab === "assessment" ? {} : { color: "black" },
@@ -102,22 +90,6 @@ const ObservationView = () => {
               style={{ width: "100%", height: "100%" }}
             ></iframe>{" "}
           </div>
-        </Tab>
-        <Tab
-          eventKey="debriefing"
-          title="3. Debriefing"
-          tabAttrs={{
-            style: currentTab === "debriefing" ? {} : { color: "black" },
-          }}
-        >
-          <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-          {obsStartTime && obsEndTime ? (
-            <DebriefingControllerModule />
-          ) : (
-            <Container style={{ display: "flex", minHeight: "60vh" }}>
-              <ToolInPrep />
-            </Container>
-          )}
         </Tab>
       </Tabs>
       <ReactTooltip />
