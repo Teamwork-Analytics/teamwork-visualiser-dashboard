@@ -15,6 +15,7 @@ import {
   BsArrowCounterclockwise,
 } from "react-icons/bs";
 import { manualLabels } from "../index.js";
+import { COLOURS } from "../../../config/colours.js";
 
 // styling
 const timelineStyle = {
@@ -35,12 +36,12 @@ const timelineStyle = {
   },
   keyEventTimelineSx: {
     "& .MuiSlider-mark": {
-      backgroundColor: "#ED6C02",
+      backgroundColor: COLOURS.ACTION_ORANGE,
       height: 15,
       width: "1.5px",
       "&.MuiSlider-markActive": {
         opacity: 1,
-        backgroundColor: "#ED6C02",
+        backgroundColor: COLOURS.ACTION_ORANGE,
       },
     },
     "& .MuiSlider-markLabel": {
@@ -94,7 +95,7 @@ const CustomMark = ({ mark }) => {
               position: "absolute",
               bottom: -8,
               height: "50px",
-              backgroundColor: "#9C27B0",
+              backgroundColor: COLOURS.KEY_EVENT_PURPLE,
               marginBottom: "-20px",
               marginLeft: "-1px",
             }}
@@ -175,9 +176,9 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
               }}
             >
               {isKeyEvent(mark.label) ? (
-                <BsCircleFill size="0.5em" color="#9c27b0" />
+                <BsCircleFill size="0.5em" color={COLOURS.KEY_EVENT_PURPLE} />
               ) : (
-                <BsCircle size="0.5em" color="#ed6c02" />
+                <BsCircle size="0.5em" color={COLOURS.ACTION_ORANGE} />
               )}
             </Col>
             <Col
@@ -339,13 +340,7 @@ const TimelineVisualisation = () => {
                   }}
                   xs="auto"
                 >
-                  <ButtonGroup
-                    aria-label="Phases"
-                    // style={{
-                    //   boxShadow:
-                    //     "0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
-                    // }}
-                  >
+                  <ButtonGroup aria-label="Phases">
                     {phases.map((phase, index) => (
                       <Button
                         key={index}
@@ -357,11 +352,6 @@ const TimelineVisualisation = () => {
                         onClick={() => handleSelectPhase(phase)}
                         style={{
                           fontSize: "12px",
-                          // borderColor: "rgb(33, 37, 41)",
-                          // color:
-                          //   phase.start === range[0] && phase.end === range[1]
-                          //     ? "rgb(255, 255, 255)"
-                          //     : "rgb(33, 37, 41)",
                         }}
                       >
                         {phase.name}
@@ -382,8 +372,6 @@ const TimelineVisualisation = () => {
                       variant="outline-dark"
                       style={{
                         fontSize: "12px",
-                        // borderColor: "rgb(33, 37, 41)",
-                        // color: "rgb(33, 37, 41)",
                       }}
                       onClick={() => undoTimeline()}
                       disabled={!canUndo}
@@ -394,8 +382,6 @@ const TimelineVisualisation = () => {
                       variant="outline-dark"
                       style={{
                         fontSize: "12px",
-                        // borderColor: "rgb(33, 37, 41)",
-                        // color: "rgb(33, 37, 41)",
                       }}
                       onClick={() => redoTimeline()}
                       disabled={!canRedo}

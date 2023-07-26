@@ -7,14 +7,13 @@ import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useObservation } from "../observation/ObservationContext";
 
 const HiveView = ({
   timeRange,
   showFilter = true,
   height = "32vh",
   width = "30vw",
+  showModal, // pass in showPreviewModal as a prop to trigger rerender
 }) => {
   const hiveRef = useRef();
   const { hiveState, isHiveReady } = useHive();
@@ -22,35 +21,28 @@ const HiveView = ({
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
   useEffect(() => {
-    console.log(isHiveReady);
     try {
       d3.select("#floor-plan").remove();
       const svgContainer = d3.select(hiveRef.current);
-      d3.xml(floorPlan)
-        .then((data) => {
-          if (
-            isHiveReady &&
-            svgContainer.node() !== null &&
-            !svgContainer.node().hasChildNodes()
-          ) {
-            svgContainer.node().append(data.documentElement);
-            new HexagonComponent(
-              svgContainer.select("#floor-plan"),
-              csvUrl,
-              false,
-              hiveState.participants,
-              timeRange[0],
-              timeRange[1]
-              // markers[hiveState.phase[0]].timestamp, //start
-              // markers[hiveState.phase[1]].timestamp //end
-            );
-          }
-        })
-        .catch((e) => {
-          toast.error(e);
-        });
+      d3.xml(floorPlan).then((data) => {
+        if (
+          isHiveReady &&
+          svgContainer.node() !== null &&
+          !svgContainer.node().hasChildNodes()
+        ) {
+          svgContainer.node().append(data.documentElement);
+          new HexagonComponent(
+            svgContainer.select("#floor-plan"),
+            csvUrl,
+            false,
+            hiveState.participants,
+            timeRange[0],
+            timeRange[1]
+          );
+        }
+      });
     } catch (err) {}
-  }, [csvUrl, hiveState, isHiveReady, timeRange]);
+  }, [csvUrl, hiveState, isHiveReady, timeRange, showModal]);
 
   return (
     <Fragment>
@@ -67,11 +59,9 @@ const HiveView = ({
         >
           <div
             style={{
-              // minWidth: "550px",
               width: width,
               height: height,
               maxHeight: "1080px",
-              // backgroundColor: "#303030",
               borderRadius: "1em",
             }}
           >

@@ -14,6 +14,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import toast from "react-hot-toast";
+import { COLOURS } from "../../config/colours";
 
 const PhaseButtons = () => {
   // Speech recognition library, see https://webspeechrecognition.com/
@@ -175,7 +176,7 @@ const PhaseButtons = () => {
                             >
                               <BsCircleFill
                                 size="0.5em"
-                                color="#9c27b0" // color from MUI default theme
+                                color={COLOURS.KEY_EVENT_PURPLE} // color from MUI default theme
                               />
                             </Col>
                             <Col
@@ -358,7 +359,7 @@ const PhaseButtons = () => {
                       >
                         <BsCircle
                           size="0.5em"
-                          color="#ed6c02" // color from MUI default theme
+                          color={COLOURS.ACTION_ORANGE} 
                         />
                       </Col>
                       <Col

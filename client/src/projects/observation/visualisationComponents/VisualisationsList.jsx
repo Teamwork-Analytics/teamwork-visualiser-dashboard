@@ -75,90 +75,8 @@ const topTabVisualisations = (timeRange) => [
   },
 ];
 
-// Configuration for bottom left visualisations -> for left tab panel
-const bottomLeftVisualisations = (timeRange) => [
-  {
-    eventKey: "wardMap",
-    title: "Ward Map",
-    component: () => <HiveView timeRange={timeRange} />,
-    info: () => (
-      <div>
-        Each hexagon represents a position of a student. The colour-filled
-        hexagon represents the student talking in that position.
-      </div>
-    ),
-  },
-  {
-    eventKey: "priorBar",
-    title: "Prioritisation Bar",
-    component: () => (
-      <TeamworkBarchart
-        timeRange={timeRange}
-        style={visStyles.imageContainer}
-        fluid
-      />
-    ),
-    info: () => (
-      <div>
-        Each bar represents the percentage of time that the team spent on a
-        specific task during that time frame.
-      </div>
-    ),
-  },
-];
-
-// Configuration for bottom right visualisations -> for right tab panel
-const bottomRightVisualisations = (timeRange) => [
-  {
-    eventKey: "commNetwork",
-    title: "Communication Network",
-    component: () => <SocialNetworkView timeRange={timeRange} />,
-    info: () => (
-      <div>
-        The size of the circle represents the time a student spent talking. The
-        arrow thickness represents the talking time a student spent with another
-        student.
-      </div>
-    ),
-  },
-  {
-    eventKey: "commBehaviour",
-    title: "Communication Behaviour",
-    component: () => <ENANetworkView timeRange={timeRange} />,
-    info: () => (
-      <div>
-        <h6>Call-out</h6>
-        <ul>
-          <li>Her blood pressure's really low and then her oxygen.</li>
-          <li>Everything seems intact.</li>
-          <li>He's got a lot of pain as well.</li>
-        </ul>
-        <h6>Task allocation</h6>
-        <ul>
-          <li>I can do Imani, I can do the obs and the antibiotic.</li>
-          <li>Can you count respirate, please?</li>
-        </ul>
-        <h6>Questioning & Acknowledging</h6>
-        <ul>
-          <li>(Questioning): Do you remember how many grams we need?</li>
-          <li>(Responding): It's one gram.</li>
-        </ul>
-        <h6>Escalation</h6>
-        <ul>
-          <li>Should we just call both of them so that we get more help?</li>
-          <li>Just going to call a MET call on Ruth.</li>
-        </ul>
-        <h6>Handover</h6>
-        <ul>
-          <li>Number two, Bailey. The theatre has just picked…</li>
-        </ul>
-      </div>
-    ),
-  },
-];
-
 // Configuration for bottom visualisations -> for carousel
-const bottomVisualisations = (timeRange) => [
+const bottomVisualisations = (timeRange, showPreviewModal) => [
   {
     eventKey: "commNetwork",
     title: "Communication Network",
@@ -208,7 +126,7 @@ const bottomVisualisations = (timeRange) => [
   {
     eventKey: "wardMap",
     title: "Ward Map",
-    component: () => <HiveView timeRange={timeRange} />,
+    component: () => <HiveView timeRange={timeRange} showModal={showPreviewModal} />,
     info: () => (
       <div>
         Each hexagon represents a position of a student. The colour-filled
@@ -235,9 +153,4 @@ const bottomVisualisations = (timeRange) => [
   },
 ];
 
-export {
-  topTabVisualisations,
-  bottomLeftVisualisations,
-  bottomRightVisualisations,
-  bottomVisualisations,
-};
+export { topTabVisualisations, bottomVisualisations };

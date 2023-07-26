@@ -4,9 +4,14 @@ import { useParams } from "react-router-dom";
 
 // Component responsible for visualizing the video
 const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
+  // Extract the simulation ID from the URL parameters
+  const { simulationId } = useParams();
+
+  // Construct the URL for the video
+  const videoUrl = `${process.env.REACT_APP_EXPRESS_IP_PORT}/data/${simulationId}/transcoded_output.mp4`;
+
   // The range in which the video should play
   const range = timeRange;
-  const { simulationId } = useParams();
 
   // The start and end time for video playback in seconds
   const startTime = range[0];
@@ -18,6 +23,9 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
   // State variables for keeping track of the video playback and initialization
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+
+  // State variable to keep track of the validity of the video URL
+  const [isVideoUrlValid, setIsVideoUrlValid] = useState(false);
 
   // Function to handle video progress
   const handleProgress = ({ playedSeconds }) => {
@@ -41,13 +49,10 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
     setIsPlaying(isVideoTabActive);
   }, [isVideoTabActive]); // Add dependencies for effect
 
+  // Effect hook to seek video
   useEffect(() => {
     playerRef.current.seekTo(startTime, "seconds");
   }, [startTime]);
-
-  const expressAddress = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`;
-
-  const urlTarget = `${expressAddress}/data/${simulationId}/trancoded_output.mp4`;
 
   return (
     <div
@@ -60,10 +65,7 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
     >
       <ReactPlayer
         ref={playerRef}
-        // url="https://youtu.be/vLI-6sLZTbI" // 101R sim (251?)
-        // url="https://youtu.be/vCo1QyWKdPM" // 225 sim
-        // url="https://youtu.be/3fve4RsNxkY" // 239 sim
-        url={urlTarget}
+        url={videoUrl}
         playing={isPlaying}
         onProgress={handleProgress}
         onReady={handleReady}
@@ -72,7 +74,7 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
         style={{ position: "absolute", top: "-25%", left: "0" }}
         playbackRate={1}
         controls={true}
-        playsInline={true} // Ensures compatibility with iOS and iPadOS
+        playsInline={true} // Needed for compatibility with iOS and iPadOS
       />
     </div>
   );
