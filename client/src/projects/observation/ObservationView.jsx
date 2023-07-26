@@ -88,22 +88,6 @@ const ObservationView = () => {
           )}
         </Tab>
         <Tab
-          eventKey="debriefing"
-          title="2. Debriefing"
-          tabAttrs={{
-            style: currentTab === "debriefing" ? {} : { color: "black" },
-          }}
-        >
-          <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-          {obsStartTime && obsEndTime ? (
-            <DebriefingControllerModule />
-          ) : (
-            <Container style={{ display: "flex", minHeight: "60vh" }}>
-              <ToolInPrep />
-            </Container>
-          )}
-        </Tab>
-        <Tab
           eventKey="assessment"
           title="3. Team Assessment"
           // style cant be used directly in Tab as its nested too deep
