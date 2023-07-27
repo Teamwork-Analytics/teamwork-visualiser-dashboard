@@ -5,7 +5,7 @@
 
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 
@@ -19,31 +19,6 @@ function ObservationProvider({ simulationId, children }) {
   const [obsStartTime, setObsStartTime] = useState();
   const [obsEndTime, setObsEndTime] = useState();
 
-  // const [enaData, setENAdata] = useState([]);
-  // const [networkData, setNetworkData] = useState([]);
-
-  // /* getData from backend */
-  // useEffect(() => {
-  //   getENAdata(simulationId).then((res) => {
-  //     if (res.status === 200) {
-  //       // const cleanedPhases = cleanRawPhases(phases);
-  //       setENAdata(res.data);
-  //     }
-  //   });
-  // }, [simulationId]);
-
-  // useEffect(() => {
-  //   try {
-  //     const net_data = processing_adjacent_matrix(enaData);
-  //     if (enaData.length !== 0) {
-  //       setNetworkData(net_data["nodes"].concat(net_data["edges"]));
-  //     }
-  //   } catch (err) {
-  //     toast.error(`SNA error: unable to change visualisation based on time`);
-  //     console.error(err);
-  //   }
-  // }, [enaData]);
-
   React.useEffect(() => {
     ObservationAPI.single(simulationId).then((res) => {
       if (res.status === 200) {
@@ -54,7 +29,7 @@ function ObservationProvider({ simulationId, children }) {
         setNotes(phases);
       }
     });
-  }, []);
+  }, [simulationId]);
 
   const value = {
     notes,

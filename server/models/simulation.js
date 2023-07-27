@@ -21,6 +21,7 @@ const simulationSchema = new mongoose.Schema(
       type: mongoose.SchemaTypes.ObjectId,
       ref: "observation",
     },
+    privateNote: { type: mongoose.SchemaTypes.ObjectId, ref: "privateNote" },
     // refactor hiveViz below to be array of viz.
   },
   { timestamps: true }
