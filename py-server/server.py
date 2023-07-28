@@ -2,7 +2,7 @@ import json
 from flask_cors import CORS
 from flask import Flask, jsonify, request
 import pandas as pd
-from ena_replacement_algo.ena_replacement_algo import calculate_ena_metric, __merging_codes
+from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 
@@ -86,8 +86,9 @@ def give_ena_test_data():
     file_path = DIRECTORY / id / file
     session_df = pd.read_csv(file_path)
     # updated on 17/7/2023, merged the acknowledging and responding
-    __merging_codes(session_df, ["acknowledging", "responding"], "acknowledging")
-    
+    __merging_codes(session_df, ["acknowledging",
+                    "responding"], "acknowledging")
+
     session_view = session_df[
         (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
     window_size = 3

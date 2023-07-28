@@ -34,4 +34,10 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
   // }
 });
-app.listen(port, () => logger.info(`Server running on port: ${port}`));
+
+// Initialise socket
+const server = app.listen(port, () =>
+  logger.info(`Server running on port: ${port}`)
+);
+
+require("./services/socket")(server);

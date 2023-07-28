@@ -72,7 +72,7 @@ const MainPage = () => {
                 <Link
                   key={i}
                   to={`/visualisation/${sim.simulationId}`}
-                  state={{ name: sim.name }}
+                  state={{ name: sim.name, realId: sim._id }}
                   style={{ color: "#222222", textDecoration: "none" }}
                 >
                   <SessionCard key={i} sim={sim} />

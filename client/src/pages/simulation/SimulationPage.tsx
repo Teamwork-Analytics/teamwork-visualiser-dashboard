@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { DebriefingProvider } from "../../projects/debriefing-projection/DebriefContext";
 import { HiveProvider } from "../../projects/hive/HiveContext";
@@ -19,6 +19,23 @@ import {
   useSimulation,
   SimProvider,
 } from "./SimulationContext";
+
+//Socket
+import { useTracking } from "react-tracking";
+import { io } from "socket.io-client";
+import socketDispatch from "../../services/socketDispatch";
+
+const serverUrl =
+  process.env.NODE_ENV === "development"
+    ? `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`
+    : `${window.location.protocol}//${window.location.hostname}`;
+const ioUrl = serverUrl + "/activities";
+const socket = io(ioUrl, {
+  path: "/activities",
+  // this may not work in the production
+  withCredentials: false,
+  auth: { url: window.location.href },
+});
 
 const SimulationView = () => {
   const { tool, setTool } = useSimulation();
@@ -60,17 +77,33 @@ const SimulationView = () => {
 
 const VisualisationPage = () => {
   const params = useParams();
+  let location = useLocation();
+  const details = {
+    id: location.state.realId, // real mongodb ID
+    name: params.simulationId, // same id as URL
+  };
+
+  const { Track } = useTracking(
+    {},
+    {
+      dispatch: (data) => {
+        socketDispatch(socket, details, data);
+      },
+    }
+  );
 
   return (
     <SimProvider>
-      {/* TODO: deal with multiple stack providers later! */}
-      <ObservationProvider simulationId={params.simulationId}>
-        <DebriefingProvider simulationId={params.simulationId}>
-          <HiveProvider simulationId={params.simulationId}>
-            <SimulationView />
-          </HiveProvider>
-        </DebriefingProvider>
-      </ObservationProvider>
+      <Track>
+        {/* TODO: deal with multiple stack providers later! */}
+        <ObservationProvider simulationId={params.simulationId}>
+          <DebriefingProvider simulationId={params.simulationId}>
+            <HiveProvider simulationId={params.simulationId}>
+              <SimulationView />
+            </HiveProvider>
+          </DebriefingProvider>
+        </ObservationProvider>
+      </Track>
     </SimProvider>
   );
 };
