@@ -37,7 +37,9 @@ const createSocket = async (httpServer) => {
         data.name = data.name;
         data.serverTime = new Date();
         createActivity(data);
-        logger.info(`${data.name}: ${data}`);
+        logger.info(
+          `${data.name} = page:${data.page} - action:${data.action} ${data.element}`
+        );
       });
 
       socket.on("disconnect", () => {
