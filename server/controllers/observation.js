@@ -163,6 +163,44 @@ const deletePhaseNote = async (req, res, next) => {
   }
 };
 
+const updateNoteFavourite = async (req, res, next) => {
+  try {
+    const { observationId, noteId } = req.params;
+    const { favourite } = req.body; // expecting to receive this from the client
+
+    const updatedObs = await observationService.updateNoteFavourite(
+      observationId,
+      noteId,
+      favourite
+    );
+    return res.status(200).json(updatedObs);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(
+        fillErrorObject(500, "Unable to update favourite status of a note", err)
+      );
+  }
+};
+
+const updateNotePerformers = async (req, res, next) => {
+  try {
+    const { observationId, noteId } = req.params;
+    const { performer } = req.body; // expecting to receive this from the client
+
+    const updatedObs = await observationService.updateNotePerformers(
+      observationId,
+      noteId,
+      performer
+    );
+    return res.status(200).json(updatedObs);
+  } catch (err) {
+    return res
+      .status(500)
+      .send(fillErrorObject(500, "Unable to update performers of a note", err));
+  }
+};
+
 module.exports = {
   getObservation,
   recordNote,
@@ -171,4 +209,6 @@ module.exports = {
   recordSimTime,
   syncDeviceTime,
   resetObservation,
+  updateNoteFavourite,
+  updateNotePerformers,
 };

@@ -48,6 +48,7 @@ const addPhaseNote = async (obsId, newData) => {
           timestamp: new Date(timeString),
           message: message,
           phaseKey: formatMessageToKey(message),
+          favourite: false,
         },
       },
     },
@@ -105,6 +106,28 @@ const synchroniseDevice = async (obsId, syncData) => {
   ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
 };
 
+const updateNoteFavourite = async (obsId, noteId, favourite) => {
+  return await Observation.findOneAndUpdate(
+    { _id: obsId, "phases._id": noteId },
+    {
+      $set: {
+        "phases.$.favourite": favourite,
+      },
+    },
+    {
+      new: true,
+    }
+  ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
+};
+
+const updateNotePerformers = async (obsId, noteId, performers) => {
+  return await Observation.findOneAndUpdate(
+    { _id: obsId, "phases._id": noteId },
+    { $set: { "phases.$.performers": performers } },
+    { new: true }
+  ).populate(AUTO_POPULATE_KEY, AUTO_POPULATE_VAL);
+};
+
 module.exports = {
   createWithDevices,
   single,
@@ -114,4 +137,6 @@ module.exports = {
   deleteNote,
   synchroniseDevice,
   resetSyncTime,
+  updateNoteFavourite,
+  updateNotePerformers,
 };

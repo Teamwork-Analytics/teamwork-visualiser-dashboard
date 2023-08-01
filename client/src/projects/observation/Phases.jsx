@@ -11,9 +11,10 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Clock from "react-live-clock";
 import { manualLabels } from ".";
-import { BsXLg } from "react-icons/bs";
+import { BsXLg, BsStar, BsStarFill } from "react-icons/bs";
 import ObservationAPI from "../../services/api/observation";
 import { sortNotesDescending } from ".";
+import { COLOURS } from "../../config/colours";
 
 const Phases = () => {
   const { observation, notes, setNotes } = useObservation();
@@ -44,10 +45,26 @@ const Phases = () => {
     setShowDeleteConfirmationModal(true);
   const [deletingNoteId, setDeletingNoteId] = useState(null);
   const handleDeleteTag = () => {
-    // TODO: delete using Note.jsx function
     deleteNote(deletingNoteId);
     setDeletingNoteId(null);
     handleDeleteConfirmationModalClose();
+  };
+
+  const handleFavourite = (noteId) => {
+    ObservationAPI.updateFavourite(observation._id, noteId, true)
+      .then((res) => {
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
+      })
+      .catch((err) => console.error(err));
+  };
+  const handleUnfavourite = (noteId) => {
+    ObservationAPI.updateFavourite(observation._id, noteId, false)
+      .then((res) => {
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
+      })
+      .catch((err) => console.error(err));
   };
 
   const phaseLabels = manualLabels.phases.map((phase) => phase.label);
@@ -152,6 +169,31 @@ const Phases = () => {
                           {d.message}
                         </Container>
                       </Col>
+                      <Col
+                        xs="auto"
+                        style={{
+                          margin: "auto",
+                          paddingLeft: "5px",
+                          paddingRight: "5px",
+                        }}
+                        x
+                      >
+                        {d.favourite ? (
+                          <BsStarFill
+                            style={{ color: COLOURS.SECONDARY_NURSE_2 }}
+                            onClick={() => {
+                              handleUnfavourite(d._id);
+                            }}
+                          />
+                        ) : (
+                          <BsStar
+                            onClick={() => {
+                              handleFavourite(d._id);
+                            }}
+                          />
+                        )}
+                      </Col>
+
                       <Col
                         xs="auto"
                         style={{

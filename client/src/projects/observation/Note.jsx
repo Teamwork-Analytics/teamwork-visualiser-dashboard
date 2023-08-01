@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
@@ -8,6 +8,7 @@ import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
+import NursePerformBadges from "./visualisationComponents/NursePerformBadges";
 
 const Note = ({ initialValue, data }) => {
   const { observation, setNotes } = useObservation();
@@ -80,6 +81,12 @@ const Note = ({ initialValue, data }) => {
               onBlur={() => saveNote()}
             />
           </Col>
+        </Row>
+        <Row>
+          <NursePerformBadges
+            noteId={data._id}
+            sortNotesDescending={sortNotesDescending}
+          />
         </Row>
       </Form.Group>
     </Form>

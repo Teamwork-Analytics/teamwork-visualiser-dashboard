@@ -99,13 +99,13 @@ const NurseNameBadges = () => {
     <div>
       <EditableBadge
         colour={COLOURS.PRIMARY_NURSE_1}
-        label="PM 1"
+        label="PN 1"
         nurseName={nurseNames.primaryNurse1 || ""}
         onUpdate={(newName) => updateNurseName("primaryNurse1", newName)}
       />
       <EditableBadge
         colour={COLOURS.PRIMARY_NURSE_2}
-        label="PM 2"
+        label="PN 2"
         nurseName={nurseNames.primaryNurse2 || ""}
         onUpdate={(newName) => updateNurseName("primaryNurse2", newName)}
       />
