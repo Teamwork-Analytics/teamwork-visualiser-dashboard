@@ -11,7 +11,7 @@ const SimulationCard = ({
   onClick?: (...args: any[]) => any;
 }) => {
   return (
-    <TACard height={60} width={700} onClick={onClick}>
+    <TACard height={70} width={700} onClick={onClick}>
       <Row style={{ display: "flex", flexDirection: "row" }}>
         <Col>
           <label>{sim.simulationId}</label>
