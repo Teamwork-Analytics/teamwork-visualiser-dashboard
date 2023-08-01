@@ -6,6 +6,7 @@ import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
+import BackToMainButtonLight from "../../components/buttons/BackToMainButtonLight";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
@@ -13,6 +14,7 @@ const ObservationView = () => {
 
   const styles = {
     outer: {
+      position: "relative",
       margin: "0 auto",
       width: "90vw",
       maxWidth: "1440px",
@@ -35,6 +37,9 @@ const ObservationView = () => {
           <br />
           <label>Stop time: {timeString(state.stopTime)}</label>
         </div> */}
+      <div style={{ position: "absolute", top: 0, left: 0, zIndex: "100" }}>
+        <BackToMainButtonLight />
+      </div>
       <h1>Session {simulationId}</h1>
       <hr style={{ marginBottom: "0px" }} />
       <Tabs

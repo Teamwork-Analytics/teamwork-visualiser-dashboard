@@ -2,7 +2,6 @@
  * @file BackButton.tsx
  * @description This file exports styled back button for pages/components.
  */
-import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./BackButton.css";

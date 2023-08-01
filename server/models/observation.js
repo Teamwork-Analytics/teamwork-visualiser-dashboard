@@ -15,6 +15,9 @@ const noteTemplate = {
   timestamp: Date,
   message: String,
   phaseKey: String,
+  favourite: Boolean,
+  noteType: String,
+  performers: [String],
 };
 
 const autoPopulateDevice = function (next) {
@@ -30,7 +33,7 @@ const obsSchema = new mongoose.Schema(
     baselineTime: { type: Date, default: null },
     startTime: { type: Date, default: null },
     stopTime: { type: Date, default: null },
-    phases: [noteTemplate], // i.e., key events
+    phases: [noteTemplate], // phases include actions and key events - 20230728
     actions: [noteTemplate],
     synchronisations: [deviceObs],
     //TODO: add validation that empatica is from the correct project

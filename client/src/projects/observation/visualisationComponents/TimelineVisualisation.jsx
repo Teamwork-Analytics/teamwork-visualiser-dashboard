@@ -13,6 +13,7 @@ import {
   BsCircle,
   BsArrowClockwise,
   BsArrowCounterclockwise,
+  BsStarFill,
 } from "react-icons/bs";
 import { manualLabels } from "../index.js";
 import { COLOURS } from "../../../config/colours.js";
@@ -66,13 +67,11 @@ const isKeyEvent = (label) =>
   manualLabels.phases.some((item) => item.label === label);
 
 const CustomMark = ({ mark }) => {
-  const markStyle = isKeyEvent(mark.label)
-    ? { fontWeight: "bold", fontSize: "1.3em" }
-    : {};
+  const markStyle = { fontWeight: "bold", fontSize: "1.3em" };
 
   return (
     <>
-      {isKeyEvent(mark.label) ? (
+      {mark.favourite || isKeyEvent(mark.label) ? (
         <div style={{ position: "relative", paddingBottom: "-200px" }}>
           <div
             style={{
@@ -86,7 +85,11 @@ const CustomMark = ({ mark }) => {
           >
             <span>{formatDuration(mark.value)}</span>
             <br />
-            <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
+            {mark.favourite ? (
+              <BsStarFill />
+            ) : (
+              <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
+            )}
           </div>
           <span
             style={{
@@ -175,7 +178,9 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
                 paddingRight: "5px",
               }}
             >
-              {isKeyEvent(mark.label) ? (
+              {mark.favourite ? (
+                <BsStarFill size="0.7em" color={COLOURS.SECONDARY_NURSE_2} />
+              ) : isKeyEvent(mark.label) ? (
                 <BsCircleFill size="0.5em" color={COLOURS.KEY_EVENT_PURPLE} />
               ) : (
                 <BsCircle size="0.5em" color={COLOURS.ACTION_ORANGE} />
@@ -221,7 +226,7 @@ const TimelineVisualisation = () => {
       if (isKeyEvent(tag.label)) {
         return tag; // return the tag as is if it is a key event
       } else {
-        return { value: tag.value }; // return the tag without the label if it is not a key event
+        return { value: tag.value, favourite: tag.favourite }; // return the tag without the label if it is not a key event
       }
     });
   };

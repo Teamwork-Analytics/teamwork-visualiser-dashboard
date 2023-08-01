@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Hive from "../hive";
 
 import { useParams } from "react-router-dom";
@@ -68,9 +68,14 @@ const VisualisationView = () => {
 
   return (
     <div style={styles.outer}>
-      <label style={{marginRight:"20px"}}> <Clock format={"h:mm:ss a"} ticking={true} timezone={"Australia/Melbourne"} />
-
-        </label>        
+      <label style={{ marginRight: "20px" }}>
+        {" "}
+        <Clock
+          format={"h:mm:ss a"}
+          ticking={true}
+          timezone={"Australia/Melbourne"}
+        />
+      </label>
       {/* <h3>Session {simulationId}</h3> */}
       {!hasVisualisation ? (
         <div
