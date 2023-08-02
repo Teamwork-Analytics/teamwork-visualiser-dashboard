@@ -8,7 +8,7 @@ from position.IPA_wrapper import IPA_for_front_end
 
 from pathlib import Path
 
-IP_ADDRESS = "49.127.73.167"  # this/local server
+IP_ADDRESS = "49.127.43.80"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
