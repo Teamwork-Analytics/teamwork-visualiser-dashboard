@@ -3,9 +3,7 @@ import { Col, Form, Row } from "react-bootstrap";
 import { sortNotesDescending } from ".";
 import { useObservation } from "./ObservationContext";
 import DateTimePicker from "react-datetime-picker";
-import "react-datetime-picker/dist/DateTimePicker.css";
-import "react-calendar/dist/Calendar.css";
-import "react-clock/dist/Clock.css";
+import "./DateTimePicker.css";
 import NursePerformBadges from "./visualisationComponents/NursePerformBadges";
 import { updateSinglePhase } from "../../utils/observationUtils";
 
@@ -61,7 +59,7 @@ const Note = ({ initialValue, data }) => {
             />
           </Col>
         </Row>
-        <Row>
+        <Row style={{ marginTop: "5px" }}>
           <NursePerformBadges
             noteId={data._id}
             sortNotesDescending={sortNotesDescending}

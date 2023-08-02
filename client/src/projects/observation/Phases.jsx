@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Container, Modal, Row, Col, Button } from "react-bootstrap";
 import Note from "./Note";
 import { useObservation } from "./ObservationContext";

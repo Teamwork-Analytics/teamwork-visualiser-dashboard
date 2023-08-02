@@ -17,6 +17,7 @@ const StyledBadge = styled(Badge)`
     props.selected ? props.colour : "transparent"} !important;
   color: ${(props) => (props.selected ? "white" : props.colour)};
   border: 2px solid ${(props) => props.colour};
+  opacity: ${(props) => (props.selected ? 1 : 0.7)};
 `;
 
 // NurseBadge component represents an individual nurse as a clickable badge.
