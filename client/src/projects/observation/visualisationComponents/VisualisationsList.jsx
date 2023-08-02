@@ -126,7 +126,9 @@ const bottomVisualisations = (timeRange, showPreviewModal) => [
   {
     eventKey: "wardMap",
     title: "Ward Map",
-    component: () => <HiveView timeRange={timeRange} showModal={showPreviewModal} />,
+    component: () => (
+      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
+    ),
     info: () => (
       <div>
         Each hexagon represents a position of a student. The colour-filled

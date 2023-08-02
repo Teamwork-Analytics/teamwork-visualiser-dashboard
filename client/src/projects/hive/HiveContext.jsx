@@ -16,21 +16,22 @@ function HiveProvider({ simulationId, children }) {
     phase: [0, 100],
     isPositionOnly: false,
   });
-  const [markers, setMarkers] = React.useState([]);
+  const [isHiveReady, setIsReady] = React.useState(false);
   useEffect(() => {
-    HiveAPI.phases(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setMarkers(res.data);
-      }
-    });
+    HiveAPI.isDataReady(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setIsReady(true);
+        }
+      })
+      .catch((e) => {});
   }, [simulationId]);
 
   const value = {
     hiveState,
     hiveSetState,
-    markers,
-    setMarkers,
+    isHiveReady,
   };
 
   return <HiveContext.Provider value={value}>{children}</HiveContext.Provider>;

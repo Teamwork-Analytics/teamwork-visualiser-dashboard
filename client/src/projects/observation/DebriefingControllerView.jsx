@@ -12,6 +12,7 @@ import {
 import { FaCheckSquare, FaSquare } from "react-icons/fa";
 import { BsInfoCircle } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
+import { useObservation } from "./ObservationContext";
 import { socket } from "./socket";
 import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
 import { useParams } from "react-router-dom";
@@ -23,6 +24,7 @@ import {
 import { prepareData } from "../../utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
+import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
 
 const debriefStyles = {
   activeTab: {
@@ -62,6 +64,7 @@ const debriefStyles = {
 const DebriefingControllerView = () => {
   const { simulationId } = useParams();
   const { range } = useTimeline();
+  const { isDataReady } = useObservation();
 
   // send selected Vis
   const handleConfirmProjection = () => {
@@ -283,76 +286,88 @@ const DebriefingControllerView = () => {
                 marginBottom: "5px",
               }}
             >
-              {bottomVisualisations(range, showPreviewModal).map((tab, index) => (
-                <>
-                  <Card style={{ minWidth: "25rem", position: "relative" }}>
-                    <BsInfoCircle
-                      style={{
-                        zIndex: "100",
-                        position: "absolute",
-                        top: "5",
-                        right: "5",
-                      }}
-                      onClick={() => {
-                        handleInfoShow(tab.title, tab.info());
-                      }}
-                    />
-                    <Container style={{ margin: "5px" }}>
-                      {tab.component()}
-                    </Container>
-                    <Card.Body>
-                      <Card.Title
-                        style={{
-                          textAlign: "start",
-                          marginTop: "15px",
-                          marginBottom: "15px",
-                        }}
-                      >
-                        {tab.title}
-                      </Card.Title>
+              {isDataReady ? (
+                bottomVisualisations(range, showPreviewModal).map(
+                  (tab, index) => (
+                    <>
+                      <Card style={{ minWidth: "25rem", position: "relative" }}>
+                        <BsInfoCircle
+                          style={{
+                            zIndex: "100",
+                            position: "absolute",
+                            top: "5",
+                            right: "5",
+                          }}
+                          onClick={() => {
+                            handleInfoShow(tab.title, tab.info());
+                          }}
+                        />
+                        <Container style={{ margin: "5px" }}>
+                          {tab.component()}
+                        </Container>
+                        <Card.Body>
+                          <Card.Title
+                            style={{
+                              textAlign: "start",
+                              marginTop: "15px",
+                              marginBottom: "15px",
+                            }}
+                          >
+                            {tab.title}
+                          </Card.Title>
 
-                      <Button
-                        variant={
-                          selectedVis.some((vis) => vis.id === tab.eventKey)
-                            ? "danger"
-                            : "success"
-                        }
-                        style={{
-                          ...debriefStyles.addVisButton,
+                          <Button
+                            variant={
+                              selectedVis.some((vis) => vis.id === tab.eventKey)
+                                ? "danger"
+                                : "success"
+                            }
+                            style={{
+                              ...debriefStyles.addVisButton,
+                            }}
+                            onClick={() => handleAddVis(tab.eventKey)}
+                          >
+                            {selectedVis.some(
+                              (vis) => vis.id === tab.eventKey
+                            ) ? (
+                              <>
+                                <FaCheckSquare
+                                  style={{ marginBottom: "2px" }}
+                                />{" "}
+                                Remove from preview
+                              </>
+                            ) : (
+                              <>
+                                <FaSquare style={{ marginBottom: "2px" }} /> Add
+                                to preview
+                              </>
+                            )}
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                      <div
+                        key={index}
+                        onClick={() => {
+                          setBottomActiveKey(tab.eventKey);
                         }}
-                        onClick={() => handleAddVis(tab.eventKey)}
-                      >
-                        {selectedVis.some((vis) => vis.id === tab.eventKey) ? (
-                          <>
-                            <FaCheckSquare style={{ marginBottom: "2px" }} />{" "}
-                            Remove from preview
-                          </>
-                        ) : (
-                          <>
-                            <FaSquare style={{ marginBottom: "2px" }} /> Add to
-                            preview
-                          </>
-                        )}
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setBottomActiveKey(tab.eventKey);
-                    }}
-                    style={{
-                      display: "inline-block",
-                      fontSize: "14px",
-                      color:
-                        bottomActiveKey === tab.eventKey
-                          ? "white"
-                          : "rgb(33, 37, 41)",
-                      marginRight: "5px",
-                    }}
-                  ></div>
-                </>
-              ))}
+                        style={{
+                          display: "inline-block",
+                          fontSize: "14px",
+                          color:
+                            bottomActiveKey === tab.eventKey
+                              ? "white"
+                              : "rgb(33, 37, 41)",
+                          marginRight: "5px",
+                        }}
+                      ></div>
+                    </>
+                  )
+                )
+              ) : (
+                <Container style={{ display: "flex", minHeight: "30vh" }}>
+                  <ToolInPrep />
+                </Container>
+              )}
             </div>
           </Container>
         </Col>

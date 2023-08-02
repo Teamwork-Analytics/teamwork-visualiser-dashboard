@@ -2,10 +2,17 @@ import pandas as pd
 import numpy as np
 
 
-CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2,
-                     "escalation": 3, "questioning": 4, "responding": 5, "acknowledging": 6}
-ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out",
-                     "escalation", "questioning", "responding", "acknowledging"]
+CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4, "responding": 5, "acknowledging": 6}
+ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding", "acknowledging"]
+# updated on 7/17/2023, because the responding and acknowledging os merged as one single acknowledging
+CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4,
+                       "acknowledging": 5}
+ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning",
+                     "acknowledging"]
+# CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4,
+#                      "responding": 5, "acknowledging": 6}
+# ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding",
+#                      "acknowledging"]
 
 
 def to_binary(x):
@@ -53,6 +60,18 @@ def adjacent_matrix_to_json(adjacent_matrix: np.ndarray):
             result_json[ID_TO_CODE_MAPPER[i]
                         ][ID_TO_CODE_MAPPER[j]] = d2_list[i][j]
     return result_json
+
+def __merging_codes(data_df: pd.DataFrame, codes_to_merge: list, merge_to_column: str):
+    merged_series = pd.Series(data_df[codes_to_merge[0]])
+    for i in range(1, len(codes_to_merge)):
+        merged_series = merged_series | data_df[codes_to_merge[i]]
+    data_df[merge_to_column] = merged_series
+    for a_code in codes_to_merge:
+        if a_code == merge_to_column:
+            continue
+        data_df.drop([a_code], axis=1, inplace=True)
+
+
 
 
 def calculate_ena_metric(data_df: pd.DataFrame, stanza_window_size: int):

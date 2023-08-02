@@ -8,6 +8,8 @@
 import React, { useState } from "react";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
+import SimulationSessionAPI from "../../services/api/simulations";
+import { toast } from "react-hot-toast";
 
 const ObservationContext = React.createContext();
 
@@ -31,6 +33,18 @@ function ObservationProvider({ simulationId, children }) {
     });
   }, [simulationId]);
 
+  const [isDataReady, setIsDataReady] = React.useState(false);
+  React.useEffect(() => {
+    SimulationSessionAPI.isReady(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setIsDataReady(true);
+        }
+      })
+      .catch((e) => {});
+  }, [simulationId]);
+
   const value = {
     notes,
     setNotes,
@@ -38,6 +52,7 @@ function ObservationProvider({ simulationId, children }) {
     setObservation,
     obsStartTime,
     obsEndTime,
+    isDataReady,
   };
   return (
     <ObservationContext.Provider value={value}>

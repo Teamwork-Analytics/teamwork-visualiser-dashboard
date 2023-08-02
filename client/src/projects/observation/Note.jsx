@@ -54,6 +54,7 @@ const Note = ({ initialValue, data }) => {
               placeholder={data.message}
               onChange={(e) => setValue(e.target.value)}
               value={value}
+              autofocus
               onBlur={() => saveNote()}
               autoFocus // default changing note message
             />

@@ -2,13 +2,11 @@
 
 import { io } from "socket.io-client";
 // const IP_ADDRESS = "49.127.8.22";
-const IP_ADDRESS = "49.127.43.80";
+const IP_ADDRESS = process.env.REACT_APP_EXPRESS_IP;
 // "192.168.20.29";
 // "undefined" means the URL will be computed from the `window.location` object
 const URL =
-  process.env.NODE_ENV === "production"
-    ? undefined
-    : `http://${IP_ADDRESS}:3000`;
+  process.env.NODE_ENV === "production" ? undefined : `${IP_ADDRESS}:3000`;
 
 // when client and server at the same domain
 export const socket = io(URL);
