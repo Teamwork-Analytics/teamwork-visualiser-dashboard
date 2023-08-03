@@ -7,7 +7,7 @@ const createSocket = async (httpServer) => {
     cors: {
       origin:
         process.env.NODE_ENV === "development"
-          ? `http://${process.env.IP}:3000`
+          ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
           : process.env.CURRENT_URL,
       methods: ["GET", "POST"],
     },

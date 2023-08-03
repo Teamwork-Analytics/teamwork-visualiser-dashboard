@@ -4,16 +4,7 @@ import { processAllVisualisations } from "../../services/eureka";
 
 const VisualisationControlView = () => {
   const { simulationId } = useParams();
-  const handleClick = () => {
-    processAllVisualisations(simulationId);
-  };
-  return (
-    <div>
-      <Button variant="secondary" value={"baselineTime"} onClick={handleClick}>
-        Generate All Visualisations
-      </Button>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default VisualisationControlView;

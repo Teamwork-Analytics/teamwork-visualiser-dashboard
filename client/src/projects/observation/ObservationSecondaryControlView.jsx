@@ -5,10 +5,13 @@ import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import ObservationAPI from "../../services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
+import { processAllVisualisations } from "../../services/eureka";
+import { useParams } from "react-router-dom";
 
 const ObservationSecondaryControlView = () => {
   const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
+  const { simulationId } = useParams();
 
   useEffect(() => {
     setDevices(observation.synchronisations);
@@ -37,8 +40,20 @@ const ObservationSecondaryControlView = () => {
     setDevices(tempDevice);
   };
 
+  const handleClick = async () => {
+    console.log(simulationId);
+    try {
+      await processAllVisualisations(simulationId);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
+      <Button variant="secondary" value={"baselineTime"} onClick={handleClick}>
+        Generate All Visualisations
+      </Button>
+
       <h1>Synchronisation</h1>
       <hr />
 
@@ -78,7 +93,6 @@ const ObservationSecondaryControlView = () => {
         )}
       </Container>
       <FullResetButton />
-
     </div>
   );
 };

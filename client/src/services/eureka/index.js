@@ -95,7 +95,7 @@ const stopDebriefAudio = () => {
   return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
 };
 
-const processAllVisualisations = (simulationId) => {
+const processAllVisualisations = async (simulationId) => {
   return visualisationsApi.get(`/audio-pos/${simulationId}`);
 };
 
