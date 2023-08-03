@@ -5,7 +5,7 @@ import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import ObservationAPI from "../../services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
-import { processAllVisualisations } from "../../services/eureka";
+import { processAllVisualisations } from "../../services/py-server";
 import { useParams } from "react-router-dom";
 
 const ObservationSecondaryControlView = () => {

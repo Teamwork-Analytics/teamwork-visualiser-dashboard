@@ -25,7 +25,7 @@ communicationAPI.interceptors.request.use(
 communicationAPI.interceptors.response.use(
   function (response) {
     if (response.status === 401) {
-      toast("You are not authorised!");
+      toast.error("You are not authorised!");
     }
     return response;
   },
@@ -40,7 +40,7 @@ communicationAPI.interceptors.response.use(
 
     // toast.error(`${message} (${error})`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
     // Do something with response error
-    return Promise.reject(message);
+    // return Promise.reject(message);
   }
 );
 
@@ -62,4 +62,9 @@ const getTeamworkBarchart = async (body) => {
   );
 };
 
-export { getSNAdata, getENAdata, getTeamworkBarchart };
+
+const processAllVisualisations = async (simulationId) => {
+  return await communicationAPI.get(`/generate_viz?sessionId=${simulationId}`);
+};
+
+export { getSNAdata, getENAdata, getTeamworkBarchart, processAllVisualisations };

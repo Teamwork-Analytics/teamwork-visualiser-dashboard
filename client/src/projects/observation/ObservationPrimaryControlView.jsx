@@ -37,16 +37,21 @@ const ObservationPrimaryControlView = () => {
         toast.success(message);
       }
     });
-
-    if (opt === "baselineTime") {
-      await startBaselineAll(simulationId);
-    } else if (opt === "startTime") {
-      await startAll(simulationId);
-    } else if (opt === "stopTime") {
-      await stopAll();
-    } else {
-      return;
+    try{
+      if (opt === "baselineTime") {
+        await startBaselineAll(simulationId);
+      } else if (opt === "startTime") {
+        await startAll(simulationId);
+      } else if (opt === "stopTime") {
+        await stopAll();
+      } else {
+        return;
+      }
     }
+    catch(err){
+      toast.error(err)
+    }
+    
   };
 
   return (

@@ -5,16 +5,34 @@ import pandas as pd
 from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
+from data_cleaner.main import call_visualization
 
 from pathlib import Path
 
-IP_ADDRESS = "49.127.28.11"  # this/local server
+IP_ADDRESS = "49.127.77.235"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-DIRECTORY = Path("../server/saved_data/")
+DIRECTORY = Path("C:\\develop\\saved_data")
 
 CORS(app)
+
+@app.route("/generate_viz", methods=['GET'])
+def call_viz():
+    """
+    This function is to run a script to clean data and generates visualisation
+    """
+    args = request.args
+    try:
+        simulationId = args["sessionId"]
+        call_visualization(simulationId)
+    except Exception:
+        error_message = "Error happened when extracting GET params: maybe not all arguments are provided. There could be an error with call_visualization method. Check terminal."
+        print(error_message)
+        return error_message, 500
+    
+    return "Visualisations have been generated.",200
+
 
 
 @app.route("/get_teamwork_prio_data", methods=['GET'])
