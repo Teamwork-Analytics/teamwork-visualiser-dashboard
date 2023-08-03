@@ -7,7 +7,7 @@ const createSocket = async (httpServer) => {
     cors: {
       origin:
         process.env.NODE_ENV === "development"
-          ? `http://${process.env.IP}:3000`
+          ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
           : process.env.CURRENT_URL,
       methods: ["GET", "POST"],
     },
@@ -49,6 +49,24 @@ const createSocket = async (httpServer) => {
       logger.error("a simulation has connected, but no simulation id found");
       logger.error(err);
     }
+  });
+
+  const dispIo = new Server(httpServer, {
+    cors: {
+      origin:
+        process.env.NODE_ENV === "development"
+          ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
+          : process.env.CURRENT_URL,
+      methods: ["GET", "POST"],
+    },
+    path: "/display",
+  });
+
+  dispIo.of("/display").on("connection", (socket) => {
+    logger.info("a display has connected");
+    socket.on("disconnect", () => {
+      logger.info("a display has disconnected");
+    });
   });
 };
 
