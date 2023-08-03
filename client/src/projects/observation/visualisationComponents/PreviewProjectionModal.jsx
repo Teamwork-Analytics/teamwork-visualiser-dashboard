@@ -17,6 +17,7 @@ import { Modal, Button } from "react-bootstrap";
 
 import DisplayViz from "../../../components/displays/DisplayViz";
 import { useTimeline } from "./TimelineContext";
+import { useTracking } from "react-tracking";
 
 const PreviewProjectionModal = ({
   showPreviewModal,
@@ -24,6 +25,7 @@ const PreviewProjectionModal = ({
   handleConfirmProjection,
   selectedVis,
 }) => {
+  const { Track, trackEvent } = useTracking({ page: "Debriefing" });
   // Get the current time range from the TimelineContext
   const { range } = useTimeline();
 
@@ -34,40 +36,55 @@ const PreviewProjectionModal = ({
       onHide={handleClosePreviewModal}
       fullscreen={true}
     >
-      <Modal.Header>
-        <Modal.Title>Preview selected visualisations</Modal.Title>
-        <div>
-          <Button
-            variant="warning"
-            style={{ fontSize: "12px", margin: "2px" }}
-            onClick={handleClosePreviewModal}
+      <Track>
+        <Modal.Header>
+          <Modal.Title>Preview selected visualisations</Modal.Title>
+          <div>
+            <Button
+              variant="warning"
+              style={{ fontSize: "12px", margin: "2px" }}
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "editSelectionInPreviewModal",
+                });
+                handleClosePreviewModal();
+              }}
+            >
+              Edit selection
+            </Button>
+            <Button
+              variant="success"
+              style={{ fontSize: "12px", margin: "2px" }}
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "confirmProjectionInPreviewModal",
+                  data: selectedVis.map((vis) => vis.name),
+                });
+                handleConfirmProjection();
+              }}
+            >
+              Send to screen
+            </Button>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          <div
+            style={{
+              alignContent: "center",
+              justifyContent: "center",
+              width: "100%",
+              height: "100%",
+              maxHeight: "90vh",
+              flexWrap: "wrap",
+            }}
           >
-            Edit selection
-          </Button>
-          <Button
-            variant="success"
-            style={{ fontSize: "12px", margin: "2px" }}
-            onClick={handleConfirmProjection}
-          >
-            Send to screen
-          </Button>
-        </div>
-      </Modal.Header>
-      <Modal.Body>
-        <div
-          style={{
-            alignContent: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: "100%",
-            maxHeight: "90vh",
-            flexWrap: "wrap",
-          }}
-        >
-          {/* Render the selected visualisations with the current time range */}
-          <DisplayViz selectedVis={selectedVis} range={range} />
-        </div>
-      </Modal.Body>
+            {/* Render the selected visualisations with the current time range */}
+            <DisplayViz selectedVis={selectedVis} range={range} />
+          </div>
+        </Modal.Body>
+      </Track>
     </Modal>
   );
 };

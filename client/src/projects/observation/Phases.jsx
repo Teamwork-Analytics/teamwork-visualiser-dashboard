@@ -15,8 +15,10 @@ import { BsXLg, BsStar, BsStarFill } from "react-icons/bs";
 import ObservationAPI from "../../services/api/observation";
 import { sortNotesDescending } from ".";
 import { COLOURS } from "../../config/colours";
+import { useTracking } from "react-tracking";
 
 const Phases = () => {
+  const { Track, trackEvent } = useTracking({ page: "Observation" });
   const { observation, notes, setNotes } = useObservation();
 
   // TODO: migrate to somewhere else or back to Note.jsx after demo
@@ -70,202 +72,250 @@ const Phases = () => {
   const phaseLabels = manualLabels.phases.map((phase) => phase.label);
 
   return (
-    <Container className="mt-3" style={{ padding: "0px" }}>
-      <div style={{ fontSize: "12px" }}>
-        <Clock
-          format={"ddd D MMM YYYY, h:mm:ss a"}
-          ticking={true}
-          timezone={"Australia/Melbourne"}
-        />
-      </div>
+    <Track>
+      <Container className="mt-3" style={{ padding: "0px" }}>
+        <div style={{ fontSize: "12px" }}>
+          <Clock
+            format={"ddd D MMM YYYY, h:mm:ss a"}
+            ticking={true}
+            timezone={"Australia/Melbourne"}
+          />
+        </div>
 
-      <Timeline
-        style={{
-          paddingLeft: "0px",
-          paddingRight: "0px",
-          maxWidth: "50vw",
-          margin: "auto",
-        }}
-      >
-        {notes.length === 0
-          ? null
-          : notes.map((d, i) => {
-              const keyString = `note-${i}`;
-              let date = new Date(d.timestamp);
-              let timeString = date.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: true,
-              });
+        <Timeline
+          style={{
+            paddingLeft: "0px",
+            paddingRight: "0px",
+            maxWidth: "50vw",
+            margin: "auto",
+          }}
+        >
+          {notes.length === 0
+            ? null
+            : notes.map((d, i) => {
+                const keyString = `note-${i}`;
+                let date = new Date(d.timestamp);
+                let timeString = date.toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: true,
+                });
 
-              // calculate time difference for distance between notes
-              let timeDifferenceInPx;
-              if (i < notes.length - 1) {
-                const nextDate = new Date(notes[i + 1].timestamp);
-                const timeDifferenceInSeconds = Math.abs(
-                  (nextDate - date) / 1000
-                );
-                const scaleFactor = 1; // 1 second = `scaleFactor` px
-                timeDifferenceInPx = timeDifferenceInSeconds * scaleFactor;
-              }
+                // calculate time difference for distance between notes
+                let timeDifferenceInPx;
+                if (i < notes.length - 1) {
+                  const nextDate = new Date(notes[i + 1].timestamp);
+                  const timeDifferenceInSeconds = Math.abs(
+                    (nextDate - date) / 1000
+                  );
+                  const scaleFactor = 1; // 1 second = `scaleFactor` px
+                  timeDifferenceInPx = timeDifferenceInSeconds * scaleFactor;
+                }
 
-              return (
-                <TimelineItem key={keyString} style={{ minHeight: "auto" }}>
-                  <TimelineOppositeContent
-                    color="grey"
-                    style={{ fontSize: "12px", maxWidth: "120px" }}
-                  >
-                    {timeString}
-                  </TimelineOppositeContent>
-                  <TimelineSeparator>
-                    <TimelineDot
-                      color={
-                        phaseLabels.includes(d.message)
-                          ? "secondary"
-                          : "warning"
-                      }
-                      variant={
-                        phaseLabels.includes(d.message) ? "filled" : "outlined"
-                      }
-                    />
-                    <TimelineConnector
-                      style={{
-                        // for length proportion to time difference
-                        minHeight: timeDifferenceInPx + 2,
-                      }}
-                    />
-                  </TimelineSeparator>
-                  <TimelineContent>
-                    <Row style={{ marginRight: "0", marginLeft: "0" }}>
-                      <Col
+                return (
+                  <TimelineItem key={keyString} style={{ minHeight: "auto" }}>
+                    <TimelineOppositeContent
+                      color="grey"
+                      style={{ fontSize: "12px", maxWidth: "120px" }}
+                    >
+                      {timeString}
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot
+                        color={
+                          phaseLabels.includes(d.message)
+                            ? "secondary"
+                            : "warning"
+                        }
+                        variant={
+                          phaseLabels.includes(d.message)
+                            ? "filled"
+                            : "outlined"
+                        }
+                      />
+                      <TimelineConnector
                         style={{
-                          margin: "auto",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
+                          // for length proportion to time difference
+                          minHeight: timeDifferenceInPx + 2,
                         }}
-                      >
-                        <Container
+                      />
+                    </TimelineSeparator>
+                    <TimelineContent>
+                      <Row style={{ marginRight: "0", marginLeft: "0" }}>
+                        <Col
                           style={{
-                            backgroundColor: "white",
-                            color: "black",
-                            padding: "2px",
-                            textAlign: "center",
-                            fontSize: "14px",
-                            borderRadius: "3px",
-                          }}
-                          onClick={() => {
-                            setSelectedNote(
-                              <Note
-                                id={keyString}
-                                initialValue={d.message}
-                                key={d._id}
-                                data={d}
-                              />
-                            );
-                            handleEditModalShow();
+                            margin: "auto",
+                            paddingLeft: "5px",
+                            paddingRight: "5px",
                           }}
                         >
-                          {d.message}
-                        </Container>
-                      </Col>
-                      <Col
-                        xs="auto"
-                        style={{
-                          margin: "auto",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                        }}
-                        x
-                      >
-                        {d.favourite ? (
-                          <BsStarFill
-                            style={{ color: COLOURS.SECONDARY_NURSE_2 }}
-                            onClick={() => {
-                              handleUnfavourite(d._id);
+                          <Container
+                            style={{
+                              backgroundColor: "white",
+                              color: "black",
+                              padding: "2px",
+                              textAlign: "center",
+                              fontSize: "14px",
+                              borderRadius: "3px",
                             }}
-                          />
-                        ) : (
-                          <BsStar
                             onClick={() => {
-                              handleFavourite(d._id);
+                              trackEvent({
+                                action: "click",
+                                element: "editNoteOnTimeline",
+                                data: d._id + "-" + d.message,
+                              });
+                              setSelectedNote(
+                                <Note
+                                  id={keyString}
+                                  initialValue={d.message}
+                                  key={d._id}
+                                  data={d}
+                                />
+                              );
+                              handleEditModalShow();
                             }}
-                          />
-                        )}
-                      </Col>
-
-                      <Col
-                        xs="auto"
-                        style={{
-                          margin: "auto",
-                          paddingLeft: "5px",
-                          paddingRight: "5px",
-                        }}
-                      >
-                        <BsXLg
-                          onClick={() => {
-                            setDeletingNoteId(d._id);
-                            handleDeleteConfirmationModalShow();
+                          >
+                            {d.message}
+                          </Container>
+                        </Col>
+                        <Col
+                          xs="auto"
+                          style={{
+                            margin: "auto",
+                            paddingLeft: "5px",
+                            paddingRight: "5px",
                           }}
-                        />
-                      </Col>
-                    </Row>
-                  </TimelineContent>
-                </TimelineItem>
-              );
-            })}
-        {/* Starting time */}
-        {/* // TODO: grab simulation start time */}
-        <TimelineItem>
-          <TimelineOppositeContent
-            style={{ minWidth: "120px", maxWidth: "120px" }}
-          />
+                          x
+                        >
+                          {d.favourite ? (
+                            <BsStarFill
+                              style={{ color: COLOURS.SECONDARY_NURSE_2 }}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "unfavouriteNoteOnTimeline",
+                                  data: d._id + "-" + d.message,
+                                });
+                                handleUnfavourite(d._id);
+                              }}
+                            />
+                          ) : (
+                            <BsStar
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "favouriteNoteOnTimeline",
+                                  data: d._id + "-" + d.message,
+                                });
+                                handleFavourite(d._id);
+                              }}
+                            />
+                          )}
+                        </Col>
 
-          <TimelineSeparator>
-            <TimelineDot />
-          </TimelineSeparator>
-          <TimelineContent style={{ fontSize: "12px" }}>
-            Simulation started
-          </TimelineContent>
-        </TimelineItem>
-      </Timeline>
+                        <Col
+                          xs="auto"
+                          style={{
+                            margin: "auto",
+                            paddingLeft: "5px",
+                            paddingRight: "5px",
+                          }}
+                        >
+                          <BsXLg
+                            onClick={() => {
+                              trackEvent({
+                                action: "click",
+                                element: "deleteNoteOnTimeline",
+                                data: d._id + "-" + d.message,
+                              });
+                              setDeletingNoteId(d._id);
+                              handleDeleteConfirmationModalShow();
+                            }}
+                          />
+                        </Col>
+                      </Row>
+                    </TimelineContent>
+                  </TimelineItem>
+                );
+              })}
+          {/* Starting time */}
+          {/* // TODO: grab simulation start time */}
+          <TimelineItem>
+            <TimelineOppositeContent
+              style={{ minWidth: "120px", maxWidth: "120px" }}
+            />
 
-      <Modal show={showEditModal} onHide={handleEditModalClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit observation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body> {selectedNote}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleEditModalClose}>
-            Save changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            <TimelineSeparator>
+              <TimelineDot />
+            </TimelineSeparator>
+            <TimelineContent style={{ fontSize: "12px" }}>
+              Simulation started
+            </TimelineContent>
+          </TimelineItem>
+        </Timeline>
 
-      <Modal
-        show={showDeleteConfirmationModal}
-        onHide={handleDeleteConfirmationModalClose}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Confirmation</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure you want to delete this tag? This action cannot be
-          undone.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={handleDeleteConfirmationModalClose}
-          >
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDeleteTag}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Container>
+        <Modal show={showEditModal} onHide={handleEditModalClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Edit observation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body> {selectedNote}</Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="primary"
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "saveButtonCloseEditNoteModal",
+                });
+                handleEditModalClose();
+              }}
+            >
+              Save changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={showDeleteConfirmationModal}
+          onHide={handleDeleteConfirmationModalClose}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete this tag? This action cannot be
+            undone.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "cancelDeleteNoteInModal",
+                });
+                handleDeleteConfirmationModalClose();
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "confirmDeleteNoteInModal",
+                });
+                handleDeleteTag();
+              }}
+            >
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </Container>
+    </Track>
   );
 };
 

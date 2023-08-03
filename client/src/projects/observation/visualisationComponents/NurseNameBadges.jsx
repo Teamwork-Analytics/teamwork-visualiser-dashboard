@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { COLOURS } from "../../../config/colours";
 import { useNurseName } from "./NurseNameContext";
+import { useTracking } from "react-tracking";
 
 // override bootstrap badge important style
 const StyledBadge = styled(Badge)`
@@ -25,6 +26,7 @@ const StyledInput = styled.input`
 
 // The badge component that allows editing its text.
 const EditableBadge = ({ colour, label, nurseName, onUpdate }) => {
+  const { Track, trackEvent } = useTracking({ page: "NurseNameBadges" });
   const [name, setName] = useState(nurseName);
 
   // Add this useEffect to update the name state when nurseName prop updates
@@ -51,20 +53,33 @@ const EditableBadge = ({ colour, label, nurseName, onUpdate }) => {
   };
 
   return (
-    <StyledBadge colour={colour} style={{ fontSize: "12px", margin: "2px" }}>
-      {label}:{" "}
-      {isEditing ? (
-        <StyledInput
-          value={name}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          autoFocus
-        />
-      ) : (
-        <span onClick={handleFocus}>{name || "Name"}</span>
-      )}
-    </StyledBadge>
+    <Track>
+      <StyledBadge colour={colour} style={{ fontSize: "12px", margin: "2px" }}>
+        {label}:{" "}
+        {isEditing ? (
+          <StyledInput
+            value={name}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            autoFocus
+          />
+        ) : (
+          <span
+            onClick={() => {
+              trackEvent({
+                action: "click",
+                element: "nurseNameBadge",
+                data: label,
+              });
+              handleFocus();
+            }}
+          >
+            {name || "Name"}
+          </span>
+        )}
+      </StyledBadge>
+    </Track>
   );
 };
 

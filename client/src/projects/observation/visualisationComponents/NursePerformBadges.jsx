@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import { COLOURS } from "../../../config/colours";
 import ObservationAPI from "../../../services/api/observation";
 import { useObservation } from "../ObservationContext";
+import { useTracking } from "react-tracking";
 
 // StyledBadge component applies different styles depending on whether the badge is selected or not.
 const StyledBadge = styled(Badge)`
@@ -36,6 +37,7 @@ const NurseBadge = ({ colour, label, onClick, selected }) => {
 
 // NursePerformBadges component handles the display of badges for each nurse and manages the selection/deselection of nurses.
 const NursePerformBadges = ({ noteId, sortNotesDescending }) => {
+  const { Track, trackEvent } = useTracking({ page: "Observation" });
   const { observation, setNotes } = useObservation();
 
   // Find the note in the observation
@@ -73,26 +75,35 @@ const NursePerformBadges = ({ noteId, sortNotesDescending }) => {
   };
 
   return (
-    <Row>
-      <Col xs="auto">Performers: </Col>
-      <Col>
-        <div>
-          {["PN 1", "PN 2", "SN 1", "SN 2"].map((nurse) => (
-            <NurseBadge
-              key={nurse}
-              colour={
-                nurse.includes("PN")
-                  ? COLOURS[`PRIMARY_NURSE_${nurse.split(" ")[1]}`]
-                  : COLOURS[`SECONDARY_NURSE_${nurse.split(" ")[1]}`]
-              }
-              label={nurse}
-              onClick={() => handleClick(nurse)}
-              selected={note?.performers?.includes(nurse)}
-            />
-          ))}
-        </div>
-      </Col>
-    </Row>
+    <Track>
+      <Row>
+        <Col xs="auto">Performers: </Col>
+        <Col>
+          <div>
+            {["PN 1", "PN 2", "SN 1", "SN 2"].map((nurse) => (
+              <NurseBadge
+                key={nurse}
+                colour={
+                  nurse.includes("PN")
+                    ? COLOURS[`PRIMARY_NURSE_${nurse.split(" ")[1]}`]
+                    : COLOURS[`SECONDARY_NURSE_${nurse.split(" ")[1]}`]
+                }
+                label={nurse}
+                onClick={() => {
+                  trackEvent({
+                    action: "click",
+                    element: "addPerformerBadge",
+                    data: nurse,
+                  });
+                  handleClick(nurse);
+                }}
+                selected={note?.performers?.includes(nurse)}
+              />
+            ))}
+          </div>
+        </Col>
+      </Row>
+    </Track>
   );
 };
 
