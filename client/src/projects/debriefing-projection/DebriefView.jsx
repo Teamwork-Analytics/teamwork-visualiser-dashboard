@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { socket } from "./socket";
+import { taggingSocket } from "./socket";
 import ConnectionState from "./socketComponents/ConnectionState";
 import ConnectionManager from "./socketComponents/ConnectionManager";
 import DisplayViz from "../../components/displays/DisplayViz";
@@ -16,7 +16,7 @@ import { unpackData } from "../../utils/socketUtils";
 import { useParams } from "react-router-dom";
 
 const DebriefView = () => {
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isConnected, setIsConnected] = useState(taggingSocket.connected);
   const [dispList, setDispList] = useState([]);
   const [range, setRange] = useState([0, 0]);
 
@@ -26,12 +26,12 @@ const DebriefView = () => {
   useEffect(() => {
     const onConnect = () => {
       setIsConnected(true);
-      console.log(`Connected to ${socket.id}`);
+      console.log(`Connected to ${taggingSocket.id}`);
     };
 
     const onDisconnect = () => {
       setIsConnected(false);
-      console.log(`Disconnected from ${socket.id}`);
+      console.log(`Disconnected from ${taggingSocket.id}`);
     };
 
     const onUpdateList = (data) => {
@@ -46,15 +46,15 @@ const DebriefView = () => {
       setDispList(parsedList); // WARNING: abrupt mutation
     };
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("receive-disp-list", onUpdateList);
+    taggingSocket.on("connect", onConnect);
+    taggingSocket.on("disconnect", onDisconnect);
+    taggingSocket.on("receive-disp-list", onUpdateList);
 
     // Cleanup function for useEffect
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("receive-disp-list", onUpdateList);
+      taggingSocket.off("connect", onConnect);
+      taggingSocket.off("disconnect", onDisconnect);
+      taggingSocket.off("receive-disp-list", onUpdateList);
     };
   }, []);
 

@@ -11,26 +11,16 @@ const createSocket = async (httpServer) => {
           : process.env.CURRENT_URL,
       methods: ["GET", "POST"],
     },
-    path: "/activities",
   });
 
-  // share the session with Express server
-  //   io.of("/activities").use(sharedsession(session));
+  // Namespace for activities
+  const activitiesNamespace = io.of("/activities");
 
   // on any connections:
-  io.of("/activities").on("connection", (socket) => {
-    //FIXME: instead of using "on connection", trigger it based on the login.
+  activitiesNamespace.on("connection", (socket) => {
     try {
       const simURLlocation = socket.handshake.auth.url;
       logger.info(`${simURLlocation} has connected`);
-
-      // Initialise
-      //   socket.on("simulation", (simData) => {
-      //     console.log(simData);
-      //     const simName = simData.name;
-      //     const simId = simData.id;
-      //     logger.info(`${simName} (id: ${simId}) has connected`);
-      //   });
 
       socket.onAny((event, data) => {
         data.simulationId = data.id;
@@ -51,23 +41,26 @@ const createSocket = async (httpServer) => {
     }
   });
 
-  // const dispIo = new Server(httpServer, {
-  //   cors: {
-  //     origin:
-  //       process.env.NODE_ENV === "development"
-  //         ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
-  //         : process.env.CURRENT_URL,
-  //     methods: ["GET", "POST"],
-  //   },
-  //   path: "/display",
-  // });
+  // Namespace for tagging
+  const taggingNamespace = io.of("/tagging");
 
-  // dispIo.of("/display").on("connection", (socket) => {
-  //   logger.info("a display has connected");
-  //   socket.on("disconnect", () => {
-  //     logger.info("a display has disconnected");
-  //   });
-  // });
+  taggingNamespace.on("connection", (socket) => {
+    console.log(
+      "Socket.io connected to socket (tagging namespace): " + socket.id
+    );
+
+    socket.on("send-disp-list", (list) => {
+      console.log("Received from controller: " + list);
+      taggingNamespace.emit("receive-disp-list", list);
+      console.log("Broadcasted the signal above to monitor");
+    });
+
+    socket.on("send-prepared-signal", (signalPackage) => {
+      console.log("Received prepared from server");
+      taggingNamespace.emit("receive-prepared-signal", signalPackage);
+      console.log("Broadcasted the signal to client");
+    });
+  });
 };
 
 module.exports = createSocket;

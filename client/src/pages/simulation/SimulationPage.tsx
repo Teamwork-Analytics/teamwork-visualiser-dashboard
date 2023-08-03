@@ -31,8 +31,6 @@ const serverUrl =
     : `${window.location.protocol}//${window.location.hostname}`;
 const ioUrl = serverUrl + "/activities";
 const socket = io(ioUrl, {
-  path: "/activities",
-  // this may not work in the production
   withCredentials: false,
   auth: { url: window.location.href },
 });

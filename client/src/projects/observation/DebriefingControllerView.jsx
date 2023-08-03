@@ -13,7 +13,7 @@ import { FaCheckSquare, FaSquare } from "react-icons/fa";
 import { BsInfoCircle } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { useObservation } from "./ObservationContext";
-import { socket } from "./socket";
+import { taggingSocket } from "./socket";
 import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -72,7 +72,7 @@ const DebriefingControllerView = () => {
   const handleConfirmProjection = () => {
     console.log(selectedVis);
     const preparedData = prepareData(range, selectedVis, simulationId);
-    socket.emit("send-disp-list", preparedData, () => {
+    taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log(
         "Socket sent selected displays to server in a form of a list."
       );
@@ -86,7 +86,7 @@ const DebriefingControllerView = () => {
     const toastId = toast.loading("Loading...");
     // setSelectedVis([]);
     const preparedData = prepareData(range, [], simulationId);
-    socket.emit("send-disp-list", preparedData, () => {
+    taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
     toast.success("Sharing stopped", {
