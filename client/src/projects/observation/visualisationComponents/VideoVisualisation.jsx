@@ -24,9 +24,6 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
 
-  // State variable to keep track of the validity of the video URL
-  const [isVideoUrlValid, setIsVideoUrlValid] = useState(false);
-
   // Function to handle video progress
   const handleProgress = ({ playedSeconds }) => {
     // Pause the video once the played seconds exceed the end time

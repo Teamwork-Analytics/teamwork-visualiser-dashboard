@@ -11,6 +11,12 @@ const ObservationAPI = {
   deleteNote: (obsId, noteId) =>
     destroy(`observations/note/${obsId}/${noteId}`),
   resetObservation: (obsId) => patch(`observations/reset/${obsId}`),
+  updateFavourite: (obsId, noteId, favourite) =>
+    patch(`observations/note/${obsId}/${noteId}/favourite`, {
+      favourite: favourite,
+    }),
+  updateNotePerformers: (obsId, noteId, performer) =>
+    patch(`observations/note/${obsId}/${noteId}/performers`, { performer }),
 };
 
 export default ObservationAPI;

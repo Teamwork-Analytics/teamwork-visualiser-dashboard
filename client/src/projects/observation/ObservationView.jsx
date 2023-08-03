@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Tabs, Tab, Container } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
-import { ArrowLeft } from "react-bootstrap-icons";
 import { useTracking } from "react-tracking";
+import BackToMainButtonLight from "../../components/buttons/BackToMainButtonLight";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
@@ -16,6 +16,7 @@ const ObservationView = () => {
 
   const styles = {
     outer: {
+      position: "relative",
       margin: "0 auto",
       width: "90vw",
       maxWidth: "1440px",
@@ -29,19 +30,10 @@ const ObservationView = () => {
   };
 
   const [currentTab, setCurrentTab] = useState("observation");
-  const navigate = useNavigate();
 
   return (
     <Track>
       <div style={styles.outer}>
-        <div style={styles.backButton}>
-          <ArrowLeft
-            style={{ cursor: "pointer" }}
-            onClick={() => navigate("/main")}
-            size={"30px"}
-          />
-        </div>
-
         {/* TODO: code commented out below moved into sidebar (hide from researcher) */}
         {/* <div style={styles.info}>
           {observation.baselineTime !== null ? <AlertCondition /> : null}
@@ -51,14 +43,14 @@ const ObservationView = () => {
           <br />
           <label>Stop time: {timeString(state.stopTime)}</label>
         </div> */}
+        <div style={{ position: "absolute", top: 0, left: 0, zIndex: "100" }}>
+          <BackToMainButtonLight />
+        </div>
         <h1>Session {simulationId}</h1>
         <hr style={{ marginBottom: "0px" }} />
         <Tabs
           defaultActiveKey={currentTab}
-          onSelect={(k) => {
-            trackEvent({ action: "click", element: k + " Tab", data: k });
-            return setCurrentTab(k);
-          }}
+          onSelect={(k) => setCurrentTab(k)}
           id="tagging-debriefing-switch"
           style={{ width: "100%", marginBottom: "0px" }}
           // @ts-ignore
@@ -72,6 +64,11 @@ const ObservationView = () => {
             tabAttrs={{
               style: currentTab === "observation" ? {} : { color: "black" },
             }}
+            id="tagging-debriefing-switch"
+            style={{ width: "100%", marginBottom: "0px" }}
+            // @ts-ignore
+            justify
+            variant="pills"
           >
             <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
             <ObservationTaggingModule />

@@ -5,7 +5,7 @@
 
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import SimulationSessionAPI from "../../services/api/simulations";
@@ -31,7 +31,7 @@ function ObservationProvider({ simulationId, children }) {
         setNotes(phases);
       }
     });
-  }, []);
+  }, [simulationId]);
 
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {

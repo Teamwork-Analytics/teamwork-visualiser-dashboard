@@ -50,7 +50,8 @@ function TimelineProvider({ children }) {
       notes.map((note) => {
         const value = calculateDuration(simStartTimestamp, note.timestamp);
         const label = note.message;
-        return { value, label };
+        const favourite = note.favourite;
+        return { value, label, favourite };
       })
     );
   }, [notes, simStartTimestamp]);

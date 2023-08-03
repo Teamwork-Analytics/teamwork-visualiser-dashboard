@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Hive from "../hive";
 
 import { useParams } from "react-router-dom";

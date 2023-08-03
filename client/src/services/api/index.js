@@ -15,16 +15,6 @@ const api = axios.create({
   withCredentials: false,
 });
 
-// api.interceptors.request.use(
-//   (config) => {
-//     return {
-//       ...config,
-//       // headers: {}
-//     };
-//   },
-//   (error) => Promise.reject(error)
-// );
-
 // Add a response interceptor
 api.interceptors.response.use(
   function (response) {
