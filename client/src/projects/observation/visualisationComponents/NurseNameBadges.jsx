@@ -9,8 +9,7 @@ import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { COLOURS } from "../../../config/colours";
-import PrivateNoteAPI from "../../../services/api/privateNote";
-import { useParams } from "react-router-dom";
+import { useNurseName } from "./NurseNameContext";
 
 // override bootstrap badge important style
 const StyledBadge = styled(Badge)`
@@ -71,29 +70,7 @@ const EditableBadge = ({ colour, label, nurseName, onUpdate }) => {
 
 // The main component that manages the state of nurse names and handle API calls.
 const NurseNameBadges = () => {
-  const simulationId = useParams().simulationId;
-  const [nurseNames, setNurseNames] = useState({});
-
-  useEffect(() => {
-    PrivateNoteAPI.get(simulationId).then((res) => {
-      if (res.status === 200) {
-        setNurseNames(res.data.nurses);
-      }
-    });
-  }, [simulationId]);
-
-  // Update a specific nurse name
-  const updateNurseName = (nurseType, newName) => {
-    let updatedNurseNames = { ...nurseNames };
-    updatedNurseNames[nurseType] = newName;
-    PrivateNoteAPI.update(simulationId, updatedNurseNames)
-      .then((res) => {
-        if (res.status === 200) {
-          setNurseNames(res.data.nurses);
-        }
-      })
-      .catch((err) => console.error(err));
-  };
+  const { nurseNames, updateNurseName } = useNurseName();
 
   return (
     <div>
