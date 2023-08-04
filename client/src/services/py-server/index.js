@@ -34,11 +34,11 @@ communicationAPI.interceptors.response.use(
     let message = error.response.statusText;
     if (error.response.data !== undefined) {
       if (error.response.data.code === 403) return;
-      message = error.response.data.message;
+      message = error.response.data;
     }
-    message += `Python service error:`;
+    message += ` - Python service error:`;
 
-    // toast.error(`${message} (${error})`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
+    toast.error(`${message} (${error}):`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
     // Do something with response error
     // return Promise.reject(message);
   }
@@ -62,9 +62,13 @@ const getTeamworkBarchart = async (body) => {
   );
 };
 
-
 const processAllVisualisations = async (simulationId) => {
   return await communicationAPI.get(`/generate_viz?sessionId=${simulationId}`);
 };
 
-export { getSNAdata, getENAdata, getTeamworkBarchart, processAllVisualisations };
+export {
+  getSNAdata,
+  getENAdata,
+  getTeamworkBarchart,
+  processAllVisualisations,
+};

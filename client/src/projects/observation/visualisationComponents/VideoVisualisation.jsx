@@ -8,7 +8,7 @@ const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
   const { simulationId } = useParams();
 
   // Construct the URL for the video
-  const videoUrl = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}/data/${simulationId}/transcoded_output.mp4`;
+  const videoUrl = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}/data/${simulationId}/result/transcoded_output.mp4`;
 
   // The range in which the video should play
   const range = timeRange;

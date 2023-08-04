@@ -13,7 +13,7 @@ const DebriefPrimaryControlView = () => {
     wrapper: {
       fontSize: "3em",
       display: "flex",
-      height: "17vh",
+      height: "28vh",
       flexDirection: "column",
       justifyContent: "center",
       rowGap: "1em",

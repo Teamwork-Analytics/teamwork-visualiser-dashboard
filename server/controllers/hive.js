@@ -15,7 +15,8 @@ const getCsvFile = (req, res, next) => {
     const { simulationId } = req.params;
     const fileName = simulationId + "_all.csv";
     const directory = process.env.VISUALISATION_DIR + simulationId;
-    const pathJoined = path.join(directory, path.sep, fileName);
+    const result_dir = path.join(directory, path.sep, "result");
+    const pathJoined = path.join(result_dir, path.sep, fileName);
 
     // res.setHeader("cache-control", "max-age=8640000");
     res.setHeader("content-type", "text/csv");
@@ -61,9 +62,10 @@ const isDataExist = async (req, res, next) => {
   try {
     const { simulationId } = req.params;
     const directory = process.env.VISUALISATION_DIR + simulationId;
+    const result_dir = path.join(directory, path.sep, "result");
     const hiveFileName = `${simulationId}_all.csv`;
 
-    if (!fileSystem.existsSync(path.join(directory, path.sep, hiveFileName))) {
+    if (!fileSystem.existsSync(path.join(result_dir, path.sep, hiveFileName))) {
       res
         .status(500)
         .send(fillErrorObject(500, "Ward map data is missing/not ready"));

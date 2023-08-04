@@ -1,4 +1,5 @@
-import { Button } from "react-bootstrap";
+import { useState } from "react";
+import { Button, ButtonGroup } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
@@ -9,6 +10,7 @@ import { useObservation } from "./ObservationContext";
 
 const ObservationPrimaryControlView = () => {
   const { simulationId } = useParams();
+  const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const labels = OBSERVATION_TOAST_MESSAGES(simulationId);
 
   const { observation, setObservation } = useObservation();
@@ -17,10 +19,28 @@ const ObservationPrimaryControlView = () => {
     wrapper: {
       fontSize: "3em",
       display: "flex",
-      height: "17vh",
+      height: "28vh",
       flexDirection: "column",
       justifyContent: "space-between",
     },
+  };
+
+  const resetAllTime = async (e) => {
+    ObservationAPI.resetObservation(observation._id)
+      .then((res) => {
+        if (res.status === 200 && res.data !== null) {
+          setObservation(res.data);
+          toast.success("Successfully reset simulation");
+        }
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+    setIsConfirmDelete(false);
+  };
+
+  const areYouSure = () => {
+    setIsConfirmDelete(true);
   };
 
   const sendRecordedTime = async (e) => {
@@ -37,7 +57,7 @@ const ObservationPrimaryControlView = () => {
         toast.success(message);
       }
     });
-    try{
+    try {
       if (opt === "baselineTime") {
         await startBaselineAll(simulationId);
       } else if (opt === "startTime") {
@@ -47,11 +67,9 @@ const ObservationPrimaryControlView = () => {
       } else {
         return;
       }
+    } catch (err) {
+      toast.error(err);
     }
-    catch(err){
-      toast.error(err)
-    }
-    
   };
 
   return (
@@ -60,27 +78,55 @@ const ObservationPrimaryControlView = () => {
         variant="warning"
         value={"baselineTime"}
         onClick={sendRecordedTime}
-        // disabled={observation.baselineTime !== null}
+        disabled={observation.baselineTime !== null}
       >
         Start Baseline
       </Button>
       <Button
         variant="success"
-        // disabled={observation.startTime !== null}
+        disabled={observation.startTime !== null}
         value={"startTime"}
         onClick={sendRecordedTime}
       >
         Start Simulation
       </Button>
       <Button
-        variant="secondary"
-        // disabled={observation.stopTime !== null}
+        variant="dark"
+        disabled={observation.stopTime !== null}
         value={"stopTime"}
         onClick={sendRecordedTime}
       >
         Stop Simulation
       </Button>
       <ReactTooltip />
+      <small style={{ fontSize: "10px" }}>
+        Note: Our visualisations are time-sensitive. Once these buttons are
+        clicked, they will be disabled. Mistake? please click reset button
+        below.
+      </small>
+
+      {isConfirmDelete ? (
+        <ButtonGroup>
+          <Button
+            variant="secondary"
+            value={"resetAllTime"}
+            onClick={() => setIsConfirmDelete(false)}
+          >
+            No, cancel that.
+          </Button>
+          <Button
+            variant="danger"
+            value={"resetAllTime"}
+            onClick={resetAllTime}
+          >
+            Yes, reset!
+          </Button>
+        </ButtonGroup>
+      ) : (
+        <Button variant="secondary" value={"resetAllTime"} onClick={areYouSure}>
+          Reset Simulation
+        </Button>
+      )}
     </div>
   );
 };

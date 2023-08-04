@@ -9,13 +9,17 @@ from data_cleaner.main import call_visualization
 
 from pathlib import Path
 
-IP_ADDRESS = "49.127.77.235"  # this/local server
+IP_ADDRESS = "0.0.0.0"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-DIRECTORY = Path("C:\\develop\\saved_data")
+# DIRECTORY = Path("C:\\develop\\saved_data")
+DIRECTORY = Path(
+    "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data")
+
 
 CORS(app)
+
 
 @app.route("/generate_viz", methods=['GET'])
 def call_viz():
@@ -26,13 +30,13 @@ def call_viz():
     try:
         simulationId = args["sessionId"]
         call_visualization(simulationId)
-    except Exception:
-        error_message = "Error happened when extracting GET params: maybe not all arguments are provided. There could be an error with call_visualization method. Check terminal."
+    except Exception as err:
+        print(err)
+        error_message = "Unable to generate visualisation. Check terminal."
         print(error_message)
         return error_message, 500
-    
-    return "Visualisations have been generated.",200
 
+    return "Visualisations have been generated.", 200
 
 
 @app.route("/get_teamwork_prio_data", methods=['GET'])
@@ -54,7 +58,7 @@ def give_prioritisation_test_data():
 
     # todo: this path should be changed once used in actual scenario
     file = "%s.csv" % session_id
-    dir_path = DIRECTORY / session_id
+    dir_path = DIRECTORY / session_id / "result"
     file_path = dir_path / file
     # test_data_path = "test_data/{}.csv".format(session_id)
     sync_data_path = dir_path / "sync.txt"
@@ -78,14 +82,15 @@ def give_sna_test_data():
     try:
         id = request.args['sessionId']
         file = "%s_network_data.csv" % id
-        file_path = DIRECTORY / id / file
+        file_path = DIRECTORY / id / "result" / file
         df = pd.read_csv(file_path)
         df.fillna("", inplace=True)
         output_data = df.to_dict(orient="records")
         return jsonify(output_data)
     except Exception:
-        print("Error happened when extracting GET params: maybe not all arguments are provided.")
-        return "error", 500
+        message = "Network data is missing."
+        print(message)
+        return message, 500
 
 
 @app.route("/get_ena_data", methods=['GET'])
@@ -101,7 +106,7 @@ def give_ena_test_data():
     end_time = request.args["end"]
 
     file = "%s_network_data.csv" % id
-    file_path = DIRECTORY / id / file
+    file_path = DIRECTORY / id / "result" / file
     session_df = pd.read_csv(file_path)
     # updated on 17/7/2023, merged the acknowledging and responding
     __merging_codes(session_df, ["acknowledging",
