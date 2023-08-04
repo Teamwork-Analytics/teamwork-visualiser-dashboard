@@ -1,15 +1,11 @@
 // See https://socket.io/how-to/use-with-react for more
 
 import { io } from "socket.io-client";
-// const IP_ADDRESS = "49.127.8.22";
 const IP_ADDRESS = process.env.REACT_APP_EXPRESS_IP;
-// "192.168.20.29";
+const PORT = process.env.REACT_APP_EXPRESS_PORT;
 // "undefined" means the URL will be computed from the `window.location` object
 const URL =
-  process.env.NODE_ENV === "production" ? undefined : `${IP_ADDRESS}:3000`;
+  process.env.NODE_ENV === "production" ? undefined : `${IP_ADDRESS}:${PORT}`;
 
-// when client and server at the same domain
-export const socket = io(URL);
-// if client and server at different domain
-// const socket = io("https://server-domain.com");
-// see https://socket.io/docs/v4/client-initialization/ for more
+// Create a separate socket connection for the 'tagging' namespace
+export const taggingSocket = io(`${URL}/tagging`);

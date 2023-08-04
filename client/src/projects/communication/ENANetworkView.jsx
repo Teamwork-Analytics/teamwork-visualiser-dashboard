@@ -102,6 +102,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
         cy.fit();
         const layout = cy.layout(net_options);
         layout.run();
+        cy.userPanningEnabled(false); // Disable user panning
       }}
       layout={net_options}
       fit={true}

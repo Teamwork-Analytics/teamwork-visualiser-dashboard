@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Tabs, Tab, Container } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
+import { ArrowLeft } from "react-bootstrap-icons";
 import { useTracking } from "react-tracking";
-import BackToMainButtonLight from "../../components/buttons/BackToMainButtonLight";
+import { NurseNameProvider } from "./visualisationComponents/NurseNameContext";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
   const { obsStartTime, obsEndTime } = useObservation();
   const { Track, trackEvent } = useTracking({ page: "Observation" });
+  const navigate = useNavigate();
 
   const styles = {
     outer: {
@@ -33,9 +35,24 @@ const ObservationView = () => {
 
   return (
     <Track>
-      <div style={styles.outer}>
-        {/* TODO: code commented out below moved into sidebar (hide from researcher) */}
-        {/* <div style={styles.info}>
+      <NurseNameProvider>
+        <div style={styles.outer}>
+          <div style={styles.backButton}>
+            <ArrowLeft
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "returnToMainPage",
+                });
+                navigate("/main");
+              }}
+              size={"30px"}
+            />
+          </div>
+
+          {/* TODO: code commented out below moved into sidebar (hide from researcher) */}
+          {/* <div style={styles.info}>
           {observation.baselineTime !== null ? <AlertCondition /> : null}
           <label>Baseline time: {timeString(state.baselineTime)} </label>
           <br />
@@ -43,26 +60,13 @@ const ObservationView = () => {
           <br />
           <label>Stop time: {timeString(state.stopTime)}</label>
         </div> */}
-        <div style={{ position: "absolute", top: 0, left: 0, zIndex: "100" }}>
-          <BackToMainButtonLight />
-        </div>
-        <h1>Session {simulationId}</h1>
-        <hr style={{ marginBottom: "0px" }} />
-        <Tabs
-          defaultActiveKey={currentTab}
-          onSelect={(k) => setCurrentTab(k)}
-          id="tagging-debriefing-switch"
-          style={{ width: "100%", marginBottom: "0px" }}
-          // @ts-ignore
-          justify
-          variant="pills"
-        >
-          <Tab
-            eventKey="observation"
-            title="1. Tagging"
-            // style cant be used directly in Tab as its nested too deep
-            tabAttrs={{
-              style: currentTab === "observation" ? {} : { color: "black" },
+          <h1>Session {simulationId}</h1>
+          <hr style={{ marginBottom: "0px" }} />
+          <Tabs
+            defaultActiveKey={currentTab}
+            onSelect={(k) => {
+              trackEvent({ action: "click", element: k + " Tab", data: k });
+              return setCurrentTab(k);
             }}
             id="tagging-debriefing-switch"
             style={{ width: "100%", marginBottom: "0px" }}
@@ -70,46 +74,55 @@ const ObservationView = () => {
             justify
             variant="pills"
           >
-            <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-            <ObservationTaggingModule />
-          </Tab>
+            <Tab
+              eventKey="observation"
+              title="1. Tagging"
+              // style cant be used directly in Tab as its nested too deep
+              tabAttrs={{
+                style: currentTab === "observation" ? {} : { color: "black" },
+              }}
+            >
+              <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
+              <ObservationTaggingModule />
+            </Tab>
 
-          <Tab
-            eventKey="debriefing"
-            title="2. Debriefing"
-            tabAttrs={{
-              style: currentTab === "debriefing" ? {} : { color: "black" },
-            }}
-          >
-            <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-            {obsStartTime && obsEndTime ? (
-              <DebriefingControllerModule />
-            ) : (
-              <Container style={{ display: "flex", minHeight: "60vh" }}>
-                <ToolInPrep />
-              </Container>
-            )}
-          </Tab>
-          <Tab
-            eventKey="assessment"
-            title="3. Team Assessment"
-            // style cant be used directly in Tab as its nested too deep
-            tabAttrs={{
-              style: currentTab === "assessment" ? {} : { color: "black" },
-            }}
-          >
-            <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-            <div style={{ width: "100%", height: "80vh" }}>
-              <iframe
-                src="https://docs.google.com/forms/d/e/1FAIpQLSdTYC_SXeUUka2WXpiH1Fglfz7KmEa86Ca-iM3pB5HnvolRCQ/viewform?embedded=true"
-                title="Team Assessment Google Form"
-                style={{ width: "100%", height: "100%" }}
-              ></iframe>{" "}
-            </div>
-          </Tab>
-        </Tabs>
-        <ReactTooltip />
-      </div>
+            <Tab
+              eventKey="debriefing"
+              title="2. Debriefing"
+              tabAttrs={{
+                style: currentTab === "debriefing" ? {} : { color: "black" },
+              }}
+            >
+              <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
+              {obsStartTime && obsEndTime ? (
+                <DebriefingControllerModule />
+              ) : (
+                <Container style={{ display: "flex", minHeight: "60vh" }}>
+                  <ToolInPrep />
+                </Container>
+              )}
+            </Tab>
+            <Tab
+              eventKey="assessment"
+              title="3. Team Assessment"
+              // style cant be used directly in Tab as its nested too deep
+              tabAttrs={{
+                style: currentTab === "assessment" ? {} : { color: "black" },
+              }}
+            >
+              <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
+              <div style={{ width: "100%", height: "80vh" }}>
+                <iframe
+                  src="https://docs.google.com/forms/d/e/1FAIpQLSdTYC_SXeUUka2WXpiH1Fglfz7KmEa86Ca-iM3pB5HnvolRCQ/viewform?embedded=true"
+                  title="Team Assessment Google Form"
+                  style={{ width: "100%", height: "100%" }}
+                ></iframe>{" "}
+              </div>
+            </Tab>
+          </Tabs>
+          <ReactTooltip />
+        </div>
+      </NurseNameProvider>
     </Track>
   );
 };

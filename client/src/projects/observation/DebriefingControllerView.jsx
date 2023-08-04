@@ -13,7 +13,7 @@ import { FaCheckSquare, FaSquare } from "react-icons/fa";
 import { BsInfoCircle } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { useObservation } from "./ObservationContext";
-import { socket } from "./socket";
+import { taggingSocket } from "./socket";
 import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -25,6 +25,7 @@ import { prepareData } from "../../utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
+import { useTracking } from "react-tracking";
 
 const debriefStyles = {
   activeTab: {
@@ -62,6 +63,7 @@ const debriefStyles = {
 };
 
 const DebriefingControllerView = () => {
+  const { Track, trackEvent } = useTracking({ page: "Debriefing" });
   const { simulationId } = useParams();
   const { range } = useTimeline();
   const { isDataReady } = useObservation();
@@ -70,7 +72,7 @@ const DebriefingControllerView = () => {
   const handleConfirmProjection = () => {
     console.log(selectedVis);
     const preparedData = prepareData(range, selectedVis, simulationId);
-    socket.emit("send-disp-list", preparedData, () => {
+    taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log(
         "Socket sent selected displays to server in a form of a list."
       );
@@ -84,7 +86,7 @@ const DebriefingControllerView = () => {
     const toastId = toast.loading("Loading...");
     // setSelectedVis([]);
     const preparedData = prepareData(range, [], simulationId);
-    socket.emit("send-disp-list", preparedData, () => {
+    taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
     toast.success("Sharing stopped", {
@@ -132,7 +134,7 @@ const DebriefingControllerView = () => {
   };
 
   return (
-    <>
+    <Track>
       <VisualisationInfoModal
         infoDiv={infoModalContent}
         show={showInfoModal}
@@ -159,7 +161,13 @@ const DebriefingControllerView = () => {
           <Button
             variant="danger"
             style={{ marginRight: "5px", fontSize: "14px" }}
-            onClick={handleRevertAllProjections}
+            onClick={() => {
+              trackEvent({
+                action: "click",
+                element: "stopSharingButton",
+              });
+              handleRevertAllProjections();
+            }}
           >
             Stop sharing
           </Button>
@@ -167,6 +175,10 @@ const DebriefingControllerView = () => {
             variant="success"
             style={{ marginRight: "5px", fontSize: "14px" }}
             onClick={() => {
+              trackEvent({
+                action: "click",
+                element: "previewProjectionButton",
+              });
               setIsVideoTabActive(false);
               setShowPreviewModal(true);
             }}
@@ -205,6 +217,11 @@ const DebriefingControllerView = () => {
                             : "outline-dark"
                         }
                         onClick={() => {
+                          trackEvent({
+                            action: "click",
+                            element: "topRowTabButton",
+                            data: tab.eventKey,
+                          });
                           setTopActiveTab(tab.eventKey);
                           setIsVideoTabActive(tab.eventKey === "video");
                         }}
@@ -243,7 +260,14 @@ const DebriefingControllerView = () => {
                     : "1",
                   display: topActiveTab === "video" ? "block" : "none", // button will be hidden when the video tab is not active
                 }}
-                onClick={() => handleAddVis(topActiveTab)}
+                onClick={() => {
+                  trackEvent({
+                    action: "click",
+                    element: "addVisToPreview(Top)",
+                    data: topActiveTab,
+                  });
+                  handleAddVis(topActiveTab);
+                }}
               >
                 {selectedVis.some((vis) => vis.id === "video") ? (
                   <>
@@ -299,6 +323,11 @@ const DebriefingControllerView = () => {
                             right: "5",
                           }}
                           onClick={() => {
+                            trackEvent({
+                              action: "click",
+                              element: "showInfoIcon",
+                              data: tab.title,
+                            });
                             handleInfoShow(tab.title, tab.info());
                           }}
                         />
@@ -325,7 +354,14 @@ const DebriefingControllerView = () => {
                             style={{
                               ...debriefStyles.addVisButton,
                             }}
-                            onClick={() => handleAddVis(tab.eventKey)}
+                            onClick={() => {
+                              trackEvent({
+                                action: "click",
+                                element: "addVisToPreview(Bottom)",
+                                data: tab.eventKey,
+                              });
+                              handleAddVis(tab.eventKey);
+                            }}
                           >
                             {selectedVis.some(
                               (vis) => vis.id === tab.eventKey
@@ -347,9 +383,6 @@ const DebriefingControllerView = () => {
                       </Card>
                       <div
                         key={index}
-                        onClick={() => {
-                          setBottomActiveKey(tab.eventKey);
-                        }}
                         style={{
                           display: "inline-block",
                           fontSize: "14px",
@@ -372,7 +405,7 @@ const DebriefingControllerView = () => {
           </Container>
         </Col>
       </Row>
-    </>
+    </Track>
   );
 };
 

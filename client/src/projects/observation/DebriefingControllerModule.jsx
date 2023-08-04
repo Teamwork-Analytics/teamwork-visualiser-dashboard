@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { TimelineProvider } from "./visualisationComponents/TimelineContext";
-import { socket } from "./socket";
+import { taggingSocket } from "./socket";
 import { ConnectionState } from "./socketComponents/ConnectionState";
 import { ConnectionManager } from "./socketComponents/ConnectionManager";
 import { useParams } from "react-router-dom";
@@ -13,25 +13,25 @@ const DebriefingControllerModule = () => {
 
   // socket connection
   const hideConnectButton = true;
-  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [isConnected, setIsConnected] = useState(taggingSocket.connected);
 
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
-      console.log("Connected to " + socket.id);
+      console.log("Connected to " + taggingSocket.id);
     }
 
     function onDisconnect() {
       setIsConnected(false);
-      console.log("Disconnected from " + socket.id);
+      console.log("Disconnected from " + taggingSocket.id);
     }
 
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
+    taggingSocket.on("connect", onConnect);
+    taggingSocket.on("disconnect", onDisconnect);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
+      taggingSocket.off("connect", onConnect);
+      taggingSocket.off("disconnect", onDisconnect);
     };
   }, []);
 

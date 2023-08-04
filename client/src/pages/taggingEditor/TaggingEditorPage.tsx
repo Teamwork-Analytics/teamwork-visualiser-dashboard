@@ -17,6 +17,7 @@ import "./TaggingEditorPage.css";
 import { BsCheckSquare, BsSquare } from "react-icons/bs";
 
 const TaggingEditorPage = () => {
+
   const params = useParams();
   const projectId = params.projectId ? params.projectId : "001";
 
