@@ -42,7 +42,8 @@ const checkDataReadiness = async (req, res, next) => {
   try {
     const { simulationId } = req.params;
     const directory = process.env.VISUALISATION_DIR + simulationId;
-    const pathJoined = path.join(directory, path.sep);
+    const pathJoined = path.join(directory, path.sep, "result");
+    console.log(pathJoined);
 
     const hiveFileName = `${simulationId}_all.csv`;
     const positionFileName = `${simulationId}_network_data.csv`;
@@ -51,7 +52,7 @@ const checkDataReadiness = async (req, res, next) => {
 
     if (fileSystem.existsSync(pathJoined)) {
       if (
-        !fileSystem.existsSync(path.join(directory, path.sep, hiveFileName))
+        !fileSystem.existsSync(path.join(pathJoined, path.sep, hiveFileName))
       ) {
         res
           .status(500)
@@ -59,7 +60,9 @@ const checkDataReadiness = async (req, res, next) => {
         return;
       }
       if (
-        !fileSystem.existsSync(path.join(directory, path.sep, positionFileName))
+        !fileSystem.existsSync(
+          path.join(pathJoined, path.sep, positionFileName)
+        )
       ) {
         res
           .status(500)
@@ -68,7 +71,7 @@ const checkDataReadiness = async (req, res, next) => {
       }
       if (
         !fileSystem.existsSync(
-          path.join(directory, path.sep, communicationFileName)
+          path.join(pathJoined, path.sep, communicationFileName)
         )
       ) {
         res
@@ -79,7 +82,7 @@ const checkDataReadiness = async (req, res, next) => {
         return;
       }
       if (
-        !fileSystem.existsSync(path.join(directory, path.sep, syncFileName))
+        !fileSystem.existsSync(path.join(pathJoined, path.sep, syncFileName))
       ) {
         res.status(500).send(fillErrorObject(500, "Sync file is missing"));
         return;

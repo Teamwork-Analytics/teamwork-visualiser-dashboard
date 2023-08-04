@@ -10,23 +10,28 @@ from vad.hive_automation import hive_main
 from pymongo import MongoClient
 import matplotlib.pyplot as plt
 
+import shutil
 from data_cleaner.social_network_generation import audio_visual
 
 from flask import Flask
 import ffmpeg
+
+import subprocess
 
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
 TEST_MODE_LINX = False
 
-IP_ADDRESS="49.127.77.235"
+IP_ADDRESS = "49.127.77.235"
 
 # todo: if you want to test locally, change this path to your local test_data_folder
 if TEST_MODE_LINX:
     BASE_PATH = "test_data_folder"
 else:
-    BASE_PATH = "C:\\develop\\saved_data\\"
+    # BASE_PATH = "C:\\develop\\saved_data\\"
+    BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+
     app = Flask(__name__)
 
 
@@ -37,18 +42,21 @@ def call_visualization(simulationid):
     # ================= commented out for testing ======================================
     # connect to the mongoDB. In 2022, we saved the three critical timestamps of phases in database.
     # db_password = "5ZVy3RS0FIMcmTxn" # REAL DB
-    db_password= "y2PbzzxLWFhdVzlD" # TESTING DB
+    db_password = "y2PbzzxLWFhdVzlD"  # TESTING DB
     # This section is to extract timestamps from database.
     # client = MongoClient("mongodb+srv://admin:" + db_password + "@cluster0.ravibmh.mongodb.net/app?retryWrites=true&w=majority") # REAL
     #
-    client = MongoClient("mongodb+srv://devTeam:" + db_password + "@cluster0.463hufx.mongodb.net/app?retryWrites=true&w=majority") # TESTING
+    client = MongoClient("mongodb+srv://devTeam:" + db_password +
+                         "@cluster0.463hufx.mongodb.net/app?retryWrites=true&w=majority")  # TESTING
 
     # db = client["test"]
-    db = client["app"]
+    db = client["test"]
     #
-    simulation_obj = db.get_collection("simulations").find_one({"simulationId": simulationid})
+    simulation_obj = db.get_collection(
+        "simulations").find_one({"simulationId": simulationid})
     #
-    observation_obj = db.get_collection("observations").find_one({"_id":simulation_obj["observation"]})
+    observation_obj = db.get_collection("observations").find_one(
+        {"_id": simulation_obj["observation"]})
 
     # phase_dict = {"handover": , "bed_4":, "ward_nurse":, "met_doctor":}
     # dict.fromkeys(observation_obj["phases"], )
@@ -58,11 +66,14 @@ def call_visualization(simulationid):
     # # handover_finish_time, secondary_nurses_enter_time, doctor_enter_time = 0, 0, 0
     for item in observation_obj["phases"]:
         if item["phaseKey"] == "handover":
-            handover_finish_time = item["timestamp"].timestamp() #datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            handover_finish_time = item["timestamp"].timestamp()
         elif item["phaseKey"] == "ward_nurse":
-            secondary_nurses_enter_time = item["timestamp"].timestamp()# datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            secondary_nurses_enter_time = item["timestamp"].timestamp()
         elif item["phaseKey"] == "met_doctor":
-            doctor_enter_time = item["timestamp"].timestamp() # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            doctor_enter_time = item["timestamp"].timestamp()
         elif item["phaseKey"] == "bed_4":
             pass
 
@@ -76,35 +87,48 @@ def call_visualization(simulationid):
     positioning_data_folder = os.path.join(data_dir, "positioning_data")
 
     # all folder path will use call the initialising_folders to create the folder
-    processed_pozyx_folder = initialising_folders(os.path.join(positioning_data_folder, "pozyx_json_csv"))
-    raw_pozyx_data_folder = initialising_folders(os.path.join(positioning_data_folder, "raw_positioning"))
+    processed_pozyx_folder = initialising_folders(
+        os.path.join(positioning_data_folder, "pozyx_json_csv"))
+    raw_pozyx_data_folder = initialising_folders(
+        os.path.join(positioning_data_folder, "raw_positioning"))
     raw_audio_folder = os.path.join(data_dir)
-    processed_audio_folder = initialising_folders(os.path.join(audio_folder, "processed_audio"))
+    processed_audio_folder = initialising_folders(
+        os.path.join(audio_folder, "processed_audio"))
 
-    hive_data_folder = initialising_folders(os.path.join(data_dir, "hive_data_folder"))
+    hive_data_folder = initialising_folders(
+        os.path.join(data_dir, "hive_data_folder"))
     # todo: audio files may be shared be between the social network or the hive
-    hive_audio_data_folder = initialising_folders(os.path.join(hive_data_folder, "audio-sim"))
-    hive_positioning_data_folder = initialising_folders(os.path.join(hive_data_folder, "pos"))
-    hive_csv_output_folder = initialising_folders(os.path.join(hive_data_folder, "result"))
-    hive_all_output_folder = initialising_folders(os.path.join(data_dir, "result_to_copy"))
+    hive_audio_data_folder = initialising_folders(
+        os.path.join(hive_data_folder, "audio-sim"))
+    hive_positioning_data_folder = initialising_folders(
+        os.path.join(hive_data_folder, "pos"))
+    hive_csv_output_folder = initialising_folders(
+        os.path.join(hive_data_folder, "result"))
+    # hive_all_output_folder = initialising_folders(
+    #     os.path.join(data_dir, "result_to_copy"))
+
+    result_dir = initialising_folders(os.path.join(data_dir, "result"))
 
     #
-    json_csv_output_path = os.path.join(processed_pozyx_folder, "{}.csv".format(session))
+    json_csv_output_path = os.path.join(
+        result_dir, "{}.csv".format(session))
     # raw_pozyx_data_path = os.path.join(raw_pozyx_data_folder, "{}.json".format(session))
     raw_pozyx_data_path = os.path.join(data_dir, "{}.json".format(session))
     sync_txt_path = os.path.join(data_dir, "sync.txt")
 
     # configuring the output path of images
-    visualisation_output_folder = initialising_folders(os.path.join(data_dir, "visualisation_output_path"))
+    # visualisation_output_folder = initialising_folders(
+    #     os.path.join(data_dir, "visualisation_output_path"))
 
     print("===== pozyx_json_to_csv started ========")
     pozyx_json_to_csv(session, raw_pozyx_data_path, json_csv_output_path)
     print("===== pozyx_json_to_csv finish =======")
-    plt.show()
-    plt.clf()
+    # plt.show()
+    # plt.clf()
 
     # update in 2023. This is a new function to extract the starting time of Pozyx recording.
-    positioning_start_timestamp = get_timestamp_from_sync(sync_txt_path, "positioning")
+    positioning_start_timestamp = get_timestamp_from_sync(
+        sync_txt_path, "positioning")
     audio_start_timestamp = get_timestamp_from_sync(sync_txt_path, "audio")
     #
     # if not os.path.exists(raw_audio_folder + "out"):
@@ -141,17 +165,20 @@ def call_visualization(simulationid):
 
     # hive_csv_output_folder = data_dir + "out\\result"
     df = pd.concat(map(pd.read_csv, [
-        '{}\\{}_RED.csv'.format(hive_csv_output_folder, session),
-        '{}\\{}_YELLOW.csv'.format(hive_csv_output_folder, session),
-        '{}\\{}_BLUE.csv'.format(hive_csv_output_folder, session),
-        '{}\\{}_GREEN.csv'.format(hive_csv_output_folder, session)]), ignore_index=True)
+        '{}/{}_RED.csv'.format(hive_csv_output_folder, session),
+        '{}/{}_YELLOW.csv'.format(hive_csv_output_folder, session),
+        '{}/{}_BLUE.csv'.format(hive_csv_output_folder, session),
+        '{}/{}_GREEN.csv'.format(hive_csv_output_folder, session)]), ignore_index=True)
 
     df = df.sort_values(by='audio time')
 
     # client_dir = "../client/src/projects/hive/data"
-    df.to_csv("{}/{}_all.csv".format(hive_csv_output_folder, session), sep=',', encoding='utf-8', index=False)
-    plt.show()
-    plt.clf()
+    df.to_csv("{}/{}_all.csv".format(result_dir, session),
+              sep=',', encoding='utf-8', index=False)
+    # plt.show()
+    # plt.clf()
+
+    print("finish creating hive file.")
 
     """------- section to generate visualisation"""
     # This line calls the visualisation of the
@@ -168,6 +195,32 @@ def call_visualization(simulationid):
     #
     # plt.show()
     # plt.clf()
+
+    """-------- section to transcode video"""
+    # ffmpeg -i input.mp4 -c:v libx264 -c:a aac -strict experimental transcoded_output.mp4
+    input_file = "{}/{}.mp4".format(data_dir, simulationid)
+    output_file = "{}/transcoded_output.mp4".format(result_dir)
+
+    ffmpeg_command = [
+        "ffmpeg",
+        "-i", input_file,
+        "-c:v", "libx264",
+        "-c:a", "aac",
+        "-strict", "experimental",
+        output_file
+    ]
+
+    # Execute the FFmpeg command using subprocess
+    try:
+        subprocess.run(ffmpeg_command, check=True)
+        print("Transcoding completed successfully.")
+    except subprocess.CalledProcessError:
+        print("Transcoding failed.")
+
+    """------- copy sync.txt to result"""
+    copy_file(sync_txt_path, result_dir)
+
+    print("All data processing complete!")
 
     return "success"
 
@@ -283,7 +336,8 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
     for filename in filename_list:
         if filename.startswith("simulation_" + colour):
             audio_in = os.path.join(raw_audio_folder, filename)
-            audio_out = os.path.join(hive_audio_folder, "sim_" + colour + ".wav")
+            audio_out = os.path.join(
+                hive_audio_folder, "sim_" + colour + ".wav")
             break
 
     """Because we only saved the processed audio data, the audio_out is manually """
@@ -306,7 +360,8 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
     #
     stream = ffmpeg.input(audio_in)
     audio = stream.audio
-    stream = ffmpeg.output(audio, audio_out, **{'ar': '32000'})  # , 'acodec': 'flac'})
+    # , 'acodec': 'flac'})
+    stream = ffmpeg.output(audio, audio_out, **{'ar': '32000'})
     ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
 
     # hive_audio_folder = raw_audio_folder + 'out\\audio-sim'
@@ -320,13 +375,16 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
     """comment here to remove multithreding audio processing"""
     hive_main(audio_out, audio_csv_out, session, 1, 3)
 
-    dfp = pd.read_csv('{}/{}_{}.csv'.format(hive_positioning_folder, session, colour))
-    dfa = pd.read_csv('{}/{}_{}.csv'.format(hive_audio_folder, session, colour))
+    dfp = pd.read_csv(
+        '{}/{}_{}.csv'.format(hive_positioning_folder, session, colour))
+    dfa = pd.read_csv(
+        '{}/{}_{}.csv'.format(hive_audio_folder, session, colour))
 
     dfp.head()
 
     res = pd.merge(dfp, dfa, on="audio time")
-    final = res.drop(labels=["Unnamed: 0_x", "Unnamed: 0_y", "session"], axis=1)
+    final = res.drop(
+        labels=["Unnamed: 0_x", "Unnamed: 0_y", "session"], axis=1)
     final['tagId'] = colour
     final.head()
 
@@ -335,7 +393,18 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
     final.to_csv(result_csv, sep=',', encoding='utf-8', index=False)
 
 
-#
+def copy_file(source_path, destination_path):
+    try:
+        # Perform the file copy operation
+        shutil.copy(source_path, destination_path)
+        print("File copied successfully.")
+    except FileNotFoundError:
+        print("Source file not found.")
+    except PermissionError:
+        print("Permission error. Check if you have the necessary permissions.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 """
 send get request to localhost:5000/audio-pos

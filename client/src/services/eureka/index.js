@@ -91,11 +91,10 @@ const stopDebriefAudio = () => {
   return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
 };
 
-
 export {
   startBaselineAll,
   startAll,
   stopAll,
   startDebriefAudio,
-  stopDebriefAudio
+  stopDebriefAudio,
 };

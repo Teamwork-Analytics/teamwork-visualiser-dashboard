@@ -12,6 +12,7 @@ const ObservationSecondaryControlView = () => {
   const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
   const { simulationId } = useParams();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     setDevices(observation.synchronisations);
@@ -41,17 +42,27 @@ const ObservationSecondaryControlView = () => {
   };
 
   const handleClick = async () => {
-    console.log(simulationId);
     try {
-      await processAllVisualisations(simulationId);
+      setIsProcessing(true);
+      const response = await processAllVisualisations(simulationId);
+      if (response) {
+        toast.success(response.data);
+        setIsProcessing(false);
+      }
     } catch (error) {
       console.error(error);
     }
+    setIsProcessing(false);
   };
   return (
     <div>
-      <Button variant="secondary" value={"baselineTime"} onClick={handleClick}>
-        Generate All Visualisations
+      <Button
+        variant="dark"
+        value={"baselineTime"}
+        onClick={handleClick}
+        disabled={isProcessing}
+      >
+        {isProcessing ? "Processing..." : "Generate All Visualisations"}
       </Button>
 
       <h1>Synchronisation</h1>
