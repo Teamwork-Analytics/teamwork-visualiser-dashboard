@@ -1,6 +1,11 @@
 import { Bar } from "react-chartjs-2";
 
-const Barchart = ({ data, height = "25vh", width = "40vw" }) => {
+const Barchart = ({
+  data,
+  height = "25vh",
+  width = "40vw",
+  yLabelsFontSize,
+}) => {
   const chartData = {
     labels: data.map((row) => row.label),
     datasets: [
@@ -20,7 +25,7 @@ const Barchart = ({ data, height = "25vh", width = "40vw" }) => {
           plugins: {
             legend: {
               labels: {
-                font: { size: 10 },
+                font: { size: 12 },
               },
               display: false,
             },
@@ -48,6 +53,9 @@ const Barchart = ({ data, height = "25vh", width = "40vw" }) => {
                 display: true,
                 text: "Behaviours",
                 font: { size: 18 },
+              },
+              ticks: {
+                font: { size: yLabelsFontSize },
               },
             },
           },

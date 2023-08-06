@@ -316,7 +316,7 @@ const DebriefingControllerView = () => {
                     <>
                       <Card
                         style={{
-                          minWidth: "25rem",
+                          minWidth: "27rem",
                           position: "relative",
                           margin: "5px",
                           padding: "5px",

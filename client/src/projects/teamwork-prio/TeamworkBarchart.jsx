@@ -6,7 +6,7 @@ import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 
-const TeamworkBarchart = ({ height, width, timeRange }) => {
+const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
   const { simulationId } = useParams();
   const [teamworkData, setTeamworkData] = useState([]);
   const [isError, setIsError] = useState(teamworkData.length === 0);
@@ -33,9 +33,18 @@ const TeamworkBarchart = ({ height, width, timeRange }) => {
       });
   }, [simulationId, startTime, endTime]);
 
+  console.log(teamworkData);
+  console.log(height);
+  console.log(width);
+
   return (
     <SimpleErrorText isError={isError} message={"No data."}>
-      <Barchart data={teamworkData} height={height} width={width} />
+      <Barchart
+        data={teamworkData}
+        height={height}
+        width={width}
+        yLabelsFontSize={yLabelsFontSize}
+      />
     </SimpleErrorText>
   );
 };
