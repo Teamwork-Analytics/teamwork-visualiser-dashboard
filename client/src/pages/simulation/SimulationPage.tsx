@@ -77,7 +77,7 @@ const VisualisationPage = () => {
   const params = useParams();
   let location = useLocation();
   const details = {
-    id: location.state.realId, // real mongodb ID
+    id: location.state !== null ? location.state.id : null, // real mongodb ID
     name: params.simulationId, // same id as URL
   };
 

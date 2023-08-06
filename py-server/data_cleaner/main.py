@@ -41,16 +41,17 @@ def call_visualization(simulationid):
     """------------ extracting timestamps ------------------------"""
     # ================= commented out for testing ======================================
     # connect to the mongoDB. In 2022, we saved the three critical timestamps of phases in database.
-    # db_password = "5ZVy3RS0FIMcmTxn" # REAL DB
-    db_password = "y2PbzzxLWFhdVzlD"  # TESTING DB
+    db_password = "5ZVy3RS0FIMcmTxn"  # REAL DB
+    # db_password = "y2PbzzxLWFhdVzlD"  # TESTING DB
     # This section is to extract timestamps from database.
-    # client = MongoClient("mongodb+srv://admin:" + db_password + "@cluster0.ravibmh.mongodb.net/app?retryWrites=true&w=majority") # REAL
+    client = MongoClient("mongodb+srv://admin:" + db_password +
+                         "@cluster0.ravibmh.mongodb.net/app?retryWrites=true&w=majority")  # REAL
     #
-    client = MongoClient("mongodb+srv://devTeam:" + db_password +
-                         "@cluster0.463hufx.mongodb.net/app?retryWrites=true&w=majority")  # TESTING
+    # client = MongoClient("mongodb+srv://devTeam:" + db_password +
+    #                      "@cluster0.463hufx.mongodb.net/app?retryWrites=true&w=majority")  # TESTING
 
+    db = client["app"]
     # db = client["test"]
-    db = client["test"]
     #
     simulation_obj = db.get_collection(
         "simulations").find_one({"simulationId": simulationid})
@@ -65,7 +66,7 @@ def call_visualization(simulationid):
 
     # # handover_finish_time, secondary_nurses_enter_time, doctor_enter_time = 0, 0, 0
     for item in observation_obj["phases"]:
-        if item["phaseKey"] == "handover":
+        if item["phaseKey"] == "handover_ends":
             # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
             handover_finish_time = item["timestamp"].timestamp()
         elif item["phaseKey"] == "ward_nurse":

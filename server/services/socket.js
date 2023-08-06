@@ -24,7 +24,7 @@ const createSocket = async (httpServer) => {
 
       socket.onAny((event, data) => {
         data.simulationId = data.id;
-        data.name = data.name;
+        data.simNumId = data.name;
         data.serverTime = new Date();
         createActivity(data);
         logger.info(

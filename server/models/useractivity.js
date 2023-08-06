@@ -8,6 +8,9 @@ const userActivitySchema = new mongoose.Schema(
     simulationId: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "simulation",
+    },
+    simNumId: {
+      type: String,
       required: true,
     },
     page: { type: mongoose.Mixed }, // position where it records the data.
