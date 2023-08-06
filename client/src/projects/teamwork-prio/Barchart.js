@@ -25,7 +25,7 @@ const Barchart = ({
           plugins: {
             legend: {
               labels: {
-                font: { size: 12 },
+                font: { size: 10 },
               },
               display: false,
             },
