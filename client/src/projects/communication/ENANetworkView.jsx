@@ -94,22 +94,42 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
   ];
 
   return (
-    <CytoscapeComponent
-      cy={(cy) => {
-        cy.remove("nodes['*']");
-        cy.add(networkENAData);
-        cy.style(stylesheet);
-        cy.fit();
-        const layout = cy.layout(net_options);
-        layout.run();
-        cy.userPanningEnabled(false); // Disable user panning
-      }}
-      layout={net_options}
-      fit={true}
-      stylesheet={stylesheet}
-      elements={networkENAData}
-      style={{ textAlign: "left", width: "100%", height: height }}
-    />
+    <div style={{ position: "relative", height: height }}>
+      <CytoscapeComponent
+        cy={(cy) => {
+          cy.remove("nodes['*']");
+          cy.add(networkENAData);
+          cy.style(stylesheet);
+          cy.fit();
+          const layout = cy.layout(net_options);
+          layout.run();
+          cy.userPanningEnabled(false); // Disable user panning
+        }}
+        layout={net_options}
+        fit={true}
+        stylesheet={stylesheet}
+        elements={networkENAData}
+        style={{
+          textAlign: "left",
+          width: "100%",
+          height: height,
+          position: "absolute",
+          left: 0,
+          top: 0,
+        }}
+      />
+      {/* Below is work-around to disable user interacting with the div (two fingers touching canvas will cause errors) */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      />
+    </div>
   );
 };
 

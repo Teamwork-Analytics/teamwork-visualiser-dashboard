@@ -64,7 +64,14 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
         layout.run();
         cy.userPanningEnabled(false); // Disable user panning
       }}
-      style={{ textAlign: "left", width: "100%", height: height }}
+      style={{
+        textAlign: "left",
+        width: "100%",
+        height: height,
+        position: "absolute",
+        top: 0,
+        left: 0,
+      }}
     />
   );
 };
@@ -86,10 +93,28 @@ const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
   }, [snaData, startTime, endTime]);
 
   return (
-    <div style={{ minWidth: "300px", width: "100%", height: height }}>
+    <div
+      style={{
+        minWidth: "300px",
+        width: "100%",
+        height: height,
+        position: "relative",
+      }}
+    >
       {netData !== undefined && (
         <CytoComponent netData={netData} height={height} />
       )}
+      {/* Below is work-around to disable user interacting with the div (two fingers touching canvas will cause errors) */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      />
     </div>
   );
 };
