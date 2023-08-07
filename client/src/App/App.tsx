@@ -36,7 +36,16 @@ function App() {
 
   return (
     <div className="App">
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          // Define default options
+          duration: 1000,
+          // Default options for specific types success
+          success: {
+            duration: 700,
+          },
+        }}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/main" element={<MainPage />} />
