@@ -5,14 +5,12 @@ import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import ObservationAPI from "../../services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
-import { processAllVisualisations } from "../../services/py-server";
-import { useParams } from "react-router-dom";
+
 
 const ObservationSecondaryControlView = () => {
   const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
-  const { simulationId } = useParams();
-  const [isProcessing, setIsProcessing] = useState(false);
+
 
   useEffect(() => {
     setDevices(observation.synchronisations);
@@ -41,29 +39,10 @@ const ObservationSecondaryControlView = () => {
     setDevices(tempDevice);
   };
 
-  const handleClick = async () => {
-    try {
-      setIsProcessing(true);
-      const response = await processAllVisualisations(simulationId);
-      if (response) {
-        toast.success(response.data);
-        setIsProcessing(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    setIsProcessing(false);
-  };
+ 
   return (
     <div>
-      <Button
-        variant="dark"
-        value={"baselineTime"}
-        onClick={handleClick}
-        disabled={isProcessing}
-      >
-        {isProcessing ? "Processing..." : "Generate All Visualisations"}
-      </Button>
+     
 
       <h1>Synchronisation</h1>
       <hr />

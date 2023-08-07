@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { startDebriefAudio, stopDebriefAudio } from "../../services/eureka";
 import { useDebriefing } from "./DebriefContext";
+import { processAllVisualisations } from "../../services/py-server";
 
 const DebriefPrimaryControlView = () => {
   const { simulationId } = useParams();
   const { setIsStarted } = useDebriefing();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const styles = {
     wrapper: {
@@ -41,8 +44,30 @@ const DebriefPrimaryControlView = () => {
     }
   };
 
+  const handleClick = async () => {
+    try {
+      setIsProcessing(true);
+      const response = await processAllVisualisations(simulationId);
+      if (response) {
+        toast.success(response.data);
+        setIsProcessing(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setIsProcessing(false);
+  };
+
   return (
     <div style={styles.wrapper}>
+       <Button
+        variant="dark"
+        value={"baselineTime"}
+        onClick={handleClick}
+        disabled={isProcessing}
+      >
+        {isProcessing ? "Processing..." : "Generate All Visualisations"}
+      </Button>
       <Button
         variant="success"
         // disabled={observation.startTime !== null}
