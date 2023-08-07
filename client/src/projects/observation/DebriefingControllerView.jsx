@@ -314,7 +314,14 @@ const DebriefingControllerView = () => {
                 bottomVisualisations(range, showPreviewModal).map(
                   (tab, index) => (
                     <>
-                      <Card style={{ minWidth: "25rem", position: "relative" }}>
+                      <Card
+                        style={{
+                          minWidth: "27rem",
+                          position: "relative",
+                          margin: "5px",
+                          padding: "5px",
+                        }}
+                      >
                         <BsInfoCircle
                           style={{
                             zIndex: "100",
@@ -381,18 +388,6 @@ const DebriefingControllerView = () => {
                           </Button>
                         </Card.Body>
                       </Card>
-                      <div
-                        key={index}
-                        style={{
-                          display: "inline-block",
-                          fontSize: "14px",
-                          color:
-                            bottomActiveKey === tab.eventKey
-                              ? "white"
-                              : "rgb(33, 37, 41)",
-                          marginRight: "5px",
-                        }}
-                      ></div>
                     </>
                   )
                 )

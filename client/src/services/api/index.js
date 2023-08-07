@@ -29,7 +29,8 @@ api.interceptors.response.use(
     if (error.response.data.message) {
       message = error.response.data.message;
     }
-    toast.error(`${message} (${error.response.status})`);
+    // toast.error(`${message} (${error.response.status})`);
+    console.error(`${message} (${error.response.status})`)
     console.error(error.response.data.errorMessage);
     // Do something with response error
     return Promise.reject(error);

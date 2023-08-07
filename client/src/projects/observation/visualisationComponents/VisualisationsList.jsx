@@ -143,7 +143,10 @@ const bottomVisualisations = (timeRange, showPreviewModal) => [
       <TeamworkBarchart
         style={visStyles.imageContainer}
         timeRange={timeRange}
+        width="350px"
+        height="250px"
         fluid
+        yLabelsFontSize={7}
       />
     ),
     info: () => (

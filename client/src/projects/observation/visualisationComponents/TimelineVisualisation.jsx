@@ -87,7 +87,7 @@ const CustomMark = ({ mark }) => {
             <span>{formatDuration(mark.value)}</span>
             <br />
             {mark.favourite ? (
-              <BsStarFill />
+              <BsStarFill color={COLOURS.SECONDARY_NURSE_2} />
             ) : (
               <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
             )}
@@ -125,6 +125,8 @@ const reverseFormatDuration = (formattedDuration) => {
 
 const FilteredMarksComponent = ({ marks, range, setRange }) => {
   const { Track, trackEvent } = useTracking({ page: "Debriefing" });
+
+  console.log(marks, marks);
   // Filter marks within the range
   const filteredMarks = marks.filter((mark) => {
     return mark.value >= range[0] && mark.value <= range[1];
@@ -203,6 +205,12 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
                 }}
               >
                 {mark.value} - {mark.label}
+                {mark.performers.length > 0
+                  ? " - " +
+                    mark.performers
+                      .map((performer) => performer.replace(/\s+/g, ""))
+                      .join(", ")
+                  : ""}
               </Col>
             </Row>
           ))}

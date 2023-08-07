@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { processing_csv } from "./cyto_control";
 import { useDebriefing } from "../debriefing-projection/DebriefContext";
+import SimpleErrorText from "../../components/errors/ErrorMessage";
 
 const CytoComponent = ({ netData, height = "30vh" }) => {
   const net_options = {
@@ -64,7 +65,14 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
         layout.run();
         cy.userPanningEnabled(false); // Disable user panning
       }}
-      style={{ textAlign: "left", width: "100%", height: height }}
+      style={{
+        textAlign: "left",
+        width: "100%",
+        height: height,
+        position: "absolute",
+        top: 0,
+        left: 0,
+      }}
     />
   );
 };
@@ -74,23 +82,47 @@ const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
   const startTime = timeRange[0];
   const endTime = timeRange[1];
   const [netData, setNetData] = useState([]);
+  const [isError, setIsError] = useState(netData.length === 0);
 
   /* getData from backend */
   useEffect(() => {
     if (snaData.length !== 0) {
+      setIsError(false);
       const net_data = processing_csv(snaData, startTime, endTime, 3, 100);
       if (net_data !== undefined) {
         setNetData(net_data["nodes"].concat(net_data["edges"]));
       }
+    } else {
+      setIsError(true);
     }
   }, [snaData, startTime, endTime]);
 
   return (
-    <div style={{ minWidth: "300px", width: "100%", height: height }}>
-      {netData !== undefined && (
-        <CytoComponent netData={netData} height={height} />
-      )}
-    </div>
+    <SimpleErrorText isError={isError} message={"Tool in preparation."}>
+      <div
+        style={{
+          minWidth: "300px",
+          width: "100%",
+          height: height,
+          position: "relative",
+        }}
+      >
+        {netData !== undefined && (
+          <CytoComponent netData={netData} height={height} />
+        )}
+        {/* Below is work-around to disable user interacting with the div (two fingers touching canvas will cause errors) */}
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: 1,
+          }}
+        />
+      </div>
+    </SimpleErrorText>
   );
 };
 

@@ -28,6 +28,28 @@ function HiveProvider({ simulationId, children }) {
       .catch((e) => {});
   }, [simulationId]);
 
+  useEffect(() => {
+    if (!isHiveReady) {
+      // Fetch data immediately when component mounts
+      function fetchData() {
+        HiveAPI.isDataReady(simulationId)
+          .then((res) => {
+            if (res.status === 200) {
+              // const cleanedPhases = cleanRawPhases(phases);
+              setIsReady(true);
+            }
+          })
+          .catch((e) => {});
+      }
+
+      // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
+      const intervalId = setInterval(fetchData, 5000);
+
+      // Clean up the interval when the component is unmounted or when data is fetched
+      return () => clearInterval(intervalId);
+    }
+  }, [isHiveReady, simulationId]);
+
   const value = {
     hiveState,
     hiveSetState,

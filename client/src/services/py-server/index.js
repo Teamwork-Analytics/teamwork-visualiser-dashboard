@@ -38,7 +38,8 @@ communicationAPI.interceptors.response.use(
     }
     message += ` - Python service error:`;
 
-    toast.error(`${message} (${error}):`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
+    // toast.error(`${message} (${error}):`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
+    console.error(`${message} (${error}):`); // disabled -> cause re-rendering bug. TODO: must fix the component state structure.
     // Do something with response error
     // return Promise.reject(message);
   }
