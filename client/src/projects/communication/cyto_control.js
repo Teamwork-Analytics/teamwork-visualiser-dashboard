@@ -387,7 +387,7 @@ let processing_csv = function (
       );
     return { nodes: node_size, edges: edge_width };
   } catch (error) {
-    toast.error(`SNA error: unable to change visualisation based on time`);
+    // toast.error(`SNA error: unable to change visualisation based on time`);
     console.error(error);
   }
 };

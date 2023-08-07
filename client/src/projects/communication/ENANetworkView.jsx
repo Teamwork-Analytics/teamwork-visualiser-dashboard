@@ -43,10 +43,40 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
         setNetworkENAData(net_data["nodes"].concat(net_data["edges"]));
       }
     } catch (err) {
-      toast.error(`ENA error: unable to change visualisation based on time`);
+      // toast.error(`ENA error: unable to change visualisation based on time`);
       console.error(err);
     }
   }, [enaData]);
+
+  useEffect(() => {
+    if (isError) {
+      // Fetch data immediately when component mounts
+      async function callData() {
+        try {
+          const res = await getENAdata({
+            simulationId: simulationId,
+            startTime: startTime,
+            endTime: endTime,
+          });
+          if (res.status === 200) {
+            // const cleanedPhases = cleanRawPhases(phases);
+            setENAdata(res.data);
+            setIsError(false);
+          }
+        } catch (error) {
+          console.log(error);
+          setIsError(true);
+        }
+      }
+      callData();
+
+      // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
+      const intervalId = setInterval(callData, 5000);
+
+      // Clean up the interval when the component is unmounted or when data is fetched
+      return () => clearInterval(intervalId);
+    }
+  }, [endTime, isError, simulationId, startTime]);
 
   const net_options = {
     name: "circle",

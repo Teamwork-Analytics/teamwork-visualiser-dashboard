@@ -46,7 +46,8 @@ Object.keys(portStrategy).forEach((k) => {
       }
       message += `${k} service error:`;
 
-      toast.error(`${message} (${error})`);
+      // toast.error(`${message} (${error})`);
+      console.error(`${message} (${error})`);
       // Do something with response error
       // return Promise.reject(error);
     }
