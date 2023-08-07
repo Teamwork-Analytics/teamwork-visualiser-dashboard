@@ -40,7 +40,7 @@ const SIZE_STYLES = {
   single: { width: "100%", height: "90%", margin: "auto" },
 };
 
-const DisplayViz = ({ selectedVis, range }) => {
+const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
   // Define the visualisation components and their sizes
   // TODO: consider using useMemo for viz
   const imageReferences = {
@@ -60,7 +60,14 @@ const DisplayViz = ({ selectedVis, range }) => {
     },
     wardMap: {
       size: "medium",
-      viz: <HiveView timeRange={range} showFilter={false} height="50vh" />,
+      viz: (
+        <HiveView
+          timeRange={range}
+          showFilter={false}
+          height="50vh"
+          hiveState={optionalHiveState}
+        />
+      ),
     },
     video: {
       size: "large",

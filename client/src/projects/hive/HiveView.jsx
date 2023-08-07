@@ -5,7 +5,6 @@ import floorPlan from "./floor-plan/floor-plan.svg";
 import HexagonComponent from "./Hexagon";
 import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 
@@ -15,9 +14,11 @@ const HiveView = ({
   height = "32vh",
   width = "30vw",
   showModal, // pass in showPreviewModal as a prop to trigger rerender
+  hiveState: hiveStateProp, // renamed prop to distinguish it from hook state
 }) => {
   const hiveRef = useRef();
-  const { hiveState, isHiveReady } = useHive();
+  const { hiveState: hiveStateHook, isHiveReady } = useHive(); // renamed state to distinguish it from prop
+  const hiveState = hiveStateProp || hiveStateHook; // Use prop if available, otherwise use state from hook
   const { simulationId } = useParams();
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
