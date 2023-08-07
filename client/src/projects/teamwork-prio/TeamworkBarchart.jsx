@@ -34,7 +34,7 @@ const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
   }, [simulationId, startTime, endTime]);
 
   return (
-    <SimpleErrorText isError={isError} message={"No data."}>
+    <SimpleErrorText isError={isError} message={"Tool in preparation."}>
       <Barchart
         data={teamworkData}
         height={height}

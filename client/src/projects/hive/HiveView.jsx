@@ -7,6 +7,7 @@ import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { useParams } from "react-router-dom";
+import SimpleErrorText from "../../components/errors/ErrorMessage";
 
 const HiveView = ({
   timeRange,
@@ -47,7 +48,7 @@ const HiveView = ({
   return (
     <Fragment>
       {!isHiveReady ? (
-        <EmptyPlaceholder />
+        <SimpleErrorText isError={true} message={"Tool in preparation."} />
       ) : (
         <div
           style={{
