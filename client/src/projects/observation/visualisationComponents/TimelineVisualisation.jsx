@@ -87,7 +87,7 @@ const CustomMark = ({ mark }) => {
             <span>{formatDuration(mark.value)}</span>
             <br />
             {mark.favourite ? (
-              <BsStarFill />
+              <BsStarFill color={COLOURS.SECONDARY_NURSE_2} />
             ) : (
               <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
             )}
