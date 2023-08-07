@@ -129,7 +129,14 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
 
   return (
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
-      <div style={{ position: "relative", height: height }}>
+      <div
+        style={{
+          minWidth: "300px",
+          width: "100%",
+          height: height,
+          position: "relative",
+        }}
+      >
         <CytoscapeComponent
           cy={(cy) => {
             cy.remove("nodes['*']");
