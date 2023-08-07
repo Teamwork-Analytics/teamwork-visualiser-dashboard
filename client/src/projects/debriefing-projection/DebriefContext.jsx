@@ -41,7 +41,7 @@ function DebriefingProvider({ simulationId, children }) {
       }
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(callData, 5000);
+      const intervalId = setInterval(callData, 10000);
 
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
