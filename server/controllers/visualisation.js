@@ -51,45 +51,66 @@ const checkDataReadiness = async (req, res, next) => {
     const syncFileName = "sync.txt";
 
     if (fileSystem.existsSync(pathJoined)) {
-      if (
-        !fileSystem.existsSync(path.join(pathJoined, path.sep, hiveFileName))
-      ) {
+      const fileNames = [
+        hiveFileName,
+        positionFileName,
+        communicationFileName,
+        syncFileName,
+      ];
+
+      let allFilesMissing = fileNames.every(
+        (fileName) =>
+          !fileSystem.existsSync(path.join(pathJoined, path.sep, fileName))
+      );
+
+      if (allFilesMissing) {
         res
           .status(500)
-          .send(fillErrorObject(500, "Ward map data is missing/not ready"));
-        return;
-      }
-      if (
-        !fileSystem.existsSync(
-          path.join(pathJoined, path.sep, positionFileName)
-        )
-      ) {
-        res
-          .status(500)
-          .send(fillErrorObject(500, "Position data is missing/not ready"));
-        return;
-      }
-      if (
-        !fileSystem.existsSync(
-          path.join(pathJoined, path.sep, communicationFileName)
-        )
-      ) {
-        res
-          .status(500)
-          .send(
-            fillErrorObject(500, "Communication data is missing/not ready")
-          );
-        return;
-      }
-      if (
-        !fileSystem.existsSync(path.join(pathJoined, path.sep, syncFileName))
-      ) {
-        res.status(500).send(fillErrorObject(500, "Sync file is missing"));
+          .send(fillErrorObject(500, "All data is missing/not ready"));
         return;
       }
 
-      res.status(200).send("visualisation data is ready!");
-      return;
+      res.status(200).send("At least one data is ready!");
+
+      // if (
+      //   !fileSystem.existsSync(path.join(pathJoined, path.sep, hiveFileName))
+      // ) {
+      //   res
+      //     .status(500)
+      //     .send(fillErrorObject(500, "Ward map data is missing/not ready"));
+      //   return;
+      // }
+      // if (
+      //   !fileSystem.existsSync(
+      //     path.join(pathJoined, path.sep, positionFileName)
+      //   )
+      // ) {
+      //   res
+      //     .status(500)
+      //     .send(fillErrorObject(500, "Position data is missing/not ready"));
+      //   return;
+      // }
+      // if (
+      //   !fileSystem.existsSync(
+      //     path.join(pathJoined, path.sep, communicationFileName)
+      //   )
+      // ) {
+      //   res
+      //     .status(500)
+      //     .send(
+      //       fillErrorObject(500, "Communication data is missing/not ready")
+      //     );
+      //   return;
+      // }
+      // if (
+      //   !fileSystem.existsSync(path.join(pathJoined, path.sep, syncFileName))
+      // ) {
+      //   res.status(500).send(fillErrorObject(500, "Sync file is missing"));
+      //   return;
+      // }
+
+      // res.status(200).send("visualisation data is ready!");
+      // return;
     } else {
       res
         .status(500)
