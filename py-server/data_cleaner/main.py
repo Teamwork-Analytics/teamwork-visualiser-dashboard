@@ -23,14 +23,14 @@ import subprocess
 
 TEST_MODE_LINX = False
 
-IP_ADDRESS = "49.127.77.235"
+IP_ADDRESS = "0.0.0.0"
 
 # todo: if you want to test locally, change this path to your local test_data_folder
 if TEST_MODE_LINX:
     BASE_PATH = "test_data_folder"
 else:
-    # BASE_PATH = "C:\\develop\\saved_data\\"
-    BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+    BASE_PATH = "C:\\develop\\saved_data\\"
+    # BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 
     app = Flask(__name__)
 

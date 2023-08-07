@@ -13,9 +13,9 @@ IP_ADDRESS = "0.0.0.0"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-# DIRECTORY = Path("C:\\develop\\saved_data")
-DIRECTORY = Path(
-    "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data")
+DIRECTORY = Path("C:\\develop\\saved_data")
+# DIRECTORY = Path(
+#     "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data")
 
 
 CORS(app)
