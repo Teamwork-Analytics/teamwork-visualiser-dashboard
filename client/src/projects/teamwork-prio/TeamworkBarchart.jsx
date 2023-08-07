@@ -6,7 +6,13 @@ import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 
-const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
+const TeamworkBarchart = ({
+  height,
+  width,
+  timeRange,
+  yLabelsFontSize,
+  customAspectRatio,
+}) => {
   const { simulationId } = useParams();
   const [teamworkData, setTeamworkData] = useState([]);
   const [isError, setIsError] = useState(teamworkData.length === 0);
@@ -70,6 +76,7 @@ const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
         height={height}
         width={width}
         yLabelsFontSize={yLabelsFontSize}
+        customAspectRatio={customAspectRatio}
       />
     </SimpleErrorText>
   );
