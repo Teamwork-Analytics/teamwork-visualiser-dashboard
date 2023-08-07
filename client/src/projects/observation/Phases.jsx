@@ -176,7 +176,15 @@ const Phases = () => {
                               handleEditModalShow();
                             }}
                           >
-                            {d.message}
+                            {d.message +
+                              (d.performers.length > 0
+                                ? " - " +
+                                  d.performers
+                                    .map((performer) =>
+                                      performer.replace(/\s+/g, "")
+                                    )
+                                    .join(", ")
+                                : "")}
                           </Container>
                         </Col>
                         <Col

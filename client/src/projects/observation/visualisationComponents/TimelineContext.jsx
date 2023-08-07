@@ -51,7 +51,8 @@ function TimelineProvider({ children }) {
         const value = calculateDuration(simStartTimestamp, note.timestamp);
         const label = note.message;
         const favourite = note.favourite;
-        return { value, label, favourite };
+        const performers = note.performers;
+        return { value, label, favourite, performers };
       })
     );
   }, [notes, simStartTimestamp]);
