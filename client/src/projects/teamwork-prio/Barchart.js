@@ -5,6 +5,7 @@ const Barchart = ({
   height = "25vh",
   width = "40vw",
   yLabelsFontSize,
+  customAspectRatio,
 }) => {
   const chartData = {
     labels: data.map((row) => row.label),
@@ -59,6 +60,7 @@ const Barchart = ({
               },
             },
           },
+          aspectRatio: customAspectRatio,
         }}
       />
     </div>

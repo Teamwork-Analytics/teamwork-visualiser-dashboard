@@ -19,6 +19,7 @@ const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(taggingSocket.connected);
   const [dispList, setDispList] = useState([]);
   const [range, setRange] = useState([0, 0]);
+  const [hiveState, setHiveState] = useState();
 
   const params = useParams();
 
@@ -46,15 +47,21 @@ const DebriefView = () => {
       setDispList(parsedList); // WARNING: abrupt mutation
     };
 
+    const onReceiveNurseFilter = (hiveState) => {
+      setHiveState(hiveState);
+    };
+
     taggingSocket.on("connect", onConnect);
     taggingSocket.on("disconnect", onDisconnect);
     taggingSocket.on("receive-disp-list", onUpdateList);
+    taggingSocket.on("receive-nurse-filter", onReceiveNurseFilter);
 
     // Cleanup function for useEffect
     return () => {
       taggingSocket.off("connect", onConnect);
       taggingSocket.off("disconnect", onDisconnect);
       taggingSocket.off("receive-disp-list", onUpdateList);
+      taggingSocket.off("receive-nurse-filter", onReceiveNurseFilter);
     };
   }, []);
 
@@ -75,7 +82,11 @@ const DebriefView = () => {
         }}
       >
         {/* Display the selected visualisations with the received range */}
-        <DisplayViz selectedVis={dispList} range={range} />
+        <DisplayViz
+          selectedVis={dispList}
+          range={range}
+          optionalHiveState={hiveState}
+        />
       </div>
       {/* Display connection state */}
       <ConnectionState isConnected={isConnected} />

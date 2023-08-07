@@ -146,7 +146,8 @@ const bottomVisualisations = (timeRange, showPreviewModal) => [
         width="350px"
         height="250px"
         fluid
-        yLabelsFontSize={7}
+        yLabelsFontSize={11}
+        customAspectRatio={1.5}
       />
     ),
     info: () => (

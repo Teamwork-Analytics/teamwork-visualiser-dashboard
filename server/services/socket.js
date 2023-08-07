@@ -60,6 +60,12 @@ const createSocket = async (httpServer) => {
       taggingNamespace.emit("receive-prepared-signal", signalPackage);
       console.log("Broadcasted the signal to client");
     });
+
+    socket.on("send-nurse-filter", (nurseFilter) => {
+      console.log("Received nurse filter from server");
+      taggingNamespace.emit("receive-nurse-filter", nurseFilter);
+      console.log("Broadcasted nurse filter to client");
+    });
   });
 };
 

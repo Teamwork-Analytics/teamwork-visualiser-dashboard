@@ -6,7 +6,13 @@ import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 
-const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
+const TeamworkBarchart = ({
+  height,
+  width,
+  timeRange,
+  yLabelsFontSize,
+  customAspectRatio,
+}) => {
   const { simulationId } = useParams();
   const [teamworkData, setTeamworkData] = useState([]);
   const [isError, setIsError] = useState(teamworkData.length === 0);
@@ -56,7 +62,7 @@ const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
       }
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(fetchData, 5000);
+      const intervalId = setInterval(fetchData, 10000);
 
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
@@ -70,6 +76,7 @@ const TeamworkBarchart = ({ height, width, timeRange, yLabelsFontSize }) => {
         height={height}
         width={width}
         yLabelsFontSize={yLabelsFontSize}
+        customAspectRatio={customAspectRatio}
       />
     </SimpleErrorText>
   );
