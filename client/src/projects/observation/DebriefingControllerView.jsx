@@ -318,7 +318,7 @@ const DebriefingControllerView = () => {
                     <>
                       <div
                         style={{
-                          minWidth: "27rem",
+                          minWidth: "23rem",
                           position: "relative",
                           margin: "5px",
                           padding: "5px",
@@ -343,55 +343,69 @@ const DebriefingControllerView = () => {
                             handleInfoShow(tab.title, tab.info());
                           }}
                         />
-                        <Container style={{ margin: "5px" }}>
-                          {tab.component()}
-                        </Container>
-                        <Card.Body>
-                          <Card.Title
-                            style={{
-                              textAlign: "start",
-                              marginTop: "15px",
-                              marginBottom: "15px",
-                            }}
-                          >
-                            {tab.title}
-                          </Card.Title>
-
-                          <Button
-                            variant={
-                              selectedVis.some((vis) => vis.id === tab.eventKey)
-                                ? "danger"
-                                : "success"
-                            }
-                            style={{
-                              ...debriefStyles.addVisButton,
-                            }}
-                            onClick={() => {
-                              trackEvent({
-                                action: "click",
-                                element: "addOrRemoveVisToPreview(Bottom)",
-                                data: tab.eventKey,
-                              });
-                              handleAddVis(tab.eventKey);
-                            }}
-                          >
-                            {selectedVis.some(
-                              (vis) => vis.id === tab.eventKey
-                            ) ? (
-                              <>
-                                <FaCheckSquare
-                                  style={{ marginBottom: "2px" }}
-                                />{" "}
-                                Remove from projector
-                              </>
-                            ) : (
-                              <>
-                                <FaSquare style={{ marginBottom: "2px" }} /> Add
-                                to projector
-                              </>
-                            )}
-                          </Button>
-                        </Card.Body>
+                        <Row>
+                          <Col>
+                            <Card.Title
+                              style={{
+                                marginTop: "10px",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              {tab.title}
+                            </Card.Title>
+                          </Col>
+                        </Row>
+                        <Row
+                          style={{
+                            marginBottom: "10px",
+                          }}
+                        >
+                          <Col>
+                            <Button
+                              variant={
+                                selectedVis.some(
+                                  (vis) => vis.id === tab.eventKey
+                                )
+                                  ? "danger"
+                                  : "success"
+                              }
+                              style={{
+                                fontSize: "14px",
+                                padding: "5px",
+                                whiteSpace: "nowrap",
+                              }}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "addOrRemoveVisToPreview(Bottom)",
+                                  data: tab.eventKey,
+                                });
+                                handleAddVis(tab.eventKey);
+                              }}
+                            >
+                              {selectedVis.some(
+                                (vis) => vis.id === tab.eventKey
+                              ) ? (
+                                <>
+                                  <FaCheckSquare
+                                    style={{ marginBottom: "2px" }}
+                                  />{" "}
+                                  Remove from projector
+                                </>
+                              ) : (
+                                <>
+                                  <FaSquare style={{ marginBottom: "2px" }} />{" "}
+                                  Add to projector
+                                </>
+                              )}
+                            </Button>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Container style={{ margin: "5px" }}>
+                            {tab.component()}
+                          </Container>
+                        </Row>
                       </div>
                     </>
                   )
