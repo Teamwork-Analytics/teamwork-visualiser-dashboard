@@ -21,16 +21,15 @@ import subprocess
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
-TEST_MODE_LINX = False
+TEST_MODE_LINX = True
 
 IP_ADDRESS = "0.0.0.0"
 
 # todo: if you want to test locally, change this path to your local test_data_folder
 if TEST_MODE_LINX:
-    BASE_PATH = "test_data_folder"
+    BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 else:
     BASE_PATH = "C:\\develop\\saved_data\\"
-    # BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 
     app = Flask(__name__)
 

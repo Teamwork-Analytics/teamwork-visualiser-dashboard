@@ -165,7 +165,7 @@ let generate_a_node_dict = function (
       "text-halign": label_halignment,
       "text-valign": label_valignment,
       "text-margin-x": MARGIN_MAPPER[node_name],
-      "font-size": 20,
+      "font-size": 40,
     },
   };
 };

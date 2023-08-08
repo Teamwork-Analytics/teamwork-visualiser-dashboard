@@ -60,7 +60,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
           });
           if (res.status === 200) {
             // const cleanedPhases = cleanRawPhases(phases);
-            setENAdata(res.data);
+            await setENAdata(res.data);
             setIsError(false);
           }
         } catch (error) {
@@ -71,7 +71,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
       callData();
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(callData, 10000);
+      const intervalId = setInterval(callData, 5000);
 
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
@@ -92,12 +92,14 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
     clockwise: true, // whether the layout should go clockwise (true) or counterclockwise/anticlockwise (false)
     sort: undefined, // a sorting function to order the nodes; e.g. function(a, b){ return a.data('weight') - b.data('weight') }
     animate: false, // whether to transition the node positions
-    animationDuration: 500, // duration of animation in ms if enabled
+    animationDuration: 0, // duration of animation in ms if enabled
     animationEasing: undefined, // easing of animation if enabled
     animateFilter: function (node, i) {
       return true;
     }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
-    ready: undefined, // callback on layoutready
+    ready: (obj) => {
+      obj.cy.fit();
+    }, // callback on layoutready
     stop: undefined, // callback on layoutstop
     transform: function (node, position) {
       return position;

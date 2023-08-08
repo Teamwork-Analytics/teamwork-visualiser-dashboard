@@ -9,7 +9,7 @@ import { processAllVisualisations } from "../../services/py-server";
 
 const DebriefPrimaryControlView = () => {
   const { simulationId } = useParams();
-  const { setIsStarted } = useDebriefing();
+  const { isStarted, setIsStarted } = useDebriefing();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const styles = {
@@ -18,7 +18,6 @@ const DebriefPrimaryControlView = () => {
       display: "flex",
       height: "28vh",
       flexDirection: "column",
-      justifyContent: "center",
       rowGap: "1em",
     },
   };
@@ -60,7 +59,7 @@ const DebriefPrimaryControlView = () => {
 
   return (
     <div style={styles.wrapper}>
-       <Button
+      <Button
         variant="dark"
         value={"baselineTime"}
         onClick={handleClick}
@@ -68,20 +67,16 @@ const DebriefPrimaryControlView = () => {
       >
         {isProcessing ? "Processing..." : "Generate All Visualisations"}
       </Button>
+
       <Button
-        variant="success"
-        // disabled={observation.startTime !== null}
+        variant={isStarted ? "secondary" : "success"}
         value={"startTime"}
         onClick={sendRecordedTime}
+        disabled={isStarted}
       >
-        Start Audio Recording
+        {isStarted ? "Recording..." : "Start Audio Recording"}
       </Button>
-      <Button
-        variant="dark"
-        // disabled={observation.stopTime !== null}
-        value={"stopTime"}
-        onClick={sendRecordedTime}
-      >
+      <Button variant="dark" value={"stopTime"} onClick={sendRecordedTime}>
         Stop Audio Recording
       </Button>
       <ReactTooltip />

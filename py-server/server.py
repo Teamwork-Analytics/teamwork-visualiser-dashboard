@@ -6,6 +6,7 @@ from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
+import os
 
 from pathlib import Path
 
@@ -13,15 +14,17 @@ IP_ADDRESS = "0.0.0.0"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-DIRECTORY = Path("C:\\develop\\saved_data")
-# DIRECTORY = Path(
-#     "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data")
+TEST_MODE_LINX = True
+if TEST_MODE_LINX:
+    DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+else:
+    DIRECTORY = "C:\\develop\\saved_data\\"
 
 
 CORS(app)
 
 
-@app.route("/generate_viz", methods=['GET'])
+@ app.route("/generate_viz", methods=['GET'])
 def call_viz():
     """
     This function is to run a script to clean data and generates visualisation
@@ -39,7 +42,7 @@ def call_viz():
     return "Visualisations have been generated.", 200
 
 
-@app.route("/get_teamwork_prio_data", methods=['GET'])
+@ app.route("/get_teamwork_prio_data", methods=['GET'])
 def give_prioritisation_test_data():
     """
     This function is to return the testing data for task prioritisation graph.
@@ -58,10 +61,15 @@ def give_prioritisation_test_data():
 
     # todo: this path should be changed once used in actual scenario
     file = "%s.csv" % session_id
-    dir_path = DIRECTORY / session_id / "result"
-    file_path = dir_path / file
+    # dir_path = DIRECTORY / session_id / "result"
+    dir_path = os.path.join(DIRECTORY, session_id, "result")
+
+    # file_path = dir_path / file
+    file_path = os.path.join(dir_path, file)
     # test_data_path = "test_data/{}.csv".format(session_id)
-    sync_data_path = dir_path / "sync.txt"
+    # sync_data_path = dir_path / "sync.txt"
+    sync_data_path = os.path.join(dir_path, "sync.txt")
+
     positioning_start_timestamp = get_timestamp_from_sync(
         sync_data_path, "positioning")
     processed_pozyx_data = pd.read_csv(file_path)
@@ -72,7 +80,7 @@ def give_prioritisation_test_data():
     return jsonify(output_data)
 
 
-@app.route("/get_data", methods=['GET'])
+@ app.route("/get_data", methods=['GET'])
 def give_sna_test_data():
     """
     This function is to return the testing data for the sna graph
@@ -82,7 +90,8 @@ def give_sna_test_data():
     try:
         id = request.args['sessionId']
         file = "%s_network_data.csv" % id
-        file_path = DIRECTORY / id / "result" / file
+        # file_path = DIRECTORY / id / "result" / file
+        file_path = os.path.join(DIRECTORY, id, "result", file)
         df = pd.read_csv(file_path)
         df.fillna("", inplace=True)
         output_data = df.to_dict(orient="records")
@@ -93,7 +102,7 @@ def give_sna_test_data():
         return message, 500
 
 
-@app.route("/get_ena_data", methods=['GET'])
+@ app.route("/get_ena_data", methods=['GET'])
 def give_ena_test_data():
     """
     This function is to return the testing data for mimic ena.
@@ -106,7 +115,10 @@ def give_ena_test_data():
     end_time = request.args["end"]
 
     file = "%s_network_data.csv" % id
-    file_path = DIRECTORY / id / "result" / file
+    # file_path = DIRECTORY / id / "result" / file
+    file_path = os.path.join(DIRECTORY, id, "result", file)
+
+    os.path.join(DIRECTORY, os.sep, )
     session_df = pd.read_csv(file_path)
     # updated on 17/7/2023, merged the acknowledging and responding
     __merging_codes(session_df, ["acknowledging",

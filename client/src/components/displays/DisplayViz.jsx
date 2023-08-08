@@ -37,12 +37,21 @@ const SIZE_STYLES = {
     minHeight: 300,
   },
   large: { width: "100%", minWidth: 400, minHeight: 300 },
-  single: { width: "100%", height: "90%", margin: "auto" },
+  single: { width: "100vw", height: "90%", margin: "auto" },
 };
 
 const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
   // Define the visualisation components and their sizes
   // TODO: consider using useMemo for viz
+
+  // Determine the size based on the selected visualisations
+  const decideSize = (d) => {
+    if (selectedVis.length === 1 && d.id !== "videoVis") {
+      return "single";
+    }
+    return imageReferences[d.id].size;
+  };
+
   const imageReferences = {
     commBehaviour: {
       size: "small",
@@ -87,14 +96,6 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
     },
   };
 
-  // Determine the size based on the selected visualisations
-  const decideSize = (d) => {
-    if (selectedVis.length === 1 && d.id !== "videoVis") {
-      return "single";
-    }
-    return imageReferences[d.id].size;
-  };
-
   // Sort array so large items are always first
   const sortedVis = selectedVis.sort((a, b) => {
     if (
@@ -125,19 +126,19 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
     >
       {sortedVis.length !== 0 ? (
         sortedVis.map((d) => (
-          <Card
+          <div
             style={{ ...SIZE_STYLES["general"], ...SIZE_STYLES[decideSize(d)] }}
           >
-            <Card.Body
+            {/* <Card.Body
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
-            >
-              {imageReferences[d.id].viz}
-            </Card.Body>
-          </Card>
+            > */}
+            {imageReferences[d.id].viz}
+            {/* </Card.Body> */}
+          </div>
         ))
       ) : (
         <div

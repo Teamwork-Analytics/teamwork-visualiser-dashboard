@@ -24,12 +24,16 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
     animateFilter: function (node, i) {
       return true;
     }, // a function that determines whether the node should be animated.  All nodes animated by default on animate enabled.  Non-animated nodes are positioned immediately when the layout starts
-    ready: undefined, // callback on layoutready
+    ready: (obj) => {
+      obj.cy.fit();
+    }, // callback on layoutready
     stop: undefined, // callback on layoutstop
     transform: function (node, position) {
       return position;
     }, // transform a given node position. Useful for changing flow direction in discrete layouts
   };
+
+  const [cy, setCy] = useState();
 
   const stylesheet = [
     // the stylesheet for the graph
@@ -38,6 +42,7 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
       style: {
         "background-color": "#666",
         label: "data(id)",
+        "font-size": "50px",
       },
     },
 
@@ -63,6 +68,7 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
         cy.fit();
         const layout = cy.layout(net_options);
         layout.run();
+        cy.fit();
         cy.userPanningEnabled(false); // Disable user panning
       }}
       style={{
