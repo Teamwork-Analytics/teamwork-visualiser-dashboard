@@ -170,7 +170,7 @@ const DebriefingControllerView = () => {
               handleRevertAllProjections();
             }}
           >
-            Clear selections and stop sharing
+            Reset all
           </Button>
           {/* <Button
             variant="success"
