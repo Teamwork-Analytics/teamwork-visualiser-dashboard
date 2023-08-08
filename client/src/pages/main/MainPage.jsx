@@ -68,7 +68,7 @@ const MainPage = () => {
       <div style={{ overflowY: "scroll", width: "100vw" }}>
         <div style={pageStyles.list}>
           {!!simulations
-            ? search(simulations).map((sim, i) => (
+            ? search(simulations).filter((sim) => sim.project.name === "Peninsula Nursing Simulation 2023" ).map((sim, i) => (
                 <Link
                   key={i}
                   to={`/visualisation/${sim.simulationId}`}

@@ -131,7 +131,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
       <div
         style={{
-          minWidth: "300px",
+          minWidth: "400px",
           width: "100%",
           height: height,
           position: "relative",
