@@ -69,7 +69,7 @@ const DebriefingControllerView = () => {
   const { isDataReady } = useObservation();
 
   // send selected Vis
-  const handleConfirmProjection = () => {
+  const handleConfirmProjection = (selectedVis) => {
     console.log(selectedVis);
     const preparedData = prepareData(range, selectedVis, simulationId);
     taggingSocket.emit("send-disp-list", preparedData, () => {
@@ -96,15 +96,16 @@ const DebriefingControllerView = () => {
 
   // tabs default active
   const [topActiveTab, setTopActiveTab] = useState("timeline");
-  const [bottomActiveKey, setBottomActiveKey] = useState("wardMap");
 
   // visualisations selection
   const [selectedVis, setSelectedVis] = useState([]);
   const handleAddVis = (id) => {
     if (!selectedVis.some((item) => item.id === id) && selectedVis.length < 3) {
       setSelectedVis([...selectedVis, { id: id }]);
+      handleConfirmProjection([...selectedVis, { id: id }]);
     } else if (selectedVis.some((item) => item.id === id)) {
       setSelectedVis(selectedVis.filter((item) => item.id !== id));
+      handleConfirmProjection(selectedVis.filter((item) => item.id !== id));
     } else if (selectedVis.length >= 3) {
       alert("You've already selected the maximum of 3 visualisations.");
     } else {
@@ -263,7 +264,7 @@ const DebriefingControllerView = () => {
                 onClick={() => {
                   trackEvent({
                     action: "click",
-                    element: "addVisToPreview(Top)",
+                    element: "addOrRemoveVisToPreview(Top)",
                     data: topActiveTab,
                   });
                   handleAddVis(topActiveTab);
@@ -272,11 +273,12 @@ const DebriefingControllerView = () => {
                 {selectedVis.some((vis) => vis.id === "video") ? (
                   <>
                     <FaCheckSquare style={{ marginBottom: "2px" }} /> Remove
-                    from preview
+                    from projector
                   </>
                 ) : (
                   <>
-                    <FaSquare style={{ marginBottom: "2px" }} /> Add to preview
+                    <FaSquare style={{ marginBottom: "2px" }} /> Add to
+                    projector
                   </>
                 )}
               </Button>
@@ -367,7 +369,7 @@ const DebriefingControllerView = () => {
                             onClick={() => {
                               trackEvent({
                                 action: "click",
-                                element: "addVisToPreview(Bottom)",
+                                element: "addOrRemoveVisToPreview(Bottom)",
                                 data: tab.eventKey,
                               });
                               handleAddVis(tab.eventKey);
@@ -380,12 +382,12 @@ const DebriefingControllerView = () => {
                                 <FaCheckSquare
                                   style={{ marginBottom: "2px" }}
                                 />{" "}
-                                Remove from preview
+                                Remove from projector
                               </>
                             ) : (
                               <>
                                 <FaSquare style={{ marginBottom: "2px" }} /> Add
-                                to preview
+                                to projector
                               </>
                             )}
                           </Button>
