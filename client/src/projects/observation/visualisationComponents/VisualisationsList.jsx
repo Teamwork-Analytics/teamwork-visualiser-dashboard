@@ -78,6 +78,40 @@ const topTabVisualisations = (timeRange) => [
 // Configuration for bottom visualisations -> for carousel
 const bottomVisualisations = (timeRange, showPreviewModal) => [
   {
+    eventKey: "wardMap",
+    title: "Ward Map",
+    component: () => (
+      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
+    ),
+    info: () => (
+      <div>
+        Each hexagon represents a position of a student. The colour-filled
+        hexagon represents the student talking in that position.
+      </div>
+    ),
+  },
+  {
+    eventKey: "priorBar",
+    title: "Prioritisation Bar",
+    component: () => (
+      <TeamworkBarchart
+        style={visStyles.imageContainer}
+        timeRange={timeRange}
+        width="350px"
+        height="250px"
+        fluid
+        yLabelsFontSize={11}
+        customAspectRatio={1.5}
+      />
+    ),
+    info: () => (
+      <div>
+        Each bar represents the percentage of time that the team spent on a
+        specific task during that time frame.
+      </div>
+    ),
+  },
+  {
     eventKey: "commNetwork",
     title: "Communication Network",
     component: () => <SocialNetworkView timeRange={timeRange} />,
@@ -120,40 +154,6 @@ const bottomVisualisations = (timeRange, showPreviewModal) => [
         <ul>
           <li>Number two, Bailey. The theatre has just picked…</li>
         </ul>
-      </div>
-    ),
-  },
-  {
-    eventKey: "wardMap",
-    title: "Ward Map",
-    component: () => (
-      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
-    ),
-    info: () => (
-      <div>
-        Each hexagon represents a position of a student. The colour-filled
-        hexagon represents the student talking in that position.
-      </div>
-    ),
-  },
-  {
-    eventKey: "priorBar",
-    title: "Prioritisation Bar",
-    component: () => (
-      <TeamworkBarchart
-        style={visStyles.imageContainer}
-        timeRange={timeRange}
-        width="350px"
-        height="250px"
-        fluid
-        yLabelsFontSize={11}
-        customAspectRatio={1.5}
-      />
-    ),
-    info: () => (
-      <div>
-        Each bar represents the percentage of time that the team spent on a
-        specific task during that time frame.
       </div>
     ),
   },

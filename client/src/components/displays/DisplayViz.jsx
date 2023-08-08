@@ -55,11 +55,11 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
   const imageReferences = {
     commBehaviour: {
       size: "small",
-      viz: <ENANetworkView timeRange={range} height={"50vh"} />,
+      viz: <ENANetworkView timeRange={range} height={selectedVis.length === 1 ? "100vh" : "50vh"} />,
     },
     commNetwork: {
       size: "small",
-      viz: <SocialNetworkView timeRange={range} height={"50vh"} />,
+      viz: <SocialNetworkView timeRange={range} height={selectedVis.length === 1 ? "100vh" : "50vh"} />,
     },
     priorBar: {
       size: "small",

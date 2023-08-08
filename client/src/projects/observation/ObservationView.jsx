@@ -12,7 +12,7 @@ import { NurseNameProvider } from "./visualisationComponents/NurseNameContext";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
-  const { obsStartTime, obsEndTime } = useObservation();
+  const { obsStartTime, obsEndTime, toggleRefreshSim } = useObservation();
   const { Track, trackEvent } = useTracking({ page: "Observation" });
   const navigate = useNavigate();
 
@@ -66,6 +66,7 @@ const ObservationView = () => {
             defaultActiveKey={currentTab}
             onSelect={(k) => {
               trackEvent({ action: "click", element: k + " Tab", data: k });
+              toggleRefreshSim();
               return setCurrentTab(k);
             }}
             id="tagging-debriefing-switch"

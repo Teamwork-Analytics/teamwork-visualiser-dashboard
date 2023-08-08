@@ -33,6 +33,18 @@ function ObservationProvider({ simulationId, children }) {
     });
   }, [simulationId]);
 
+  const toggleRefreshSim = () => {
+    ObservationAPI.single(simulationId).then((res) => {
+      if (res.status === 200) {
+        setObservation(res.data);
+        setObsStartTime(res.data.startTime);
+        setObsEndTime(res.data.stopTime);
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
+      }
+    });
+  }
+
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
     SimulationSessionAPI.isReady(simulationId)
@@ -75,6 +87,7 @@ function ObservationProvider({ simulationId, children }) {
     obsStartTime,
     obsEndTime,
     isDataReady,
+    toggleRefreshSim,
   };
   return (
     <ObservationContext.Provider value={value}>
