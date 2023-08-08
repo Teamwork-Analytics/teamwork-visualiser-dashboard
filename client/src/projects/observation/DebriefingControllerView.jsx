@@ -84,7 +84,7 @@ const DebriefingControllerView = () => {
   // send empty list
   const handleRevertAllProjections = () => {
     const toastId = toast.loading("Loading...");
-    // setSelectedVis([]);
+    setSelectedVis([]);
     const preparedData = prepareData(range, [], simulationId);
     taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
@@ -169,9 +169,9 @@ const DebriefingControllerView = () => {
               handleRevertAllProjections();
             }}
           >
-            Stop sharing
+            Clear selections and stop sharing
           </Button>
-          <Button
+          {/* <Button
             variant="success"
             style={{ marginRight: "5px", fontSize: "14px" }}
             onClick={() => {
@@ -184,7 +184,7 @@ const DebriefingControllerView = () => {
             }}
           >
             Projection preview
-          </Button>
+          </Button> */}
         </Col>
       </Row>
       {/* Top row viz */}
