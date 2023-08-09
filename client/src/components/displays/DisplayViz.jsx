@@ -37,7 +37,7 @@ const SIZE_STYLES = {
     minHeight: 300,
   },
   large: { width: "100%", minWidth: 400, minHeight: 300 },
-  single: { width: "100vw", height: "90%", margin: "auto" },
+  single: { width: "90vw", height: "70vh", margin: "auto" },
 };
 
 const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
@@ -58,7 +58,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       viz: (
         <ENANetworkView
           timeRange={range}
-          height={selectedVis.length === 1 ? "100vh" : "50vh"}
+          height={selectedVis.length === 1 ? "60vh" : "50vh"}
         />
       ),
     },
@@ -67,7 +67,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       viz: (
         <SocialNetworkView
           timeRange={range}
-          height={selectedVis.length === 1 ? "100vh" : "50vh"}
+          height={selectedVis.length === 1 ? "60vh" : "50vh"}
         />
       ),
     },

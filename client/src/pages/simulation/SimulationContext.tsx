@@ -9,7 +9,7 @@ type SimProviderProps = {
 const SimContext = React.createContext<
   { tool: String; setTool: Function } | undefined
 >(undefined);
-const DEFAULT_VIEW = "debrief";
+const DEFAULT_VIEW = "observation";
 
 /**
  * availableTools is a strategy variable
