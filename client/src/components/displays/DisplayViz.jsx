@@ -23,7 +23,7 @@ import VideoVisualisation from "../../projects/observation/visualisationComponen
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {
-  general: { border: 0, backgroundColor: "white" },
+  general: { border: 0 },
   small: {
     width: "40%",
     minWidth: 300,
@@ -31,7 +31,7 @@ const SIZE_STYLES = {
     minHeight: 300,
   },
   medium: {
-    width: "55%",
+    width: "50%",
     minWidth: 300,
     height: "50%",
     minHeight: 300,
@@ -55,16 +55,31 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
   const imageReferences = {
     commBehaviour: {
       size: "small",
-      viz: <ENANetworkView timeRange={range} height={selectedVis.length === 1 ? "100vh" : "50vh"} />,
+      viz: (
+        <ENANetworkView
+          timeRange={range}
+          height={selectedVis.length === 1 ? "100vh" : "50vh"}
+        />
+      ),
     },
     commNetwork: {
       size: "small",
-      viz: <SocialNetworkView timeRange={range} height={selectedVis.length === 1 ? "100vh" : "50vh"} />,
+      viz: (
+        <SocialNetworkView
+          timeRange={range}
+          height={selectedVis.length === 1 ? "100vh" : "50vh"}
+        />
+      ),
     },
     priorBar: {
       size: "small",
       viz: (
-        <TeamworkBarchart height={""} width={"55vw"} timeRange={range} fluid />
+        <TeamworkBarchart
+          width={"45vw"}
+          timeRange={range}
+          customAspectRatio={1.5}
+          fluid
+        />
       ),
     },
     wardMap: {
@@ -73,7 +88,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
         <HiveView
           timeRange={range}
           showFilter={false}
-          height="50vh"
+          // height="50vh"
           hiveState={optionalHiveState}
         />
       ),
@@ -127,7 +142,10 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       {sortedVis.length !== 0 ? (
         sortedVis.map((d) => (
           <div
-            style={{ ...SIZE_STYLES["general"], ...SIZE_STYLES[decideSize(d)] }}
+            style={{
+              ...SIZE_STYLES["general"],
+              ...SIZE_STYLES[decideSize(d)],
+            }}
           >
             {/* <Card.Body
               style={{
@@ -140,7 +158,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
             {/* </Card.Body> */}
           </div>
         ))
-      ) : (
+      ) : selectedVis.length === 0 ? (
         <div
           style={{
             display: "flex",
@@ -151,11 +169,11 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
           }}
         >
           <div align="center">
-            <h1>🔍No visualisations</h1>
-            <p>Please select up to three visualisations</p>
+            <h4>🔍 Visualisations will be available here.</h4>
+            <p>Please select up to 3 visualisations on a tablet.</p>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

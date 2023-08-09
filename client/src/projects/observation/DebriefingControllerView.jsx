@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -10,7 +10,7 @@ import {
 } from "react-bootstrap";
 
 import { FaCheckSquare, FaSquare } from "react-icons/fa";
-import { BsInfoCircle } from "react-icons/bs";
+import { BsInfoCircle, BsArrowRepeat, BsUpload } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { useObservation } from "./ObservationContext";
 import { taggingSocket } from "./socket";
@@ -71,6 +71,10 @@ const DebriefingControllerView = () => {
   // send selected Vis
   const handleConfirmProjection = (selectedVis) => {
     console.log(selectedVis);
+    const cleanScreenData = prepareData(range, [], simulationId);
+    taggingSocket.emit("send-disp-list", cleanScreenData, () => {
+      console.log("Socket sent empty list to clean screen.");
+    });
     const preparedData = prepareData(range, selectedVis, simulationId);
     taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log(
@@ -133,6 +137,16 @@ const DebriefingControllerView = () => {
     setInfoModalContent(infoContent);
     setShowInfoModal(true);
   };
+  /**
+   * Update visualisations in the projector for any changes that are made with the timeline.
+   */
+  const updateProjector = () => {
+    handleConfirmProjection(selectedVis);
+  };
+
+  useEffect(() => {
+    handleConfirmProjection(selectedVis);
+  }, [range]);
 
   return (
     <Track>
@@ -170,22 +184,33 @@ const DebriefingControllerView = () => {
               handleRevertAllProjections();
             }}
           >
-            Reset all
+            <Row>
+              <Col md={1}>
+                <BsArrowRepeat size={"1.2em"} />
+              </Col>
+              <Col>Reset all</Col>
+            </Row>
           </Button>
-          {/* <Button
+          <Button
             variant="success"
             style={{ marginRight: "5px", fontSize: "14px" }}
             onClick={() => {
               trackEvent({
                 action: "click",
-                element: "previewProjectionButton",
+                element: "updateProjector",
               });
-              setIsVideoTabActive(false);
-              setShowPreviewModal(true);
+              updateProjector();
+              // setIsVideoTabActive(false);
+              // setShowPreviewModal(true);
             }}
           >
-            Projection preview
-          </Button> */}
+            <Row>
+              <Col md={1}>
+                <BsUpload />
+              </Col>
+              <Col> Update Projector</Col>
+            </Row>
+          </Button>
         </Col>
       </Row>
       {/* Top row viz */}
@@ -345,21 +370,17 @@ const DebriefingControllerView = () => {
                         />
                         <Row>
                           <Col>
-                            <Card.Title
+                            <p
                               style={{
                                 marginTop: "10px",
                                 marginBottom: "10px",
                               }}
                             >
                               {tab.title}
-                            </Card.Title>
+                            </p>
                           </Col>
                         </Row>
-                        <Row
-                          style={{
-                            marginBottom: "10px",
-                          }}
-                        >
+                        <Row>
                           <Col>
                             <Button
                               variant={

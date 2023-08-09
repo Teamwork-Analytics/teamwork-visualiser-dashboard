@@ -133,7 +133,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
       <div
         style={{
-          minWidth: "400px",
+          // minWidth: "300px",
           width: "100%",
           height: height,
           position: "relative",
@@ -144,10 +144,10 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
             cy.remove("nodes['*']");
             cy.add(networkENAData);
             cy.style(stylesheet);
-            cy.fit();
             const layout = cy.layout(net_options);
             layout.run();
             cy.userPanningEnabled(false); // Disable user panning
+            cy.fit();
           }}
           layout={net_options}
           fit={true}

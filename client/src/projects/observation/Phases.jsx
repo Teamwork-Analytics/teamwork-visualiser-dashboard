@@ -144,6 +144,42 @@ const Phases = () => {
                     <TimelineContent>
                       <Row style={{ marginRight: "0", marginLeft: "0" }}>
                         <Col
+                          xs="auto"
+                          style={{
+                            margin: "auto",
+                            paddingLeft: "5px",
+                            paddingRight: "5px",
+                          }}
+                          x
+                        >
+                          {d.favourite ? (
+                            <BsStarFill
+                              size={"1.2em"}
+                              style={{ color: COLOURS.SECONDARY_NURSE_2 }}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "unfavouriteNoteOnTimeline",
+                                  data: d._id + "-" + d.message,
+                                });
+                                handleUnfavourite(d._id);
+                              }}
+                            />
+                          ) : (
+                            <BsStar
+                              size={"1.2em"}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "favouriteNoteOnTimeline",
+                                  data: d._id + "-" + d.message,
+                                });
+                                handleFavourite(d._id);
+                              }}
+                            />
+                          )}
+                        </Col>
+                        <Col
                           style={{
                             margin: "auto",
                             paddingLeft: "5px",
@@ -186,40 +222,6 @@ const Phases = () => {
                                     .join(", ")
                                 : "")}
                           </Container>
-                        </Col>
-                        <Col
-                          xs="auto"
-                          style={{
-                            margin: "auto",
-                            paddingLeft: "5px",
-                            paddingRight: "5px",
-                          }}
-                          x
-                        >
-                          {d.favourite ? (
-                            <BsStarFill
-                              style={{ color: COLOURS.SECONDARY_NURSE_2 }}
-                              onClick={() => {
-                                trackEvent({
-                                  action: "click",
-                                  element: "unfavouriteNoteOnTimeline",
-                                  data: d._id + "-" + d.message,
-                                });
-                                handleUnfavourite(d._id);
-                              }}
-                            />
-                          ) : (
-                            <BsStar
-                              onClick={() => {
-                                trackEvent({
-                                  action: "click",
-                                  element: "favouriteNoteOnTimeline",
-                                  data: d._id + "-" + d.message,
-                                });
-                                handleFavourite(d._id);
-                              }}
-                            />
-                          )}
                         </Col>
 
                         <Col

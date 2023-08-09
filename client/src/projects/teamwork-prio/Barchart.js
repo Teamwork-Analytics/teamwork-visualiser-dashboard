@@ -18,7 +18,14 @@ const Barchart = ({
   };
 
   return (
-    <div style={{ width: width, height: height }}>
+    <div
+      style={{
+        width: width,
+        height: height,
+        margin: "auto",
+        textAlign: "center",
+      }}
+    >
       <Bar
         data={chartData}
         options={{
