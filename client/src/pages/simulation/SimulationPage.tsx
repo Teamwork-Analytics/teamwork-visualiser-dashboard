@@ -79,6 +79,7 @@ const VisualisationPage = () => {
   const details = {
     id: location.state !== null ? location.state.id : null, // real mongodb ID
     name: params.simulationId, // same id as URL
+    deviceInfo: navigator.userAgent,
   };
 
   const { Track } = useTracking(

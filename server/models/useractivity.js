@@ -13,6 +13,7 @@ const userActivitySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    device: { type: String },
     page: { type: mongoose.Mixed }, // position where it records the data.
     action: { type: mongoose.Mixed }, // click, scroll, etc.
     element: { type: mongoose.Mixed },

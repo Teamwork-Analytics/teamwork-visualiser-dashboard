@@ -78,19 +78,6 @@ const topTabVisualisations = (timeRange) => [
 // Configuration for bottom visualisations -> for carousel
 const bottomVisualisations = (timeRange, showPreviewModal) => [
   {
-    eventKey: "wardMap",
-    title: "Ward Map",
-    component: () => (
-      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
-    ),
-    info: () => (
-      <div>
-        Each hexagon represents a position of a student. The colour-filled
-        hexagon represents the student talking in that position.
-      </div>
-    ),
-  },
-  {
     eventKey: "priorBar",
     title: "Prioritisation Bar",
     component: () => (
@@ -108,6 +95,19 @@ const bottomVisualisations = (timeRange, showPreviewModal) => [
       <div>
         Each bar represents the percentage of time that the team spent on a
         specific task during that time frame.
+      </div>
+    ),
+  },
+  {
+    eventKey: "wardMap",
+    title: "Ward Map",
+    component: () => (
+      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
+    ),
+    info: () => (
+      <div>
+        Each hexagon represents a position of a student. The colour-filled
+        hexagon represents the student talking in that position.
       </div>
     ),
   },

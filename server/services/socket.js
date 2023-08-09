@@ -25,10 +25,11 @@ const createSocket = async (httpServer) => {
       socket.onAny((event, data) => {
         data.simulationId = data.id;
         data.simNumId = data.name;
+        data.device = data.device;
         data.serverTime = new Date();
         createActivity(data);
         logger.info(
-          `${data.name} = page:${data.page} - action:${data.action} ${data.element}`
+          `${data.device} ${data.name} = page:${data.page} - action:${data.action} ${data.element}`
         );
       });
 
