@@ -14,7 +14,7 @@ IP_ADDRESS = "0.0.0.0"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-TEST_MODE_LINX = True
+TEST_MODE_LINX = False
 if TEST_MODE_LINX:
     DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 else:

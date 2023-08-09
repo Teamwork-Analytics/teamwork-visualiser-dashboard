@@ -21,7 +21,7 @@ import subprocess
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
-TEST_MODE_LINX = True
+TEST_MODE_LINX = False
 
 IP_ADDRESS = "0.0.0.0"
 
@@ -120,11 +120,18 @@ def call_visualization(simulationid):
     # visualisation_output_folder = initialising_folders(
     #     os.path.join(data_dir, "visualisation_output_path"))
 
+    """------- copy sync.txt to result"""
+    copy_file(sync_txt_path, result_dir)
+
+    print("All data processing complete!")
+
+
     print("===== pozyx_json_to_csv started ========")
     pozyx_json_to_csv(session, raw_pozyx_data_path, json_csv_output_path)
     print("===== pozyx_json_to_csv finish =======")
     # plt.show()
     # plt.clf()
+
 
     # update in 2023. This is a new function to extract the starting time of Pozyx recording.
     positioning_start_timestamp = get_timestamp_from_sync(
@@ -146,6 +153,8 @@ def call_visualization(simulationid):
     generate_single_file(raw_pozyx_path=raw_pozyx_data_path, output_folder_path=hive_positioning_data_folder,
                          audio_start_timestamp=audio_start_timestamp)
     # main(raw_pozyx_data_path, BASE_PATH + session + "\\out\\pos", sync_txt_path)
+
+
 
     print("generating positioning csv finish")
     """---------- generate csv files needed by hive ---------"""
@@ -217,10 +226,7 @@ def call_visualization(simulationid):
     except subprocess.CalledProcessError:
         print("Transcoding failed.")
 
-    """------- copy sync.txt to result"""
-    copy_file(sync_txt_path, result_dir)
-
-    print("All data processing complete!")
+   
 
     return "success"
 
