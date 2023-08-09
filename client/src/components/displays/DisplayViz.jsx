@@ -88,7 +88,8 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
         <HiveView
           timeRange={range}
           showFilter={false}
-          // height="50vh"
+          height="40vh"
+          width="100%"
           hiveState={optionalHiveState}
         />
       ),
