@@ -23,14 +23,14 @@ import subprocess
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
-TEST_MODE_LINX = True
+TEST_MODE_LINX = False
 
 IP_ADDRESS = "0.0.0.0"
 
 # todo: if you want to test locally, change this path to your local test_data_folder
 if TEST_MODE_LINX:
-    # BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
-    BASE_PATH = r"F:\code folder\data_cleaner\data"
+    BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+    # BASE_PATH = r"F:\code folder\data_cleaner\data"
 else:
     BASE_PATH = "C:\\develop\\saved_data\\"
 
@@ -79,9 +79,6 @@ def call_visualization(simulationid):
             doctor_enter_time = item["timestamp"].timestamp()
         elif item["phaseKey"] == "bed_4":
             pass
-
-    """--------------generate sna csv---------------"""
-    """----------------------------------------------------------"""
 
     # configuring the path of input and output
     session = simulationid
@@ -165,7 +162,7 @@ def call_visualization(simulationid):
     # main(raw_pozyx_data_path, BASE_PATH + session + "\\out\\pos", sync_txt_path)
 
     print("generating positioning csv finish")
-    """---------- generate csv files needed by hive ---------"""
+    print("""---------- generate csv files needed by hive ---------""")
 
     hive_data("RED", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
               hive_csv_output_folder)
@@ -194,9 +191,12 @@ def call_visualization(simulationid):
               sep=',', encoding='utf-8', index=False)
     # plt.show()
     # plt.clf()
+    print("""--------------generate sna csv---------------"""
+          """----------------------------------------------------------""")
 
     sna_df, formation_dict = generate_sna_csv(BASE_PATH, session, processed_audio_folder, raw_pozyx_data_path,
-                                              sync_txt_path, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time)
+                                              sync_txt_path, handover_finish_time, secondary_nurses_enter_time,
+                                              doctor_enter_time)
     # remember to add a rename
     sna_df = change_name_of_black_and_white(sna_df)
     sna_df.to_csv(os.path.join(result_dir, "{}_sna.csv".format(session)))
