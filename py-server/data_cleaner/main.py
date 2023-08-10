@@ -21,7 +21,7 @@ import subprocess
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
-TEST_MODE_LINX = False
+TEST_MODE_LINX = True
 
 IP_ADDRESS = "0.0.0.0"
 
@@ -125,13 +125,11 @@ def call_visualization(simulationid):
 
     print("All data processing complete!")
 
-
     print("===== pozyx_json_to_csv started ========")
     pozyx_json_to_csv(session, raw_pozyx_data_path, json_csv_output_path)
     print("===== pozyx_json_to_csv finish =======")
     # plt.show()
     # plt.clf()
-
 
     # update in 2023. This is a new function to extract the starting time of Pozyx recording.
     positioning_start_timestamp = get_timestamp_from_sync(
@@ -153,8 +151,6 @@ def call_visualization(simulationid):
     generate_single_file(raw_pozyx_path=raw_pozyx_data_path, output_folder_path=hive_positioning_data_folder,
                          audio_start_timestamp=audio_start_timestamp)
     # main(raw_pozyx_data_path, BASE_PATH + session + "\\out\\pos", sync_txt_path)
-
-
 
     print("generating positioning csv finish")
     """---------- generate csv files needed by hive ---------"""
@@ -210,23 +206,22 @@ def call_visualization(simulationid):
     input_file = "{}/{}.mp4".format(data_dir, simulationid)
     output_file = "{}/transcoded_output.mp4".format(result_dir)
 
-    ffmpeg_command = [
-        "ffmpeg",
-        "-i", input_file,
-        "-c:v", "libx264",
-        "-c:a", "aac",
-        "-strict", "experimental",
-        output_file
-    ]
+    if not(os.path.exists(output_file)):
+        ffmpeg_command = [
+            "ffmpeg",
+            "-i", input_file,
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            "-strict", "experimental",
+            output_file
+        ]
 
-    # Execute the FFmpeg command using subprocess
-    try:
-        subprocess.run(ffmpeg_command, check=True)
-        print("Transcoding completed successfully.")
-    except subprocess.CalledProcessError:
-        print("Transcoding failed.")
-
-   
+        # Execute the FFmpeg command using subprocess
+        try:
+            subprocess.run(ffmpeg_command, check=True)
+            print("Transcoding completed successfully.")
+        except subprocess.CalledProcessError:
+            print("Transcoding failed.")
 
     return "success"
 
@@ -338,61 +333,75 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
     # ------- This section of code is to check whether the processed audio data is provided -------
     audio_in = None
     audio_out = None
-    filename_list = os.listdir(raw_audio_folder)
-    for filename in filename_list:
-        if filename.startswith("simulation_" + colour):
-            audio_in = os.path.join(raw_audio_folder, filename)
-            audio_out = os.path.join(
-                hive_audio_folder, "sim_" + colour + ".wav")
-            break
 
-    """Because we only saved the processed audio data, the audio_out is manually """
-    if audio_out is None:
-        audio_out = os.path.join(hive_audio_folder, "sim_" + colour + ".wav")
-    # ------------------------------------------------------------------------------------
-    # audio_in = "{}/simulation_{}_{}_audio.wav".format(raw_audio_folder, colour, file_date)
-    # audio_out = "{}/sim_{}.wav".format(raw_audio_folder, colour)
-
-    # print(audio_in)
-    # print(audio_out)
-
-    if not audio_in or not audio_out:
-        print("please copy the audio files")
-    # !ffmpeg - i {audio_in} - ar 48000 {audio_out}
-
-    if os.path.exists(audio_out):
-        os.remove(audio_out)
-    # # --------------------------------------------------------------------------------------------------------
-    #
-    stream = ffmpeg.input(audio_in)
-    audio = stream.audio
-    # , 'acodec': 'flac'})
-    stream = ffmpeg.output(audio, audio_out, **{'ar': '32000'})
-    ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
-
-    # hive_audio_folder = raw_audio_folder + 'out\\audio-sim'
-    # hive_positioning_folder = raw_audio_folder + 'out\\pos'
-    audio_csv_out = "{}/{}_{}.csv".format(hive_audio_folder, session, colour)
-
-    # % run hive_automation.py - a {audio_out} - o {audio_csv_out} - s "145" - w "1" - t "3"
-    # todo: the code above here is for preprocessing the audio data, commented for testing.
     if colour in ("BLACK", "WHITE"):
         return
-    """comment here to remove multithreding audio processing"""
-    hive_main(audio_out, audio_csv_out, session, 1, 3)
+
+    try:
+        filename_list = os.listdir(raw_audio_folder)
+        for filename in filename_list:
+            if filename.startswith("simulation_" + colour):
+                audio_in = os.path.join(raw_audio_folder, filename)
+                audio_out = os.path.join(
+                    hive_audio_folder, "sim_" + colour + ".wav")
+                break
+
+        """Because we only saved the processed audio data, the audio_out is manually """
+        if audio_out is None:
+            audio_out = os.path.join(
+                hive_audio_folder, "sim_" + colour + ".wav")
+        # ------------------------------------------------------------------------------------
+        # audio_in = "{}/simulation_{}_{}_audio.wav".format(raw_audio_folder, colour, file_date)
+        # audio_out = "{}/sim_{}.wav".format(raw_audio_folder, colour)
+
+        # print(audio_in)
+        # print(audio_out)
+
+        if not audio_in or not audio_out:
+            print("please copy the audio files")
+        # !ffmpeg - i {audio_in} - ar 48000 {audio_out}
+
+        if os.path.exists(audio_out):
+            os.remove(audio_out)
+        # # --------------------------------------------------------------------------------------------------------
+        #
+        stream = ffmpeg.input(audio_in)
+        audio = stream.audio
+        # , 'acodec': 'flac'})
+        stream = ffmpeg.output(audio, audio_out, **{'ar': '32000'})
+        ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
+
+        # hive_audio_folder = raw_audio_folder + 'out\\audio-sim'
+        # hive_positioning_folder = raw_audio_folder + 'out\\pos'
+        audio_csv_out = "{}/{}_{}.csv".format(
+            hive_audio_folder, session, colour)
+
+        # % run hive_automation.py - a {audio_out} - o {audio_csv_out} - s "145" - w "1" - t "3"
+        # todo: the code above here is for preprocessing the audio data, commented for testing.
+
+        """comment here to remove multithreding audio processing"""
+        hive_main(audio_out, audio_csv_out, session, 1, 3)
+    except:
+        print("Audio files are missing or cannot be processed.")
 
     dfp = pd.read_csv(
         '{}/{}_{}.csv'.format(hive_positioning_folder, session, colour))
-    dfa = pd.read_csv(
-        '{}/{}_{}.csv'.format(hive_audio_folder, session, colour))
 
-    dfp.head()
+    audio_file_path = '{}/{}_{}.csv'.format(hive_audio_folder, session, colour)
 
-    res = pd.merge(dfp, dfa, on="audio time")
-    final = res.drop(
-        labels=["Unnamed: 0_x", "Unnamed: 0_y", "session"], axis=1)
-    final['tagId'] = colour
-    final.head()
+    # when the audio files don't exist or something is wrong, it will use position data without audio.
+    if(os.path.exists(audio_file_path)):
+        dfa = pd.read_csv(audio_file_path)
+    # dfp.head()
+        res = pd.merge(dfp, dfa, on="audio time")
+        final = res.drop(
+            labels=["Unnamed: 0_x", "Unnamed: 0_y", "session"], axis=1)
+        final['tagId'] = colour
+        final.head()
+    else:
+        dfp['audio'] = 0
+        final = dfp
+        final['tagId'] = colour
 
     # hive_csv_output_folder = raw_audio_folder + "out\\result"
     result_csv = "{}/{}_{}.csv".format(hive_csv_output_folder, session, colour)
