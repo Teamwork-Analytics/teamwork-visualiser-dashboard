@@ -2,6 +2,8 @@ import os
 import pandas as pd
 
 from data_cleaner.IPA import main_IPA
+from data_cleaner.generate_sna import generate_sna_csv, change_name_of_black_and_white
+from data_cleaner.pozyx_extraction import get_timestamp
 from helper.helper import initialising_folders
 # from config.config import Constant
 from data_cleaner.pozyx_json_to_csv_2022 import pozyx_json_to_csv
@@ -21,13 +23,14 @@ import subprocess
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
-TEST_MODE_LINX = False
+TEST_MODE_LINX = True
 
 IP_ADDRESS = "0.0.0.0"
 
 # todo: if you want to test locally, change this path to your local test_data_folder
 if TEST_MODE_LINX:
-    BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+    # BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+    BASE_PATH = r"F:\code folder\data_cleaner\data"
 else:
     BASE_PATH = "C:\\develop\\saved_data\\"
 
@@ -68,16 +71,16 @@ def call_visualization(simulationid):
         if item["phaseKey"] == "handover_ends":
             # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
             handover_finish_time = item["timestamp"].timestamp()
-        elif item["phaseKey"] == "ward_nurse":
+        elif item["phaseKey"] == "secondary_nurse_enters":
             # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
             secondary_nurses_enter_time = item["timestamp"].timestamp()
-        elif item["phaseKey"] == "met_doctor":
+        elif item["phaseKey"] == "doctor_enters":
             # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
             doctor_enter_time = item["timestamp"].timestamp()
         elif item["phaseKey"] == "bed_4":
             pass
 
-    """--------------generate task priority images---------------"""
+    """--------------generate sna csv---------------"""
     """----------------------------------------------------------"""
 
     # configuring the path of input and output
@@ -86,6 +89,16 @@ def call_visualization(simulationid):
     audio_folder = os.path.join(data_dir, "audio")
     positioning_data_folder = os.path.join(data_dir, "positioning_data")
 
+    audio_start_timestamp = get_timestamp(os.path.join(data_dir, "sync.txt"))
+
+    print(observation_obj)
+    print(observation_obj["phases"])
+
+    handover_finish_time -= audio_start_timestamp
+    secondary_nurses_enter_time -= audio_start_timestamp
+    doctor_enter_time -= audio_start_timestamp
+
+    print(handover_finish_time, secondary_nurses_enter_time, doctor_enter_time)
     # all folder path will use call the initialising_folders to create the folder
     processed_pozyx_folder = initialising_folders(
         os.path.join(positioning_data_folder, "pozyx_json_csv"))
@@ -108,7 +121,6 @@ def call_visualization(simulationid):
     #     os.path.join(data_dir, "result_to_copy"))
 
     result_dir = initialising_folders(os.path.join(data_dir, "result"))
-
     #
     json_csv_output_path = os.path.join(
         result_dir, "{}.csv".format(session))
@@ -125,13 +137,11 @@ def call_visualization(simulationid):
 
     print("All data processing complete!")
 
-
     print("===== pozyx_json_to_csv started ========")
     pozyx_json_to_csv(session, raw_pozyx_data_path, json_csv_output_path)
     print("===== pozyx_json_to_csv finish =======")
     # plt.show()
     # plt.clf()
-
 
     # update in 2023. This is a new function to extract the starting time of Pozyx recording.
     positioning_start_timestamp = get_timestamp_from_sync(
@@ -153,8 +163,6 @@ def call_visualization(simulationid):
     generate_single_file(raw_pozyx_path=raw_pozyx_data_path, output_folder_path=hive_positioning_data_folder,
                          audio_start_timestamp=audio_start_timestamp)
     # main(raw_pozyx_data_path, BASE_PATH + session + "\\out\\pos", sync_txt_path)
-
-
 
     print("generating positioning csv finish")
     """---------- generate csv files needed by hive ---------"""
@@ -186,6 +194,12 @@ def call_visualization(simulationid):
               sep=',', encoding='utf-8', index=False)
     # plt.show()
     # plt.clf()
+
+    sna_df, formation_dict = generate_sna_csv(BASE_PATH, session, processed_audio_folder, raw_pozyx_data_path,
+                                              sync_txt_path, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time)
+    # remember to add a rename
+    sna_df = change_name_of_black_and_white(sna_df)
+    sna_df.to_csv(os.path.join(result_dir, "{}_sna.csv".format(session)))
 
     print("finish creating hive file.")
 
@@ -225,8 +239,6 @@ def call_visualization(simulationid):
         print("Transcoding completed successfully.")
     except subprocess.CalledProcessError:
         print("Transcoding failed.")
-
-   
 
     return "success"
 
@@ -418,7 +430,7 @@ send get request to localhost:5000/audio-pos
 if __name__ == '__main__':
     # app.run(host="0.0.0.0", port=5050, debug=False)
 
-    call_visualization("357")
+    call_visualization("296")
     # test_formation_detection("225")
     # os.system("ffmpeg -i {audio_in} - ar 48000 {audio_out}")
 
