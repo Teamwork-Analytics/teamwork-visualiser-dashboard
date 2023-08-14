@@ -124,7 +124,7 @@ def give_ena_test_data():
     __merging_codes(session_df, ["acknowledging",
                     "responding"], "acknowledging")
     # updated on 14/8/2023, remove the escalation and handover
-    session_df.drop(["escalation", "handover"], axis=1, inplace=True)
+    session_df.drop(["call-out", "handover"], axis=1, inplace=True)
 
     session_view = session_df[
         (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
