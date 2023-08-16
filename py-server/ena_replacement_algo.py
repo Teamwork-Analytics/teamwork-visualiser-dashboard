@@ -2,13 +2,14 @@ import pandas as pd
 import numpy as np
 
 
-CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4, "responding": 5, "acknowledging": 6}
-ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding", "acknowledging"]
+# CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4, "responding": 5, "acknowledging": 6}
+# ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding", "acknowledging"]
 # updated on 7/17/2023, because the responding and acknowledging os merged as one single acknowledging
-CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4,
-                       "acknowledging": 5}
-ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning",
+CODE_TO_ID_MAPPER = {"task allocation": 0, "escalation": 1, "questioning": 2,
+                     "acknowledging": 3}
+ID_TO_CODE_MAPPER = ["task allocation", "escalation", "questioning",
                      "acknowledging"]
+
 # CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4,
 #                      "responding": 5, "acknowledging": 6}
 # ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding",
