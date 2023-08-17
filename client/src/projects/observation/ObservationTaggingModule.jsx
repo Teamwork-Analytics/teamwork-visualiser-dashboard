@@ -3,13 +3,24 @@ import PhaseButtons from "./PhaseButtons";
 import Phases from "./Phases";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
 import DurationStopwatch from "./visualisationComponents/DurationStopwatch";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 const ObservationTaggingModule = () => {
+  // Initialize methods using useMemo to avoid unnecessary re-renders
+  const initialMethods = useMemo(
+    () => ({ start: () => {}, pause: () => {} }),
+    []
+  );
+
   // lift up start pause control from DurationStopwatch component
-  const [control, setControl] = useState({ start: () => {}, pause: () => {} });
+  const [control, setControl] = useState(initialMethods);
+
   const handleReady = (methods) => {
-    setControl(methods);
+    // Using callback form of setState to ensure we're always working with the most recent state
+    setControl((prevMethods) => ({
+      ...prevMethods,
+      ...methods,
+    }));
   };
 
   return (

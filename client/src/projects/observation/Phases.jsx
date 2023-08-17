@@ -103,7 +103,7 @@ const Phases = () => {
                 });
 
                 // calculate time difference for distance between notes
-                let timeDifferenceInPx;
+                let timeDifferenceInPx = 0;
                 if (i < notes.length - 1) {
                   const nextDate = new Date(notes[i + 1].timestamp);
                   const timeDifferenceInSeconds = Math.abs(
@@ -150,7 +150,6 @@ const Phases = () => {
                             paddingLeft: "5px",
                             paddingRight: "5px",
                           }}
-                          x
                         >
                           {d.favourite ? (
                             <BsStarFill

@@ -1,10 +1,17 @@
-import React, { useState } from "react";
-
 const SimpleErrorText = ({ isError, message, children }) => {
   return (
     <>
       {isError ? (
-        <div style={{ minHeight: "30vh", padding: "20px" }}>
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "20vh",
+          }}
+        >
           <p>{message}</p>
         </div>
       ) : (
@@ -13,4 +20,5 @@ const SimpleErrorText = ({ isError, message, children }) => {
     </>
   );
 };
+
 export default SimpleErrorText;

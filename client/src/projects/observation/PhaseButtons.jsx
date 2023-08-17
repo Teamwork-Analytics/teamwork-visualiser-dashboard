@@ -136,7 +136,7 @@ const PhaseButtons = ({ startStopwatch }) => {
                 .filter((d) => d.label !== "Teamwork actions") // TODO: remove hardcoded value
                 .map((d, i) => {
                   return (
-                    <div>
+                    <div key={i}>
                       <Row
                         style={{
                           marginBottom: "10px",
@@ -270,7 +270,7 @@ const PhaseButtons = ({ startStopwatch }) => {
                 .filter((d) => d.label === "Teamwork actions") // TODO: remove hardcoded value
                 .map((d, i) => {
                   return (
-                    <div>
+                    <div key={i}>
                       <Row
                         style={{
                           marginBottom: "10px",
