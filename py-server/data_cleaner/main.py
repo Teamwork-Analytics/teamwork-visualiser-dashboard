@@ -23,7 +23,7 @@ import subprocess
 # audio_pos_visualization_path = "C:\\develop\\saved_data\\audio_pos_visualization_data\\"
 # hive_out = "C:\\develop\\saved_data\\"
 
-TEST_MODE_LINX = True
+TEST_MODE_LINX = False
 
 IP_ADDRESS = "0.0.0.0"
 
@@ -191,15 +191,15 @@ def call_visualization(simulationid):
               sep=',', encoding='utf-8', index=False)
     # plt.show()
     # plt.clf()
-    print("""--------------generate sna csv---------------"""
-          """----------------------------------------------------------""")
+    # print("""--------------generate sna csv---------------"""
+    #       """----------------------------------------------------------""")
 
-    sna_df, formation_dict = generate_sna_csv(BASE_PATH, session, processed_audio_folder, raw_pozyx_data_path,
-                                              sync_txt_path, handover_finish_time, secondary_nurses_enter_time,
-                                              doctor_enter_time)
-    # remember to add a rename
-    sna_df = change_name_of_black_and_white(sna_df)
-    sna_df.to_csv(os.path.join(result_dir, "{}_sna.csv".format(session)))
+    # sna_df, formation_dict = generate_sna_csv(BASE_PATH, session, processed_audio_folder, raw_pozyx_data_path,
+    #                                           sync_txt_path, handover_finish_time, secondary_nurses_enter_time,
+    #                                           doctor_enter_time)
+    # # remember to add a rename
+    # sna_df = change_name_of_black_and_white(sna_df)
+    # sna_df.to_csv(os.path.join(result_dir, "{}_sna.csv".format(session)))
 
     print("finish creating hive file.")
 

@@ -14,7 +14,7 @@ IP_ADDRESS = "0.0.0.0"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-TEST_MODE_LINX = True
+TEST_MODE_LINX = False
 if TEST_MODE_LINX:
     DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 else:
@@ -89,9 +89,16 @@ def give_sna_test_data():
     """
     try:
         id = request.args['sessionId']
-        file = "%s_network_data.csv" % id
+        file_new = "%s_sna.csv" % id
+        file_old = "%s_network_data.csv" % id
         # file_path = DIRECTORY / id / "result" / file
-        file_path = os.path.join(DIRECTORY, id, "result", file)
+        file_path_old = os.path.join(DIRECTORY, id, "result", file_old)
+        file_path_new = os.path.join(DIRECTORY, id, "result", file_new)
+        # this is for backward compatibility. Previously we used _network_data, now we change the file name to _sna
+        if(os.path.exists(file_path_new)):
+            file_path = file_path_new
+        else:
+            file_path = file_path_old
         df = pd.read_csv(file_path)
         df.fillna("", inplace=True)
         output_data = df.to_dict(orient="records")
@@ -123,6 +130,8 @@ def give_ena_test_data():
     # updated on 17/7/2023, merged the acknowledging and responding
     __merging_codes(session_df, ["acknowledging",
                     "responding"], "acknowledging")
+    # updated on 14/8/2023, remove the escalation and handover
+    session_df.drop(["call-out", "handover"], axis=1, inplace=True)
 
     session_view = session_df[
         (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
