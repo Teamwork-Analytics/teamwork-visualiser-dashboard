@@ -332,7 +332,6 @@ const DebriefingControllerView = () => {
                       <div
                         style={{
                           minWidth: "23rem",
-                          position: "relative",
                           margin: "5px",
                           padding: "5px",
                           borderStyle: "solid",
@@ -340,32 +339,35 @@ const DebriefingControllerView = () => {
                           borderRadius: "0.5rem",
                         }}
                       >
-                        <BsInfoCircle
-                          style={{
-                            zIndex: "100",
-                            position: "absolute",
-                            top: "5",
-                            right: "5",
-                          }}
-                          onClick={() => {
-                            trackEvent({
-                              action: "click",
-                              element: "showInfoIcon",
-                              data: tab.title,
-                            });
-                            handleInfoShow(tab.title, tab.info());
-                          }}
-                        />
                         <Row>
-                          <Col>
-                            <p
+                          <Col xs="auto" style={{ margin: "auto" }}>
+                            <div
                               style={{
                                 marginTop: "10px",
                                 marginBottom: "10px",
+                                fontSize: "16px",
+                                position: "relative",
+                                paddingRight: "15px",
+                              }}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "titleWithShowInfoIcon",
+                                  data: tab.title,
+                                });
+                                handleInfoShow(tab.title, tab.info());
                               }}
                             >
                               {tab.title}
-                            </p>
+                              <BsInfoCircle
+                                style={{
+                                  position: "absolute",
+                                  top: "0",
+                                  right: "0",
+                                }}
+                                size="0.7em"
+                              />
+                            </div>
                           </Col>
                         </Row>
                         <Row>
