@@ -9,7 +9,6 @@ import React, { useState } from "react";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
 import SimulationSessionAPI from "../../services/api/simulations";
-import { toast } from "react-hot-toast";
 
 const ObservationContext = React.createContext();
 

@@ -17,7 +17,7 @@ import toast from "react-hot-toast";
 import { COLOURS } from "../../config/colours";
 import { useTracking } from "react-tracking";
 
-const PhaseButtons = () => {
+const PhaseButtons = ({ startStopwatch }) => {
   const { Track, trackEvent } = useTracking({ page: "Observation" });
 
   // Speech recognition library, see https://webspeechrecognition.com/
@@ -36,6 +36,9 @@ const PhaseButtons = () => {
   const { observation, setNotes } = useObservation();
 
   const addNote = (label = "") => {
+    if (startStopwatch) {
+      startStopwatch();
+    }
     const toastId = toast.loading("Loading...");
     const data = {
       message: label,

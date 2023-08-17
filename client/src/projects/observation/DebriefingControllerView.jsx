@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Tab,
-  Container,
-  Button,
-  ButtonGroup,
-  Card,
-} from "react-bootstrap";
+import { Row, Col, Tab, Container, Button, ButtonGroup } from "react-bootstrap";
 
 import { FaCheckSquare, FaSquare } from "react-icons/fa";
 import { BsInfoCircle, BsArrowRepeat, BsUpload } from "react-icons/bs";
@@ -169,8 +161,6 @@ const DebriefingControllerView = () => {
           style={{ fontSize: "12px" }}
         >
           <NurseNameBadges />
-          {/* You have selected visualisations:{" "}
-          {selectedVis.map((vis) => vis.id).join(", ")} */}
         </Col>
         <Col className="d-flex justify-content-end text-right" xs="auto">
           <Button
@@ -200,8 +190,6 @@ const DebriefingControllerView = () => {
                 element: "updateProjector",
               });
               updateProjector();
-              // setIsVideoTabActive(false);
-              // setShowPreviewModal(true);
             }}
           >
             <Row>
