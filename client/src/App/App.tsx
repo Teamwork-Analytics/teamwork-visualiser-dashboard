@@ -4,8 +4,6 @@ import "./App.css";
 import SimulationPage from "../pages/simulation/SimulationPage";
 import MainPage from "../pages/main/MainPage";
 import ErrorPage from "../pages/error/ErrorPage";
-import ProjectManagementPage from "../pages/projectManagement/ProjectManagementPage";
-import TaggingEditorPage from "../pages/taggingEditor/TaggingEditorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { TEAM_NAME } from "../data/manualLabels";
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
@@ -55,11 +53,6 @@ function App() {
           />
           <Route path="*" element={<ErrorPage defaultUrl={"/main"} />} />
           <Route path="/" element={<Navigate replace to="/main" />} />
-          <Route path="/projects" element={<ProjectManagementPage />} />
-          <Route
-            path="/tagging-editor/:projectId"
-            element={<TaggingEditorPage />}
-          />
         </Routes>
       </BrowserRouter>
       <footer style={styles.footer}>

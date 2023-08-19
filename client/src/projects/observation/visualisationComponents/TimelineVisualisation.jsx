@@ -204,13 +204,8 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
                   textAlign: "left",
                 }}
               >
-                {mark.value} - {mark.label}
-                {mark.performers.length > 0
-                  ? " - " +
-                    mark.performers
-                      .map((performer) => performer.replace(/\s+/g, ""))
-                      .join(", ")
-                  : ""}
+                {mark.value} -{" "}
+                {isKeyEvent(mark.label) ? mark.label : "Redacted tag"}
               </Col>
             </Row>
           ))}

@@ -60,24 +60,29 @@ const MainPage = () => {
             onChange={(e) => setQ(e.target.value)}
           />
         </Form>
-        <Link to="/projects" style={{ textDecoration: "none" }}>
+        {/* <Link to="/projects" style={{ textDecoration: "none" }}>
           <Button variant="success">Manage Projects</Button>
-        </Link>
+        </Link> */}
       </div>
 
       <div style={{ overflowY: "scroll", width: "100vw" }}>
         <div style={pageStyles.list}>
           {!!simulations
-            ? search(simulations).filter((sim) => sim.project.name === "Peninsula Nursing Simulation 2023" ).map((sim, i) => (
-                <Link
-                  key={i}
-                  to={`/visualisation/${sim.simulationId}`}
-                  state={{ name: sim.name, realId: sim._id }}
-                  style={{ color: "#222222", textDecoration: "none" }}
-                >
-                  <SessionCard key={i} sim={sim} />
-                </Link>
-              ))
+            ? search(simulations)
+                .filter(
+                  (sim) =>
+                    sim.project.name === "Peninsula Nursing Simulation 2023"
+                )
+                .map((sim, i) => (
+                  <Link
+                    key={i}
+                    to={`/visualisation/${sim.simulationId}`}
+                    state={{ name: sim.name, realId: sim._id }}
+                    style={{ color: "#222222", textDecoration: "none" }}
+                  >
+                    <SessionCard key={i} sim={sim} />
+                  </Link>
+                ))
             : null}
         </div>
       </div>

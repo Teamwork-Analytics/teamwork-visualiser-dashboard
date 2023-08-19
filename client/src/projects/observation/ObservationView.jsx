@@ -3,12 +3,12 @@ import { Tabs, Tab, Container } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
-import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useTracking } from "react-tracking";
 import { NurseNameProvider } from "./visualisationComponents/NurseNameContext";
+import HiddenTool from "../../components/loadingComponents/HiddenTool";
 
 const ObservationView = () => {
   const { simulationId } = useParams();
@@ -31,7 +31,7 @@ const ObservationView = () => {
     info: { width: "20vw", margin: "0 auto" },
   };
 
-  const [currentTab, setCurrentTab] = useState("observation");
+  const [currentTab, setCurrentTab] = useState("debriefing");
 
   return (
     <Track>
@@ -51,15 +51,6 @@ const ObservationView = () => {
             />
           </div>
 
-          {/* TODO: code commented out below moved into sidebar (hide from researcher) */}
-          {/* <div style={styles.info}>
-          {observation.baselineTime !== null ? <AlertCondition /> : null}
-          <label>Baseline time: {timeString(state.baselineTime)} </label>
-          <br />
-          <label>Start time: {timeString(state.startTime)} </label>
-          <br />
-          <label>Stop time: {timeString(state.stopTime)}</label>
-        </div> */}
           <h1>Session {simulationId}</h1>
           <hr style={{ marginBottom: "0px" }} />
           <Tabs
@@ -84,7 +75,9 @@ const ObservationView = () => {
               }}
             >
               <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-              <ObservationTaggingModule />
+              <Container style={{ display: "flex", minHeight: "60vh" }}>
+                <HiddenTool />
+              </Container>
             </Tab>
 
             <Tab
@@ -112,13 +105,9 @@ const ObservationView = () => {
               }}
             >
               <hr style={{ marginTop: "0px", marginBottom: "0px" }} />
-              <div style={{ width: "100%", height: "80vh" }}>
-                <iframe
-                  src="https://docs.google.com/forms/d/e/1FAIpQLSdTYC_SXeUUka2WXpiH1Fglfz7KmEa86Ca-iM3pB5HnvolRCQ/viewform?embedded=true"
-                  title="Team Assessment Google Form"
-                  style={{ width: "100%", height: "100%" }}
-                ></iframe>{" "}
-              </div>
+              <Container style={{ display: "flex", minHeight: "60vh" }}>
+                <HiddenTool />
+              </Container>
             </Tab>
           </Tabs>
           <ReactTooltip />

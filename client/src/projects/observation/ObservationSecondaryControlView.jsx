@@ -6,11 +6,9 @@ import ObservationAPI from "../../services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
 
-
 const ObservationSecondaryControlView = () => {
   const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
-
 
   useEffect(() => {
     setDevices(observation.synchronisations);
@@ -39,11 +37,8 @@ const ObservationSecondaryControlView = () => {
     setDevices(tempDevice);
   };
 
- 
   return (
     <div>
-     
-
       <h1>Synchronisation</h1>
       <hr />
 
@@ -70,9 +65,9 @@ const ObservationSecondaryControlView = () => {
                   <Button
                     id={d._id}
                     size="sm"
-                    onClick={(e) => {
-                      buttonClick(e.target.id, `${d.name} ${d.deviceType}`);
-                    }}
+                    // onClick={(e) => {
+                    //   buttonClick(e.target.id, `${d.name} ${d.deviceType}`);
+                    // }}
                   >
                     Log
                   </Button>

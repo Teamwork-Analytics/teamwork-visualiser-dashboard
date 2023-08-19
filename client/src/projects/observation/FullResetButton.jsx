@@ -28,14 +28,18 @@ const FullResetButton = () => {
       {isReady ? (
         <div style={{ display: "flex", columnGap: "1em" }}>
           <label>Are you sure? </label>
-          <Button variant="dark" size="sm" onClick={() => setIsReady(false)}>
+          <Button
+            variant="dark"
+            size="sm"
+            // onClick={() => setIsReady(false)}
+          >
             Cancel
           </Button>
           <Button
             variant="danger"
             size="sm"
             value={"reset"}
-            onClick={resetAllTimeInObservation}
+            // onClick={resetAllTimeInObservation}
           >
             Yes, reset
           </Button>
@@ -45,9 +49,9 @@ const FullResetButton = () => {
           variant="danger"
           size="sm"
           value={"reset"}
-          onClick={() => {
-            setIsReady(true);
-          }}
+          // onClick={() => {
+          //   setIsReady(true);
+          // }}
           data-tip="Clicking this button will reset all captured time."
         >
           Full Reset

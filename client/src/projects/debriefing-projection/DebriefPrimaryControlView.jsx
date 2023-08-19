@@ -62,7 +62,7 @@ const DebriefPrimaryControlView = () => {
       <Button
         variant="dark"
         value={"baselineTime"}
-        onClick={handleClick}
+        // onClick={handleClick}
         disabled={isProcessing}
       >
         {isProcessing ? "Processing..." : "Generate All Visualisations"}
@@ -71,12 +71,16 @@ const DebriefPrimaryControlView = () => {
       <Button
         variant={isStarted ? "secondary" : "success"}
         value={"startTime"}
-        onClick={sendRecordedTime}
+        // onClick={sendRecordedTime}
         disabled={isStarted}
       >
         {isStarted ? "Recording..." : "Start Audio Recording"}
       </Button>
-      <Button variant="dark" value={"stopTime"} onClick={sendRecordedTime}>
+      <Button
+        variant="dark"
+        value={"stopTime"}
+        // onClick={sendRecordedTime}
+      >
         Stop Audio Recording
       </Button>
       <ReactTooltip />

@@ -77,7 +77,7 @@ const ObservationPrimaryControlView = () => {
       <Button
         variant="warning"
         value={"baselineTime"}
-        onClick={sendRecordedTime}
+        // onClick={sendRecordedTime}
         disabled={observation.baselineTime !== null}
       >
         Start Baseline
@@ -86,7 +86,7 @@ const ObservationPrimaryControlView = () => {
         variant="success"
         disabled={observation.startTime !== null}
         value={"startTime"}
-        onClick={sendRecordedTime}
+        // onClick={sendRecordedTime}
       >
         Start Simulation
       </Button>
@@ -94,7 +94,7 @@ const ObservationPrimaryControlView = () => {
         variant="dark"
         disabled={observation.stopTime !== null}
         value={"stopTime"}
-        onClick={sendRecordedTime}
+        // onClick={sendRecordedTime}
       >
         Stop Simulation
       </Button>
@@ -110,20 +110,24 @@ const ObservationPrimaryControlView = () => {
           <Button
             variant="secondary"
             value={"resetAllTime"}
-            onClick={() => setIsConfirmDelete(false)}
+            // onClick={() => setIsConfirmDelete(false)}
           >
             No, cancel that.
           </Button>
           <Button
             variant="danger"
             value={"resetAllTime"}
-            onClick={resetAllTime}
+            // onClick={resetAllTime}
           >
             Yes, reset!
           </Button>
         </ButtonGroup>
       ) : (
-        <Button variant="secondary" value={"resetAllTime"} onClick={areYouSure}>
+        <Button
+          variant="secondary"
+          value={"resetAllTime"}
+          // onClick={areYouSure}
+        >
           Reset Simulation
         </Button>
       )}
