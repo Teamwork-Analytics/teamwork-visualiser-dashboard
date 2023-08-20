@@ -14,7 +14,7 @@ communicationAPI.interceptors.request.use(
       ...config,
       headers: {
         get: {
-          "Access-Control-Allow-Origin": DOMAIN_NAME,
+          "Access-Control-Allow-Origin": "*",
         },
       },
     };

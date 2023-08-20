@@ -12,10 +12,7 @@ const port = process.env.PORT || 5000;
 require("./config/db")(app);
 
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV === "development"
-      ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
-      : process.env.CURRENT_URL,
+  origin: "*",
   credentials: false,
 };
 
@@ -27,16 +24,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routers
 app.use("/api", require("./routes/index"));
-
-let VISUALISATION_DIR;
-if (process.platform === "win32") {
-  VISUALISATION_DIR = "C:\\develop\\saved_data";
-} else {
-  VISUALISATION_DIR = path.join(__dirname, "/saved_data");
-}
-
-app.use("/data", express.static(VISUALISATION_DIR)); // Serve static files from the "saved_data" directory
-
 app.use(express.static(path.join(__dirname, "client", "build")));
 app.get("*", (req, res) => {
   // if (process.env.NODE_ENV !== "development") {
