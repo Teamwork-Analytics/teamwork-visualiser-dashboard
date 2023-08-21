@@ -126,7 +126,7 @@ const reverseFormatDuration = (formattedDuration) => {
 const FilteredMarksComponent = ({ marks, range, setRange }) => {
   const { Track, trackEvent } = useTracking({ page: "Debriefing" });
 
-  console.log(marks);
+  // console.log(marks);
   // Filter marks within the range
   const filteredMarks = marks.filter((mark) => {
     return mark.value >= range[0] && mark.value <= range[1];

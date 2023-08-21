@@ -9,7 +9,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const usingRp = true;
-const localServerUrl = usingRp ? "/api" : "http://localhost:5002";
+const localServerUrl = "http://13.236.94.219:5002/api";
 const api = axios.create({
   baseURL: localServerUrl,
   withCredentials: false,
@@ -30,7 +30,7 @@ api.interceptors.response.use(
       message = error.response.data.message;
     }
     // toast.error(`${message} (${error.response.status})`);
-    console.error(`${message} (${error.response.status})`)
+    console.error(`${message} (${error.response.status})`);
     console.error(error.response.data.errorMessage);
     // Do something with response error
     return Promise.reject(error);

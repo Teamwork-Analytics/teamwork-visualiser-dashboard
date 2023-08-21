@@ -25,10 +25,8 @@ import { useTracking } from "react-tracking";
 import { io } from "socket.io-client";
 import socketDispatch from "../../services/socketDispatch";
 
-const serverUrl =
-  process.env.NODE_ENV === "development"
-    ? `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`
-    : `${window.location.protocol}//${window.location.hostname}`;
+const serverUrl = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}`;
+
 const ioUrl = serverUrl + "/activities";
 const socket = io(ioUrl, {
   withCredentials: false,

@@ -27,7 +27,7 @@ const timeParser = (timestamp) => {
 class HexagonComponent {
   constructor(svg, csvData, posOnly, selectedColours, timeStart, timeEnd) {
     this.svg = svg;
-
+    console.log(csvData);
     d3.csv(csvData).then(
       function (d, i) {
         // const startTime = timeParser(timeStart);
