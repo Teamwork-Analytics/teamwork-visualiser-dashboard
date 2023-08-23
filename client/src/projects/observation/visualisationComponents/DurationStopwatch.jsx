@@ -15,39 +15,62 @@ import { useObservation } from "../ObservationContext";
 import { useEffect } from "react";
 
 /**
+ * @function calculateOffset
+ * Utility function to calculate the offset for the stopwatch.
+ * !! Please constantly check the library documentation for possible changes
+ * !! in the ways of calculating offset time.
+ */
+const calculateOffset = (startTime, endTime = new Date()) => {
+  const diff = endTime.getTime() - new Date(startTime).getTime();
+  const offsetDate = new Date();
+  offsetDate.setMilliseconds(offsetDate.getMilliseconds() + diff);
+  return offsetDate;
+};
+
+/**
  * StopwatchComponent
  * Renders the main stopwatch display.
  *
  * @param {Date} stopwatchOffset - The date object offset for the stopwatch.
  * @param {Boolean} autoStart - Determines if the stopwatch should start automatically.
  */
-const StopwatchComponent = ({ stopwatchOffset, autoStart, onReady }) => {
-  const { seconds, minutes, start, pause } = useStopwatch({
+const StopwatchComponent = ({ stopwatchOffset, autoStart }) => {
+  const { seconds, minutes } = useStopwatch({
     autoStart,
     offsetTimestamp: stopwatchOffset,
   });
 
-  useEffect(() => {
-    if (onReady) onReady({ start, pause });
-  }, [onReady, start, pause]);
+  const formattedMinutes = String(minutes).padStart(2, "0");
+  const formattedSeconds = String(seconds).padStart(2, "0");
 
-  return <div>{"Duration: " + minutes + ":" + seconds}</div>;
+  return <div>{`Duration: ${formattedMinutes}:${formattedSeconds}`}</div>;
 };
 
 /**
  * DurationStopwatch
  * Main stopwatch component that decides which type of stopwatch to render based on observation times.
  */
-const DurationStopwatch = ({ onReady }) => {
-  const { obsStartTime, obsEndTime } = useObservation();
+const DurationStopwatch = () => {
+  const { obsStartTime, obsEndTime, toggleRefreshSim } = useObservation();
+
+  useEffect(() => {
+    if (!obsStartTime) {
+      const interval = setInterval(() => {
+        console.log("refresh triggered -- duration stopwatch");
+        toggleRefreshSim();
+      }, 5000); // Check every 5 seconds
+
+      return () => clearInterval(interval); // Cleanup on component unmount
+    }
+  }, [obsStartTime, toggleRefreshSim]);
 
   if (obsStartTime && obsEndTime) {
     return <EndedStopwatch startTime={obsStartTime} endTime={obsEndTime} />;
   } else if (obsStartTime) {
-    return <RunningStopwatch startTime={obsStartTime} onReady={onReady} />;
-  } else {
-    return <ReadyStopwatch onReady={onReady} />;
+    return <RunningStopwatch startTime={obsStartTime} />;
   }
+
+  return <ReadyStopwatch />;
 };
 
 /**
@@ -55,10 +78,7 @@ const DurationStopwatch = ({ onReady }) => {
  * Renders a stopwatch showing duration between start and end times.
  */
 const EndedStopwatch = ({ startTime, endTime }) => {
-  const diff = new Date(endTime).getTime() - new Date(startTime).getTime();
-  const offsetDate = new Date();
-  offsetDate.setMilliseconds(offsetDate.getMilliseconds() + diff);
-
+  const offsetDate = calculateOffset(startTime, new Date(endTime));
   return <StopwatchComponent stopwatchOffset={offsetDate} autoStart={false} />;
 };
 
@@ -66,27 +86,17 @@ const EndedStopwatch = ({ startTime, endTime }) => {
  * RunningStopwatch
  * Renders a running stopwatch from the start time till now.
  */
-const RunningStopwatch = ({ startTime, onReady }) => {
-  const diff = new Date().getTime() - new Date(startTime).getTime();
-  const offsetDate = new Date();
-  // ! Please constantly check the library documentation for possible changes
-  // ! in the ways of calculating offset time.
-  offsetDate.setMilliseconds(offsetDate.getMilliseconds() + diff);
-
-  return (
-    <StopwatchComponent
-      stopwatchOffset={offsetDate}
-      autoStart={true}
-      onReady={onReady}
-    />
-  );
+const RunningStopwatch = ({ startTime }) => {
+  const offsetDate = calculateOffset(startTime);
+  return <StopwatchComponent stopwatchOffset={offsetDate} autoStart={true} />;
 };
+
 /**
  * ReadyStopwatch
  * Renders a stopwatch ready to be started.
  */
-const ReadyStopwatch = ({ onReady }) => {
-  return <StopwatchComponent autoStart={false} onReady={onReady} />;
+const ReadyStopwatch = () => {
+  return <StopwatchComponent autoStart={false} />;
 };
 
 export default DurationStopwatch;

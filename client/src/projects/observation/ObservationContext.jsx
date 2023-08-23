@@ -42,7 +42,7 @@ function ObservationProvider({ simulationId, children }) {
         setNotes(phases);
       }
     });
-  }
+  };
 
   const [isDataReady, setIsDataReady] = React.useState(false);
   React.useEffect(() => {
