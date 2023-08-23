@@ -2,6 +2,7 @@ import { Row, Col } from "react-bootstrap";
 import PhaseButtons from "./PhaseButtons";
 import Phases from "./Phases";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
+import DurationStopwatch from "./visualisationComponents/DurationStopwatch";
 
 const ObservationTaggingModule = () => {
   return (
@@ -9,6 +10,9 @@ const ObservationTaggingModule = () => {
       <Row style={{ margin: "3px", fontSize: "14px", marginTop: "10px" }}>
         <Col className="d-flex align-items-center" style={{ fontSize: "12px" }}>
           <NurseNameBadges />
+        </Col>
+        <Col xs="auto">
+          <DurationStopwatch />
         </Col>
       </Row>
       <Row>
