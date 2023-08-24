@@ -142,7 +142,7 @@ def call_visualization(simulationid):
 
     # update in 2023. This is a new function to extract the starting time of Pozyx recording.
     positioning_start_timestamp = get_timestamp_from_sync(
-        sync_txt_path, "positioning")
+        sync_txFt_path, "positioning")
     audio_start_timestamp = get_timestamp_from_sync(sync_txt_path, "audio")
     #
     # if not os.path.exists(raw_audio_folder + "out"):

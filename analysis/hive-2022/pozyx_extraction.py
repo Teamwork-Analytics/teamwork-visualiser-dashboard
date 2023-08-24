@@ -21,7 +21,7 @@ locale.setlocale(locale.LC_TIME, "en_US")
 
 RED_ID = 27226
 BLUE_ID = 27261
-GREEN_ID = 27160
+GREEN_ID = 27176    # before 318 green id is 27160
 YELLOW_ID = 27263
 
 
