@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Tab,
-  Container,
-  Button,
-  ButtonGroup,
-  Card,
-} from "react-bootstrap";
+import { Row, Col, Tab, Container, Button, ButtonGroup } from "react-bootstrap";
 
 import { FaCheckSquare, FaSquare } from "react-icons/fa";
 import { BsInfoCircle, BsArrowRepeat, BsUpload } from "react-icons/bs";
@@ -169,8 +161,6 @@ const DebriefingControllerView = () => {
           style={{ fontSize: "12px" }}
         >
           <NurseNameBadges />
-          {/* You have selected visualisations:{" "}
-          {selectedVis.map((vis) => vis.id).join(", ")} */}
         </Col>
         <Col className="d-flex justify-content-end text-right" xs="auto">
           <Button
@@ -200,8 +190,6 @@ const DebriefingControllerView = () => {
                 element: "updateProjector",
               });
               updateProjector();
-              // setIsVideoTabActive(false);
-              // setShowPreviewModal(true);
             }}
           >
             <Row>
@@ -340,95 +328,94 @@ const DebriefingControllerView = () => {
               {isDataReady ? (
                 bottomVisualisations(range, showPreviewModal).map(
                   (tab, index) => (
-                    <>
-                      <div
-                        style={{
-                          minWidth: "23rem",
-                          position: "relative",
-                          margin: "5px",
-                          padding: "5px",
-                          borderStyle: "solid",
-                          borderColor: "rgba(0, 0, 0, 0.176)",
-                          borderRadius: "0.5rem",
-                        }}
-                      >
-                        <BsInfoCircle
-                          style={{
-                            zIndex: "100",
-                            position: "absolute",
-                            top: "5",
-                            right: "5",
-                          }}
-                          onClick={() => {
-                            trackEvent({
-                              action: "click",
-                              element: "showInfoIcon",
-                              data: tab.title,
-                            });
-                            handleInfoShow(tab.title, tab.info());
-                          }}
-                        />
-                        <Row>
-                          <Col>
-                            <p
+                    <div
+                      style={{
+                        minWidth: "23rem",
+                        margin: "5px",
+                        padding: "5px",
+                        borderStyle: "solid",
+                        borderColor: "rgba(0, 0, 0, 0.176)",
+                        borderRadius: "0.5rem",
+                      }}
+                      key={index}
+                    >
+                      <Row>
+                        <Col xs="auto" style={{ margin: "auto" }}>
+                          <div
+                            style={{
+                              marginTop: "10px",
+                              marginBottom: "10px",
+                              fontSize: "16px",
+                              position: "relative",
+                              paddingRight: "15px",
+                            }}
+                            onClick={() => {
+                              trackEvent({
+                                action: "click",
+                                element: "titleWithShowInfoIcon",
+                                data: tab.title,
+                              });
+                              handleInfoShow(tab.title, tab.info());
+                            }}
+                          >
+                            {tab.title}
+                            <BsInfoCircle
                               style={{
-                                marginTop: "10px",
-                                marginBottom: "10px",
+                                position: "absolute",
+                                top: "0",
+                                right: "0",
                               }}
-                            >
-                              {tab.title}
-                            </p>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <Button
-                              variant={
-                                selectedVis.some(
-                                  (vis) => vis.id === tab.eventKey
-                                )
-                                  ? "danger"
-                                  : "success"
-                              }
-                              style={{
-                                fontSize: "14px",
-                                padding: "5px",
-                                whiteSpace: "nowrap",
-                              }}
-                              onClick={() => {
-                                trackEvent({
-                                  action: "click",
-                                  element: "addOrRemoveVisToPreview(Bottom)",
-                                  data: tab.eventKey,
-                                });
-                                handleAddVis(tab.eventKey);
-                              }}
-                            >
-                              {selectedVis.some(
-                                (vis) => vis.id === tab.eventKey
-                              ) ? (
-                                <>
-                                  <FaCheckSquare
-                                    style={{ marginBottom: "2px" }}
-                                  />{" "}
-                                  Remove from projector
-                                </>
-                              ) : (
-                                <>
-                                  <FaSquare style={{ marginBottom: "2px" }} />{" "}
-                                  Add to projector
-                                </>
-                              )}
-                            </Button>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Container style={{ margin: "5px" }}>
-                            {tab.component()}
-                          </Container>
-                        </Row>
-                      </div>
-                    </>
+                              size="0.7em"
+                            />
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Button
+                            variant={
+                              selectedVis.some((vis) => vis.id === tab.eventKey)
+                                ? "danger"
+                                : "success"
+                            }
+                            style={{
+                              fontSize: "14px",
+                              padding: "5px",
+                              whiteSpace: "nowrap",
+                            }}
+                            onClick={() => {
+                              trackEvent({
+                                action: "click",
+                                element: "addOrRemoveVisToPreview(Bottom)",
+                                data: tab.eventKey,
+                              });
+                              handleAddVis(tab.eventKey);
+                            }}
+                          >
+                            {selectedVis.some(
+                              (vis) => vis.id === tab.eventKey
+                            ) ? (
+                              <>
+                                <FaCheckSquare
+                                  style={{ marginBottom: "2px" }}
+                                />{" "}
+                                Remove from projector
+                              </>
+                            ) : (
+                              <>
+                                <FaSquare style={{ marginBottom: "2px" }} /> Add
+                                to projector
+                              </>
+                            )}
+                          </Button>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Container style={{ margin: "5px" }}>
+                          {tab.component()}
+                        </Container>
+                      </Row>
+                    </div>
                   )
                 )
               ) : (
