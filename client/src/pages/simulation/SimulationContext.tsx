@@ -18,20 +18,11 @@ const availableTools: any = {
   observation: {
     label: "Observation",
     mainView: <Observation.ObservationView />,
-    primaryControlView: <Observation.ObservationPrimaryControlView />,
-    secondaryControlView: <Observation.ObservationSecondaryControlView />,
   },
   debrief: {
     label: "Debriefing",
     mainView: <Debrief.DebriefView />,
-    primaryControlView: <Debrief.DebriefPrimaryControlView />,
   },
-  // visualisation: {
-  //   label: "Visualisations",
-  //   mainView: <Visualisation.VisualisationView />,
-  //   primaryControlView: <Visualisation.VisualisationControlView />,
-  //   secondaryControlView: <Visualisation.HiveLegendView />,
-  // },
 };
 
 function SimProvider({ children }: SimProviderProps) {

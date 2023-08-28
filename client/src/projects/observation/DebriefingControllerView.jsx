@@ -6,7 +6,6 @@ import { BsInfoCircle, BsArrowRepeat, BsUpload } from "react-icons/bs";
 import { useTimeline } from "./visualisationComponents/TimelineContext";
 import { useObservation } from "./ObservationContext";
 import { taggingSocket } from "./socket";
-import PreviewProjectionModal from "./visualisationComponents/PreviewProjectionModal";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
@@ -148,12 +147,7 @@ const DebriefingControllerView = () => {
         handleClose={handleInfoClose}
         vizTitle={infoModalTitle}
       />
-      <PreviewProjectionModal
-        showPreviewModal={showPreviewModal}
-        handleClosePreviewModal={handleClosePreviewModal}
-        handleConfirmProjection={handleConfirmProjection}
-        selectedVis={selectedVis}
-      />
+
       {/* Row to show selected list and projection control buttons */}
       <Row style={{ margin: "3px", fontSize: "14px" }}>
         <Col

@@ -1,12 +1,6 @@
-import ObservationPrimaryControlView from "./ObservationPrimaryControlView";
 import ObservationView from "./ObservationView";
-import ObservationSecondaryControlView from "./ObservationSecondaryControlView";
 
-export {
-  ObservationPrimaryControlView,
-  ObservationView,
-  ObservationSecondaryControlView,
-};
+export { ObservationView };
 
 export const sortNotesDescending = (observationObj) => {
   const { phases } = observationObj;
