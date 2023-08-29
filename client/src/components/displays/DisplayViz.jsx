@@ -75,8 +75,6 @@ const DisplayViz = ({
 
   const phaseName = getPhaseName(phases, range);
 
-  console.log("phases", phases);
-
   // Determine the size based on the selected visualisations
   const decideSize = (d) => {
     if (selectedVis.length === 1 && d.id !== "videoVis") {

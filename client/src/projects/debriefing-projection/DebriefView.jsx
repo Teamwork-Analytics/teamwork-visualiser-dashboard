@@ -44,7 +44,6 @@ const DebriefView = () => {
     };
 
     const onUpdateList = (data) => {
-      console.log(`Received controller change to display: ${data}`);
       const unpackedData = unpackData(data);
 
       if (unpackedData.simId !== params.simulationId) {
