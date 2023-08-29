@@ -12,11 +12,19 @@
  * @param {String} simId - The id of the simulation.
  * @returns {String} The prepared data in stringified format.
  */
-function prepareData(range, visualisationSelected, simId) {
+function prepareData(
+  range,
+  visualisationSelected,
+  simId,
+  simDuration,
+  timelineTags
+) {
   const data = {
     range: range,
     vizSelected: visualisationSelected,
     simId: simId,
+    simDuration: simDuration,
+    timelineTags: timelineTags,
   };
   // Convert data to a JSON string for transmission.
   return JSON.stringify(data); // Do we need this? https://socket.io/docs/v3/emitting-events/
@@ -36,6 +44,8 @@ function unpackData(data) {
     range: parsedData.range,
     vizSelected: parsedData.vizSelected,
     simId: parsedData.simId,
+    simDuration: parsedData.simDuration,
+    timelineTags: parsedData.timelineTags,
   };
 }
 

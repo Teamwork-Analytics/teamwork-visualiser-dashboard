@@ -10,8 +10,6 @@
  *  - range: A range value to be passed to each visualisation component.
  */
 
-import Card from "react-bootstrap/Card";
-
 // Import visualisation components
 import {
   SocialNetworkView,
@@ -20,29 +18,64 @@ import {
 import TeamworkBarchart from "../../projects/teamwork-prio/TeamworkBarchart";
 import HiveView from "../../projects/hive/HiveView";
 import VideoVisualisation from "../../projects/observation/visualisationComponents/VideoVisualisation";
+import { Slider } from "@mui/material";
+import { COLOURS } from "../../config/colours";
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {
   general: { border: 0 },
   small: {
     width: "40%",
-    minWidth: 300,
-    height: "50%",
-    minHeight: 300,
+    minWidth: "38vw",
+    height: "35%",
+    minHeight: "38vh",
   },
   medium: {
-    width: "50%",
-    minWidth: 300,
-    height: "50%",
-    minHeight: 300,
+    width: "40%",
+    minWidth: "38vw",
+    height: "35%",
+    minHeight: "38vh",
   },
   large: { width: "100%", minWidth: 400, minHeight: 300 },
   single: { width: "90vw", height: "70vh", margin: "auto" },
 };
 
-const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
+const formatDuration = (value) => {
+  const minute = Math.floor(value / 60);
+  const secondLeft = value - minute * 60;
+  return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
+};
+
+const DisplayViz = ({
+  selectedVis,
+  range,
+  optionalHiveState,
+  simDuration,
+  timelineTags,
+}) => {
   // Define the visualisation components and their sizes
   // TODO: consider using useMemo for viz
+
+  const keyEvents = [...timelineTags.filter((item) => item.label)].reverse();
+
+  const phases = [
+    ...keyEvents.map((event, index, self) => ({
+      name: event.label,
+      start: event.value,
+      end: self[index + 1]?.value || simDuration,
+    })),
+  ];
+
+  const getPhaseName = (phases, range) => {
+    const phase = phases.find((p) => range[0] >= p.start && range[1] <= p.end);
+    return phase
+      ? phase.name
+      : `${formatDuration(range[0])} to ${formatDuration(range[1])}`;
+  };
+
+  const phaseName = getPhaseName(phases, range);
+
+  console.log("phases", phases);
 
   // Determine the size based on the selected visualisations
   const decideSize = (d) => {
@@ -58,7 +91,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       viz: (
         <ENANetworkView
           timeRange={range}
-          height={selectedVis.length === 1 ? "60vh" : "50vh"}
+          height={selectedVis.length === 1 ? "60vh" : "38vh"}
         />
       ),
     },
@@ -67,7 +100,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       viz: (
         <SocialNetworkView
           timeRange={range}
-          height={selectedVis.length === 1 ? "60vh" : "50vh"}
+          height={selectedVis.length === 1 ? "60vh" : "38vh"}
         />
       ),
     },
@@ -75,7 +108,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       size: "small",
       viz: (
         <TeamworkBarchart
-          width={"45vw"}
+          width={"39vw"}
           timeRange={range}
           customAspectRatio={1.5}
           fluid
@@ -88,7 +121,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
         <HiveView
           timeRange={range}
           showFilter={false}
-          height="40vh"
+          height="39vh"
           // width="100%"
           hiveState={optionalHiveState}
         />
@@ -138,8 +171,93 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
         justifyContent: "space-around",
         height: "100%",
         width: "100%",
+        position: "relative",
+        paddingTop: "8vh",
       }}
     >
+      {sortedVis.length !== 0 ? (
+        <div
+          style={{
+            position: "absolute",
+            zIndex: 100,
+            top: 0,
+            left: "50vw",
+            transform: "translateX(-50%)",
+            width: "50vw",
+          }}
+        >
+          <Slider
+            value={range}
+            max={simDuration}
+            disabled
+            valueLabelDisplay="auto"
+            // show tooltip in MM:SS format
+            valueLabelFormat={(value) => {
+              return formatDuration(value);
+            }}
+            aria-labelledby="projector-timeline"
+            sx={{
+              "& .MuiSlider-mark": {
+                backgroundColor: COLOURS.KEY_EVENT_PURPLE,
+                height: 15,
+                width: "1.5px",
+                "&.MuiSlider-markActive": {
+                  opacity: 1,
+                  backgroundColor: COLOURS.KEY_EVENT_PURPLE,
+                },
+              },
+              "& .MuiSlider-markLabel": {
+                top: "-5px",
+                fontSize: "0.4rem",
+              },
+              "& .MuiSlider-thumb": {
+                width: 10,
+                height: 10,
+              },
+              "& .MuiSlider-valueLabel": {
+                "& span": {
+                  padding: "0px !important",
+                  fontSize: "0.6rem !important",
+                },
+              },
+            }}
+            marks={timelineTags}
+          />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: "-30px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "0.75rem",
+                opacity: 0.38,
+                fontWeight: 500,
+                letterSpacing: 0.2,
+              }}
+            >
+              {formatDuration(0)}
+            </div>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                opacity: 0.38,
+                fontWeight: 500,
+                letterSpacing: 0.2,
+              }}
+            >
+              {formatDuration(simDuration)}
+            </div>
+          </div>
+          <p style={{ fontSize: "12px", marginTop: "-15px" }}>
+            Activities happen during <strong>{phaseName}</strong>.
+          </p>
+        </div>
+      ) : null}
+
       {sortedVis.length !== 0 ? (
         sortedVis.map((d) => (
           <div
@@ -148,15 +266,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
               ...SIZE_STYLES[decideSize(d)],
             }}
           >
-            {/* <Card.Body
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            > */}
             {imageReferences[d.id].viz}
-            {/* </Card.Body> */}
           </div>
         ))
       ) : selectedVis.length === 0 ? (

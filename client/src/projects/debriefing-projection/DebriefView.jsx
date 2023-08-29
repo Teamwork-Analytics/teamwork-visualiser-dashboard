@@ -14,12 +14,20 @@ import ConnectionManager from "./socketComponents/ConnectionManager";
 import DisplayViz from "../../components/displays/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
 import { useParams } from "react-router-dom";
+import { manualLabels } from "../observation";
+import { set } from "date-fns";
 
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(taggingSocket.connected);
   const [dispList, setDispList] = useState([]);
   const [range, setRange] = useState([0, 0]);
   const [hiveState, setHiveState] = useState();
+  const [simDuration, setSimDuration] = useState(0);
+  const [timelineTags, setTimelineTags] = useState([]);
+  const isKeyEvent = (label) =>
+    manualLabels.phases.some((item) => item.label === label);
+  const filterTimelineTagsForKeyEvent = (tags) =>
+    tags.filter((tag) => isKeyEvent(tag.label));
 
   const params = useParams();
 
@@ -45,6 +53,11 @@ const DebriefView = () => {
       const parsedList = unpackedData.vizSelected;
       setRange(unpackedData.range);
       setDispList(parsedList); // WARNING: abrupt mutation
+      setSimDuration(unpackedData.simDuration);
+      const modifiedTimelineTags = filterTimelineTagsForKeyEvent(
+        unpackedData.timelineTags
+      );
+      setTimelineTags(modifiedTimelineTags);
     };
 
     const onReceiveNurseFilter = (hiveState) => {
@@ -86,6 +99,8 @@ const DebriefView = () => {
           selectedVis={dispList}
           range={range}
           optionalHiveState={hiveState}
+          simDuration={simDuration}
+          timelineTags={timelineTags}
         />
       </div>
       {/* Display connection state */}
