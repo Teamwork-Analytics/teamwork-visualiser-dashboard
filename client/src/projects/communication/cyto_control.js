@@ -27,8 +27,8 @@ const MARGIN_MAPPER = {
   relative: 0,
 };
 const NODE_NAME_MAPPER = {
-  blue: "Primary Nurse 1",
-  red: "Primary Nurse 2",
+  blue: "Primary Nurse 2",
+  red: "Primary Nurse 1",
   green: "Secondary Nurse 1",
   yellow: "Secondary Nurse 2",
   patient: "Patient",
