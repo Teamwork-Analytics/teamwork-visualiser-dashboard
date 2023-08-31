@@ -9,7 +9,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const usingRp = true;
-const localServerUrl = "http://13.236.94.219:5002/api";
+const localServerUrl = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}/api`;
+console.log("localServerUrl", localServerUrl);
 const api = axios.create({
   baseURL: localServerUrl,
   withCredentials: false,
