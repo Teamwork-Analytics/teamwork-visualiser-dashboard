@@ -10,8 +10,6 @@
  *  - range: A range value to be passed to each visualisation component.
  */
 
-import Card from "react-bootstrap/Card";
-
 // Import visualisation components
 import {
   SocialNetworkView,

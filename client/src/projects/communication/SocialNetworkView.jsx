@@ -33,8 +33,6 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
     }, // transform a given node position. Useful for changing flow direction in discrete layouts
   };
 
-  const [cy, setCy] = useState();
-
   const stylesheet = [
     // the stylesheet for the graph
     {

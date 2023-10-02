@@ -10,28 +10,15 @@ const DebriefingContext = React.createContext();
 
 function DebriefingProvider({ simulationId, children }) {
   const [isStarted, setIsStarted] = React.useState(false);
-  // const [enaData, setENAdata] = useState([]);
   const [snaData, setSNAdata] = useState([]);
-  // const [networkENAData, setNetworkENAData] = useState([]);
-
-  /* getData from backend */
-  // useEffect(() => {
-  //   getENAdata(simulationId).then((res) => {
-  //     if (res.status === 200) {
-  //       // const cleanedPhases = cleanRawPhases(phases);
-  //       setENAdata(res.data);
-  //     }
-  //   });
-  // }, [simulationId]);
 
   useEffect(() => {
-    if (snaData.length == 0) {
+    if (snaData.length === 0) {
       function callData() {
         // Fetch data immediately when component mounts
         getSNAdata(simulationId)
           .then((res) => {
             if (res.status === 200) {
-              // const cleanedPhases = cleanRawPhases(phases);
               setSNAdata(res.data);
             }
           })
