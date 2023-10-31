@@ -3,7 +3,6 @@
  * @description This file exports a list of cards, each card is a project.
  */
 import React from "react";
-import { fakeProjects } from "../../data/fakeData";
 import "./ProjectList.css";
 import { Project } from "../../types/ProjectProps";
 import ProjectCard from "../card/ProjectCard";
@@ -22,7 +21,7 @@ const ProjectList = ({
   cardOnClickFunction?: (...args: any[]) => any;
 }) => {
   //TODO: connect to backend and not using fake data
-  const projects = projectInput ? projectInput : fakeProjects;
+  const projects = projectInput ? projectInput : null;
 
   return (
     <div
