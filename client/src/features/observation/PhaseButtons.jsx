@@ -14,7 +14,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import toast from "react-hot-toast";
-import { COLOURS } from "../../config/colours";
+import { COLOURS } from "../../constants/colours";
 import { useTracking } from "react-tracking";
 
 const PhaseButtons = () => {

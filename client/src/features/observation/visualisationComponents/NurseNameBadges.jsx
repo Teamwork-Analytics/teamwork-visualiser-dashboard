@@ -8,7 +8,7 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import { COLOURS } from "../../../config/colours";
+import { COLOURS } from "../../../constants/colours";
 import { useNurseName } from "./NurseNameContext";
 import { useTracking } from "react-tracking";
 

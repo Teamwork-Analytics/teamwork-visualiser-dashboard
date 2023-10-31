@@ -9,9 +9,9 @@ import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useLocation, useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
-import { DebriefingProvider } from "../../projects/debriefing-projection/DebriefContext";
-import { HiveProvider } from "../../projects/hive/HiveContext";
-import { ObservationProvider } from "../../projects/observation/ObservationContext";
+import { DebriefingProvider } from "../../features/debriefing-projection/DebriefContext";
+import { HiveProvider } from "../../features/hive/HiveContext";
+import { ObservationProvider } from "../../features/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
 import {

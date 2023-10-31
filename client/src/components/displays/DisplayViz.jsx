@@ -14,10 +14,10 @@
 import {
   SocialNetworkView,
   ENANetworkView,
-} from "../../projects/communication";
-import TeamworkBarchart from "../../projects/teamwork-prio/TeamworkBarchart";
-import HiveView from "../../projects/hive/HiveView";
-import VideoVisualisation from "../../projects/observation/visualisationComponents/VideoVisualisation";
+} from "../../features/communication";
+import TeamworkBarchart from "../../features/teamwork-prio/TeamworkBarchart";
+import HiveView from "../../features/hive/HiveView";
+import VideoVisualisation from "../../features/observation/visualisationComponents/VideoVisualisation";
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {

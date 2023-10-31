@@ -14,7 +14,7 @@ import { manualLabels } from ".";
 import { BsXLg, BsStar, BsStarFill } from "react-icons/bs";
 import ObservationAPI from "../../services/api/observation";
 import { sortNotesDescending } from ".";
-import { COLOURS } from "../../config/colours";
+import { COLOURS } from "../../constants/colours";
 import { useTracking } from "react-tracking";
 
 const Phases = () => {
