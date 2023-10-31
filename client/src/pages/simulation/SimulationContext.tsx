@@ -26,12 +26,6 @@ const availableTools: any = {
     mainView: <Debrief.DebriefView />,
     primaryControlView: <Debrief.DebriefPrimaryControlView />,
   },
-  // visualisation: {
-  //   label: "Visualisations",
-  //   mainView: <Visualisation.VisualisationView />,
-  //   primaryControlView: <Visualisation.VisualisationControlView />,
-  //   secondaryControlView: <Visualisation.HiveLegendView />,
-  // },
 };
 
 function SimProvider({ children }: SimProviderProps) {
