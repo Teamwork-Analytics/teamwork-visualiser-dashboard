@@ -7,10 +7,10 @@
 
 import React, { useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
-import BackButton from "../../components/buttons/BackButton";
-import SessionList from "../../components/cardLists/SessionList";
-import ProjectList from "../../components/cardLists/ProjectList";
-import ContentContainer from "../../components/containers/ContentContainer";
+import BackButton from "@components/buttons/BackButton";
+import SessionList from "@components/cardLists/SessionList";
+import ProjectList from "@components/cardLists/ProjectList";
+import ContentContainer from "@components/containers/ContentContainer";
 import { defaultStyles as styles } from "../page-styles";
 import ProjectCreateModal from "./ProjectCreateModal";
 import SessionCreateModal from "./SessionCreateModal";

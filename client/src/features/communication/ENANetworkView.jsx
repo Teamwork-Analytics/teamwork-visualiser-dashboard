@@ -4,7 +4,7 @@ import { processing_adjacent_matrix } from "./mimic_ena_control";
 import { toast } from "react-hot-toast";
 import { getENAdata } from "../../services/py-server";
 import { useParams } from "react-router-dom";
-import SimpleErrorText from "../../components/errors/ErrorMessage";
+import SimpleErrorText from "@components/errors/ErrorMessage";
 
 const ENANetworkView = ({ timeRange, height = "30vh" }) => {
   const { simulationId } = useParams();

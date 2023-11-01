@@ -16,7 +16,7 @@ import {
   BsStarFill,
 } from "react-icons/bs";
 import { manualLabels } from "../index.js";
-import { COLOURS } from "../../../constants/colours.js";
+import { COLOURS } from "@constants/colours.js";
 import { useTracking } from "react-tracking";
 
 // styling

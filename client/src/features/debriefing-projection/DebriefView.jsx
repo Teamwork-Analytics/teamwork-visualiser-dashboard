@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { taggingSocket } from "./socket";
 import ConnectionState from "./socketComponents/ConnectionState";
 import ConnectionManager from "./socketComponents/ConnectionManager";
-import DisplayViz from "../../components/displays/DisplayViz";
+import DisplayViz from "@components/displays/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
 import { useParams } from "react-router-dom";
 

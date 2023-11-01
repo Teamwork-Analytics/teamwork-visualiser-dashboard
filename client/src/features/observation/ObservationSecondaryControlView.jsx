@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import toast from "react-hot-toast";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import EmptyPlaceholder from "@components/EmptyPlaceholder";
 import ObservationAPI from "../../services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
 
-
 const ObservationSecondaryControlView = () => {
   const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
-
 
   useEffect(() => {
     setDevices(observation.synchronisations);
@@ -39,11 +37,8 @@ const ObservationSecondaryControlView = () => {
     setDevices(tempDevice);
   };
 
- 
   return (
     <div>
-     
-
       <h1>Synchronisation</h1>
       <hr />
 

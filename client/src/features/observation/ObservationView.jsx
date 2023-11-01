@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
-import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
+import ToolInPrep from "@components/loadingComponents/ToolInPrep";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { useTracking } from "react-tracking";
 import { NurseNameProvider } from "./visualisationComponents/NurseNameContext";

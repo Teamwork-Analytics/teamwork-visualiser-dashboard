@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getTeamworkBarchart } from "../../services/py-server";
 import Barchart from "./Barchart";
-import SimpleErrorText from "../../components/errors/ErrorMessage";
+import SimpleErrorText from "@components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 

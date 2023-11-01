@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
-import { COLOURS } from "../../constants/colours";
+import { COLOURS } from "@constants/colours";
 
 const CLASSROOM_SIZE = {
   WIDTH: 9500,

@@ -16,7 +16,7 @@ import {
 import { prepareData } from "../../utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
-import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
+import ToolInPrep from "@components/loadingComponents/ToolInPrep";
 import { useTracking } from "react-tracking";
 
 const debriefStyles = {

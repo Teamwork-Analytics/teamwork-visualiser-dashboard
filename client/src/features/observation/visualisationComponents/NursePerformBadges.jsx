@@ -7,7 +7,7 @@
 
 import { Badge, Row, Col } from "react-bootstrap";
 import styled from "@emotion/styled";
-import { COLOURS } from "../../../constants/colours";
+import { COLOURS } from "@constants/colours";
 import ObservationAPI from "../../../services/api/observation";
 import { useObservation } from "../ObservationContext";
 import { useTracking } from "react-tracking";

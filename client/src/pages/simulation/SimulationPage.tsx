@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useLocation, useParams } from "react-router-dom";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
+import EmptyPlaceholder from "@components/EmptyPlaceholder";
 import { DebriefingProvider } from "../../features/debriefing-projection/DebriefContext";
 import { HiveProvider } from "../../features/hive/HiveContext";
 import { ObservationProvider } from "../../features/observation/ObservationContext";
