@@ -3,7 +3,7 @@
  * @description This file exports a list of cards, each card is a session.
  */
 import React from "react";
-import { Simulation } from "../../types/SimulationProps";
+import { Simulation } from "@interfaces/SimulationProps";
 import SimulationCard from "../card/SimulationCard";
 import "./SessionList.css";
 import { Button } from "react-bootstrap";
@@ -32,7 +32,7 @@ const SessionList = ({
   edit,
 }: SessionListProps) => {
   //TODO: connect to backend and not using fake data
-  const simulations = simulationsInput 
+  const simulations = simulationsInput;
 
   return (
     <div

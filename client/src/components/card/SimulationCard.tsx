@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import TACard from "./TACard";
-import { Simulation } from "../../types/SimulationProps";
+import { Simulation } from "@interfaces/SimulationProps";
 
 const SimulationCard = ({
   simulation,

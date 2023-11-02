@@ -16,7 +16,7 @@ import ProjectCreateModal from "./ProjectCreateModal";
 import SessionCreateModal from "./SessionCreateModal";
 import "./ProjectManagementPage.css";
 import EditProjectModal from "./EditProjectModal";
-import { Simulation } from "../../types/SimulationProps";
+import { Simulation } from "@interfaces/SimulationProps";
 import EditSessionModal from "./EditSessionModal";
 
 export const fakeProjects = [
