@@ -7,18 +7,22 @@
 
 import React, { useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
-import BackButton from "../../components/buttons/BackButton";
-import SessionList from "../../components/cardLists/SessionList";
-import ProjectList from "../../components/cardLists/ProjectList";
-import ContentContainer from "../../components/containers/ContentContainer";
+import BackButton from "src/shared/components/buttons/BackButton";
+import SessionList from "src/shared/components/cardLists/SessionList";
+import ProjectList from "src/shared/components/cardLists/ProjectList";
+import ContentContainer from "src/shared/components/containers/ContentContainer";
 import { defaultStyles as styles } from "../page-styles";
 import ProjectCreateModal from "./ProjectCreateModal";
 import SessionCreateModal from "./SessionCreateModal";
-import { fakeProjects } from "../../data/fakeData";
 import "./ProjectManagementPage.css";
 import EditProjectModal from "./EditProjectModal";
-import { Simulation } from "../../types/SimulationProps";
+import { Simulation } from "src/shared/types/SimulationProps";
 import EditSessionModal from "./EditSessionModal";
+
+export const fakeProjects = [
+  { projectId: "002", name: "Clayton Nursing Simulation" },
+  { projectId: "001", name: "Peninsula Nursing Simulation" },
+];
 
 const ProjectManagementPage = () => {
   const [projectFilter, setProjectFilter] = useState({

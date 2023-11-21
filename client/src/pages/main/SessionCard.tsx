@@ -1,6 +1,5 @@
-import React from "react";
-import { Card, Col, Row } from "react-bootstrap";
-import TACard from "../../components/card/TACard";
+import { Col, Row } from "react-bootstrap";
+import TACard from "src/shared/components/card/TACard";
 import { Simulation } from "./Session";
 
 const SimulationCard = ({
@@ -25,15 +24,6 @@ const SimulationCard = ({
           </Col>
         )}
       </Row>
-
-      {/* <Card.Body>
-        <Card.Title>{sim.simulationId}</Card.Title>
-        <Card.Text>{sim.name}</Card.Text>
-      </Card.Body>
-
-      {sim.project && (
-        <Card.Footer className="text-muted">{sim.project.name}</Card.Footer>
-      )} */}
     </TACard>
   );
 };

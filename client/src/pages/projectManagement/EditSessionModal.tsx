@@ -1,7 +1,7 @@
 // EditSessionModal.tsx
 import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { Simulation } from "../../types/SimulationProps";
+import { Simulation } from "src/shared/types/SimulationProps";
 
 interface EditSessionModalProps {
   show: boolean;

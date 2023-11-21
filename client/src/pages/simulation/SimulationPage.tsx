@@ -8,10 +8,10 @@ import { useState } from "react";
 import { Button, Collapse } from "react-bootstrap";
 import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useLocation, useParams } from "react-router-dom";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
-import { DebriefingProvider } from "../../projects/debriefing-projection/DebriefContext";
-import { HiveProvider } from "../../projects/hive/HiveContext";
-import { ObservationProvider } from "../../projects/observation/ObservationContext";
+import EmptyPlaceholder from "src/shared/components/EmptyPlaceholder";
+import { DebriefingProvider } from "../../features/debriefing-projection/DebriefContext";
+import { HiveProvider } from "../../features/hive/HiveContext";
+import { ObservationProvider } from "../../features/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
 import {
@@ -23,7 +23,7 @@ import {
 //Socket
 import { useTracking } from "react-tracking";
 import { io } from "socket.io-client";
-import socketDispatch from "../../services/socketDispatch";
+import socketDispatch from "../../shared/services/socketDispatch";
 
 const serverUrl =
   process.env.NODE_ENV === "development"

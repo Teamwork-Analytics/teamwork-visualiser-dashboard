@@ -7,7 +7,7 @@
 
 import * as React from "react";
 import sortBy from "lodash/sortBy";
-import SimulationSessionAPI from "../../services/api/simulations";
+import SimulationSessionAPI from "../../shared/services/api/simulations";
 
 const MainContext = React.createContext([]);
 

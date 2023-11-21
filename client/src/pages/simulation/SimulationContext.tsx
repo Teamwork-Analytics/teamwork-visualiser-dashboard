@@ -1,6 +1,6 @@
 import * as React from "react";
-import * as Observation from "../../projects/observation/index";
-import * as Debrief from "../../projects/debriefing-projection/index";
+import * as Observation from "../../features/observation/index";
+import * as Debrief from "../../features/debriefing-projection/index";
 
 type SimProviderProps = {
   children: React.ReactNode;
@@ -26,12 +26,6 @@ const availableTools: any = {
     mainView: <Debrief.DebriefView />,
     primaryControlView: <Debrief.DebriefPrimaryControlView />,
   },
-  // visualisation: {
-  //   label: "Visualisations",
-  //   mainView: <Visualisation.VisualisationView />,
-  //   primaryControlView: <Visualisation.VisualisationControlView />,
-  //   secondaryControlView: <Visualisation.HiveLegendView />,
-  // },
 };
 
 function SimProvider({ children }: SimProviderProps) {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { defaultStyles as styles } from "../page-styles";
-import BackButton from "../../components/buttons/BackButton";
+import BackButton from "src/shared/components/buttons/BackButton";
 import {
   Button,
   Card,
@@ -17,7 +17,6 @@ import "./TaggingEditorPage.css";
 import { BsCheckSquare, BsSquare } from "react-icons/bs";
 
 const TaggingEditorPage = () => {
-
   const params = useParams();
   const projectId = params.projectId ? params.projectId : "001";
 

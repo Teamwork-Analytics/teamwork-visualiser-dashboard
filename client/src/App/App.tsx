@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import SimulationPage from "../pages/simulation/SimulationPage";
-import MainPage from "../pages/main/MainPage";
-import ErrorPage from "../pages/error/ErrorPage";
-import ProjectManagementPage from "../pages/projectManagement/ProjectManagementPage";
-import TaggingEditorPage from "../pages/taggingEditor/TaggingEditorPage";
+import SimulationPage from "@pages/simulation/SimulationPage";
+import MainPage from "@pages/main/MainPage";
+import ErrorPage from "@pages/error/ErrorPage";
+import ProjectManagementPage from "@pages/projectManagement/ProjectManagementPage";
+import TaggingEditorPage from "@pages/taggingEditor/TaggingEditorPage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { TEAM_NAME } from "../data/manualLabels";
+import { TEAM_NAME } from "../shared/data/manualLabels";
 import toast, { Toaster, useToasterStore } from "react-hot-toast";
 
 const TOAST_LIMIT = 2; // feedback toast limit
@@ -25,7 +25,7 @@ function App() {
     },
   };
 
-  // workaround for limiting toast
+  // limit the number of toast notifications
   const { toasts } = useToasterStore();
   useEffect(() => {
     toasts
