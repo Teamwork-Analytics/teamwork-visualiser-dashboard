@@ -3,7 +3,7 @@
  * @description This file exports a list of cards, each card is a session.
  */
 import React from "react";
-import { Simulation } from "@interfaces/SimulationProps";
+import { Simulation } from "src/shared/types/SimulationProps";
 import SimulationCard from "../card/SimulationCard";
 import "./SessionList.css";
 import { Button } from "react-bootstrap";

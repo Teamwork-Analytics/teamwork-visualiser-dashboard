@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import toast from "react-hot-toast";
-import EmptyPlaceholder from "@components/EmptyPlaceholder";
-import ObservationAPI from "../../services/api/observation";
+import EmptyPlaceholder from "src/shared/components/EmptyPlaceholder";
+import ObservationAPI from "../../shared/services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
 

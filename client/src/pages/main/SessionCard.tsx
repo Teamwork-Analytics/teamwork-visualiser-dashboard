@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import TACard from "@components/card/TACard";
+import TACard from "src/shared/components/card/TACard";
 import { Simulation } from "./Session";
 
 const SimulationCard = ({

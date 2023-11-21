@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { manualLabels, sortNotesDescending } from ".";
-import ObservationAPI from "../../services/api/observation";
+import ObservationAPI from "../../shared/services/api/observation";
 import { useObservation } from "./ObservationContext";
 import {
   BsCircleFill,
@@ -14,7 +14,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import toast from "react-hot-toast";
-import { COLOURS } from "@constants/colours";
+import { COLOURS } from "src/shared/constants/colours";
 import { useTracking } from "react-tracking";
 
 const PhaseButtons = () => {

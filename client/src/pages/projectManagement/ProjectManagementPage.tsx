@@ -7,16 +7,16 @@
 
 import React, { useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
-import BackButton from "@components/buttons/BackButton";
-import SessionList from "@components/cardLists/SessionList";
-import ProjectList from "@components/cardLists/ProjectList";
-import ContentContainer from "@components/containers/ContentContainer";
+import BackButton from "src/shared/components/buttons/BackButton";
+import SessionList from "src/shared/components/cardLists/SessionList";
+import ProjectList from "src/shared/components/cardLists/ProjectList";
+import ContentContainer from "src/shared/components/containers/ContentContainer";
 import { defaultStyles as styles } from "../page-styles";
 import ProjectCreateModal from "./ProjectCreateModal";
 import SessionCreateModal from "./SessionCreateModal";
 import "./ProjectManagementPage.css";
 import EditProjectModal from "./EditProjectModal";
-import { Simulation } from "@interfaces/SimulationProps";
+import { Simulation } from "src/shared/types/SimulationProps";
 import EditSessionModal from "./EditSessionModal";
 
 export const fakeProjects = [

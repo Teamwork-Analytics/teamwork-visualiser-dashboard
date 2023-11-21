@@ -5,7 +5,7 @@ import { useObservation } from "./ObservationContext";
 import DateTimePicker from "react-datetime-picker";
 import "./DateTimePicker.css";
 import NursePerformBadges from "./visualisationComponents/NursePerformBadges";
-import { updateSinglePhase } from "../../utils/observationUtils";
+import { updateSinglePhase } from "../../shared/utils/observationUtils";
 
 const Note = ({ initialValue, data }) => {
   const { observation, setNotes } = useObservation();

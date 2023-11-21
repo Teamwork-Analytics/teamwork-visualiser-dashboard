@@ -6,7 +6,7 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import React, { useEffect } from "react";
-import HiveAPI from "../../services/api/hive";
+import HiveAPI from "../../shared/services/api/hive";
 
 const HiveContext = React.createContext();
 

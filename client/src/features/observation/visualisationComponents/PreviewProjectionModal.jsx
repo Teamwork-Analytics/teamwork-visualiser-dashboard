@@ -15,7 +15,7 @@
 //image references:
 import { Modal, Button } from "react-bootstrap";
 
-import DisplayViz from "@components/displays/DisplayViz";
+import DisplayViz from "src/shared/components/displays/DisplayViz";
 import { useTimeline } from "./TimelineContext";
 import { useTracking } from "react-tracking";
 

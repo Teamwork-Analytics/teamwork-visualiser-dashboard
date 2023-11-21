@@ -3,9 +3,13 @@ import { Button, ButtonGroup } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
-import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
-import ObservationAPI from "../../services/api/observation";
-import { startBaselineAll, startAll, stopAll } from "../../services/eureka";
+import { OBSERVATION_TOAST_MESSAGES } from "../../shared/data/manualLabels";
+import ObservationAPI from "../../shared/services/api/observation";
+import {
+  startBaselineAll,
+  startAll,
+  stopAll,
+} from "../../shared/services/eureka";
 import { useObservation } from "./ObservationContext";
 
 const ObservationPrimaryControlView = () => {

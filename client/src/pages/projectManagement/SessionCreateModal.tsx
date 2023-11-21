@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { Project } from "@interfaces/ProjectProps";
+import { Project } from "src/shared/types/ProjectProps";
 
 interface SessionCreateModalProps {
   show: boolean;

@@ -7,8 +7,8 @@
 
 import React, { useState } from "react";
 import { sortNotesDescending } from ".";
-import ObservationAPI from "../../services/api/observation";
-import SimulationSessionAPI from "../../services/api/simulations";
+import ObservationAPI from "../../shared/services/api/observation";
+import SimulationSessionAPI from "../../shared/services/api/simulations";
 
 const ObservationContext = React.createContext();
 

@@ -4,7 +4,7 @@
  */
 import React from "react";
 import "./ProjectList.css";
-import { Project } from "@interfaces/ProjectProps";
+import { Project } from "src/shared/types/ProjectProps";
 import ProjectCard from "../card/ProjectCard";
 
 // TODO: make projectInput mandatory

@@ -13,10 +13,10 @@ import {
   topTabVisualisations,
   bottomVisualisations,
 } from "./visualisationComponents/VisualisationsList";
-import { prepareData } from "../../utils/socketUtils";
+import { prepareData } from "../../shared/utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
-import ToolInPrep from "@components/loadingComponents/ToolInPrep";
+import ToolInPrep from "src/shared/components/loadingComponents/ToolInPrep";
 import { useTracking } from "react-tracking";
 
 const debriefStyles = {

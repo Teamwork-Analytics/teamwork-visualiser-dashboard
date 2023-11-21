@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
-import ObservationAPI from "../../services/api/observation";
+import { OBSERVATION_TOAST_MESSAGES } from "../../shared/data/manualLabels";
+import ObservationAPI from "../../shared/services/api/observation";
 import { useObservation } from "./ObservationContext";
 
 const FullResetButton = () => {

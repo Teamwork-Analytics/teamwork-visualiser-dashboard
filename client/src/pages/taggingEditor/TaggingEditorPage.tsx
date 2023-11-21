@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { defaultStyles as styles } from "../page-styles";
-import BackButton from "@components/buttons/BackButton";
+import BackButton from "src/shared/components/buttons/BackButton";
 import {
   Button,
   Card,

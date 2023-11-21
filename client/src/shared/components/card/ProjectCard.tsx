@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import TACard from "./TACard";
-import { Project } from "@interfaces/ProjectProps";
+import { Project } from "src/shared/types/ProjectProps";
 
 const ProjectCard = ({
   project,

@@ -5,7 +5,7 @@
 
 import * as React from "react";
 import { useParams } from "react-router-dom";
-import PrivateNoteAPI from "../../../services/api/privateNote";
+import PrivateNoteAPI from "../../../shared/services/api/privateNote";
 
 // Create NurseNamesContext
 const NurseNameContext = React.createContext();

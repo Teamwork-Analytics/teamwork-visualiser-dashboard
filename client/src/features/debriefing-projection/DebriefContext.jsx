@@ -4,7 +4,7 @@
 // * with audio (default) or position only
 
 import React, { useState, useEffect } from "react";
-import { getSNAdata } from "../../services/py-server";
+import { getSNAdata } from "../../shared/services/py-server";
 
 const DebriefingContext = React.createContext();
 

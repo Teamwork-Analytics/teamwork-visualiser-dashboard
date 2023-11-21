@@ -12,9 +12,9 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import Clock from "react-live-clock";
 import { manualLabels } from ".";
 import { BsXLg, BsStar, BsStarFill } from "react-icons/bs";
-import ObservationAPI from "../../services/api/observation";
+import ObservationAPI from "../../shared/services/api/observation";
 import { sortNotesDescending } from ".";
-import { COLOURS } from "@constants/colours";
+import { COLOURS } from "src/shared/constants/colours";
 import { useTracking } from "react-tracking";
 
 const Phases = () => {

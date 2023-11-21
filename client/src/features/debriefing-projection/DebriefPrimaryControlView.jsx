@@ -3,9 +3,12 @@ import { Button } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
-import { startDebriefAudio, stopDebriefAudio } from "../../services/eureka";
+import {
+  startDebriefAudio,
+  stopDebriefAudio,
+} from "../../shared/services/eureka";
 import { useDebriefing } from "./DebriefContext";
-import { processAllVisualisations } from "../../services/py-server";
+import { processAllVisualisations } from "../../shared/services/py-server";
 
 const DebriefPrimaryControlView = () => {
   const { simulationId } = useParams();
