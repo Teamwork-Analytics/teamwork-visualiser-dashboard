@@ -44,3 +44,50 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# App architecture
+
+This section of the README outlines the architecture of `client` application. The structure is selected to pursue modularity, ease of maintenance, scalability, and readability.
+
+## Project Structure Overview
+
+The project is organized as follows:
+
+```
+client/
+├── src/
+│   ├── App/
+│   │   ├── App.tsx
+│   │   └── ...
+│   ├── features/
+│   │   ├── category-a (e.g. login)/
+│   │   │   ├── feature-a (e.g. login-authentication)/
+│   │   │   │   ├── components/
+│   │   │   │   └── hooks/
+│   │   │   │   └── utils/
+│   │   │   │   └── ...
+│   │   │   ├── feature-b (e.g. login-timeout)/
+│   │   │   │   └── configs/
+│   │   │   │   └── ...
+│   │   └── category-b (e.g. tagging)/
+│   │       └── ...
+│   ├── pages/
+│   │   ├── error/
+│   │   ├── main/
+│   │   └── ...
+│   └── shared/
+│       ├── constants/
+│       ├── data/
+│       ├── components/
+│       └── utils/
+└── ...
+
+```
+
+Explanation:
+
+1. `App`. Root component of the application. Responsible for global application setup, including routing and context providers.
+2. `features`. Individual project or business logic, usually page-related. Interaction between features should be minimized and managed through well-defined interfaces and shared services.
+3. `shared`. Directory for reusable data shared between features. It may contain UI components, utils, types, and configs.
+4. `components`. UI — specific components. They are the components that can be reused in other projects for keeping consistency, but it should not contain business logic.
+5. Note: Each feature should be as independent as possible. Commonly used components and utilities should reside in the shared directory. Features should not directly depend on each other. Shared logic or data should be extracted to the shared directory. Avoid importing from parent or neighboring directories to maintain modularity.

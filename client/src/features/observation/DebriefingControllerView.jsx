@@ -13,7 +13,7 @@ import {
   topTabVisualisations,
   bottomVisualisations,
 } from "./visualisationComponents/VisualisationsList";
-import { prepareData } from "../../shared/utils/socketUtils";
+import { prepareData } from "@utils/socketUtils";
 import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoModal";
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
 import ToolInPrep from "src/shared/components/loadingComponents/ToolInPrep";

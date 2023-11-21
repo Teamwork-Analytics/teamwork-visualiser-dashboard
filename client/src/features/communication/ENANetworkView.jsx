@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { processing_adjacent_matrix } from "./mimic_ena_control";
-import { toast } from "react-hot-toast";
 import { getENAdata } from "../../shared/services/py-server";
 import { useParams } from "react-router-dom";
 import SimpleErrorText from "src/shared/components/errors/ErrorMessage";
