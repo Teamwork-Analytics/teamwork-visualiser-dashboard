@@ -5,7 +5,7 @@ import { getENAdata } from "../../shared/services/py-server";
 import { useParams } from "react-router-dom";
 import SimpleErrorText from "src/shared/components/errors/ErrorMessage";
 
-const ENANetworkView = ({ timeRange, height = "30vh" }) => {
+const ENANetworkView = ({ timeRange, width = "25vw", height = "30vh" }) => {
   const { simulationId } = useParams();
   const [enaData, setENAdata] = useState([]);
   const [networkENAData, setNetworkENAData] = useState([]);
@@ -133,7 +133,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
       <div
         style={{
           // minWidth: "300px",
-          width: "100%",
+          width: width,
           height: height,
           position: "relative",
         }}
@@ -154,7 +154,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
           elements={networkENAData}
           style={{
             textAlign: "left",
-            width: "100%",
+            width: width,
             height: height,
             position: "absolute",
             left: 0,

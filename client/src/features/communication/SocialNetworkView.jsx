@@ -4,7 +4,7 @@ import { processing_csv } from "./cyto_control";
 import { useDebriefing } from "../debriefing-projection/DebriefContext";
 import SimpleErrorText from "src/shared/components/errors/ErrorMessage";
 
-const CytoComponent = ({ netData, height = "30vh" }) => {
+const CytoComponent = ({ netData, width = "25vw", height = "30vh" }) => {
   const net_options = {
     name: "circle",
     fit: true, // whether to fit the viewport to the graph
@@ -71,7 +71,7 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
       }}
       style={{
         textAlign: "left",
-        width: "100%",
+        width: width,
         height: height,
         position: "absolute",
         top: 0,
@@ -81,7 +81,7 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
   );
 };
 
-const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
+const SocialNetworkView = ({ timeRange, width = "30vw", height = "30vh" }) => {
   const { snaData } = useDebriefing();
   const startTime = timeRange[0];
   const endTime = timeRange[1];
@@ -106,13 +106,13 @@ const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
       <div
         style={{
           // minWidth: "300px",
-          width: "100%",
+          width: width,
           height: height,
           position: "relative",
         }}
       >
         {netData !== undefined && (
-          <CytoComponent netData={netData} height={height} />
+          <CytoComponent netData={netData} height={height} width={width} />
         )}
         {/* Below is work-around to disable user interacting with the div (two fingers touching canvas will cause errors) */}
         <div

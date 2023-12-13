@@ -330,7 +330,8 @@ const DebriefingControllerView = () => {
                   (tab, index) => (
                     <div
                       style={{
-                        minWidth: "23rem",
+                        minWidth: "auto",
+                        maxWidth: "50rem",
                         margin: "5px",
                         padding: "5px",
                         borderStyle: "solid",
