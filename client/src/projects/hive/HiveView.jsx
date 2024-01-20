@@ -1,56 +1,55 @@
-import React, { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import HexagonComponent from "./Hexagon";
 
-//TODO: make the following floor plan much more dynamic
-import floorPlan from "./floor-plan/nursing-small.svg";
+import floorPlan from "./floor-plan/floor-plan.svg";
+import HexagonComponent from "./Hexagon";
 import { useHive } from "./HiveContext";
-import HiveSlider from "./HiveSlider";
 import { HivePrimaryControlView } from "./HiveControlView";
 import { useParams } from "react-router-dom";
-import EmptyPlaceholder from "../../components/EmptyPlaceholder";
-import HiveAPI from "../../services/api/hive";
+import SimpleErrorText from "../../components/errors/ErrorMessage";
 
-const HiveView = () => {
-  const { state, markers, setMarkers } = useHive();
+const HiveView = ({
+  timeRange,
+  showFilter = true,
+  height = "32vh",
+  width = "30vw",
+  showModal, // pass in showPreviewModal as a prop to trigger rerender
+  hiveState: hiveStateProp, // renamed prop to distinguish it from hook state
+}) => {
+  const hiveRef = useRef();
+  const { hiveState: hiveStateHook, isHiveReady } = useHive(); // renamed state to distinguish it from prop
+  const hiveState = hiveStateProp || hiveStateHook; // Use prop if available, otherwise use state from hook
   const { simulationId } = useParams();
+  const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
 
   useEffect(() => {
-    d3.select("#floor-plan").remove();
-    const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
-    console.log(csvUrl)
-    let svgContainer = d3.select("#hive");
-    d3.xml(floorPlan).then((data) => {
-      if (
-        svgContainer.node() !== null &&
-        !svgContainer.node().hasChildNodes()
-      ) {
-        svgContainer.node().append(data.documentElement);
-        new HexagonComponent(
-          svgContainer.select("#floor-plan"),
-          csvUrl,
-          false,
-          state.participants,
-          markers[state.phase[0]].timestamp,
-          markers[state.phase[1]].timestamp
-        );
-      }
-    });
-  }, [state, markers]);
-
-  useEffect(() => {
-    HiveAPI.phases(simulationId).then((res) => {
-      if (res.status === 200) {
-        // const cleanedPhases = cleanRawPhases(phases);
-        setMarkers(res.data);
-      }
-    });
-  }, []);
+    try {
+      d3.select("#floor-plan").remove();
+      const svgContainer = d3.select(hiveRef.current);
+      d3.xml(floorPlan).then((data) => {
+        if (
+          isHiveReady &&
+          svgContainer.node() !== null &&
+          !svgContainer.node().hasChildNodes()
+        ) {
+          svgContainer.node().append(data.documentElement);
+          new HexagonComponent(
+            svgContainer.select("#floor-plan"),
+            csvUrl,
+            false,
+            hiveState.participants,
+            timeRange[0],
+            timeRange[1]
+          );
+        }
+      });
+    } catch (err) {}
+  }, [csvUrl, hiveState, isHiveReady, timeRange, showModal]);
 
   return (
     <Fragment>
-      {markers.length === 0 ? (
-        <EmptyPlaceholder />
+      {!isHiveReady ? (
+        <SimpleErrorText isError={true} message={"Tool in preparation."} />
       ) : (
         <div
           style={{
@@ -60,11 +59,17 @@ const HiveView = () => {
             justifyContent: "center",
           }}
         >
-          <div style={{ width: "550px", height: "82vh", maxHeight: "1080px" }}>
-            <div id="hive" style={{ height: "90%", marginBottom: "0.5em" }} />
-            <HivePrimaryControlView />
+          <div
+            style={{
+              width: width,
+              height: height,
+              maxHeight: "1080px",
+              borderRadius: "1em",
+            }}
+          >
+            <div ref={hiveRef} style={{ height: "99%" }} />
           </div>
-          <HiveSlider />
+          {showFilter && <HivePrimaryControlView />}
         </div>
       )}
     </Fragment>

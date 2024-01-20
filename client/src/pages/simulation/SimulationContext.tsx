@@ -1,11 +1,10 @@
 import * as React from "react";
 import * as Observation from "../../projects/observation/index";
-import * as Hive from "../../projects/hive/index";
-import * as Video from "../../projects/video/index";
-import * as Debrief from "../../projects/debriefing/index";
-import * as Visualisation from "../../projects/visualisation/index";
+import * as Debrief from "../../projects/debriefing-projection/index";
 
-type SimProviderProps = { children: React.ReactNode };
+type SimProviderProps = {
+  children: React.ReactNode;
+};
 
 const SimContext = React.createContext<
   { tool: String; setTool: Function } | undefined
@@ -27,21 +26,17 @@ const availableTools: any = {
     mainView: <Debrief.DebriefView />,
     primaryControlView: <Debrief.DebriefPrimaryControlView />,
   },
-  // NOT IN USED ATM
-  // video: {
-  //   label: "Video Player",
-  //   mainView: <Video.VideoView />,
+  // visualisation: {
+  //   label: "Visualisations",
+  //   mainView: <Visualisation.VisualisationView />,
+  //   primaryControlView: <Visualisation.VisualisationControlView />,
+  //   secondaryControlView: <Visualisation.HiveLegendView />,
   // },
-  visualisation: {
-    label: "Visualisations",
-    mainView: <Visualisation.VisualisationView />,
-    primaryControlView: <Visualisation.VisualisationControlView />,
-    secondaryControlView: <Visualisation.HiveLegendView />,
-  },
 };
 
 function SimProvider({ children }: SimProviderProps) {
   const [tool, setTool] = React.useState(DEFAULT_VIEW);
+
   const value = { tool, setTool };
   return <SimContext.Provider value={value}>{children}</SimContext.Provider>;
 }

@@ -1,18 +1,14 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const DOMAIN_NAME = "http://localhost";
-const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.78.132";
+const DOMAIN_NAME = process.env.REACT_APP_EUREKA_IP; // This current server
+const DOMAIN_NAME_SECOND_DEVICE = process.env.REACT_APP_AUDIO_IP; // audio laptop server
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,
   pos: `${DOMAIN_NAME}:7201`,
   audio: `${DOMAIN_NAME_SECOND_DEVICE}:7501`,
 };
-
-const visualisationsApi = axios.create({
-  baseURL: `${DOMAIN_NAME}:5050`,
-});
 
 let eurekaAxiosStrategy = []; // each object = {axios, key}
 Object.keys(portStrategy).forEach((k) => {
@@ -50,9 +46,10 @@ Object.keys(portStrategy).forEach((k) => {
       }
       message += `${k} service error:`;
 
-      toast.error(`${message} (${error})`);
+      // toast.error(`${message} (${error})`);
+      console.error(`${message} (${error})`);
       // Do something with response error
-      return Promise.reject(error);
+      // return Promise.reject(error);
     }
   );
   eurekaAxiosStrategy.push({ axios: api, key: k });
@@ -95,15 +92,10 @@ const stopDebriefAudio = () => {
   return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
 };
 
-const processAllVisualisations = (simulationId) => {
-  return visualisationsApi.get(`/audio-pos/${simulationId}`);
-};
-
 export {
   startBaselineAll,
   startAll,
   stopAll,
   startDebriefAudio,
   stopDebriefAudio,
-  processAllVisualisations,
 };

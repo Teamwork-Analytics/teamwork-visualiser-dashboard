@@ -7,11 +7,11 @@ const PrimaryControlLayout = ({ children }) => {
   const styles = {
     outer: {
       width: "100%",
-      height: "25vh",
+      height: "40vh",
       backgroundColor: "#fafafa", //#1a1a1a
       borderRadius: "15px",
       overflowY: "scroll",
-      padding: "1em",
+      padding: "0.5em",
       margin: "5px auto",
     },
   };

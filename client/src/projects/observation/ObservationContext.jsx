@@ -5,9 +5,10 @@
 
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
-import * as React from "react";
+import React, { useState } from "react";
 import { sortNotesDescending } from ".";
 import ObservationAPI from "../../services/api/observation";
+import SimulationSessionAPI from "../../services/api/simulations";
 
 const ObservationContext = React.createContext();
 
@@ -16,18 +17,77 @@ function ObservationProvider({ simulationId, children }) {
   const [observation, setObservation] = React.useState({
     synchronisations: [],
   });
+  const [obsStartTime, setObsStartTime] = useState();
+  const [obsEndTime, setObsEndTime] = useState();
 
   React.useEffect(() => {
     ObservationAPI.single(simulationId).then((res) => {
       if (res.status === 200) {
         setObservation(res.data);
+        setObsStartTime(res.data.startTime);
+        setObsEndTime(res.data.stopTime);
         const phases = sortNotesDescending(res.data);
         setNotes(phases);
       }
     });
-  }, []);
+  }, [simulationId]);
 
-  const value = { notes, setNotes, observation, setObservation };
+  const toggleRefreshSim = () => {
+    ObservationAPI.single(simulationId).then((res) => {
+      if (res.status === 200) {
+        setObservation(res.data);
+        setObsStartTime(res.data.startTime);
+        setObsEndTime(res.data.stopTime);
+        const phases = sortNotesDescending(res.data);
+        setNotes(phases);
+      }
+    });
+  };
+
+  const [isDataReady, setIsDataReady] = React.useState(false);
+  React.useEffect(() => {
+    SimulationSessionAPI.isReady(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setIsDataReady(true);
+        }
+      })
+      .catch((e) => {});
+  }, [simulationId]);
+
+  React.useEffect(() => {
+    if (!isDataReady) {
+      // Fetch data immediately when component mounts
+      function fetchData() {
+        SimulationSessionAPI.isReady(simulationId)
+          .then((res) => {
+            if (res.status === 200) {
+              // const cleanedPhases = cleanRawPhases(phases);
+              setIsDataReady(true);
+            }
+          })
+          .catch((e) => {});
+      }
+
+      // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
+      const intervalId = setInterval(fetchData, 10000);
+
+      // Clean up the interval when the component is unmounted or when data is fetched
+      return () => clearInterval(intervalId);
+    }
+  }, [isDataReady, simulationId]);
+
+  const value = {
+    notes,
+    setNotes,
+    observation,
+    setObservation,
+    obsStartTime,
+    obsEndTime,
+    isDataReady,
+    toggleRefreshSim,
+  };
   return (
     <ObservationContext.Provider value={value}>
       {children}

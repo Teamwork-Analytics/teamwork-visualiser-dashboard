@@ -9,21 +9,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const usingRp = true;
-const localServerUrl = usingRp ? "/api" : "http://localhost:5001";
+const localServerUrl = usingRp ? "/api" : "http://localhost:5002";
 const api = axios.create({
   baseURL: localServerUrl,
   withCredentials: false,
 });
-
-// api.interceptors.request.use(
-//   (config) => {
-//     return {
-//       ...config,
-//       // headers: {}
-//     };
-//   },
-//   (error) => Promise.reject(error)
-// );
 
 // Add a response interceptor
 api.interceptors.response.use(
@@ -39,7 +29,8 @@ api.interceptors.response.use(
     if (error.response.data.message) {
       message = error.response.data.message;
     }
-    toast.error(`${message} (${error.response.status})`);
+    // toast.error(`${message} (${error.response.status})`);
+    console.error(`${message} (${error.response.status})`)
     console.error(error.response.data.errorMessage);
     // Do something with response error
     return Promise.reject(error);

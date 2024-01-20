@@ -1,13 +1,25 @@
+/**
+ * @file VisualisationList
+ *
+ * @description This module exports configurations lists for visualisation components, including their styles and info.
+ * Each configuration is an object that includes the following properties:
+ * - eventKey: A unique key to identify the visualisation.
+ * - title: The display title of the visualisation.
+ * - component: A function that returns the visualisation component.
+ * - info: A function that returns a React component providing additional information about the visualisation.
+ * The exported lists include topTabVisualisations, bottomLeftVisualisations, bottomRightVisualisations, and bottomVisualisations.
+ */
+
+import React from "react";
 import TimelineVisualisation from "./TimelineVisualisation";
 import VideoVisualisation from "./VideoVisualisation";
-import { Image } from "react-bootstrap";
 
-// placeholder images
-import priorBar from "../../../images/vis/prioritisation-bar.png";
-import wardMap from "../../../images/vis/ward-map.png";
-import comBehaviour from "../../../images/vis/com-behaviour.png";
-import comNetwork from "../../../images/vis/communication-network.png";
+// visualisations
+import { ENANetworkView, SocialNetworkView } from "../../communication";
+import { HiveView } from "../../hive";
+import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
 
+// Styles for different visualisation components
 const visStyles = {
   imageContainer: {
     width: "auto",
@@ -27,8 +39,8 @@ const visStyles = {
   inactiveTab: { color: "gray", fontSize: "14px", padding: "5px" },
 };
 
-// Top tab visualisation list
-const topTabVisualisations = [
+// Configuration for top tab visualisations
+const topTabVisualisations = (timeRange) => [
   {
     eventKey: "timeline",
     title: "Timeline",
@@ -52,6 +64,7 @@ const topTabVisualisations = [
         style={{ ...style, ...visStyles.imageContainer, minHeight: "30vh" }}
         isVideoTabActive={isVideoTabActive}
         fluid
+        timeRange={timeRange}
       />
     ),
     tabAttrs: (topActiveTab) => ({
@@ -62,44 +75,88 @@ const topTabVisualisations = [
   },
 ];
 
-// Bottom left visualisation list
-const bottomLeftVisualisations = [
+// Configuration for bottom visualisations -> for carousel
+const bottomVisualisations = (timeRange, showPreviewModal) => [
   {
     eventKey: "priorBar",
     title: "Prioritisation Bar",
     component: () => (
-      <Image src={priorBar} style={visStyles.imageContainer} fluid />
+      <TeamworkBarchart
+        style={visStyles.imageContainer}
+        timeRange={timeRange}
+        width="350px"
+        height="250px"
+        fluid
+        yLabelsFontSize={11}
+        customAspectRatio={1.5}
+      />
     ),
-  },
-];
-
-// Bottom right visualisation list
-const bottomRightVisualisations = [
-  {
-    eventKey: "commNetwork",
-    title: "Communication Network",
-    component: () => (
-      <Image src={comNetwork} style={visStyles.imageContainer} fluid />
-    ),
-  },
-  {
-    eventKey: "commBehaviour",
-    title: "Communication Behaviour",
-    component: () => (
-      <Image src={comBehaviour} style={visStyles.imageContainer} fluid />
+    info: () => (
+      <div>
+        Each bar represents the percentage of time that the team spent on a
+        specific task during that time frame.
+      </div>
     ),
   },
   {
     eventKey: "wardMap",
     title: "Ward Map",
     component: () => (
-      <Image src={wardMap} style={visStyles.imageContainer} fluid />
+      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
+    ),
+    info: () => (
+      <div>
+        Each hexagon represents a position of a student. The colour-filled
+        hexagon represents the student talking in that position.
+      </div>
+    ),
+  },
+  {
+    eventKey: "commNetwork",
+    title: "Communication Network",
+    component: () => <SocialNetworkView timeRange={timeRange} />,
+    info: () => (
+      <div>
+        The size of the circle represents the time a student spent talking. The
+        arrow thickness represents the talking time a student spent with another
+        student.
+      </div>
+    ),
+  },
+  {
+    eventKey: "commBehaviour",
+    title: "Communication Behaviour",
+    component: () => <ENANetworkView timeRange={timeRange} />,
+    info: () => (
+      <div>
+        <h5>Call-out</h5>
+        <ul>
+          <li>Her blood pressure's really low and then her oxygen.</li>
+          <li>Everything seems intact.</li>
+          <li>He's got a lot of pain as well.</li>
+        </ul>
+        <h5>Task allocation</h5>
+        <ul>
+          <li>I can do Imani, I can do the obs and the antibiotic.</li>
+          <li>Can you count respirate, please?</li>
+        </ul>
+        <h5>Questioning & Acknowledging</h5>
+        <ul>
+          <li>(Questioning): Do you remember how many grams we need?</li>
+          <li>(Responding): It's one gram.</li>
+        </ul>
+        <h5>Escalation</h5>
+        <ul>
+          <li>Should we just call both of them so that we get more help?</li>
+          <li>Just going to call a MET call on Ruth.</li>
+        </ul>
+        <h5>Handover</h5>
+        <ul>
+          <li>Number two, Bailey. The theatre has just picked…</li>
+        </ul>
+      </div>
     ),
   },
 ];
 
-export {
-  topTabVisualisations,
-  bottomLeftVisualisations,
-  bottomRightVisualisations,
-};
+export { topTabVisualisations, bottomVisualisations };

@@ -6,9 +6,11 @@ import ObservationAPI from "../../services/api/observation";
 import FullResetButton from "./FullResetButton";
 import { useObservation } from "./ObservationContext";
 
+
 const ObservationSecondaryControlView = () => {
   const { observation, setObservation } = useObservation();
   const [devices, setDevices] = useState([]);
+
 
   useEffect(() => {
     setDevices(observation.synchronisations);
@@ -37,8 +39,11 @@ const ObservationSecondaryControlView = () => {
     setDevices(tempDevice);
   };
 
+ 
   return (
     <div>
+     
+
       <h1>Synchronisation</h1>
       <hr />
 
@@ -78,7 +83,6 @@ const ObservationSecondaryControlView = () => {
         )}
       </Container>
       <FullResetButton />
-
     </div>
   );
 };

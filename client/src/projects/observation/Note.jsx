@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import toast from "react-hot-toast";
+import React, { useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
 import { sortNotesDescending } from ".";
-import ObservationAPI from "../../services/api/observation";
 import { useObservation } from "./ObservationContext";
+import DateTimePicker from "react-datetime-picker";
+import "./DateTimePicker.css";
+import NursePerformBadges from "./visualisationComponents/NursePerformBadges";
+import { updateSinglePhase } from "../../utils/observationUtils";
 
 const Note = ({ initialValue, data }) => {
   const { observation, setNotes } = useObservation();
@@ -11,99 +13,59 @@ const Note = ({ initialValue, data }) => {
 
   const [value, setValue] = useState(initialValue);
 
-  const saveNote = () => {
-    const updateInfo = {
-      noteId: data._id,
-      message: value,
-      timeString: new Date(time).toISOString(),
-    };
+  const saveNote = async () => {
+    const updatedData = await updateSinglePhase(
+      observation._id,
+      data._id,
+      value,
+      new Date(time)
+    );
 
-    ObservationAPI.updateNote(observation._id, updateInfo).then((res) => {
-      if (res.status === 200) {
-        toast.success("Note has been updated!");
-        // refresh notes on the page
-        const phases = sortNotesDescending(res.data);
-        setNotes(phases);
-      }
-    });
-  };
-
-  const deleteNote = (noteId) => {
-    // const newArray = notes.filter((d) => d._id !== noteId);
-    ObservationAPI.deleteNote(observation._id, noteId).then((res) => {
-      if (res.status === 200) {
-        const phases = sortNotesDescending(res.data);
-        setNotes(phases);
-      }
-    });
-  };
-
-  const dateFormatter = (newTime) => {
-    const date = new Date();
-    var tzo = -date.getTimezoneOffset(),
-      dif = tzo >= 0 ? "+" : "-",
-      pad = function (num) {
-        return (num < 10 ? "0" : "") + num;
-      };
-    const formattedTime =
-      date.getFullYear() +
-      "-" +
-      pad(date.getMonth() + 1) +
-      "-" +
-      pad(date.getDate()) +
-      "T" +
-      newTime +
-      dif +
-      pad(Math.floor(Math.abs(tzo) / 60)) +
-      ":" +
-      pad(Math.abs(tzo) % 60);
-
-    setTime(new Date(formattedTime));
+    // If updatedData is truthy (i.e., the update was successful and data was returned)
+    if (updatedData) {
+      const phases = sortNotesDescending(updatedData);
+      setNotes(phases);
+    }
   };
 
   return (
     <Form>
       <Form.Group as={Row} className="mb-3">
-        <Col sm="4">
-          <Form.Control
-            disabled={true} // disabled as time form is not working on ipad
-            // type={"time"} // time form is not working on ipad
-            // value={time.toLocaleTimeString() + `.${time.getMilliseconds()}`}
-            // step="0.01"
-            // onChange={(e) => {
-            //   dateFormatter(e.target.value);
-            // }}
-            // onBlur={() => saveNote()}
-            type={"text"}
-            style={{ color: "black" }}
-            value={time.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: true,
-            })}
-          />
-        </Col>
+        <Row>
+          <Col>
+            <DateTimePicker
+              maxDetail="second" // allowed to change second
+              disableCalendar={true} // not allowed to change date
+              disableClock={true} // not showing clock (too complex)
+              clearIcon={null} // not allowed to clear value
+              maxDate={new Date()} // no future date allowed
+              onChange={(value) => {
+                setTime(value);
+              }}
+              value={time}
+              onBlur={() => saveNote()}
+            />
+          </Col>
+        </Row>
 
-        <Col sm="8">
-          <Form.Control
-            placeholder={data.message}
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-            onBlur={() => saveNote()}
+        <Row style={{ marginTop: "5px" }}>
+          <Col>
+            <Form.Control
+              placeholder={data.message}
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
+              autofocus
+              onBlur={() => saveNote()}
+              autoFocus // default changing note message
+            />
+          </Col>
+        </Row>
+        <Row style={{ marginTop: "5px" }}>
+          <NursePerformBadges
+            noteId={data._id}
+            sortNotesDescending={sortNotesDescending}
           />
-        </Col>
-        {/* <Col sm="2">
-          <Button
-            id={data._id}
-            variant="danger"
-            onClick={(e) => {
-              deleteNote(e.target.id);
-            }}
-          >
-            Delete
-          </Button>
-        </Col> */}
+        </Row>
       </Form.Group>
     </Form>
   );

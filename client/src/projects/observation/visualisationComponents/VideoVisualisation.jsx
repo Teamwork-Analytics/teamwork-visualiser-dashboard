@@ -1,64 +1,80 @@
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
-import { useTimeline } from "./TimelineContext";
-import videoFile from "./sim-video.mp4";
+import { useParams } from "react-router-dom";
 
-const VideoPlayer = ({ isVideoTabActive }) => {
-  const { range } = useTimeline();
+// Component responsible for visualizing the video
+const VideoVisualisation = ({ isVideoTabActive, timeRange }) => {
+  // Extract the simulation ID from the URL parameters
+  const { simulationId } = useParams();
+
+  // Construct the URL for the video
+  const videoUrl = `${process.env.REACT_APP_EXPRESS_IP}:${process.env.REACT_APP_EXPRESS_PORT}/data/${simulationId}/result/transcoded_output.mp4`;
+
+  // The range in which the video should play
+  const range = timeRange;
+
+  // The start and end time for video playback in seconds
+  const startTime = range[0];
+  const endTime = range[1];
+
+  // Reference to the ReactPlayer component
   const playerRef = useRef(null);
-  const startTime = range[0]; // start time in seconds
-  const endTime = range[1]; // end time in seconds
-  const [isPlaying, setIsPlaying] = useState(false);
 
+  // State variables for keeping track of the video playback and initialization
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  // Function to handle video progress
   const handleProgress = ({ playedSeconds }) => {
-    // if the current played seconds is more than end time
-    // pause the video
+    // Pause the video once the played seconds exceed the end time
     if (playedSeconds > endTime) {
       setIsPlaying(false);
     }
   };
 
-  // seek to startime before play
+  // Function to handle video readiness
   const handleReady = () => {
-    playerRef.current.seekTo(startTime, "seconds");
+    // Only seek to start time on the first ready event ---- or will keep loading
+    if (!hasStarted) {
+      playerRef.current.seekTo(startTime, "seconds");
+      setHasStarted(true); // Indicate that we have started the video
+    }
   };
 
-  // only play when video tab is active
+  // Effect to handle tab activity and video initialization
   useEffect(() => {
     setIsPlaying(isVideoTabActive);
-    if (isVideoTabActive) {
-      playerRef.current.seekTo(startTime, "seconds");
-    }
-  }, [isVideoTabActive, startTime]);
+  }, [isVideoTabActive]); // Add dependencies for effect
+
+  // Effect hook to seek video
+  useEffect(() => {
+    playerRef.current.seekTo(startTime, "seconds");
+  }, [startTime]);
 
   return (
     <div
       style={{
         position: "relative",
-        paddingBottom: "30%", // adjust based on ratio
-        overflow: "hidden", // hide top bottom black area
+        paddingBottom: "30%",
+        overflow: "hidden",
         width: "100%",
       }}
     >
       <ReactPlayer
-        key={Date.now()} // force re-render
         ref={playerRef}
-        url="https://youtu.be/vLI-6sLZTbI"
-        // url={videoFile} // TODO: not working, inspection needed
-        playing={isPlaying} // use isPlaying state
+        url={videoUrl}
+        playing={isPlaying}
         onProgress={handleProgress}
         onReady={handleReady}
         width="100%"
         height="150%"
-        style={{
-          position: "absolute",
-          top: "-25%", // hard-coded to hide video top black area
-          left: "0",
-        }}
+        style={{ position: "absolute", top: "-25%", left: "0" }}
         playbackRate={1}
+        controls={true}
+        playsInline={true} // Needed for compatibility with iOS and iPadOS
       />
     </div>
   );
 };
 
-export default VideoPlayer;
+export default VideoVisualisation;

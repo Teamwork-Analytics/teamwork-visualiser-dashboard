@@ -1,5 +1,6 @@
-import VisualisationView from "./VisualisationView";
-import VisualisationControlView from "./VisualisationControlView";
-import HiveLegendView from "../hive/HivePrimaryControlView";
+// DEPRECATED!
 
-export { VisualisationView, VisualisationControlView, HiveLegendView };
+import VisualisationControlView from "./VisualisationControlView";
+import HiveLegendView from "../hive/HiveLegendView";
+
+export { VisualisationControlView, HiveLegendView };

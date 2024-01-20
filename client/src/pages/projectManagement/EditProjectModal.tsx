@@ -61,7 +61,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Save Changes
         </Button>
-        <Button variant="secondary" onClick={handleClose} className="ml-2">
+        <Button variant="dark" onClick={handleClose} className="ml-2">
           Cancel
         </Button>
         <Link to={`/edit-tagging/${projectId}`}>

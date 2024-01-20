@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Hive from "../hive";
 
 import { useParams } from "react-router-dom";
@@ -26,41 +26,41 @@ const VisualisationView = () => {
       height: "90vh",
     },
   };
-  const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
+  // const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
 
-  const visualisations = [
-    {
-      id: "teamwork-barchart",
-      label: "Teamwork",
-      view: (
-        <div style={styles.middle}>
-          <Image
-            width={"850px"}
-            src={`${csvUrl}/teamwork-barchart`}
-            onError={() => setHasVisualisation(false)}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "hive-button",
-      label: "Location and Speaking",
-      view: <Hive.HiveView />,
-    },
-    {
-      id: "audio-socnet",
-      label: "Speaking Interaction",
-      view: (
-        <div style={styles.middle}>
-          <Image
-            width={"650px"}
-            src={`${csvUrl}/audio-socnet`}
-            onError={() => setHasVisualisation(false)}
-          />{" "}
-        </div>
-      ),
-    },
-  ];
+  // const visualisations = [
+  //   {
+  //     id: "teamwork-barchart",
+  //     label: "Teamwork",
+  //     view: (
+  //       <div style={styles.middle}>
+  //         <Image
+  //           width={"850px"}
+  //           src={`${csvUrl}/teamwork-barchart`}
+  //           onError={() => setHasVisualisation(false)}
+  //         />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     id: "hive-button",
+  //     label: "Location and Speaking",
+  //     view: <Hive.HiveView />,
+  //   },
+  //   {
+  //     id: "audio-socnet",
+  //     label: "Speaking Interaction",
+  //     view: (
+  //       <div style={styles.middle}>
+  //         <Image
+  //           width={"650px"}
+  //           src={`${csvUrl}/audio-socnet`}
+  //           onError={() => setHasVisualisation(false)}
+  //         />{" "}
+  //       </div>
+  //     ),
+  //   },
+  // ];
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
@@ -68,9 +68,14 @@ const VisualisationView = () => {
 
   return (
     <div style={styles.outer}>
-      <label style={{marginRight:"20px"}}> <Clock format={"h:mm:ss a"} ticking={true} timezone={"Australia/Melbourne"} />
-
-        </label>        
+      <label style={{ marginRight: "20px" }}>
+        {" "}
+        <Clock
+          format={"h:mm:ss a"}
+          ticking={true}
+          timezone={"Australia/Melbourne"}
+        />
+      </label>
       {/* <h3>Session {simulationId}</h3> */}
       {!hasVisualisation ? (
         <div

@@ -1,12 +1,12 @@
-import { socket } from "../socket";
+import { taggingSocket } from "../socket";
 
 export function ConnectionManager() {
   function connect() {
-    socket.connect();
+    taggingSocket.connect();
   }
 
   function disconnect() {
-    socket.disconnect();
+    taggingSocket.disconnect();
   }
 
   return (

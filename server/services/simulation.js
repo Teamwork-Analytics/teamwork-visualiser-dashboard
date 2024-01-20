@@ -1,4 +1,5 @@
 const Simulation = require("../models/simulation");
+const privateNoteService = require("./privateNote");
 
 const single = async (id) => {
   return await Simulation.findById(id)
@@ -7,9 +8,19 @@ const single = async (id) => {
 };
 
 const singleBySimulationId = async (simulationId) => {
-  return await Simulation.findOne({ simulationId: simulationId }).select(
-    "_id simulationId name description project observation"
-  );
+  let simulation = await Simulation.findOne({ simulationId: simulationId })
+    .select("_id simulationId name description project observation privateNote")
+    .populate("project", "name")
+    .populate("privateNote");
+
+  // create another private note when not found
+  if (!simulation.privateNote) {
+    const privateNote = await privateNoteService.create();
+    simulation.privateNote = privateNote;
+    await simulation.save();
+  }
+
+  return simulation;
 };
 
 const create = async (data) => await Simulation.create(data);

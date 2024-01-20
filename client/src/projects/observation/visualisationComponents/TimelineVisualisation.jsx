@@ -1,9 +1,23 @@
-import { useState, useEffect } from "react";
 import { Slider } from "@mui/material";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  ButtonGroup,
+} from "react-bootstrap";
 import { useTimeline } from "./TimelineContext";
-import { BsCircleFill, BsCircle } from "react-icons/bs";
+import {
+  BsCircleFill,
+  BsCircle,
+  BsArrowClockwise,
+  BsArrowCounterclockwise,
+  BsStarFill,
+} from "react-icons/bs";
 import { manualLabels } from "../index.js";
+import { COLOURS } from "../../../config/colours.js";
+import { useTracking } from "react-tracking";
 
 // styling
 const timelineStyle = {
@@ -22,21 +36,15 @@ const timelineStyle = {
     marginTop: "3px",
     marginBottom: "3px",
   },
-  nurseTimelineSx: {
-    "& .MuiSlider-thumb": {
-      width: 3, // Thin width
-      height: 35, // Height covering all track
-      borderRadius: 0, // Make it rectangle
-      backgroundColor: "#1976d2", // from MUI
-    },
-    "& .MuiSlider-mark": {
-      backgroundColor: "#bfbfbf",
-      height: 25,
-    },
-  },
   keyEventTimelineSx: {
     "& .MuiSlider-mark": {
+      backgroundColor: COLOURS.ACTION_ORANGE,
       height: 15,
+      width: "1.5px",
+      "&.MuiSlider-markActive": {
+        opacity: 1,
+        backgroundColor: COLOURS.ACTION_ORANGE,
+      },
     },
     "& .MuiSlider-markLabel": {
       top: "-5px",
@@ -60,39 +68,38 @@ const isKeyEvent = (label) =>
   manualLabels.phases.some((item) => item.label === label);
 
 const CustomMark = ({ mark }) => {
-  const markStyle = isKeyEvent(mark.label)
-    ? { fontWeight: "bold", fontSize: "1.3em" }
-    : {};
-
-  const markHeight = isKeyEvent(mark.label) ? "50px" : "10px";
-  const markTop = isKeyEvent(mark.label) ? "-50px" : "-10px";
+  const markStyle = { fontWeight: "bold", fontSize: "1.3em" };
 
   return (
     <>
-      {isKeyEvent(mark.label) ? (
+      {mark.favourite || isKeyEvent(mark.label) ? (
         <div style={{ position: "relative", paddingBottom: "-200px" }}>
-          <span
+          <div
             style={{
               position: "absolute",
-              top: markTop, // top position based on whether it's a key event
-              marginLeft: "-30px",
-              maxWidth: "40px",
-              wordWrap: "break-word", // enable word wrapping
-              overflowWrap: "break-word", // break long strings of text
+              top: "-40px",
+              minWidth: "80px",
+              maxWidth: "120px",
+              transform: `translateX(-50%) translateY(-65%)`,
               ...markStyle,
             }}
           >
-            {mark.label}
-          </span>
+            <span>{formatDuration(mark.value)}</span>
+            <br />
+            {mark.favourite ? (
+              <BsStarFill color={COLOURS.SECONDARY_NURSE_2} />
+            ) : (
+              <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
+            )}
+          </div>
           <span
-            // mark heights depend on whether it's a key event
             style={{
               display: "block",
               width: "2px",
               position: "absolute",
-              bottom: 0,
-              height: markHeight,
-              backgroundColor: "#1976d2",
+              bottom: -8,
+              height: "50px",
+              backgroundColor: COLOURS.KEY_EVENT_PURPLE,
               marginBottom: "-20px",
               marginLeft: "-1px",
             }}
@@ -117,6 +124,9 @@ const reverseFormatDuration = (formattedDuration) => {
 };
 
 const FilteredMarksComponent = ({ marks, range, setRange }) => {
+  const { Track, trackEvent } = useTracking({ page: "Debriefing" });
+
+  console.log(marks);
   // Filter marks within the range
   const filteredMarks = marks.filter((mark) => {
     return mark.value >= range[0] && mark.value <= range[1];
@@ -132,61 +142,101 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
 
   // Render the formatted marks
   return (
-    <Card
-      style={{
-        height: "30vh",
-        overflowY: "scroll",
-        fontSize: "12px",
-        marginTop: "-30px",
-      }}
-    >
-      <Card.Body>
-        {formattedMarks.map((mark, index) => (
-          <Row
-            style={{ marginLeft: "0px", marginRight: "0px" }}
-            key={index}
-            onClick={() => {
-              setRange([
-                reverseFormatDuration(mark.value) - 10,
-                reverseFormatDuration(mark.value) + 10,
-              ]);
-            }}
-          >
-            <Col
-              xs="auto"
+    <Track>
+      <Card
+        style={{
+          height: "30vh",
+          overflowY: "scroll",
+          fontSize: "12px",
+          marginTop: "-30px",
+          backgroundColor: "#f0f0f0",
+          cursor: "pointer",
+        }}
+      >
+        <Card.Body>
+          {formattedMarks.map((mark, index) => (
+            <Row
               style={{
-                margin: "auto",
-                paddingLeft: "5px",
-                paddingRight: "5px",
+                marginLeft: "0px",
+                marginRight: "0px",
+                marginTop: "4px",
+                marginBottom: "4px",
+                backgroundColor: "white",
+                borderRadius: "0.5em",
+                padding: "0.5em 0",
+                boxShadow:
+                  "0px 4px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12)",
+              }}
+              key={index}
+              onClick={() => {
+                trackEvent({
+                  action: "click",
+                  element: "clickOnLabelInTimelineCard",
+                  data: mark.label,
+                });
+                setRange([
+                  reverseFormatDuration(mark.value) - 10,
+                  reverseFormatDuration(mark.value) + 10,
+                ]);
               }}
             >
-              {isKeyEvent(mark.label) ? (
-                <BsCircleFill size="0.5em" color="#9c27b0" />
-              ) : (
-                <BsCircle size="0.5em" color="#ed6c02" />
-              )}
-            </Col>
-            <Col
-              style={{
-                margin: "auto",
-                paddingLeft: "5px",
-                paddingRight: "5px",
-                textAlign: "left",
-              }}
-            >
-              {mark.value} - {mark.label}
-            </Col>
-          </Row>
-        ))}
-      </Card.Body>
-    </Card>
+              <Col
+                xs="auto"
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}
+              >
+                {mark.favourite ? (
+                  <BsStarFill size="0.7em" color={COLOURS.SECONDARY_NURSE_2} />
+                ) : isKeyEvent(mark.label) ? (
+                  <BsCircleFill size="0.5em" color={COLOURS.KEY_EVENT_PURPLE} />
+                ) : (
+                  <BsCircle size="0.5em" color={COLOURS.ACTION_ORANGE} />
+                )}
+              </Col>
+              <Col
+                style={{
+                  margin: "auto",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                  textAlign: "left",
+                }}
+              >
+                {mark.value} - {mark.label}
+                {mark.performers.length > 0
+                  ? " - " +
+                    mark.performers
+                      .map((performer) => performer.replace(/\s+/g, ""))
+                      .join(", ")
+                  : ""}
+              </Col>
+            </Row>
+          ))}
+        </Card.Body>
+      </Card>
+    </Track>
   );
 };
 
 const TimelineVisualisation = () => {
+  const { Track, trackEvent } = useTracking({ page: "Debriefing" });
   // timeline range and playhead
-  const { range, setRange, setPlayHeadPosition, simDuration, timelineTags } =
-    useTimeline();
+  const {
+    range,
+    setRange,
+    setPlayHeadPosition,
+    simDuration,
+    timelineTags,
+    index,
+    lastIndex,
+    undoTimeline,
+    redoTimeline,
+  } = useTimeline();
+
+  const canUndo = index > 0;
+  const canRedo = index < lastIndex;
 
   // keep value only for non key event tags
   const filterTimelineTagsForKeyEvent = (tags) => {
@@ -194,46 +244,37 @@ const TimelineVisualisation = () => {
       if (isKeyEvent(tag.label)) {
         return tag; // return the tag as is if it is a key event
       } else {
-        return { value: tag.value }; // return the tag without the label if it is not a key event
+        return { value: tag.value, favourite: tag.favourite }; // return the tag without the label if it is not a key event
       }
     });
   };
   const modifiedTimelineTags = filterTimelineTagsForKeyEvent(timelineTags);
 
-  // play or pause state
-  const [isPlaying, setIsPlaying] = useState(false);
+  // generate phases list
+  const keyEvents = [
+    ...modifiedTimelineTags.filter((item) => item.label),
+  ].reverse();
 
-  const [intervalID, setInteralID] = useState(null);
+  const phases = [
+    {
+      name: "All",
+      start: 0,
+      end: simDuration,
+    },
+    ...keyEvents.map((event, index, self) => ({
+      name: event.label,
+      start: event.value,
+      end: self[index + 1]?.value || simDuration,
+    })),
+  ];
 
-  const handlePlayPause = () => {
-    if (!isPlaying) {
-      // Start playing
-      const id = setInterval(() => {
-        setPlayHeadPosition((current) => {
-          // Stop increasing if at max value
-          if (current >= range[1]) {
-            clearInterval(id);
-            return current;
-          }
-          return current + 1;
-        });
-      }, 1000);
-      setInteralID(id);
-    } else {
-      clearInterval(intervalID);
-    }
-    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+  // quick select phases
+  const handleSelectPhase = (phase) => {
+    setRange([phase.start, phase.end]);
   };
 
-  // clear interval when component unmounted
-  useEffect(() => {
-    return () => {
-      clearInterval(intervalID);
-    };
-  }, [intervalID]);
-
   return (
-    <>
+    <Track>
       <Container
         style={{
           marginTop: "15px",
@@ -268,7 +309,7 @@ const TimelineVisualisation = () => {
                 label: <CustomMark mark={mark} index={index} />,
               }))}
               sx={timelineStyle.keyEventTimelineSx}
-              style={{ marginTop: "120px" }}
+              style={{ marginTop: "100px" }}
             />
             <div
               style={{
@@ -285,6 +326,114 @@ const TimelineVisualisation = () => {
                 {formatDuration(simDuration)}
               </div>
             </div>
+            <div>
+              <Row
+                style={{
+                  marginLeft: "5px",
+                  marginRight: "5px",
+                  marginTop: "5px",
+                }}
+              >
+                <Col
+                  xs="auto"
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <p
+                    style={{
+                      color: "#6C757D",
+                      fontSize: "12px",
+                      margin: "auto",
+                    }}
+                  >
+                    Select:
+                  </p>
+                </Col>
+
+                <Col
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    textAlign: "left",
+                  }}
+                  xs="auto"
+                >
+                  <ButtonGroup aria-label="Phases">
+                    {phases.map((phase, index) => (
+                      <Button
+                        key={index}
+                        variant={
+                          phase.start === range[0] && phase.end === range[1]
+                            ? "dark"
+                            : "outline-dark"
+                        }
+                        onClick={() => {
+                          trackEvent({
+                            action: "click",
+                            element: "quickSelectPhaseButton",
+                            data: phase,
+                          });
+                          handleSelectPhase(phase);
+                        }}
+                        style={{
+                          fontSize: "12px",
+                        }}
+                      >
+                        {phase.name}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </Col>
+                <Col
+                  style={{
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                    textAlign: "left",
+                  }}
+                  xs="auto"
+                >
+                  <ButtonGroup aria-label="Phases">
+                    <Button
+                      variant="outline-dark"
+                      style={{
+                        fontSize: "12px",
+                      }}
+                      onClick={() => {
+                        trackEvent({
+                          action: "click",
+                          element: "undoTimelineSelectionButton",
+                        });
+                        undoTimeline();
+                      }}
+                      disabled={!canUndo}
+                    >
+                      Undo <BsArrowCounterclockwise size="1.2em" />
+                    </Button>
+                    <Button
+                      variant="outline-dark"
+                      style={{
+                        fontSize: "12px",
+                      }}
+                      onClick={() => {
+                        trackEvent({
+                          action: "click",
+                          element: "redoTimelineSelectionButton",
+                        });
+                        redoTimeline();
+                      }}
+                      disabled={!canRedo}
+                    >
+                      Redo <BsArrowClockwise size="1.2em" />
+                    </Button>
+                  </ButtonGroup>
+                </Col>
+              </Row>
+            </div>
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <FilteredMarksComponent
@@ -295,7 +444,7 @@ const TimelineVisualisation = () => {
           </Col>
         </Row>
       </Container>
-    </>
+    </Track>
   );
 };
 
