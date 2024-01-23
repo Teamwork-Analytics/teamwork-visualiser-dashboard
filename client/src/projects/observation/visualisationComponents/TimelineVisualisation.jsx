@@ -204,8 +204,7 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
                   textAlign: "left",
                 }}
               >
-                {mark.value} -{" "}
-                {isKeyEvent(mark.label) ? mark.label : "Redacted tag"}
+                {mark.value} - {mark.label}
               </Col>
             </Row>
           ))}
