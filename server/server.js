@@ -4,9 +4,11 @@ const path = require("path");
 const app = express();
 const logger = require("./config/log");
 
+require("dotenv").config({ path: "../.env" });
+
 const { errorHandler } = require("./middleware/error");
-require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
+const { USE_ABSOLUTE_PATH } = process.env;
 
 // connect to db
 require("./config/db")(app);
@@ -28,12 +30,16 @@ app.use(express.urlencoded({ extended: true }));
 // Routers
 app.use("/api", require("./routes/index"));
 
+
+
 let VISUALISATION_DIR;
-if (process.platform === "win32") {
-  VISUALISATION_DIR = "C:\\develop\\saved_data";
+if (USE_ABSOLUTE_PATH === "false") {
+  VISUALISATION_DIR = path.join(__dirname, "/saved_data/");
 } else {
-  VISUALISATION_DIR = path.join(__dirname, "/saved_data");
+  VISUALISATION_DIR = process.env.VISUALISATION_DIR;
 }
+
+console.log("VISUALISATION_DIR: ", VISUALISATION_DIR);
 
 app.use("/data", express.static(VISUALISATION_DIR)); // Serve static files from the "saved_data" directory
 

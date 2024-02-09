@@ -1,5 +1,4 @@
 // See https://socket.io/how-to/use-with-react for more
-
 import { io } from "socket.io-client";
 const IP_ADDRESS = process.env.REACT_APP_EXPRESS_IP;
 const PORT = process.env.REACT_APP_EXPRESS_PORT;
