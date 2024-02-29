@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "teamwork-analysis-dashboard",
+  "private_key_id": "587b4aa89883ef30510ee9262e434dbd0430282a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCf7zoiSCVfNLsA\niztFDng73VX7Vx3HHay2I5dqu4NJebkkkfh0k0r/rw+U4Ckm/QPsG9UGI+vpp2mw\nCeg7/ej7+qxpJlRRpy3dWjQME9JA9DbPIwr3IvTTrwff6sI5wU61wLpCrA/7MgTU\nnlhr/nWwG6u7OJWyCBwufkF8hQ6MQhTkzrWqfLoXwRj6wzxjiZABV8KOEdYo5Wi+\nf6ARbt2vvajlWifydOyWOOf6e8R1IsYBLtNK/emxReajYuhOcHjwuz4U71Ml9cyp\nX9F7kF3nWMJXrr9V9CDtoBuM2wf+a5I6jiAfqKf65iQBNJ2jBRz0KRIQx0gi/6U3\nJn2uoyLhAgMBAAECggEARe4UlavFB3lncMfwLPQ0NzzCnSjMwOTlQSiTytvdflGG\nVgqrP9Gtf9mcLwTKiZ0ky2aqAMrRGrOUPyA91olhh1fmbf2P7bnzEG+iBUvfaX4+\nvtg8Ma4rralBALPFo/o1f7wa1Q8l17hZq1vnHqU+8TdQIgcOUS9Bn0SePqNxJnsH\nRCkC5s3fa0GWQuXwelXKJOqdh7Eq15Qmj8RXGVgSvrsW/wR5PlVnpG/q3r1OhKJD\nutYWrZdcB8RSfH53uLbtVB7szrt2GKofo3bAdH2duesHkxqGgq/563tlwZpt8MFW\nujqKTeMJYwj5DTWfQnMR1th9EGs5jffo8O/UiMm43wKBgQDT09gz4OyhxpeEnmvx\njbyXQnoLwY4t/RyXeZ9IRSmIokvjrhbJiOD32RQVM5EYe8+9r6ICvYlhGVvajBrs\nTCtATIc4VjvulhVUw4g7OfLNa1qdMpU3ap6Eq7fXuy17rIYeJa4SACmptuybcmBk\nL05XOKbj4I4PKn6tJ17s+ejtfwKBgQDBSSK4KNoT2Voze9EvXI3tOCAgtI6IjWvK\nGbkRLN+94ehOKOguGJ1nVBnIcsAnaDdLZqF6a8ihRrC0NQowIGOau7ALm8bGqp0M\nITG5b2MAgP0nTRzpTJ9m4iO3diQ1s5IP1fPjQVjqUN8uw3gnYyy54NAR3oyHlxKy\nTv8dhurfnwKBgFGpPJMbZf4j4iulKzXvD0I8xXIcxyQhjNE0eNxSlWVwM9NtPKmr\nFBdYX26g95G5wWd9+vYVfY2qSgfhtUtdPdtG5WYpkGc1Arovuygh+eGJPmCVrIK1\nnrDExlXreehQpU+f9RBJccZUl7iBinl05z2mwGffHMTp+/Xi1KyE13AfAoGAH30/\nx8r4BGXTuTGB2fp1MOGE8m8YDY0ks29PZEnwRaopQ5qMgP4Hns7nyG1RetoSsBkP\nU7d9nzC6FxHREBgmwg2z16BQWQtwvIon5LMN6QYauC1q+WM/UO6krP31Vj5kHGpZ\n6ns59iqowaCc0aXponrKyy57rJdjN2OBUpkpaLcCgYBwxSfkUgKvVaQW9adkzcEB\n8mHEITChG6OxBMmClfG64lxbIFes+M8UNMIm4/6yVlenefieyAZy0cf4kZznzfg/\nnQvghL6h8jgbSqrfqO6aUx/7MzBjNw+nXnHTKxnXbg2vY5PJ0YNUCtVXuW2zvIic\n7nkobFl9eh0ouxVtT9ZP3g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-wnm31@teamwork-analysis-dashboard.iam.gserviceaccount.com",
+  "client_id": "115754939003459317685",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-wnm31%40teamwork-analysis-dashboard.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -26,7 +26,11 @@ function writeToCsv(filename, data) {
 // Function to handle received data
 function handleReceivedData(receivedData) {
   const filename = `${receivedData.type.toLowerCase()}-${receivedData.user.toLowerCase()}.csv`;
-  const filePath = path.join(__dirname, "data", filename); // Save files to a 'data' directory
+  const filePath = path.join(
+    "/Users/jiexiangfan/Documents/GitHub/teamwork-visualiser-dashboard/server/saved_data",
+    filename
+  ); // Absolute path of developer
+  // const filePath = path.join("C:\\develop\\saved_data\\", filename); // Absolute path for data collection
 
   // Prepare the data object for CSV
   const dataForCsv = {
