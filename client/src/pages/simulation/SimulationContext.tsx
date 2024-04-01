@@ -30,7 +30,7 @@ const availableTools: any = {
   classroomAnalytics: {
     label: "Classroom Analytics",
     mainView: <ClassroomAnalytics.ClassroomAnalyticsView />,
-    // primaryControlView: <Debrief.DebriefPrimaryControlView />,
+    primaryControlView: <Debrief.DebriefPrimaryControlView />,
   },
   // visualisation: {
   //   label: "Visualisations",
