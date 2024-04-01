@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import HiveAPI from "../../services/api/hive";
 import { DEFAULT_HIVE_STATE } from "./constants";
 
-const HiveContext = React.createContext();
+const ClassroomAnalyticsContext = React.createContext();
 
 function HiveProvider({ simulationId, children }) {
   const [hiveState, hiveSetState] = React.useState(DEFAULT_HIVE_STATE);
@@ -53,11 +53,11 @@ function HiveProvider({ simulationId, children }) {
     isHiveReady,
   };
 
-  return <HiveContext.Provider value={value}>{children}</HiveContext.Provider>;
+  return <ClassroomAnalyticsContext.Provider value={value}>{children}</ClassroomAnalyticsContext.Provider>;
 }
 
 function useHive() {
-  const context = React.useContext(HiveContext);
+  const context = React.useContext(ClassroomAnalyticsContext);
   if (context === undefined) {
     throw new Error("useHive must be used within a HiveProvider");
   }

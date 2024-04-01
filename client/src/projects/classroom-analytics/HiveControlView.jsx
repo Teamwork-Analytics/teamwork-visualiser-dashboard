@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactSwitch from "react-switch";
-import { useHive } from "./HiveContext";
+import { useHive } from "./ClassroomAnalyticsContext";
 import "./Hive.css";
 import { cssColourMatcher } from "./Hexagon";
 import { taggingSocket } from "../observation/socket";

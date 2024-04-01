@@ -26,41 +26,41 @@ const VisualisationView = () => {
       height: "90vh",
     },
   };
-  // const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
+  const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
 
-  // const visualisations = [
-  //   {
-  //     id: "teamwork-barchart",
-  //     label: "Teamwork",
-  //     view: (
-  //       <div style={styles.middle}>
-  //         <Image
-  //           width={"850px"}
-  //           src={`${csvUrl}/teamwork-barchart`}
-  //           onError={() => setHasVisualisation(false)}
-  //         />
-  //       </div>
-  //     ),
-  //   },
-  //   {
-  //     id: "hive-button",
-  //     label: "Location and Speaking",
-  //     view: <Hive.HiveView />,
-  //   },
-  //   {
-  //     id: "audio-socnet",
-  //     label: "Speaking Interaction",
-  //     view: (
-  //       <div style={styles.middle}>
-  //         <Image
-  //           width={"650px"}
-  //           src={`${csvUrl}/audio-socnet`}
-  //           onError={() => setHasVisualisation(false)}
-  //         />{" "}
-  //       </div>
-  //     ),
-  //   },
-  // ];
+  const visualisations = [
+    {
+      id: "teamwork-barchart",
+      label: "Teamwork",
+      view: (
+        <div style={styles.middle}>
+          <Image
+            width={"850px"}
+            src={`${csvUrl}/teamwork-barchart`}
+            onError={() => setHasVisualisation(false)}
+          />
+        </div>
+      ),
+    },
+    {
+      id: "hive-button",
+      label: "Location and Speaking",
+      view: <Hive.HiveView />,
+    },
+    {
+      id: "audio-socnet",
+      label: "Speaking Interaction",
+      view: (
+        <div style={styles.middle}>
+          <Image
+            width={"650px"}
+            src={`${csvUrl}/audio-socnet`}
+            onError={() => setHasVisualisation(false)}
+          />{" "}
+        </div>
+      ),
+    },
+  ];
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);

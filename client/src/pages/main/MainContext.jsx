@@ -18,7 +18,6 @@ function MainProvider({ children }) {
     SimulationSessionAPI.index().then((res) => {
       if (res.status === 200) {
         const sortedData = sortBy(res.data, ["simulationId"]);
-        console.log(sortedData);
         setSimulations(sortedData);
       }
     });

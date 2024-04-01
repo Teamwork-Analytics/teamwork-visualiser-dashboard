@@ -92,10 +92,32 @@ const stopDebriefAudio = () => {
   return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
 };
 
+const checkServerStatus = () => {
+  const data = eurekaAxiosStrategy.map(async (s) => {
+    return await s["axios"].get(`/${s.key}/`);
+  });
+
+  let serversStatus = {
+    mainServer: false, // true = ON, false = OFF
+    audioServer: false,
+    positionServer: false,
+    videoServer: false,
+  };
+
+  data.forEach(async (e) => {
+    console.log("Hello?");
+    console.log(await e);
+    // serversStatus[e.name] = e.status;
+  });
+
+  return serversStatus;
+};
+
 export {
   startBaselineAll,
   startAll,
   stopAll,
   startDebriefAudio,
   stopDebriefAudio,
+  checkServerStatus,
 };

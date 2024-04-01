@@ -154,7 +154,7 @@ const Phases = () => {
                           {d.favourite ? (
                             <BsStarFill
                               size={"1.2em"}
-                              style={{ color: COLOURS.SECONDARY_NURSE_2 }}
+                              style={{ color: COLOURS.PERSON_4 }}
                               onClick={() => {
                                 trackEvent({
                                   action: "click",

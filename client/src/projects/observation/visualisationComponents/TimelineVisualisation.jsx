@@ -87,7 +87,7 @@ const CustomMark = ({ mark }) => {
             <span>{formatDuration(mark.value)}</span>
             <br />
             {mark.favourite ? (
-              <BsStarFill color={COLOURS.SECONDARY_NURSE_2} />
+              <BsStarFill color={COLOURS.PERSON_4} />
             ) : (
               <span style={{ whiteSpace: "normal" }}>{mark.label}</span>
             )}
@@ -189,7 +189,7 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
                 }}
               >
                 {mark.favourite ? (
-                  <BsStarFill size="0.7em" color={COLOURS.SECONDARY_NURSE_2} />
+                  <BsStarFill size="0.7em" color={COLOURS.PERSON_4} />
                 ) : isKeyEvent(mark.label) ? (
                   <BsCircleFill size="0.5em" color={COLOURS.KEY_EVENT_PURPLE} />
                 ) : (

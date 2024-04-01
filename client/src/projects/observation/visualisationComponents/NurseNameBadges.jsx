@@ -90,25 +90,25 @@ const NurseNameBadges = () => {
   return (
     <div>
       <EditableBadge
-        colour={COLOURS.PRIMARY_NURSE_1}
+        colour={COLOURS.PERSON_1}
         label="PN 1"
         nurseName={nurseNames.primaryNurse1 || ""}
         onUpdate={(newName) => updateNurseName("primaryNurse1", newName)}
       />
       <EditableBadge
-        colour={COLOURS.PRIMARY_NURSE_2}
+        colour={COLOURS.PERSON_2}
         label="PN 2"
         nurseName={nurseNames.primaryNurse2 || ""}
         onUpdate={(newName) => updateNurseName("primaryNurse2", newName)}
       />
       <EditableBadge
-        colour={COLOURS.SECONDARY_NURSE_1}
+        colour={COLOURS.PERSON_3}
         label="SN 1"
         nurseName={nurseNames.secondaryNurse1 || ""}
         onUpdate={(newName) => updateNurseName("secondaryNurse1", newName)}
       />
       <EditableBadge
-        colour={COLOURS.SECONDARY_NURSE_2}
+        colour={COLOURS.PERSON_4}
         label="SN 2"
         nurseName={nurseNames.secondaryNurse2 || ""}
         onUpdate={(newName) => updateNurseName("secondaryNurse2", newName)}
