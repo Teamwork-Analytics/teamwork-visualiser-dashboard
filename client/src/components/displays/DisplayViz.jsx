@@ -10,15 +10,13 @@
  *  - range: A range value to be passed to each visualisation component.
  */
 
-import Card from "react-bootstrap/Card";
-
 // Import visualisation components
 import {
   SocialNetworkView,
   ENANetworkView,
-} from "../../projects/communication";
-import TeamworkBarchart from "../../projects/teamwork-prio/TeamworkBarchart";
-import HiveView from "../../projects/hive/HiveView";
+} from "../../projects/visualisations/communication";
+import TeamworkBarchart from "../../projects/visualisations/teamwork-prio/TeamworkBarchart";
+import HiveView from "../../projects/visualisations/hive/HiveView";
 import VideoVisualisation from "../../projects/observation/visualisationComponents/VideoVisualisation";
 
 // Define the styles for each visualisation size

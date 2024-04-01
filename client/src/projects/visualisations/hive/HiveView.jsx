@@ -1,18 +1,27 @@
 import { Fragment, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-import floorPlan from "./floor-plan/floor-plan.svg";
+//Floor plans, please add manually here.
+import floorPlan from "./floor-plans/nur3312.svg";
+import dbFloorPlan from "./floor-plans/nursing-small.svg";
+
 import HexagonComponent from "./Hexagon";
-import { useHive } from "./ClassroomAnalyticsContext";
+import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import { useParams } from "react-router-dom";
-import SimpleErrorText from "../../components/errors/ErrorMessage";
+import SimpleErrorText from "../../../components/errors/ErrorMessage";
+
+const svgFloorMap = {
+  peninsulaNursing: floorPlan,
+  classroomAnalytics2024: dbFloorPlan,
+};
 
 const HiveView = ({
   timeRange,
+  projectCode = "peninsulaNursing", //by default, it is peninsulaNursing
   showFilter = true,
-  height = "32vh",
-  width = "30vw",
+  height = "32vh", // default height
+  width = "30vw", // default width
   showModal, // pass in showPreviewModal as a prop to trigger rerender
   hiveState: hiveStateProp, // renamed prop to distinguish it from hook state
 }) => {
@@ -26,7 +35,7 @@ const HiveView = ({
     try {
       d3.select("#floor-plan").remove();
       const svgContainer = d3.select(hiveRef.current);
-      d3.xml(floorPlan).then((data) => {
+      d3.xml(svgFloorMap[projectCode]).then((data) => {
         if (
           isHiveReady &&
           svgContainer.node() !== null &&
@@ -34,6 +43,7 @@ const HiveView = ({
         ) {
           svgContainer.node().append(data.documentElement);
           new HexagonComponent(
+            projectCode,
             svgContainer.select("#floor-plan"),
             csvUrl,
             false,

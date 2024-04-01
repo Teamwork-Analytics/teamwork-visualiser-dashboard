@@ -3,7 +3,7 @@ import ReactSwitch from "react-switch";
 import { useHive } from "./HiveContext";
 import "./Hive.css";
 import { cssColourMatcher } from "./Hexagon";
-import { taggingSocket } from "../observation/socket";
+import { taggingSocket } from "../../observation/socket";
 import { COLOUR_LABELS } from "./constants";
 
 const ParticipantFilter = ({ colourCode }) => {

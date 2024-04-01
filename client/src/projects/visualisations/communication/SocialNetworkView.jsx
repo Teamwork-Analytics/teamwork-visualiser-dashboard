@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { processing_csv } from "./cyto_control";
-import { useDebriefing } from "../debriefing-projection/DebriefContext";
-import SimpleErrorText from "../../components/errors/ErrorMessage";
+import { useDebriefing } from "../../debriefing-projection/DebriefContext";
+import SimpleErrorText from "../../../components/errors/ErrorMessage";
 
 const CytoComponent = ({ netData, height = "30vh" }) => {
   const net_options = {

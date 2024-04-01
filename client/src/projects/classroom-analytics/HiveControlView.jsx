@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 import ReactSwitch from "react-switch";
-import { useHive } from "./ClassroomAnalyticsContext";
+import { useClassroomAnalytics } from "./ClassroomAnalyticsContext";
 import "./Hive.css";
 import { cssColourMatcher } from "./Hexagon";
 import { taggingSocket } from "../observation/socket";
 import { COLOUR_LABELS } from "./constants";
 
 const ParticipantFilter = ({ colourCode }) => {
-  const { hiveState, hiveSetState } = useHive();
+  const { pageState, setHiveState } = useClassroomAnalytics();
 
-  const [checked, setChecked] = useState(hiveState.participants[colourCode]);
+  const [checked, setChecked] = useState(pageState.participants[colourCode]);
   const handleChange = (nextChecked) => {
     setChecked(nextChecked);
-    let modifiedParticipants = { ...hiveState.participants };
+    let modifiedParticipants = { ...pageState.participants };
     modifiedParticipants[colourCode] = nextChecked;
-    hiveSetState({
-      ...hiveState,
+    setHiveState({
+      ...pageState,
       participants: modifiedParticipants,
     });
     taggingSocket.emit("send-nurse-filter", {
-      ...hiveState,
+      ...pageState,
       participants: modifiedParticipants,
     });
   };
@@ -41,8 +41,8 @@ const ParticipantFilter = ({ colourCode }) => {
 };
 
 const HivePrimaryControlView = () => {
-  const { hiveState } = useHive();
-  const participantsKeys = Object.keys(hiveState.participants);
+  const { pageState } = useClassroomAnalytics();
+  const participantsKeys = Object.keys(pageState.participants);
 
   return (
     <div>

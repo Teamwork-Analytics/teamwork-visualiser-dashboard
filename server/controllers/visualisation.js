@@ -71,46 +71,6 @@ const checkDataReadiness = async (req, res, next) => {
       }
 
       res.status(200).send("At least one data is ready!");
-
-      // if (
-      //   !fileSystem.existsSync(path.join(pathJoined, path.sep, hiveFileName))
-      // ) {
-      //   res
-      //     .status(500)
-      //     .send(fillErrorObject(500, "Ward map data is missing/not ready"));
-      //   return;
-      // }
-      // if (
-      //   !fileSystem.existsSync(
-      //     path.join(pathJoined, path.sep, positionFileName)
-      //   )
-      // ) {
-      //   res
-      //     .status(500)
-      //     .send(fillErrorObject(500, "Position data is missing/not ready"));
-      //   return;
-      // }
-      // if (
-      //   !fileSystem.existsSync(
-      //     path.join(pathJoined, path.sep, communicationFileName)
-      //   )
-      // ) {
-      //   res
-      //     .status(500)
-      //     .send(
-      //       fillErrorObject(500, "Communication data is missing/not ready")
-      //     );
-      //   return;
-      // }
-      // if (
-      //   !fileSystem.existsSync(path.join(pathJoined, path.sep, syncFileName))
-      // ) {
-      //   res.status(500).send(fillErrorObject(500, "Sync file is missing"));
-      //   return;
-      // }
-
-      // res.status(200).send("visualisation data is ready!");
-      // return;
     } else {
       res
         .status(500)

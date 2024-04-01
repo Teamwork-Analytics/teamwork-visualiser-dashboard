@@ -1,10 +1,10 @@
 import React from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import { useHive } from "./ClassroomAnalyticsContext";
+import { useHive } from "../visualisations/hive/HiveContext";
 
 /** Original slider, unused */
-const HiveSlider = () => {
+const TimeSlider = () => {
   const wrapperStyle = {
     width: "5vw",
     margin: 50,
@@ -34,4 +34,4 @@ const HiveSlider = () => {
   );
 };
 
-export default HiveSlider;
+export default TimeSlider;

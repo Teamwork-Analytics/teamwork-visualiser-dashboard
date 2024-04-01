@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Carousel } from "react-bootstrap";
-import HiveView from "../../projects/hive/HiveView";
+import HiveView from "../../projects/visualisations/hive/HiveView";
 
 const TACarousel = () => {
   const [index, setIndex] = useState(0);

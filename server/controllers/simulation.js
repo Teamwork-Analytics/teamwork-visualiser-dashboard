@@ -54,7 +54,6 @@ const getSimulation = async (req, res, next) => {
   try {
     const { id } = req.params;
     const session = await simulationService.single(id);
-    simulations;
     res.status(200).json(session);
   } catch (err) {
     logger.error(err);

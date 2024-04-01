@@ -12,6 +12,7 @@ const projectSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    shortName: String,
     description: String,
     devices: {
       type: [

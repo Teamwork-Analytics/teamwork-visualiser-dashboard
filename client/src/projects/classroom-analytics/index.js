@@ -1,4 +1,3 @@
-import HiveView from "./HiveView";
-import { HivePrimaryControlView } from "./HiveControlView";
+import ClassroomAnalyticsView from "./ClassroomAnalyticsView";
 
-export { HivePrimaryControlView, HiveView };
+export { ClassroomAnalyticsView };

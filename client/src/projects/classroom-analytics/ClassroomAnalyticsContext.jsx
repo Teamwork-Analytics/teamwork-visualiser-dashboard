@@ -1,9 +1,6 @@
-//Create a context for HIVE controllable information: such as
-// * change person (select checkboxes)
-// * switch between overall to different phases (with slider)
-// * with audio (default) or position only
-
-// GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
+/**
+ * Specific project to Classroom Analytics to visualise Location & Audio data.
+ */
 
 import React, { useEffect } from "react";
 import HiveAPI from "../../services/api/hive";
@@ -11,8 +8,8 @@ import { DEFAULT_HIVE_STATE } from "./constants";
 
 const ClassroomAnalyticsContext = React.createContext();
 
-function HiveProvider({ simulationId, children }) {
-  const [hiveState, hiveSetState] = React.useState(DEFAULT_HIVE_STATE);
+function ClassroomAnalyticsProvider({ simulationId, children }) {
+  const [pageState, setPageState] = React.useState(DEFAULT_HIVE_STATE);
   const [isHiveReady, setIsReady] = React.useState(false);
   useEffect(() => {
     HiveAPI.isDataReady(simulationId)
@@ -38,30 +35,28 @@ function HiveProvider({ simulationId, children }) {
           })
           .catch((e) => {});
       }
-
-      // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(fetchData, 10000);
-
-      // Clean up the interval when the component is unmounted or when data is fetched
-      return () => clearInterval(intervalId);
     }
   }, [isHiveReady, simulationId]);
 
   const value = {
-    hiveState,
-    hiveSetState,
+    pageState,
+    setPageState,
     isHiveReady,
   };
 
-  return <ClassroomAnalyticsContext.Provider value={value}>{children}</ClassroomAnalyticsContext.Provider>;
+  return (
+    <ClassroomAnalyticsContext.Provider value={value}>
+      {children}
+    </ClassroomAnalyticsContext.Provider>
+  );
 }
 
-function useHive() {
+function useClassroomAnalytics() {
   const context = React.useContext(ClassroomAnalyticsContext);
   if (context === undefined) {
-    throw new Error("useHive must be used within a HiveProvider");
+    throw new Error("useClassroomAnalytics must be used within a HiveProvider");
   }
   return context;
 }
 
-export { HiveProvider, useHive };
+export { ClassroomAnalyticsProvider, useClassroomAnalytics };

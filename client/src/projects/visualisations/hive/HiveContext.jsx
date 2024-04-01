@@ -6,7 +6,7 @@
 // GUIDE: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 
 import React, { useEffect } from "react";
-import HiveAPI from "../../services/api/hive";
+import HiveAPI from "../../../services/api/hive";
 import { DEFAULT_HIVE_STATE } from "./constants";
 
 const HiveContext = React.createContext();
@@ -40,10 +40,10 @@ function HiveProvider({ simulationId, children }) {
       }
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(fetchData, 10000);
+      // const intervalId = setInterval(fetchData, 10000);
 
       // Clean up the interval when the component is unmounted or when data is fetched
-      return () => clearInterval(intervalId);
+      // return () => clearInterval(intervalId);
     }
   }, [isHiveReady, simulationId]);
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getTeamworkBarchart } from "../../services/py-server";
+import { getTeamworkBarchart } from "../../../services/py-server";
 import Barchart from "./Barchart";
-import SimpleErrorText from "../../components/errors/ErrorMessage";
+import SimpleErrorText from "../../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 
@@ -62,10 +62,10 @@ const TeamworkBarchart = ({
       }
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(fetchData, 10000);
+      // const intervalId = setInterval(fetchData, 10000);
 
       // Clean up the interval when the component is unmounted or when data is fetched
-      return () => clearInterval(intervalId);
+      // return () => clearInterval(intervalId);
     }
   }, [endTime, simulationId, startTime, teamworkData]);
 

@@ -6,6 +6,8 @@ import { Button, Form } from "react-bootstrap";
 import { MainProvider, useMain } from "./MainContext";
 import { checkServerStatus } from "../../services/eureka";
 
+const FILTERED_PROJECT_NAME = "Peninsula Nursing Simulation 2023"; // Please check the project name in our project list
+
 /**
  * First page to select and create simulations
  */
@@ -74,16 +76,15 @@ const MainPage = () => {
         <div style={pageStyles.list}>
           {!!simulations
             ? search(simulations)
-                .filter(
-                  (sim) =>
-                    sim.project.name ===
-                    "Classroom Analytics Database Units 2024"
-                )
+                .filter((sim) => sim.project.name === FILTERED_PROJECT_NAME)
                 .map((sim, i) => (
                   <Link
                     key={i}
                     to={`/visualisation/${sim.simulationId}`}
-                    state={{ name: sim.name, realId: sim._id }}
+                    state={{
+                      name: sim.name,
+                      realId: sim._id,
+                    }}
                     style={{ color: "#222222", textDecoration: "none" }}
                   >
                     <SessionCard key={i} sim={sim} />

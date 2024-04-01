@@ -15,9 +15,12 @@ import TimelineVisualisation from "./TimelineVisualisation";
 import VideoVisualisation from "./VideoVisualisation";
 
 // visualisations
-import { ENANetworkView, SocialNetworkView } from "../../communication";
-import { HiveView } from "../../hive";
-import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
+import {
+  ENANetworkView,
+  SocialNetworkView,
+} from "../../visualisations/communication";
+import { HiveView } from "../../visualisations/hive";
+import TeamworkBarchart from "../../visualisations/teamwork-prio/TeamworkBarchart";
 
 // Styles for different visualisation components
 const visStyles = {

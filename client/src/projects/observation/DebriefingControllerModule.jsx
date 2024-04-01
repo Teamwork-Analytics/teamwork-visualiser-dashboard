@@ -5,7 +5,7 @@ import { ConnectionState } from "./socketComponents/ConnectionState";
 import { ConnectionManager } from "./socketComponents/ConnectionManager";
 import { useParams } from "react-router-dom";
 import { DebriefingProvider } from "../debriefing-projection/DebriefContext";
-import { HiveProvider } from "../hive/HiveContext";
+import { HiveProvider } from "../visualisations/hive/HiveContext";
 import DebriefingControllerView from "./DebriefingControllerView";
 
 const DebriefingControllerModule = () => {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import * as Hive from "../hive";
+import * as Hive from "../visualisations/hive";
 
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";

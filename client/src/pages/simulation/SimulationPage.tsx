@@ -10,7 +10,7 @@ import { ChevronDoubleLeft, ChevronDoubleRight } from "react-bootstrap-icons";
 import { useLocation, useParams } from "react-router-dom";
 import EmptyPlaceholder from "../../components/EmptyPlaceholder";
 import { DebriefingProvider } from "../../projects/debriefing-projection/DebriefContext";
-import { HiveProvider } from "../../projects/hive/HiveContext";
+import { HiveProvider } from "../../projects/visualisations/hive/HiveContext";
 import { ObservationProvider } from "../../projects/observation/ObservationContext";
 import MainLayout from "./layouts/MainLayout";
 import SidebarLayout from "./layouts/SidebarLayout";
