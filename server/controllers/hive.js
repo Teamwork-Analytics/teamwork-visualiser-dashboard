@@ -3,6 +3,8 @@ const { fillErrorObject } = require("../middleware/error");
 const hiveServices = require("../services/hive");
 const path = require("node:path");
 
+require("dotenv").config({ path: "../../.env" });
+
 /**
  *
  * @param {*} req
@@ -17,6 +19,8 @@ const getCsvFile = (req, res, next) => {
     const directory = process.env.VISUALISATION_DIR + simulationId;
     const result_dir = path.join(directory, path.sep, "result");
     const pathJoined = path.join(result_dir, path.sep, fileName);
+
+    console.log("HIVE DIR", process.env.VISUALISATION_DIR);
 
     // res.setHeader("cache-control", "max-age=8640000");
     res.setHeader("content-type", "text/csv");
