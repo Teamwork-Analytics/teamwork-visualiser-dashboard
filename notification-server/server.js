@@ -23,6 +23,7 @@ app.post("/send-notification", async (req, res) => {
   const tokens = [
     "fMVd4gzlQBOrXwpUSZuQdk:APA91bEM141-Ne0PY7-FiRDrnrUScnAvkVQQCiuY1urDXySySeZ5plGSANpxiwlDfXvOC5baa7g83Uf0GcQvQaQI8C_aazg3dk9_5dac5ghkUB9V3-x7mBvrWwxFj9tDjsfJLU2GgC42",
     "cRKzCHVNSWq04bcMWQv4tE:APA91bHuAkpOsMGomaAqUKPaLppBp96-6RfcBp2lovkbcj8VNNMm-k_mhekCkHe_rAef7-Ets6JPgWSan__2G4z3axq1baHCRWW4N_m_1HkiOnV7FX-0e1TlnKOhru5qM9e_Hsb95cdQ",
+    "fqQWVtTfTV20XaZTWu0mYq:APA91bFfiVh0WIJJz3yB44J8P-ye6D2dnOfGVJq-pv9KDf_sybtFCfCND47chpE5KsmNugT6EXK65sJhI_k_esXoGG-3ipzBASKBDkr7_CuLCsqbV21Tr86dzqY_EYxXjn012yepg8Yt",
   ];
 
   let successes = 0;
