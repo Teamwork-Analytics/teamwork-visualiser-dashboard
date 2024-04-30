@@ -1,8 +1,16 @@
 const COLOUR_LABELS = {
-  RED: "PN1",
-  BLUE: "PN2",
-  GREEN: "SN1",
-  YELLOW: "SN2",
+  peninsulaNursing: {
+    RED: "PN1",
+    BLUE: "PN2",
+    GREEN: "SN1",
+    YELLOW: "SN2",
+  },
+  classroomAnalytics2024: {
+    RED: "TA1",
+    BLUE: "TA2",
+    GREEN: "TA3",
+    YELLOW: "NA",
+  },
 };
 
 const DEFAULT_HIVE_STATE = {
@@ -28,8 +36,8 @@ const CLASSROOM_SIZE = {
     HEIGHT: 6960,
   },
   classroomAnalytics2024: {
-    WIDTH: 9500,
-    HEIGHT: 6960,
+    WIDTH: 13550,
+    HEIGHT: 12090,
   },
 };
 
@@ -38,6 +46,16 @@ const HIVE_CONSTANTS = {
     HEX_RADIUS: 50,
     IMG_WIDTH: 2297,
     IMG_HEIGHT: 1715,
+    X_ADJUSTMENT: 0,
+    Y_ADJUSTMENT: 0,
+    HEXAGON_OPACITY: "0.5",
+  },
+  classroomAnalytics2024: {
+    HEX_RADIUS: 30,
+    IMG_WIDTH: 2140,
+    IMG_HEIGHT: 1889,
+    X_ADJUSTMENT: 60,
+    Y_ADJUSTMENT: 0,
     HEXAGON_OPACITY: "0.5",
   },
 };

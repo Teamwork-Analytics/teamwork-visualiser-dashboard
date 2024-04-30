@@ -6,7 +6,8 @@ import { Button, Form } from "react-bootstrap";
 import { MainProvider, useMain } from "./MainContext";
 import { checkServerStatus } from "../../services/eureka";
 
-const FILTERED_PROJECT_NAME = "Peninsula Nursing Simulation 2023"; // Please check the project name in our project list
+const FILTERED_PROJECT_NAME = "Classroom Analytics Database Units 2024"; // Please check the project name in our project list
+// Peninsula Nursing Simulation 2023
 
 /**
  * First page to select and create simulations

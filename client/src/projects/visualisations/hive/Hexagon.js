@@ -97,23 +97,16 @@ class HexagonComponent {
         .enter()
         .append("path")
         .attr("d", function (d) {
-          const x = -d.y + hiveConstants.IMG_WIDTH;
-          const y = d.x;
-          // const x = d.x;
-          // const y = d.y;
+          // const x = -d.y + hiveConstants.IMG_WIDTH;
+          // const y = d.x;
+          const x = d.x + hiveConstants.X_ADJUSTMENT;
+          const y = d.y + hiveConstants.Y_ADJUSTMENT;
           return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
         .attr("fill", shotFlag === "made" ? cssColourMatcher[colour] : "white")
         .attr("fill-opacity", hiveConstants.HEXAGON_OPACITY)
         .attr("stroke-width", strokeWidth);
-      // .style("opacity", 0)
-      // .transition()
-      // .duration(1000)
-      // .delay(function (_, i) {
-      //   return i * 50;
-      // })
-      // .style("opacity", 1);
     } else if (shotFlag === "fixed") {
       this.svg
         .append("g")

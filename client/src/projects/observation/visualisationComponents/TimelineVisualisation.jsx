@@ -18,6 +18,7 @@ import {
 import { manualLabels } from "../index.js";
 import { COLOURS } from "../../../config/colours.js";
 import { useTracking } from "react-tracking";
+import { useEffect } from "react";
 
 // styling
 const timelineStyle = {
@@ -126,7 +127,6 @@ const reverseFormatDuration = (formattedDuration) => {
 const FilteredMarksComponent = ({ marks, range, setRange }) => {
   const { Track, trackEvent } = useTracking({ page: "Debriefing" });
 
-  console.log(marks);
   // Filter marks within the range
   const filteredMarks = marks.filter((mark) => {
     return mark.value >= range[0] && mark.value <= range[1];

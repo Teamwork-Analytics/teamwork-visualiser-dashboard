@@ -10,13 +10,13 @@ import os
 
 from pathlib import Path
 
-IP_ADDRESS = "49.127.70.209"  # this/local server
+IP_ADDRESS = "localhost"  # this/local server # 49.127.70.209
 PORT = "5003"
 
 app = Flask(__name__)
-TEST_MODE_LINX = False
+TEST_MODE_LINX = True
 if TEST_MODE_LINX:
-    DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+    DIRECTORY = "E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\"
 else:
     DIRECTORY = "C:\\develop\\saved_data\\"
 

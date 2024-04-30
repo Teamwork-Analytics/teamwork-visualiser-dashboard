@@ -6,7 +6,7 @@ import { cssColourMatcher } from "./Hexagon";
 import { taggingSocket } from "../../observation/socket";
 import { COLOUR_LABELS } from "./constants";
 
-const ParticipantFilter = ({ colourCode }) => {
+const ParticipantFilter = ({ colourCode, projectCode }) => {
   const { hiveState, hiveSetState } = useHive();
 
   const [checked, setChecked] = useState(hiveState.participants[colourCode]);
@@ -34,13 +34,13 @@ const ParticipantFilter = ({ colourCode }) => {
         fontSize: "0.8em",
       }}
     >
-      <span>{COLOUR_LABELS[colourCode]}:</span>
+      <span>{COLOUR_LABELS[projectCode][colourCode]}:</span>
       <ReactSwitch onChange={handleChange} checked={checked} onColor={colour} />
     </label>
   );
 };
 
-const HivePrimaryControlView = () => {
+const HivePrimaryControlView = ({ projectCode }) => {
   const { hiveState } = useHive();
   const participantsKeys = Object.keys(hiveState.participants);
 
@@ -49,7 +49,7 @@ const HivePrimaryControlView = () => {
       <div className={"box"}>
         {/* <label style={{ color: "#5a5a5a" }}>FILTER:</label> */}
         {participantsKeys.map((k, i) => (
-          <ParticipantFilter key={i} colourCode={k} />
+          <ParticipantFilter key={i} colourCode={k} projectCode={projectCode} />
         ))}
       </div>
     </div>

@@ -3,7 +3,7 @@ import * as d3 from "d3";
 
 //Floor plans, please add manually here.
 import floorPlan from "./floor-plans/nur3312.svg";
-import dbFloorPlan from "./floor-plans/nursing-small.svg";
+import dbFloorPlan from "./floor-plans/woodside.svg";
 
 import HexagonComponent from "./Hexagon";
 import { useHive } from "./HiveContext";
@@ -30,7 +30,6 @@ const HiveView = ({
   const hiveState = hiveStateProp || hiveStateHook; // Use prop if available, otherwise use state from hook
   const { simulationId } = useParams();
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
-
   useEffect(() => {
     try {
       d3.select("#floor-plan").remove();
@@ -79,7 +78,7 @@ const HiveView = ({
           >
             <div ref={hiveRef} style={{ height: "99%" }} />
           </div>
-          {showFilter && <HivePrimaryControlView />}
+          {showFilter && <HivePrimaryControlView projectCode={projectCode} />}
         </div>
       )}
     </Fragment>

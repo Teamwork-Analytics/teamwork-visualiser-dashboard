@@ -6,19 +6,24 @@ import { useLocation, useParams } from "react-router-dom";
 
 const ClassroomAnalyticsHive = () => {
   const { range } = useTimeline();
+
+  const PROJECT_CODE = "classroomAnalytics2024"; // peninsulaNursing
   let location = useLocation();
   const { simulationId } = useParams();
 
   const simulationDec = location.state.name;
-
-  console.log(location.state);
 
   return (
     <>
       <h1>
         {simulationId}: {simulationDec}
       </h1>
-      <HiveView timeRange={range} projectCode="peninsulaNursing" />
+      <HiveView
+        timeRange={range}
+        projectCode={PROJECT_CODE}
+        height="50vh" // default height
+        width="50vw"
+      />
       <TimelineVisualisation />
     </>
   );

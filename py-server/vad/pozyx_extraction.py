@@ -61,9 +61,12 @@ def get_timestamp_from_sync(sync_path: str, timestamp_type: str):
     time_string = positioning_start_line.split("_____")[1]
     # 01-Sep-2021_13-19-37-929 %d-%b-%Y-%H-%M-%S-%f
 
+    timezone_adjustment = "-+1100" # summer Australia
+    # timezone_adjustment = "-+1000" # winter Australia
+
     # configure the timezone for the striptime:
     # https://statisticsglobe.com/convert-datetime-to-different-time-zone-python
-    date = datetime.datetime.strptime(time_string.strip() + "-+1000", "%Y-%m-%d_%H-%M-%S-%f-%z")
+    date = datetime.datetime.strptime(time_string.strip() + timezone_adjustment, "%Y-%m-%d_%H-%M-%S-%f-%z")
     timestamp = date.timestamp()
 
     # timestamp = datetime.datetime.timestamp(date)
