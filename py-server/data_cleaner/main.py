@@ -67,18 +67,18 @@ def call_visualization(simulationid):
     print("extracting timestamps for phases finished")
 
     # # handover_finish_time, secondary_nurses_enter_time, doctor_enter_time = 0, 0, 0
-    # for item in observation_obj["phases"]:
-    #     if item["phaseKey"] == "handover_ends":
-    #         # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
-    #         handover_finish_time = item["timestamp"].timestamp()
-    #     elif item["phaseKey"] == "secondary_nurse_enters":
-    #         # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
-    #         secondary_nurses_enter_time = item["timestamp"].timestamp()
-    #     elif item["phaseKey"] == "doctor_enters":
-    #         # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
-    #         doctor_enter_time = item["timestamp"].timestamp()
-    #     elif item["phaseKey"] == "bed_4":
-    #         pass
+    for item in observation_obj["phases"]:
+        if item["phaseKey"] == "handover_ends":
+            # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            handover_finish_time = item["timestamp"].timestamp()
+        elif item["phaseKey"] == "secondary_nurse_enters":
+            # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            secondary_nurses_enter_time = item["timestamp"].timestamp()
+        elif item["phaseKey"] == "doctor_enters":
+            # datetime.strptime(item["timestamp"], 'yyyy-MM-dd HH:mm:ss.SSS000').timestamp()
+            doctor_enter_time = item["timestamp"].timestamp()
+        elif item["phaseKey"] == "bed_4":
+            pass
 
     # configuring the path of input and output
     session = simulationid
@@ -88,16 +88,14 @@ def call_visualization(simulationid):
 
     audio_start_timestamp = get_timestamp(os.path.join(data_dir, "sync.txt"))
 
-    # print(observation_obj)
-    # print(observation_obj["phases"])
+    print(observation_obj)
+    print(observation_obj["phases"])
 
-    # Calculation on phases in timestamp
-    # handover_finish_time -= audio_start_timestamp
-    # secondary_nurses_enter_time -= audio_start_timestamp
-    # doctor_enter_time -= audio_start_timestamp
+    handover_finish_time -= audio_start_timestamp
+    secondary_nurses_enter_time -= audio_start_timestamp
+    doctor_enter_time -= audio_start_timestamp
 
-    # print(handover_finish_time, secondary_nurses_enter_time, doctor_enter_time)
-    
+    print(handover_finish_time, secondary_nurses_enter_time, doctor_enter_time)
     # all folder path will use call the initialising_folders to create the folder
     processed_pozyx_folder = initialising_folders(
         os.path.join(positioning_data_folder, "pozyx_json_csv"))
@@ -168,24 +166,23 @@ def call_visualization(simulationid):
 
     hive_data("RED", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
               hive_csv_output_folder)
-    # hive_data("YELLOW", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
-    #           hive_csv_output_folder)
+    hive_data("YELLOW", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
+              hive_csv_output_folder)
     hive_data("BLUE", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
               hive_csv_output_folder)
     hive_data("GREEN", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
               hive_csv_output_folder)
-    # hive_data("BLACK", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
-    #           hive_csv_output_folder)
-    # hive_data("WHITE", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
-    #           hive_csv_output_folder)
+    hive_data("BLACK", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
+              hive_csv_output_folder)
+    hive_data("WHITE", session, raw_audio_folder, processed_audio_folder, hive_positioning_data_folder,
+              hive_csv_output_folder)
 
     # hive_csv_output_folder = data_dir + "out\\result"
     df = pd.concat(map(pd.read_csv, [
         '{}/{}_RED.csv'.format(hive_csv_output_folder, session),
+        '{}/{}_YELLOW.csv'.format(hive_csv_output_folder, session),
         '{}/{}_BLUE.csv'.format(hive_csv_output_folder, session),
         '{}/{}_GREEN.csv'.format(hive_csv_output_folder, session)]), ignore_index=True)
-    # '{}/{}_YELLOW.csv'.format(hive_csv_output_folder, session)    
-
 
     df = df.sort_values(by='audio time')
 

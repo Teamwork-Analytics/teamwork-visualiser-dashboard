@@ -13,10 +13,26 @@
 
 export const COLOURS = {
   // Colors for nurses
-  PERSON_1: "#ff0000", //red
-  PERSON_2: "#088FFA", // blue
-  PERSON_3: "#00FF00", //lime
-  PERSON_4: "#ffcf00", // gold
+  PERSON_1: "#D95F02", //red
+  PERSON_2: "#7570B3", // blue
+  PERSON_3: "#1B9E77", //lime
+  PERSON_4: "#ffa600", // gold
+
+  PERSON_1_RGB: {
+    r: 217,
+    g: 95,
+    b: 2,
+  },
+  PERSON_2_RGB: {
+    r: 117,
+    g: 112,
+    b: 179,
+  },
+  PERSON_3_RGB: {
+    r: 27,
+    g: 158,
+    b: 119,
+  },
 
   // Color for key events and actions
   KEY_EVENT_PURPLE: "#9c27b0",

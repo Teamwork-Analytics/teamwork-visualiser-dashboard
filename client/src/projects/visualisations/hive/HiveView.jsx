@@ -19,7 +19,7 @@ const svgFloorMap = {
 const HiveView = ({
   timeRange,
   projectCode = "peninsulaNursing", //by default, it is peninsulaNursing
-  showFilter = true,
+  showFilter = true, // filter by person.
   height = "32vh", // default height
   width = "30vw", // default width
   showModal, // pass in showPreviewModal as a prop to trigger rerender

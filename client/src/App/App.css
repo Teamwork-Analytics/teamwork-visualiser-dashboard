@@ -3,6 +3,11 @@ html {
   margin: 0;
   padding: 0;
   background: #f8f9fa !important;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 * {
   box-sizing: border-box;

@@ -220,9 +220,13 @@ const FilteredMarksComponent = ({ marks, range, setRange }) => {
   );
 };
 
-const TimelineVisualisation = () => {
-  const { Track, trackEvent } = useTracking({ page: "Debriefing" });
-  // timeline range and playhead
+/**
+ *
+ * Time slider and its button controller.
+ * @param {*} trackEvent a method to track event.
+ * @returns Div of time slider, phases buttons, and undo-redo buttons.
+ */
+export const TimeSliderController = ({ trackEvent }) => {
   const {
     range,
     setRange,
@@ -274,6 +278,161 @@ const TimelineVisualisation = () => {
   };
 
   return (
+    <div>
+      <Slider
+        value={range}
+        max={simDuration}
+        onChange={(_, newValue) => {
+          setRange(newValue);
+          setPlayHeadPosition(newValue[0]);
+        }}
+        valueLabelDisplay="auto"
+        // show tooltip in MM:SS format
+        valueLabelFormat={(value) => {
+          const minutes = Math.floor(value / 60);
+          const seconds = value % 60;
+          return `${minutes.toString().padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")}`;
+        }}
+        aria-labelledby="range-slider"
+        marks={modifiedTimelineTags.map((mark, index) => ({
+          ...mark,
+          label: <CustomMark mark={mark} index={index} />,
+        }))}
+        sx={timelineStyle.keyEventTimelineSx}
+        style={{ marginTop: "100px" }}
+      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: "-30px",
+        }}
+      >
+        <div style={timelineStyle.tinyDurationText}>{formatDuration(0)}</div>
+        <div style={timelineStyle.tinyDurationText}>
+          {formatDuration(simDuration)}
+        </div>
+      </div>
+      <div>
+        <Row
+          style={{
+            marginLeft: "5px",
+            marginRight: "5px",
+            marginTop: "5px",
+          }}
+        >
+          <Col
+            xs="auto"
+            style={{
+              paddingLeft: "5px",
+              paddingRight: "5px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <p
+              style={{
+                color: "#6C757D",
+                fontSize: "12px",
+                margin: "auto",
+              }}
+            >
+              Select:
+            </p>
+          </Col>
+
+          <Col
+            style={{
+              paddingLeft: "5px",
+              paddingRight: "5px",
+              textAlign: "left",
+            }}
+            xs="auto"
+          >
+            <ButtonGroup aria-label="phases buttons">
+              {phases.map((phase, index) => (
+                <Button
+                  key={index}
+                  variant={
+                    phase.start === range[0] && phase.end === range[1]
+                      ? "dark"
+                      : "outline-dark"
+                  }
+                  onClick={() => {
+                    trackEvent({
+                      action: "click",
+                      element: "quickSelectPhaseButton",
+                      data: phase,
+                    });
+                    handleSelectPhase(phase);
+                  }}
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  {phase.name}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </Col>
+          <Col
+            style={{
+              paddingLeft: "5px",
+              paddingRight: "5px",
+              textAlign: "left",
+            }}
+            xs="auto"
+          >
+            <ButtonGroup aria-label="undo-redo">
+              <Button
+                variant="outline-dark"
+                style={{
+                  fontSize: "12px",
+                }}
+                onClick={() => {
+                  trackEvent({
+                    action: "click",
+                    element: "undoTimelineSelectionButton",
+                  });
+                  undoTimeline();
+                }}
+                disabled={!canUndo}
+              >
+                Undo <BsArrowCounterclockwise size="1.2em" />
+              </Button>
+              <Button
+                variant="outline-dark"
+                style={{
+                  fontSize: "12px",
+                }}
+                onClick={() => {
+                  trackEvent({
+                    action: "click",
+                    element: "redoTimelineSelectionButton",
+                  });
+                  redoTimeline();
+                }}
+                disabled={!canRedo}
+              >
+                Redo <BsArrowClockwise size="1.2em" />
+              </Button>
+            </ButtonGroup>
+          </Col>
+        </Row>
+      </div>
+    </div>
+  );
+};
+
+const TimelineVisualisation = () => {
+  const { Track, trackEvent } = useTracking({ page: "Debriefing" });
+  // timeline range and playhead
+  const { range, setRange, timelineTags } = useTimeline();
+  return (
     <Track>
       <Container
         style={{
@@ -287,153 +446,7 @@ const TimelineVisualisation = () => {
       >
         <Row>
           <Col style={{ paddingLeft: "5px", paddingRight: "5px" }}>
-            <Slider
-              value={range}
-              max={simDuration}
-              onChange={(_, newValue) => {
-                setRange(newValue);
-                setPlayHeadPosition(newValue[0]);
-              }}
-              valueLabelDisplay="auto"
-              // show tooltip in MM:SS format
-              valueLabelFormat={(value) => {
-                const minutes = Math.floor(value / 60);
-                const seconds = value % 60;
-                return `${minutes.toString().padStart(2, "0")}:${seconds
-                  .toString()
-                  .padStart(2, "0")}`;
-              }}
-              aria-labelledby="range-slider"
-              marks={modifiedTimelineTags.map((mark, index) => ({
-                ...mark,
-                label: <CustomMark mark={mark} index={index} />,
-              }))}
-              sx={timelineStyle.keyEventTimelineSx}
-              style={{ marginTop: "100px" }}
-            />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginTop: "-30px",
-              }}
-            >
-              <div style={timelineStyle.tinyDurationText}>
-                {formatDuration(0)}
-              </div>
-              <div style={timelineStyle.tinyDurationText}>
-                {formatDuration(simDuration)}
-              </div>
-            </div>
-            <div>
-              <Row
-                style={{
-                  marginLeft: "5px",
-                  marginRight: "5px",
-                  marginTop: "5px",
-                }}
-              >
-                <Col
-                  xs="auto"
-                  style={{
-                    paddingLeft: "5px",
-                    paddingRight: "5px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <p
-                    style={{
-                      color: "#6C757D",
-                      fontSize: "12px",
-                      margin: "auto",
-                    }}
-                  >
-                    Select:
-                  </p>
-                </Col>
-
-                <Col
-                  style={{
-                    paddingLeft: "5px",
-                    paddingRight: "5px",
-                    textAlign: "left",
-                  }}
-                  xs="auto"
-                >
-                  <ButtonGroup aria-label="Phases">
-                    {phases.map((phase, index) => (
-                      <Button
-                        key={index}
-                        variant={
-                          phase.start === range[0] && phase.end === range[1]
-                            ? "dark"
-                            : "outline-dark"
-                        }
-                        onClick={() => {
-                          trackEvent({
-                            action: "click",
-                            element: "quickSelectPhaseButton",
-                            data: phase,
-                          });
-                          handleSelectPhase(phase);
-                        }}
-                        style={{
-                          fontSize: "12px",
-                        }}
-                      >
-                        {phase.name}
-                      </Button>
-                    ))}
-                  </ButtonGroup>
-                </Col>
-                <Col
-                  style={{
-                    paddingLeft: "5px",
-                    paddingRight: "5px",
-                    textAlign: "left",
-                  }}
-                  xs="auto"
-                >
-                  <ButtonGroup aria-label="Phases">
-                    <Button
-                      variant="outline-dark"
-                      style={{
-                        fontSize: "12px",
-                      }}
-                      onClick={() => {
-                        trackEvent({
-                          action: "click",
-                          element: "undoTimelineSelectionButton",
-                        });
-                        undoTimeline();
-                      }}
-                      disabled={!canUndo}
-                    >
-                      Undo <BsArrowCounterclockwise size="1.2em" />
-                    </Button>
-                    <Button
-                      variant="outline-dark"
-                      style={{
-                        fontSize: "12px",
-                      }}
-                      onClick={() => {
-                        trackEvent({
-                          action: "click",
-                          element: "redoTimelineSelectionButton",
-                        });
-                        redoTimeline();
-                      }}
-                      disabled={!canRedo}
-                    >
-                      Redo <BsArrowClockwise size="1.2em" />
-                    </Button>
-                  </ButtonGroup>
-                </Col>
-              </Row>
-            </div>
+            <TimeSliderController trackEvent={trackEvent} />
           </Col>
           <Col xs={3} style={{ paddingLeft: "5px", paddingRight: "5px" }}>
             <FilteredMarksComponent
