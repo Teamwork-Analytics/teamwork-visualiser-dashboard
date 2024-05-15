@@ -65,8 +65,8 @@ const timelineStyle = {
   },
 };
 
-const isKeyEvent = (label) =>
-  manualLabels.phases.some((item) => item.label === label);
+const isKeyEvent = (label) => true;
+// manualLabels.phases.some((item) => item.label === label);
 
 const CustomMark = ({ mark }) => {
   const markStyle = { fontWeight: "bold", fontSize: "1.3em" };

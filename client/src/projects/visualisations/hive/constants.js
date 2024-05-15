@@ -28,7 +28,14 @@ const PHASES = {
     "MET doctor start",
     "End",
   ],
-  classroomAnalytics2024: ["Start", "Phase 1", "Phase 2", "Phase 3", "End"],
+  classroomAnalytics2024: [
+    "1. Welcome",
+    "2. Assignment 1 reminder",
+    "3a. Relational Model recap",
+    "3b. Choosing primary key",
+    "4. Relational algebra exercise",
+    "5. Additional relational algebra exercise",
+  ],
 };
 const CLASSROOM_SIZE = {
   peninsulaNursing: {

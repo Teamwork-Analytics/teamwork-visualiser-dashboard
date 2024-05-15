@@ -17,7 +17,7 @@ const cleanRawPhases = (phases) => {
 
   const labeledPhases = phases.map((time, i) => {
     return {
-      label: PHASES[i] + ": " + time,
+      label: PHASES["classroomAnalytics2024"][i] + ": " + time,
       timestamp: time,
     };
   });

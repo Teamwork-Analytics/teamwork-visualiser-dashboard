@@ -19,14 +19,24 @@ export const sortNotesDescending = (observationObj) => {
 /**
  * These phases are depending on the learning design.
  */
+
 export const manualLabels = {
   phases: [
-    { _id: "phaseId001", label: "Scenario started" },
-    { _id: "phaseId002", label: "Handover ends" },
-    { _id: "phaseId003", label: "Secondary nurse enters" },
-    { _id: "phaseId004", label: "Doctor enters" },
-    { _id: "phaseId005", label: "Teamwork actions" },
+    { _id: "phaseId002", label: "1. Data Anomalies" },
+    { _id: "phaseId003", label: "2. The Normalisation Process" },
+    { _id: "phaseId004", label: "3. Multiple forms normalisation" },
+    {
+      _id: "phaseId004",
+      label: "4. Further Multiple Forms Normalisations (Homework)",
+    },
   ],
+  // phases: [
+  //   { _id: "phaseId001", label: "Scenario started" },
+  //   { _id: "phaseId002", label: "Handover ends" },
+  //   { _id: "phaseId003", label: "Secondary nurse enters" },
+  //   { _id: "phaseId004", label: "Doctor enters" },
+  //   { _id: "phaseId005", label: "Teamwork actions" },
+  // ],
   actions: [
     // Scenario started actions
     { label: "Clarifies information", phasesAssociated: ["phaseId001"] },

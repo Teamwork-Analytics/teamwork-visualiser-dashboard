@@ -16,12 +16,12 @@ const MainPage = () => {
   const pageStyles = {
     list: {
       display: "flex",
-      flexDirection: "column",
+      flexDirection: "row",
       flexWrap: "wrap",
-      alignContent: "center",
       columnGap: "2em",
       rowGap: "1.5em",
       padding: "1em",
+      width: "70vw",
     },
     navigation: {
       padding: "1em",
@@ -73,7 +73,14 @@ const MainPage = () => {
         </Link>
       </div>
 
-      <div style={{ overflowY: "scroll", width: "100vw" }}>
+      <div
+        style={{
+          display: "flex",
+          overflowY: "scroll",
+          width: "100vw",
+          justifyContent: "center",
+        }}
+      >
         <div style={pageStyles.list}>
           {!!simulations
             ? search(simulations)
