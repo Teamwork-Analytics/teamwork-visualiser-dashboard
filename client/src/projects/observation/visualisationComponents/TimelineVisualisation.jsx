@@ -78,7 +78,7 @@ const CustomMark = ({ mark }) => {
           <div
             style={{
               position: "absolute",
-              top: "-40px",
+              top: "-20px",
               minWidth: "80px",
               maxWidth: "120px",
               transform: `translateX(-50%) translateY(-65%)`,
@@ -99,7 +99,7 @@ const CustomMark = ({ mark }) => {
               width: "2px",
               position: "absolute",
               bottom: -8,
-              height: "50px",
+              height: "30px",
               backgroundColor: COLOURS.KEY_EVENT_PURPLE,
               marginBottom: "-20px",
               marginLeft: "-1px",
@@ -301,7 +301,7 @@ export const TimeSliderController = ({ trackEvent }) => {
           label: <CustomMark mark={mark} index={index} />,
         }))}
         sx={timelineStyle.keyEventTimelineSx}
-        style={{ marginTop: "100px" }}
+        style={{ marginTop: "3em" }}
       />
       <div
         style={{

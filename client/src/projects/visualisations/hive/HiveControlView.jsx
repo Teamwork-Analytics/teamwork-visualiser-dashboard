@@ -10,6 +10,7 @@ const ParticipantFilter = ({ colourCode, projectCode }) => {
   const { hiveState, hiveSetState } = useHive();
 
   const [checked, setChecked] = useState(hiveState.participants[colourCode]);
+
   const handleChange = (nextChecked) => {
     setChecked(nextChecked);
     let modifiedParticipants = { ...hiveState.participants };

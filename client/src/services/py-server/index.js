@@ -67,9 +67,17 @@ const processAllVisualisations = async (simulationId) => {
   return await communicationAPI.get(`/generate_viz?sessionId=${simulationId}`);
 };
 
+const getCoTeachMatrixdata = async (body) => {
+  const { simulationId, startTime, endTime } = body;
+  return await communicationAPI.get(
+    `/get_coteach_matrix_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}`
+  );
+};
+
 export {
   getSNAdata,
   getENAdata,
   getTeamworkBarchart,
   processAllVisualisations,
+  getCoTeachMatrixdata,
 };

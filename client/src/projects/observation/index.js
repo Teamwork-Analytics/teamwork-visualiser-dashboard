@@ -22,6 +22,7 @@ export const sortNotesDescending = (observationObj) => {
 
 export const manualLabels = {
   phases: [
+    { _id: "phaseId001", label: "Welcome" },
     { _id: "phaseId002", label: "1. Data Anomalies" },
     { _id: "phaseId003", label: "2. The Normalisation Process" },
     { _id: "phaseId004", label: "3. Multiple forms normalisation" },

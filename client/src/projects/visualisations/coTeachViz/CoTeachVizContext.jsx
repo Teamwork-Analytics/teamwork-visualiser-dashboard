@@ -12,9 +12,9 @@ const CoTeachVizContext = React.createContext();
 function CoTeachVizProvider({ children }) {
   const [coTeachVizState, coTeachVizSetState] = React.useState({
     all: true,
-    red: false,
-    green: false,
-    blue: false,
+    RED: false,
+    GREEN: false,
+    BLUE: false,
     authoritative: false,
     supervisory: false,
     interactional: false,

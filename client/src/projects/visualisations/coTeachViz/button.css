@@ -1,8 +1,10 @@
 .squareBox {
-  box-shadow: "0px 1px 3px grey";
+  /* box-shadow: 0px 3px 5px grey; */
   transition: box-shadow 0.3s;
+  /* transition: top ease 0.3s; */
 }
 .squareBox:hover {
   cursor: pointer;
-  box-shadow: 0 3px 5px grey;
+  /* top: -10px; */
+  box-shadow: 0 5px 7px grey;
 }

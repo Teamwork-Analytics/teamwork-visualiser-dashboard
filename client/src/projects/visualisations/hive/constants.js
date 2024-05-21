@@ -14,7 +14,7 @@ const COLOUR_LABELS = {
 };
 
 const DEFAULT_HIVE_STATE = {
-  participants: { RED: true, BLUE: true, GREEN: true, YELLOW: true },
+  participants: { RED: true, BLUE: true, GREEN: true },
   phase: [0, 100],
   isPositionOnly: false,
 };

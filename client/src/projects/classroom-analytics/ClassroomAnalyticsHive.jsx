@@ -42,12 +42,12 @@ const ClassroomAnalyticsHive = () => {
             timeRange={range}
             projectCode={PROJECT_CODE}
             height="30em" // default height
-            width="45vw"
+            width="40vw"
             showFilter={false}
           />
           <CoTeachVizView />
         </div>
-        <div style={{ width: "80vw", marginTop: "-5em" }}>
+        <div style={{ width: "80vw" }}>
           <TimeSliderController trackEvent={trackEvent} />
         </div>
       </div>

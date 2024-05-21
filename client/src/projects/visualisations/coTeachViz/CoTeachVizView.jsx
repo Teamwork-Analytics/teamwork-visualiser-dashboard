@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { COLOURS } from "../../../config/colours";
-import { useHive } from "../hive/HiveContext";
 import DataStorytellingBox from "./DataStorytellingBox";
-import MatrixVisualisation from "./MatrixVisualisation";
+import MatrixVisualisation from "./visualisations/MatrixVisualisation";
 import SquareButton from "./SquareButton";
 import { green } from "@mui/material/colors";
 import { CoTeachVizProvider, useCoTeachViz } from "./CoTeachVizContext";
+import OneTeacherViz from "./visualisations/OneTeacherViz";
+import SpatialPedagogyViz from "./visualisations/SpatialPedagogyViz";
+import { SpatialPedEnums, TeacherEnums } from "./enums";
 
 const CoTeachViz = () => {
-  const { changeColour } = useCoTeachViz();
+  const { coTeachVizState } = useCoTeachViz();
   const styles = {
     spatialPedagogyButttons: {
       display: " flex",
@@ -27,62 +29,51 @@ const CoTeachViz = () => {
   return (
     <div>
       <div style={styles.spatialPedagogyButttons}>
-        <SquareButton
-          id="all"
-          icon={"ALL"}
-          handleClick={() => changeColour("all")}
-        />
-        <SquareButton
-          icon={"A"}
-          id={"authoritative"}
-          lable={"authoritative"}
-          handleClick={() => changeColour("authoritative")}
-        />
-        <SquareButton
-          icon={"S"}
-          id={"supervisory"}
-          lable={"supervisory"}
-          handleClick={() => changeColour("supervisory")}
-        />
-        <SquareButton
-          id={"interactional"}
-          icon={"I"}
-          lable={"interactional"}
-          handleClick={() => changeColour("interactional")}
-        />
-        <SquareButton
-          id={"personal"}
-          icon={"P"}
-          lable={"personal"}
-          handleClick={() => changeColour("personal")}
-        />
+        <SquareButton id={"all"} icon={"ALL"} />
+        <SquareButton icon={"A"} id={"authoritative"} lable={"Authoritative"} />
+        <SquareButton icon={"S"} id={"supervisory"} lable={"Supervisory"} />
+        <SquareButton id={"interactional"} icon={"I"} lable={"Interactional"} />
+        <SquareButton id={"personal"} icon={"P"} lable={"Personal"} />
       </div>
       <div style={styles.actorsAndDisplay}>
         <div style={styles.actors}>
           <SquareButton
-            id={"red"}
+            id={"RED"}
             icon={"R"}
             lable={"Red TA"}
             colourHex={COLOURS.PERSON_1}
             // onClick={changeColour}
-            handleClick={() => changeColour("red")}
           />
           <SquareButton
-            id={"green"}
+            id={"GREEN"}
             icon={"G"}
             lable={"Green TA"}
             colourHex={COLOURS.PERSON_3}
-            handleClick={() => changeColour("green")}
           />
           <SquareButton
-            id={"blue"}
+            id={"BLUE"}
             icon={"B"}
             lable={"Blue TA"}
             colourHex={COLOURS.PERSON_2}
-            handleClick={() => changeColour("blue")}
           />
         </div>
-        <MatrixVisualisation />
+        {/* All visualisations set -- rendered one at a time */}
+        {coTeachVizState.all && <MatrixVisualisation />}
+        {coTeachVizState.RED && <OneTeacherViz type={TeacherEnums.RED} />}
+        {coTeachVizState.GREEN && <OneTeacherViz type={TeacherEnums.GREEN} />}
+        {coTeachVizState.BLUE && <OneTeacherViz type={TeacherEnums.BLUE} />}
+        {coTeachVizState.authoritative && (
+          <SpatialPedagogyViz type={SpatialPedEnums.AUTHORITATIVE} />
+        )}
+        {coTeachVizState.supervisory && (
+          <SpatialPedagogyViz type={SpatialPedEnums.SUPERVISORY} />
+        )}
+        {coTeachVizState.interactional && (
+          <SpatialPedagogyViz type={SpatialPedEnums.INTERACTIONAL} />
+        )}
+        {coTeachVizState.personal && (
+          <SpatialPedagogyViz type={SpatialPedEnums.PERSONAL} />
+        )}
       </div>
       <div>
         <DataStorytellingBox />
@@ -103,8 +94,6 @@ const CoTeachVizView = () => {
       justifyContent: "center",
     },
   };
-
-  const { hiveState, hiveSetState } = useHive();
 
   return (
     <div style={styles.container}>

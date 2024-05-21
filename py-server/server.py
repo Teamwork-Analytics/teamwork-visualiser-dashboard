@@ -6,6 +6,9 @@ from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
+from coteaching.visualiser import read_csv_by_time, get_matrix
+
+
 import os
 
 from pathlib import Path
@@ -140,6 +143,28 @@ def give_ena_test_data():
     # output_data = calculate_ena_metric(all_df, window_size)
 
     return jsonify(output_data)
+
+
+ # CO-TEACHING ROUTER
+
+@ app.route("/get_coteach_matrix_data", methods=['GET'])
+def give_coteach_matrix_data():
+    """
+    This function is to return the testing data for coteach data.
+        :return:
+        The format of returned json is 
+        {"RED": {"authoritative": int, ...}, ...: {}, }
+    """
+    session_id = request.args['sessionId']
+    start_time = request.args["start"]
+    end_time = request.args["end"]
+
+    data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
+    # result = get_all_ped_by_teacher(data, teacher)
+    result = get_matrix(data)
+
+    return jsonify(result)
+
 
 
 if __name__ == '__main__':
