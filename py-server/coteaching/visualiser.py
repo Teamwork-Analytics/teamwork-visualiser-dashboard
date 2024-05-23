@@ -1,7 +1,7 @@
 import sys
 import os
 import pandas as pd
-
+import get_text from textDescriptions
 
 COLOUR_MAPPING = {
     "RED": "R",
@@ -77,7 +77,10 @@ def get_all_ped_by_teacher(df, teacher:str):
     res = map_pedagogies_by_ta(ped_data)
     return res
 
-
+## Wrapper around function
+def get_textual_description(df, teacher_filter:str):
+    text = get_text(df,teacher_filter)
+    return text
 
 # MATRIX CALCULATION
 def calc_all_by_teacher_raw(df, teacher_filter):
