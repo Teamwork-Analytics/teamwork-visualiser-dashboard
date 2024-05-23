@@ -6,7 +6,7 @@ from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
-from coteaching.visualiser import read_csv_by_time, get_matrix
+from coteaching.visualiser import read_csv_by_time, get_matrix, get_all_ped_by_teacher, get_complete_coteach_data
 
 
 import os
@@ -18,11 +18,13 @@ PORT = "5003"
 
 app = Flask(__name__)
 TEST_MODE_LINX = True
-if TEST_MODE_LINX:
-    DIRECTORY = "E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\"
-else:
-    DIRECTORY = "C:\\develop\\saved_data\\"
+DIRECTORIES = {
+    "monash_pc": "C:\\develop\\saved_data\\",
+    "local_pc":"E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\",
+    "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+}
 
+DIRECTORY = DIRECTORIES["rio_macbook"]
 
 CORS(app)
 
@@ -165,6 +167,39 @@ def give_coteach_matrix_data():
 
     return jsonify(result)
 
+
+@ app.route("/get_complete_coteach_data", methods=['GET'])
+def give_complete_coteach_data():
+    """
+    """
+    session_id = request.args['sessionId']
+    start_time = request.args["start"]
+    end_time = request.args["end"]
+
+    data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
+    # result = get_all_ped_by_teacher(data, teacher)
+    result = get_complete_coteach_data(data)
+
+    return jsonify(result)
+
+
+@ app.route("/get_coteach_ped_data_by_ta", methods=['GET'])
+def give_coteach_by_ta_data():
+    """
+    This function is to return the testing data for coteach data.
+        :return:
+        The format of returned json is 
+        {"RED": {"authoritative": int, ...}, ...: {}, }
+    """
+    session_id = request.args['sessionId']
+    start_time = request.args["start"]
+    end_time = request.args["end"]
+    ta_colour = request.args['taColour'] # must be in all capital letters
+
+    data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
+    result = get_all_ped_by_teacher(data, ta_colour)
+
+    return jsonify(result)
 
 
 if __name__ == '__main__':

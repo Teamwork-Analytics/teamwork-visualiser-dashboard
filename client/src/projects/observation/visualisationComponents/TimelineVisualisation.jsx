@@ -15,10 +15,8 @@ import {
   BsArrowCounterclockwise,
   BsStarFill,
 } from "react-icons/bs";
-import { manualLabels } from "../index.js";
 import { COLOURS } from "../../../config/colours.js";
 import { useTracking } from "react-tracking";
-import { useEffect } from "react";
 
 // styling
 const timelineStyle = {
@@ -80,7 +78,7 @@ const CustomMark = ({ mark }) => {
               position: "absolute",
               top: "-20px",
               minWidth: "80px",
-              maxWidth: "120px",
+              maxWidth: "5em",
               transform: `translateX(-50%) translateY(-65%)`,
               ...markStyle,
             }}
@@ -324,7 +322,7 @@ export const TimeSliderController = ({ trackEvent }) => {
             marginTop: "5px",
           }}
         >
-          <Col
+          {/* <Col
             xs="auto"
             style={{
               paddingLeft: "5px",
@@ -343,7 +341,7 @@ export const TimeSliderController = ({ trackEvent }) => {
             >
               Select:
             </p>
-          </Col>
+          </Col> */}
 
           <Col
             style={{

@@ -67,10 +67,24 @@ const processAllVisualisations = async (simulationId) => {
   return await communicationAPI.get(`/generate_viz?sessionId=${simulationId}`);
 };
 
-const getCoTeachMatrixdata = async (body) => {
+const getCoTeachMatrixData = async (body) => {
   const { simulationId, startTime, endTime } = body;
   return await communicationAPI.get(
     `/get_coteach_matrix_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}`
+  );
+};
+
+const getCoTeachByTeacherData = async (body) => {
+  const { simulationId, startTime, endTime, taColour } = body;
+  return await communicationAPI.get(
+    `/get_coteach_ped_data_by_ta?sessionId=${simulationId}&start=${startTime}&end=${endTime}&taColour=${taColour}`
+  );
+};
+
+const getCompleteCoTeachData = async (body) => {
+  const { simulationId, startTime, endTime } = body;
+  return await communicationAPI.get(
+    `/get_complete_coteach_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}`
   );
 };
 
@@ -79,5 +93,7 @@ export {
   getENAdata,
   getTeamworkBarchart,
   processAllVisualisations,
-  getCoTeachMatrixdata,
+  getCoTeachMatrixData,
+  getCompleteCoTeachData,
+  getCoTeachByTeacherData,
 };

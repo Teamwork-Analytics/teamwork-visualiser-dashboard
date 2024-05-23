@@ -27,15 +27,21 @@ TEST_MODE_LINX = True
 
 IP_ADDRESS = "0.0.0.0"
 
-# todo: if you want to test locally, change this path to your local test_data_folder
-if TEST_MODE_LINX:
-    BASE_PATH = "E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\"
-    # BASE_PATH = r"F:\code folder\data_cleaner\data"
-else:
-    BASE_PATH = "C:\\develop\\saved_data\\"
+DIRECTORIES = {
+    "monash_pc": "C:\\develop\\saved_data\\",
+    "local_pc":"E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\",
+    "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+}
 
-    app = Flask(__name__)
+BASE_PATH = DIRECTORIES["rio_macbook"]
 
+# # todo: if you want to test locally, change this path to your local test_data_folder
+# if TEST_MODE_LINX:
+#     BASE_PATH = "E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\"
+#     # BASE_PATH = r"F:\code folder\data_cleaner\data"
+# else:
+#     BASE_PATH = "C:\\develop\\saved_data\\"
+# app = Flask(__name__)
 
 # folder_path, simulationid, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
 

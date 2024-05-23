@@ -8,6 +8,11 @@ import { CoTeachVizProvider, useCoTeachViz } from "./CoTeachVizContext";
 import OneTeacherViz from "./visualisations/OneTeacherViz";
 import SpatialPedagogyViz from "./visualisations/SpatialPedagogyViz";
 import { SpatialPedEnums, TeacherEnums } from "./enums";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import PersonIcon from "@mui/icons-material/Person";
+import { HexagonFill } from "react-bootstrap-icons";
 
 const CoTeachViz = () => {
   const { coTeachVizState } = useCoTeachViz();
@@ -30,31 +35,47 @@ const CoTeachViz = () => {
     <div>
       <div style={styles.spatialPedagogyButttons}>
         <SquareButton id={"all"} icon={"ALL"} />
-        <SquareButton icon={"A"} id={"authoritative"} lable={"Authoritative"} />
-        <SquareButton icon={"S"} id={"supervisory"} lable={"Supervisory"} />
-        <SquareButton id={"interactional"} icon={"I"} lable={"Interactional"} />
-        <SquareButton id={"personal"} icon={"P"} lable={"Personal"} />
+        <SquareButton
+          icon={<RecordVoiceOverIcon fontSize="large" />}
+          id={"authoritative"}
+          lable={"Lecturing"}
+        />
+        <SquareButton
+          icon={<VisibilityIcon fontSize="large" />}
+          id={"supervisory"}
+          lable={"Observing"}
+        />
+        <SquareButton
+          id={"interactional"}
+          icon={<Diversity3Icon fontSize="large" />}
+          lable={"Interacting"}
+        />
+        <SquareButton
+          id={"personal"}
+          icon={<PersonIcon fontSize="large" />}
+          lable={"Personal"}
+        />
       </div>
       <div style={styles.actorsAndDisplay}>
         <div style={styles.actors}>
           <SquareButton
             id={"RED"}
-            icon={"R"}
+            icon={<HexagonFill color={COLOURS.PERSON_1} />}
             lable={"Red TA"}
-            colourHex={COLOURS.PERSON_1}
+            // colourHex={COLOURS.PERSON_1}
             // onClick={changeColour}
           />
           <SquareButton
             id={"GREEN"}
-            icon={"G"}
+            icon={<HexagonFill color={COLOURS.PERSON_3} />}
             lable={"Green TA"}
-            colourHex={COLOURS.PERSON_3}
+            // colourHex={COLOURS.PERSON_3}
           />
           <SquareButton
             id={"BLUE"}
-            icon={"B"}
+            icon={<HexagonFill color={COLOURS.PERSON_2} />}
             lable={"Blue TA"}
-            colourHex={COLOURS.PERSON_2}
+            // colourHex={COLOURS.PERSON_2}
           />
         </div>
         {/* All visualisations set -- rendered one at a time */}
@@ -86,7 +107,7 @@ const CoTeachVizView = () => {
   const styles = {
     container: {
       height: "60vh",
-      width: "45vw",
+      // width: "20vw",
       margin: "1em",
       display: "flex",
       flexDirection: "column",

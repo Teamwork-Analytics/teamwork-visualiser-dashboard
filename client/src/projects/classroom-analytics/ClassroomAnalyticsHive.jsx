@@ -24,6 +24,7 @@ const ClassroomAnalyticsHive = () => {
       alignItems: "center",
     },
     visualisationsContainer: {
+      marginTop: "1em",
       display: "flex",
       flexDirection: "row",
       justifyContent: "space-between",
@@ -34,9 +35,12 @@ const ClassroomAnalyticsHive = () => {
   return (
     <Track>
       <div style={styles.container}>
-        <h2>
+        <h3>
           {simulationId}: {simulationDec}
-        </h2>
+        </h3>
+        <div style={{ width: "75vw", marginBottom: "1em", marginTop: "1em" }}>
+          <TimeSliderController trackEvent={trackEvent} />
+        </div>
         <div style={styles.visualisationsContainer}>
           <HiveView
             timeRange={range}
@@ -46,9 +50,6 @@ const ClassroomAnalyticsHive = () => {
             showFilter={false}
           />
           <CoTeachVizView />
-        </div>
-        <div style={{ width: "80vw" }}>
-          <TimeSliderController trackEvent={trackEvent} />
         </div>
       </div>
     </Track>
