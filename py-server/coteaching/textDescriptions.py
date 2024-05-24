@@ -61,13 +61,18 @@ def get_text_description_coteaching_strategy(one_pair_max_coteaching, one_pair_m
 
     # Case 1: Both pairs do not have a coteaching strategy
     if one_pair_max_coteaching == 'None' and second_pair_max_coteaching == 'None':
-        text = "During this period, we did not identify any co-teaching strategies with the other TAs."
+        text = "During this period, we did <b>not</b> identify any co-teaching strategies with the other TAs."
 
     # Case 2: At least one has a co-teaching strategy
     else: 
-        text = f"""Your most common co-teaching strategy was {bgr_coteaching.iloc[0]['coteaching']}, 
-            which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
-            with the {bgr_coteaching.iloc[0]['names']} TA. """  
+        strategy = bgr_coteaching.iloc[0]['coteaching']
+        text = f"""Your most common co-teaching strategy was 
+        <a
+        data-tooltip-id="{strategy.lower().replace(',','').replace(' ', '-')}">
+        <b>{strategy}</b>
+        </a>, 
+        which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
+        with the <b>{bgr_coteaching.iloc[0]['names']}</b> TA. """  
         
     text.replace('\n', '')
     text = ' '.join(text.split())
@@ -96,9 +101,15 @@ def get_text_description_all(df_time):
 
     ### Case 2: There's only one present
     elif len(bgr_coteaching) > 1: 
-        text = f"""The most common co-teaching strategy was {bgr_coteaching.iloc[0]['coteaching']}, 
-            which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
-            by the {bgr_coteaching.iloc[0]['names']}. """  
+        strategy = bgr_coteaching.iloc[0]['coteaching']
+        text = f"""The most common co-teaching strategy was 
+        <a
+        data-tooltip-id="{strategy.lower().replace(',','').replace(' ', '-')}">
+        <b>{strategy}</b>
+        </a>, 
+        which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
+        by the <b>{bgr_coteaching.iloc[0]['names']}</b> TA. """ 
+
 
     text.replace('\n', '')
     text = ' '.join(text.split())
