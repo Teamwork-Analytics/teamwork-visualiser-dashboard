@@ -37,4 +37,23 @@ const PedagogyMapEnums = Object.freeze({
   personal: ["personal", "watching"],
 });
 
-export { TeacherEnums, TeacherBackEndEnums, SpatialPedEnums, PedagogyMapEnums };
+const CoTeachToolTips = {
+  "one-teacher-one-observer":
+    "One teacher leads the lesson while the other observes and takes notes on student performance and engagement.",
+  "one-teacher-one-assistant":
+    "One teacher leads the lesson while the other assists students, provides support, and helps manage the classroom.",
+  "parallel-teaching":
+    "The class is split into two groups, and both teachers simultaneously teach the same content to their respective groups.",
+  "alternative-teaching":
+    "One teacher leads the main lesson with the larger group, while the other teacher works with a smaller group for specialized instruction or enrichment.",
+  "team-teaching":
+    "Both teachers collaboratively plan and deliver the lesson together, sharing equal responsibility for instruction.",
+};
+
+export {
+  TeacherEnums,
+  TeacherBackEndEnums,
+  SpatialPedEnums,
+  PedagogyMapEnums,
+  CoTeachToolTips,
+};

@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { getCoTeachingStory } from "../../../services/py-server";
 import { useTimeline } from "../../observation/visualisationComponents/TimelineContext";
 import { useParams } from "react-router-dom";
+import { CoTeachToolTips } from "./enums";
+import { useCoTeachViz } from "./CoTeachVizContext";
+import { Tooltip } from "react-tooltip";
 
 const DataStorytellingBox = () => {
+  const { coTeachVizState } = useCoTeachViz();
   const [isLoading, setIsLoading] = useState(false);
 
   const styles = {
@@ -28,13 +32,27 @@ const DataStorytellingBox = () => {
   const [text, setText] = useState("No story to tell.");
 
   useEffect(() => {
+    const getActiveColour = () => {
+      const preselectedColours = ["RED", "GREEN", "BLUE"];
+      for (const key in coTeachVizState) {
+        if (coTeachVizState[key] === true) {
+          if (preselectedColours.includes(key)) {
+            return key;
+          }
+        }
+      }
+      return null;
+    };
+
     async function callData() {
       try {
         const res = await getCoTeachingStory({
           simulationId: simulationId,
           startTime: startTime,
           endTime: endTime,
+          taColour: getActiveColour(),
         });
+        console.log(getActiveColour());
         if (res.status === 200) {
           setText(res.data);
           // setIsError(false);
@@ -45,7 +63,7 @@ const DataStorytellingBox = () => {
       }
     }
     callData();
-  }, [simulationId, startTime, endTime]);
+  }, [simulationId, startTime, endTime, coTeachVizState]);
 
   return (
     <div style={styles.container}>
@@ -59,9 +77,16 @@ const DataStorytellingBox = () => {
           paddingTop: 0,
           marginBottom: "0",
         }}
-      >
-        {text}
-      </p>
+        dangerouslySetInnerHTML={{ __html: text }}
+      />
+      {Object.keys(CoTeachToolTips).map((e) => (
+        <Tooltip id={e} place="top">
+          {CoTeachToolTips[e]}
+        </Tooltip>
+      ))}
+      {/* <p data-tooltip-id="one-teacher-one-observer" data-tooltip-place="top">
+        Blehh
+      </p> */}
     </div>
   );
 };

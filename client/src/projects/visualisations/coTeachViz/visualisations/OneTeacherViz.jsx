@@ -10,8 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { faker } from "@faker-js/faker";
-import { COLOURS } from "../../../../config/colours";
+
 import { getCoTeachByTeacherData } from "../../../../services/py-server";
 import { useEffect, useState } from "react";
 import { useTimeline } from "../../../observation/visualisationComponents/TimelineContext";

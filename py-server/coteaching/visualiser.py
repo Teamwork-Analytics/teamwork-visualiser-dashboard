@@ -1,7 +1,7 @@
 import sys
 import os
 import pandas as pd
-from textDescriptions import get_text
+from coteaching.textDescriptions import get_text
 
 COLOUR_MAPPING = {
     "RED": "R",

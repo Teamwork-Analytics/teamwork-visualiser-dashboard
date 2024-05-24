@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Tooltip } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
@@ -79,7 +79,7 @@ const DebriefPrimaryControlView = () => {
       <Button variant="dark" value={"stopTime"} onClick={sendRecordedTime}>
         Stop Audio Recording
       </Button>
-      <ReactTooltip />
+      <Tooltip />
     </div>
   );
 };

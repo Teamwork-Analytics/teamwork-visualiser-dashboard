@@ -3,7 +3,7 @@ import { COLOURS } from "../../../config/colours";
 import DataStorytellingBox from "./DataStorytellingBox";
 import MatrixVisualisation from "./visualisations/MatrixVisualisation";
 import SquareButton from "./SquareButton";
-import { green } from "@mui/material/colors";
+
 import { CoTeachVizProvider, useCoTeachViz } from "./CoTeachVizContext";
 import OneTeacherViz from "./visualisations/OneTeacherViz";
 import SpatialPedagogyViz from "./visualisations/SpatialPedagogyViz";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
+import ReactTooltip, { Tooltip } from "react-tooltip";
 import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
 import ObservationAPI from "../../services/api/observation";
 import { startBaselineAll, startAll, stopAll } from "../../services/eureka";
@@ -98,7 +98,7 @@ const ObservationPrimaryControlView = () => {
       >
         Stop Simulation
       </Button>
-      <ReactTooltip />
+      <Tooltip />
       <small style={{ fontSize: "10px" }}>
         Note: Our visualisations are time-sensitive. Once these buttons are
         clicked, they will be disabled. Mistake? please click reset button

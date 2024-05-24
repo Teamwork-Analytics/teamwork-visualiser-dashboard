@@ -2,7 +2,7 @@ import { useState } from "react";
 import * as Hive from "../visualisations/hive";
 
 import { useParams } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
+import ReactTooltip, { Tooltip } from "react-tooltip";
 import { Button, ButtonGroup, Carousel, Image } from "react-bootstrap";
 import Clock from "react-live-clock";
 
@@ -116,7 +116,7 @@ const VisualisationView = () => {
         </div>
       )}
 
-      <ReactTooltip />
+      <Tooltip />
     </div>
   );
 };

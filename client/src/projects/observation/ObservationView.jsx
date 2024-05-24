@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Tabs, Tab, Container } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 import DebriefingControllerModule from "./DebriefingControllerModule";
 import ObservationTaggingModule from "./ObservationTaggingModule";
 import { useObservation } from "./ObservationContext";
@@ -121,7 +121,7 @@ const ObservationView = () => {
               </div>
             </Tab>
           </Tabs>
-          <ReactTooltip />
+          <Tooltip />
         </div>
       </NurseNameProvider>
     </Track>
