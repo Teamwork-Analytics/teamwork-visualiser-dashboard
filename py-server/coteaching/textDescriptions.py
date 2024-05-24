@@ -7,20 +7,21 @@ COLOUR_MAPPING = {
 }
 
 def get_ta_pairs(current_TA, ta_list = ['B', 'G', 'R']):
-    first = True
-    for ta in ta_list:
-        if first & (ta != current_TA):
-            partner1 = ta
-            if ta > current_TA:
-                pair1 = f'{current_TA}{ta}'
-            else:
-                pair1 = f'{ta}{current_TA}'
-            first = False
-        partner2 = ta
-        if ta > current_TA:
-            pair2 = f'{current_TA}{ta}'
-        else:
-            pair2 = f'{ta}{current_TA}'
+    ta_list = ['B', 'G', 'R']
+    ta_list.remove(current_TA)
+    partner1 = ta_list[0]
+    partner2 = ta_list[1]
+
+    if partner1 > current_TA:
+        pair1 = f'{current_TA}{partner1}'
+    else:
+        pair1 = f'{partner1}{current_TA}'
+
+    if partner2 > current_TA:
+        pair2 = f'{current_TA}{partner2}'
+    else:
+        pair2 = f'{partner2}{current_TA}'
+
     return partner1, partner2, pair1, pair2
 
 
@@ -104,7 +105,8 @@ def get_text_description_all(df_time):
 
     return text 
 
-def get_text(df_time, current_TA='ALL'):
+def get_text(df_time, current_TA='ALL', type = 'ALL'):
+    # Type: authoritative, supervisory, interactional, personal
     text = "Error"
 
     if current_TA == 'ALL':
