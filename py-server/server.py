@@ -6,7 +6,7 @@ from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
-from coteaching.visualiser import read_csv_by_time, get_matrix, get_all_ped_by_teacher, get_complete_coteach_data
+from coteaching.visualiser import read_csv_by_time, get_matrix, get_all_ped_by_teacher, get_complete_coteach_data, get_textual_description
 
 
 import os
@@ -24,7 +24,7 @@ DIRECTORIES = {
     "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 }
 
-DIRECTORY = DIRECTORIES["rio_macbook"]
+DIRECTORY = DIRECTORIES["local_pc"]
 
 CORS(app)
 
@@ -198,6 +198,20 @@ def give_coteach_by_ta_data():
 
     data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
     result = get_all_ped_by_teacher(data, ta_colour)
+
+    return jsonify(result)
+
+@ app.route("/get_coteach_story", methods=['GET'])
+def give_coteach_story():
+    """
+    """
+    session_id = request.args['sessionId']
+    start_time = request.args["start"]
+    end_time = request.args["end"]
+    ta_colour = request.args['taColour'] # must be in all capital letters
+
+    data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
+    result = get_textual_description(data, ta_colour)
 
     return jsonify(result)
 

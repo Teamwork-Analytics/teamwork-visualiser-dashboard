@@ -88,6 +88,14 @@ const getCompleteCoTeachData = async (body) => {
   );
 };
 
+const getCoTeachingStory = async (body) => {
+  const { simulationId, startTime, endTime, taColour } = body;
+  const colourLabel = taColour !== null ? taColour : "ALL";
+  return await communicationAPI.get(
+    `/get_coteach_story?sessionId=${simulationId}&start=${startTime}&end=${endTime}&taColour=${colourLabel}`
+  );
+};
+
 export {
   getSNAdata,
   getENAdata,
@@ -96,4 +104,5 @@ export {
   getCoTeachMatrixData,
   getCompleteCoTeachData,
   getCoTeachByTeacherData,
+  getCoTeachingStory,
 };

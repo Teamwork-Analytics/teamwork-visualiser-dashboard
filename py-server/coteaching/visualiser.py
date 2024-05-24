@@ -1,7 +1,7 @@
 import sys
 import os
 import pandas as pd
-import get_text from textDescriptions
+from textDescriptions import get_text
 
 COLOUR_MAPPING = {
     "RED": "R",
@@ -173,12 +173,15 @@ if __name__ == '__main__':
     start_time = 0
     end_time = 3000
     session_id = "374"
-    teacher = 'GREEN'
-    # DIRECTORY = "E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\"
-    DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+    # teacher = 'BLUE'
+    teacher = "ALL"
+    
+    DIRECTORY = "E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\"
+    # DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 
     data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
-    result = get_all_ped_by_teacher(data, teacher)
+    # result = get_all_ped_by_teacher(data, teacher)
+    result = get_text(data, teacher)
     # result = get_matrix(data)
 
     print(result)

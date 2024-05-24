@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCoTeachingStory } from "../../../services/py-server";
+import { useTimeline } from "../../observation/visualisationComponents/TimelineContext";
+import { useParams } from "react-router-dom";
 
 const DataStorytellingBox = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +20,33 @@ const DataStorytellingBox = () => {
       margin: "0.2em",
     },
   };
+  const { range } = useTimeline();
+  const { simulationId } = useParams();
+  const startTime = range[0];
+  const endTime = range[1];
+
+  const [text, setText] = useState("No story to tell.");
+
+  useEffect(() => {
+    async function callData() {
+      try {
+        const res = await getCoTeachingStory({
+          simulationId: simulationId,
+          startTime: startTime,
+          endTime: endTime,
+        });
+        if (res.status === 200) {
+          setText(res.data);
+          // setIsError(false);
+        }
+      } catch (error) {
+        console.log(error);
+        // setIsError(true);
+      }
+    }
+    callData();
+  }, [simulationId, startTime, endTime]);
+
   return (
     <div style={styles.container}>
       <small style={{ textAlign: "right" }}>
@@ -30,10 +60,7 @@ const DataStorytellingBox = () => {
           marginBottom: "0",
         }}
       >
-        Data Storytelling text here. Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Donec dui elit, ultrices consequat maximus nec,
-        molestie viverra ante. In massa arcu, dictum eget ex eget, placerat
-        pulvinar sem.
+        {text}
       </p>
     </div>
   );

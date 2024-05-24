@@ -1,5 +1,11 @@
 import pandas as pd 
 
+COLOUR_MAPPING = {
+    "RED": "R",
+    "GREEN": "G",
+    "BLUE": "B"
+}
+
 def get_ta_pairs(current_TA, ta_list = ['B', 'G', 'R']):
     first = True
     for ta in ta_list:
@@ -162,13 +168,13 @@ def get_text_description_all(df_time):
 
     return text 
 
-def get_text(df_time, current_TA='all'):
+def get_text(df_time, current_TA='ALL'):
     text = "Error"
 
-    if current_TA == 'all':
+    if current_TA == 'ALL':
         text = get_text_description_all(df_time)
-    else:  
-        partner1, partner2, pair1, pair2 = get_ta_pairs(current_TA)
+    else:
+        partner1, partner2, pair1, pair2 = get_ta_pairs(COLOUR_MAPPING[current_TA])
         one_pair_max_perc, one_pair_max_coteaching = get_max_coteaching(pair1, partner1, df_time)
         second_pair_max_perc, second_pair_max_coteaching = get_max_coteaching(pair2, partner2, df_time)
         text = get_text_description_coteaching_strategy(one_pair_max_coteaching, one_pair_max_perc, 
