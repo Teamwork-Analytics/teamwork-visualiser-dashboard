@@ -68,7 +68,7 @@ def get_text_description_coteaching_strategy(one_pair_max_coteaching, one_pair_m
         strategy = bgr_coteaching.iloc[0]['coteaching']
         text = f"""Your most common co-teaching strategy was 
         <a
-        data-tooltip-id="{strategy.lower().replace(',','').replace(' ', '-')}">
+        data-tip data-for="{strategy.lower().replace(',','').replace(' ', '-')}">
         <b>{strategy}</b>
         </a>, 
         which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
@@ -104,7 +104,7 @@ def get_text_description_all(df_time):
         strategy = bgr_coteaching.iloc[0]['coteaching']
         text = f"""The most common co-teaching strategy was 
         <a
-        data-tooltip-id="{strategy.lower().replace(',','').replace(' ', '-')}">
+        data-tip data-for="{strategy.lower().replace(',','').replace(' ', '-')}">
         <b>{strategy}</b>
         </a>, 
         which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
