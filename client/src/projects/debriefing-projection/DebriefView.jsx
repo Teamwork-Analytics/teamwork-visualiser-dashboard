@@ -9,11 +9,13 @@
 
 import { useState, useEffect } from "react";
 import { taggingSocket } from "./socket";
+import { Box } from "@mui/material";
 import ConnectionState from "./socketComponents/ConnectionState";
 import ConnectionManager from "./socketComponents/ConnectionManager";
 import DisplayViz from "../../components/displays/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
 import { useParams } from "react-router-dom";
+import Spline from "@splinetool/react-spline";
 
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(taggingSocket.connected);
@@ -65,6 +67,10 @@ const DebriefView = () => {
     };
   }, []);
 
+  const onMouseDown = (e) => {
+    console.log("I have been clicked!");
+  };
+
   const hideConnectButton = true;
 
   return (
@@ -82,11 +88,28 @@ const DebriefView = () => {
         }}
       >
         {/* Display the selected visualisations with the received range */}
-        <DisplayViz
+        {/* <DisplayViz
           selectedVis={dispList}
           range={range}
           optionalHiveState={hiveState}
-        />
+        /> */}
+
+        <Box
+          borderRadius={5}
+          p={5}
+          sx={{
+            backgroundColor: "#E6EBEF",
+            width: "350px",
+            height: "400px",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          }}
+        >
+          <Spline
+            style={{ width: "100%", height: "100%", alignContent: "center" }}
+            scene="https://prod.spline.design/p2v7eOju-kg0Tp9B/scene.splinecode"
+            onMouseDown={(e) => onMouseDown(e)}
+          />
+        </Box>
       </div>
       {/* Display connection state */}
       <ConnectionState isConnected={isConnected} />
