@@ -39,9 +39,9 @@ const PedagogyMapEnums = Object.freeze({
 
 const CoTeachToolTips = {
   "one-teacher-one-observer":
-    "One teacher leads the lesson while the other observes and takes notes on student performance and engagement.",
+    "One teacher leads the lesson while the other observes classroom, waiting to be called by student(s).",
   "one-teacher-one-assistant":
-    "One teacher leads the lesson while the other assists students, provides support, and helps manage the classroom.",
+    "One teacher leads the lesson while the other assists and provides support.",
   "parallel-teaching":
     "The class is split into two groups, and both teachers simultaneously teach the same content to their respective groups.",
   "alternative-teaching":

@@ -15,6 +15,7 @@ import { getCoTeachByTeacherData } from "../../../../services/py-server";
 import { useEffect, useState } from "react";
 import { useTimeline } from "../../../observation/visualisationComponents/TimelineContext";
 import { useParams } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 ChartJS.register(
   CategoryScale,
@@ -34,18 +35,21 @@ export const options = {
     },
   },
   responsive: true,
-  // scales: {
-  //   x: {
-  //     stacked: true,
-  //   },
-  //   y: {
-  //     stacked: true,
-  //   },
-  // },
+  scales: {
+    y: {
+      ticks: {
+        beginAtZero: true,
+      },
+      grid: {
+        display: false, // Hide x grid
+      },
+      max: 100,
+    },
+  },
   // parsing: { xAxisKey: "id", yAxisKey: "value" },
 };
 
-const labels = ["Lecturing", "Observing", "Interacting", "Watching"];
+const labels = ["Lecturing", "Observing", "Interacting", "Personal"];
 
 const OneTeacherViz = ({ type }) => {
   const { range } = useTimeline();
@@ -140,7 +144,13 @@ const OneTeacherViz = ({ type }) => {
 
   return (
     <div style={mainBoxStyles.container}>
-      <Bar options={options} data={data} />
+      {!isError ? (
+        <Bar options={options} data={data} />
+      ) : (
+        <div style={mainBoxStyles.loading}>
+          <Spinner fontSize={"large"} />
+        </div>
+      )}
     </div>
   );
 };

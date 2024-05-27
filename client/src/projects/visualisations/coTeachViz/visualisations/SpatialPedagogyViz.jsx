@@ -16,6 +16,7 @@ import { useTimeline } from "../../../observation/visualisationComponents/Timeli
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getCompleteCoTeachData } from "../../../../services/py-server";
+import { Spinner } from "react-bootstrap";
 
 ChartJS.register(
   CategoryScale,
@@ -32,6 +33,17 @@ export const options = {
   elements: {
     bar: {
       borderWidth: 1,
+    },
+  },
+  scales: {
+    x: {
+      ticks: {
+        beginAtZero: true,
+      },
+      grid: {
+        display: false, // Hide x grid
+      },
+      max: 100,
     },
   },
   responsive: true,
@@ -94,7 +106,6 @@ const SpatialPedagogyViz = ({ type }) => {
     // let orderActor = { RED: 1, GREEN: 2, BLUE: 3 };
     // result.sort((a, b) => orderActor[a.actor] - orderActor[b.actor]);
 
-    console.log(result);
     return result;
   };
   useEffect(() => {
@@ -125,13 +136,13 @@ const SpatialPedagogyViz = ({ type }) => {
       {
         label: pedLabels[0],
         data: primaryData,
-        borderColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(129,15,124)",
         backgroundColor: "rgb(129,15,124, 0.5)",
       },
       {
         label: pedLabels[1],
         data: secondaryData,
-        borderColor: "rgb(53, 162, 235)",
+        borderColor: "rgb(140,150,198)",
         backgroundColor: "rgba(140,150,198, 0.5)",
       },
     ],
@@ -139,7 +150,13 @@ const SpatialPedagogyViz = ({ type }) => {
 
   return (
     <div style={mainBoxStyles.container}>
-      <Bar options={options} data={data} />
+      {!isError ? (
+        <Bar options={options} data={data} />
+      ) : (
+        <div style={mainBoxStyles.loading}>
+          <Spinner size={"lg"} />
+        </div>
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./button.css";
 import { useCoTeachViz } from "./CoTeachVizContext";
 import { useHive } from "../hive/HiveContext";
+import { useTracking } from "react-tracking";
 
 const DEFAULT_ACTIVE_COLOUR = "#303030";
 const DEFAULT_COLOUR = "lightGrey";
@@ -19,6 +20,8 @@ const SquareButton = ({
   // const [isActive, setIsActive] = useState();
   // const [colourState, setColourState] = useState(DEFAULT_COLOUR);
   // const [fontColour, setFontColour] = useState(DEFAULT_FONT_COLOUR);
+
+  const { Track, trackEvent } = useTracking({ page: "Classroom Analytics" });
 
   const styles = {
     container: {
@@ -77,22 +80,43 @@ const SquareButton = ({
   };
 
   return (
-    <div
-      data-tooltip-id={id}
-      className={"squareBox"}
-      style={styles.container}
-      onClick={() => {
-        changeColour(id);
-        filterHiveViz();
-      }}
-    >
-      <div>
-        <h2>
-          <b>{icon}</b>
-        </h2>
-        {lable !== null ? <small>{lable}</small> : null}
+    <Track>
+      <div
+        data-tooltip-id={id}
+        className={"squareBox"}
+        style={styles.container}
+        onMouseEnter={() =>
+          trackEvent({
+            action: "hover-enter",
+            element: `filterBox${id}`,
+            data: "lable-" + lable,
+          })
+        }
+        onMouseLeave={() =>
+          trackEvent({
+            action: "hover-leave",
+            element: `filterBox${id}`,
+            data: "lable-" + lable,
+          })
+        }
+        onClick={() => {
+          trackEvent({
+            action: "click",
+            element: `filterBox${id}`,
+            data: "lable-" + lable,
+          });
+          changeColour(id);
+          filterHiveViz();
+        }}
+      >
+        <div>
+          <h2>
+            <b>{icon}</b>
+          </h2>
+          {lable !== null ? <small>{lable}</small> : null}
+        </div>
       </div>
-    </div>
+    </Track>
   );
 };
 

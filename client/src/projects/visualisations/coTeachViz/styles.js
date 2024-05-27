@@ -6,8 +6,9 @@ const mainBoxStyles = {
     flexWrap: "wrap",
   },
   loading: {
+    display: "flex",
     width: "100%",
-    height: "17.5em",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
   },

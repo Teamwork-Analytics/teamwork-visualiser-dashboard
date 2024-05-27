@@ -5,10 +5,14 @@ import { useParams } from "react-router-dom";
 import { CoTeachToolTips } from "./enums";
 import { useCoTeachViz } from "./CoTeachVizContext";
 import { Tooltip } from "react-tooltip";
+import { useTracking } from "react-tracking";
+import { mainBoxStyles } from "./styles";
+import { Spinner } from "react-bootstrap";
 
 const DataStorytellingBox = () => {
   const { coTeachVizState } = useCoTeachViz();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const { Track, trackEvent } = useTracking({ page: "Classroom Analytics" });
 
   const styles = {
     container: {
@@ -28,7 +32,6 @@ const DataStorytellingBox = () => {
   const { simulationId } = useParams();
   const startTime = range[0];
   const endTime = range[1];
-
   const [text, setText] = useState("No story to tell.");
 
   useEffect(() => {
@@ -45,6 +48,7 @@ const DataStorytellingBox = () => {
 
     async function callData() {
       try {
+        setIsLoading(true);
         const res = await getCoTeachingStory({
           simulationId: simulationId,
           startTime: startTime,
@@ -59,11 +63,11 @@ const DataStorytellingBox = () => {
         });
         if (res.status === 200) {
           setText(res.data);
-          // setIsError(false);
+          setIsLoading(false);
         }
       } catch (error) {
         console.log(error);
-        // setIsError(true);
+        setIsLoading(true);
       }
     }
     callData();
@@ -72,17 +76,39 @@ const DataStorytellingBox = () => {
   return (
     <div style={styles.container}>
       <small style={{ textAlign: "right" }}>
-        <b>Team-teaching</b>
+        <b>Team-teaching Description</b>
       </small>
-      <p
-        style={{
-          padding: "1em",
-          textAlign: "left",
-          paddingTop: 0,
-          marginBottom: "0",
-        }}
-        dangerouslySetInnerHTML={{ __html: text }}
-      />
+
+      {!isLoading ? (
+        <p
+          onMouseEnter={() => {
+            trackEvent({
+              action: "hover-enter",
+              element: "dataStorytellingParagraph",
+              data: text,
+            });
+          }}
+          onMouseLeave={() => {
+            trackEvent({
+              action: "hover-leave",
+              element: "dataStorytellingParagraph",
+              data: text,
+            });
+          }}
+          style={{
+            padding: "1em",
+            textAlign: "left",
+            paddingTop: 0,
+            marginBottom: "0",
+          }}
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
+      ) : (
+        <div style={mainBoxStyles.loading}>
+          <Spinner size={"sm"} />
+          Loading...
+        </div>
+      )}
       {Object.keys(CoTeachToolTips).map((e) => (
         <Tooltip id={e} place="top" className="tooltip">
           {CoTeachToolTips[e]}
