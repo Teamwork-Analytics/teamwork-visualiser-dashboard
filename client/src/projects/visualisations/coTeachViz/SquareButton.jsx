@@ -78,6 +78,7 @@ const SquareButton = ({
 
   return (
     <div
+      data-tooltip-id={id}
       className={"squareBox"}
       style={styles.container}
       onClick={() => {

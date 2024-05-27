@@ -3,16 +3,17 @@ import { COLOURS } from "../../../config/colours";
 import DataStorytellingBox from "./DataStorytellingBox";
 import MatrixVisualisation from "./visualisations/MatrixVisualisation";
 import SquareButton from "./SquareButton";
-
 import { CoTeachVizProvider, useCoTeachViz } from "./CoTeachVizContext";
 import OneTeacherViz from "./visualisations/OneTeacherViz";
 import SpatialPedagogyViz from "./visualisations/SpatialPedagogyViz";
-import { SpatialPedEnums, TeacherEnums } from "./enums";
+import { SpatialPedEnums, TeacherEnums, CoTeachButtonsToolTips } from "./enums";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonIcon from "@mui/icons-material/Person";
 import { HexagonFill } from "react-bootstrap-icons";
+import { Tooltip } from "react-tooltip";
+import "./index.css";
 
 const CoTeachViz = () => {
   const { coTeachVizState } = useCoTeachViz();
@@ -46,12 +47,12 @@ const CoTeachViz = () => {
           lable={"Observing"}
         />
         <SquareButton
-          id={"interactional"}
+          id="interactional"
           icon={<Diversity3Icon fontSize="large" />}
           lable={"Interacting"}
         />
         <SquareButton
-          id={"personal"}
+          id="personal"
           icon={<PersonIcon fontSize="large" />}
           lable={"Personal"}
         />
@@ -120,6 +121,16 @@ const CoTeachVizView = () => {
     <div style={styles.container}>
       <CoTeachVizProvider>
         <CoTeachViz />
+        <div>
+          {Object.keys(CoTeachButtonsToolTips).map((e) => {
+            console.log(CoTeachButtonsToolTips[e]);
+            return (
+              <Tooltip id={e} className="tooltip">
+                {CoTeachButtonsToolTips[e]}
+              </Tooltip>
+            );
+          })}
+        </div>
       </CoTeachVizProvider>
     </div>
   );

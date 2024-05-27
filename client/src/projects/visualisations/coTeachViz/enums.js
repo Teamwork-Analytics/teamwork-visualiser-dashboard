@@ -50,10 +50,25 @@ const CoTeachToolTips = {
     "Both teachers collaboratively plan and deliver the lesson together, sharing equal responsibility for instruction.",
 };
 
+const CoTeachButtonsToolTips = {
+  authoritative:
+    "A space usage when teacher is positioned to conduct formal teaching as well as to provide instructions to facilitate the lesson. It includes a situation when teacher helps another teacher in lecture space.",
+  supervisory:
+    "A space usage when teacher observes classroom and moves between the rows of the students’ desk without offering consultation to the student(s).",
+  interactional:
+    "A space usage when teacher communicates with student(s) or other teacher(s).",
+  personal:
+    "A space usage when teacher is on their own laptop/phone, watching the other teacher's lecture, or prepare for the next stage of the lesson.",
+  RED: "Click to filter by Red teacher.",
+  GREEN: "Click to filter by Green teacher.",
+  BLUE: "Click to filter by Blue teacher.",
+};
+
 export {
   TeacherEnums,
   TeacherBackEndEnums,
   SpatialPedEnums,
   PedagogyMapEnums,
   CoTeachToolTips,
+  CoTeachButtonsToolTips,
 };

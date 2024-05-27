@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Tooltip } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import { startDebriefAudio, stopDebriefAudio } from "../../services/eureka";
 import { useDebriefing } from "./DebriefContext";
 import { processAllVisualisations } from "../../services/py-server";
@@ -79,7 +79,7 @@ const DebriefPrimaryControlView = () => {
       <Button variant="dark" value={"stopTime"} onClick={sendRecordedTime}>
         Stop Audio Recording
       </Button>
-      <Tooltip />
+      <ReactTooltip />
     </div>
   );
 };

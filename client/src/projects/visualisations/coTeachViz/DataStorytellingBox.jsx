@@ -84,7 +84,7 @@ const DataStorytellingBox = () => {
         dangerouslySetInnerHTML={{ __html: text }}
       />
       {Object.keys(CoTeachToolTips).map((e) => (
-        <Tooltip id={e} place="top">
+        <Tooltip id={e} place="top" className="tooltip">
           {CoTeachToolTips[e]}
         </Tooltip>
       ))}

@@ -8,3 +8,11 @@
   /* top: -10px; */
   box-shadow: 0 5px 7px grey;
 }
+
+.tooltip {
+  /* padding: 8px 16px;
+    border-radius: 3px;
+    font-size: 90%; */
+  width: max-content;
+  max-width: 500px;
+}

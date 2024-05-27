@@ -33,7 +33,7 @@ DIRECTORIES = {
     "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 }
 
-BASE_PATH = DIRECTORIES["rio_macbook"]
+BASE_PATH = DIRECTORIES["local_pc"]
 
 # # todo: if you want to test locally, change this path to your local test_data_folder
 # if TEST_MODE_LINX:
