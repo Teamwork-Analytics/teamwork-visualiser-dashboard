@@ -24,7 +24,7 @@ DIRECTORIES = {
     "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 }
 
-DIRECTORY = DIRECTORIES["local_pc"]
+DIRECTORY = DIRECTORIES["rio_macbook"]
 
 CORS(app)
 
@@ -209,9 +209,10 @@ def give_coteach_story():
     start_time = request.args["start"]
     end_time = request.args["end"]
     ta_colour = request.args['taColour'] # must be in all capital letters
+    spatial_type= request.args['spatialType'] # by default, it is None
 
     data = read_csv_by_time(DIRECTORY, session_id, start_time, end_time)
-    result = get_textual_description(data, ta_colour)
+    result = get_textual_description(data, ta_colour, spatial_type)
 
     return jsonify(result)
 

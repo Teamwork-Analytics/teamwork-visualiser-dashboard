@@ -32,11 +32,10 @@ const DataStorytellingBox = () => {
   const [text, setText] = useState("No story to tell.");
 
   useEffect(() => {
-    const getActiveColour = () => {
-      const preselectedColours = ["RED", "GREEN", "BLUE"];
+    const getSelectedFilter = (preselectedLables) => {
       for (const key in coTeachVizState) {
         if (coTeachVizState[key] === true) {
-          if (preselectedColours.includes(key)) {
+          if (preselectedLables.includes(key)) {
             return key;
           }
         }
@@ -50,9 +49,14 @@ const DataStorytellingBox = () => {
           simulationId: simulationId,
           startTime: startTime,
           endTime: endTime,
-          taColour: getActiveColour(),
+          taColour: getSelectedFilter(["RED", "GREEN", "BLUE"]),
+          spatial: getSelectedFilter([
+            "authoritative",
+            "supervisory",
+            "interactional",
+            "personal",
+          ]),
         });
-        console.log(getActiveColour());
         if (res.status === 200) {
           setText(res.data);
           // setIsError(false);
@@ -68,7 +72,7 @@ const DataStorytellingBox = () => {
   return (
     <div style={styles.container}>
       <small style={{ textAlign: "right" }}>
-        <b>Co-teaching</b>
+        <b>Team-teaching</b>
       </small>
       <p
         style={{

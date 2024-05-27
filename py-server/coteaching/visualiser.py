@@ -78,8 +78,8 @@ def get_all_ped_by_teacher(df, teacher:str):
     return res
 
 ## Wrapper around function
-def get_textual_description(df, teacher_filter:str):
-    text = get_text(df,teacher_filter)
+def get_textual_description(df, teacher_filter:str, spatial_type:str):
+    text = get_text(df,teacher_filter, spatial_type)
     return text
 
 # MATRIX CALCULATION

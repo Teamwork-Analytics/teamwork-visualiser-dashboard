@@ -89,10 +89,12 @@ const getCompleteCoTeachData = async (body) => {
 };
 
 const getCoTeachingStory = async (body) => {
-  const { simulationId, startTime, endTime, taColour } = body;
+  const { simulationId, startTime, endTime, taColour, spatial } = body;
   const colourLabel = taColour !== null ? taColour : "ALL";
+  const spatialType = spatial !== null ? spatial : "None";
+
   return await communicationAPI.get(
-    `/get_coteach_story?sessionId=${simulationId}&start=${startTime}&end=${endTime}&taColour=${colourLabel}`
+    `/get_coteach_story?sessionId=${simulationId}&start=${startTime}&end=${endTime}&taColour=${colourLabel}&spatialType=${spatialType}`
   );
 };
 

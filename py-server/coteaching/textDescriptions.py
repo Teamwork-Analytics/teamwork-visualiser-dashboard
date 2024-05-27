@@ -38,12 +38,17 @@ def get_max_coteaching(pair1, partner1, df_time, spatial_type = 'None'):
         return 0, 'None'
     
     # All of them have lecturing. So if it is lecturing or None, nothing changes. 
+    print(spatial_type == 'supervisory')
+
     if spatial_type == 'supervisory':
         one_pair = one_pair.query('coteaching == "One Teacher, One Assistant"' ).copy() 
-    elif spatial_type == 'interaction':
+    elif spatial_type == 'interactional':
         one_pair = one_pair.query('coteaching ==  "One Teacher, One Assistant" or coteaching == "Alternative Teaching"').copy() 
     elif spatial_type == 'personal':
         one_pair = one_pair.query('coteaching ==  "One Teacher, One Observer"').copy() 
+
+    if one_pair.shape[0] == 0:
+        return 0, 'None'
 
     one_pair.sort_values('percentage', ascending=False, inplace=True)
     one_pair_max = one_pair.iloc[0]
@@ -127,7 +132,7 @@ def get_text_description_all(df_time, spatial_type ):
         <mark><b>{strategy}</b></mark>
         </a>, 
         which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
-        by the {bgr_coteaching.iloc[0]['names']} TA. """ 
+        by the {bgr_coteaching.iloc[0]['names']}. """ 
 
 
     text.replace('\n', '')
