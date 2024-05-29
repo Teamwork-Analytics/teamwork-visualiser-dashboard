@@ -123,7 +123,6 @@ const CoTeachVizView = () => {
         <CoTeachViz />
         <div>
           {Object.keys(CoTeachButtonsToolTips).map((e) => {
-            console.log(CoTeachButtonsToolTips[e]);
             return (
               <Tooltip id={e} className="tooltip">
                 {CoTeachButtonsToolTips[e]}

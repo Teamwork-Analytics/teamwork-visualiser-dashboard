@@ -76,7 +76,7 @@ const DataStorytellingBox = () => {
   return (
     <div style={styles.container}>
       <small style={{ fontSize: "0.8em", textAlign: "right" }}>
-        <b>Team-teaching</b>
+        <b>Co-teaching</b>
       </small>
 
       {!isLoading ? (

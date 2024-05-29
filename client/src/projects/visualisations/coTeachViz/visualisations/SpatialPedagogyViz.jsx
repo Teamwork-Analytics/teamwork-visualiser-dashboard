@@ -47,6 +47,21 @@ export const options = {
     },
   },
   responsive: true,
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          var label = context.dataset.label || "";
+          if (label) {
+            label += ": ";
+          }
+          var dataPoint = context.dataset.data[context.dataIndex];
+          label += `${dataPoint}%`;
+          return label;
+        },
+      },
+    },
+  },
   // scales: {
   //   x: {
   //     stacked: true,

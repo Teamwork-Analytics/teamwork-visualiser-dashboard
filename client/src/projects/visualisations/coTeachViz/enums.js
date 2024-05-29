@@ -52,13 +52,13 @@ const CoTeachToolTips = {
 
 const CoTeachButtonsToolTips = {
   authoritative:
-    "A space usage when teacher is positioned to conduct formal teaching as well as to provide instructions to facilitate the lesson. It includes a situation when teacher helps another teacher in lecture space.",
+    "Lecturing: A space usage when teacher is positioned to conduct formal teaching as well as to provide instructions to facilitate the lesson. Assisting: A situation when teacher helps another teacher in lecture space.",
   supervisory:
-    "A space usage when teacher observes classroom and moves between the rows of the students’ desk without offering consultation to the student(s).",
+    "Observing/Monitoring: A space usage when teacher observes classroom and moves between the rows of the students’ desk without offering consultation to the student(s). Surveillance: teacher looks at student's laptop while student is working on a task.",
   interactional:
-    "A space usage when teacher communicates with student(s) or other teacher(s).",
+    "Interacting: A space usage when teacher communicates with student(s) or other teacher(s).",
   personal:
-    "A space usage when teacher is on their own laptop/phone, watching the other teacher's lecture, or prepare for the next stage of the lesson.",
+    "Personal: A space usage when teacher is on their own laptop/phone or prepare for the next stage of the lesson. Watching: the teacher is watching/listening to the lead teacher's lecture.",
   RED: "Click to filter by Red teacher.",
   GREEN: "Click to filter by Green teacher.",
   BLUE: "Click to filter by Blue teacher.",

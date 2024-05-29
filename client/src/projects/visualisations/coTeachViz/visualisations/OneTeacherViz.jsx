@@ -46,6 +46,28 @@ export const options = {
       max: 100,
     },
   },
+  parsing: {
+    xAxisKey: "id",
+    yAxisKey: "nested.value",
+  },
+  plugins: {
+    legend: {
+      display: true,
+    },
+    tooltip: {
+      callbacks: {
+        label: (context) => {
+          var label = "";
+          var dataPoint = context.dataset.data[context.dataIndex];
+          const labelName = dataPoint.nested.label;
+          const value = dataPoint.nested.value;
+          label += `${labelName}: ${value}%`;
+          return label;
+        },
+      },
+    },
+  },
+
   // parsing: { xAxisKey: "id", yAxisKey: "value" },
 };
 
@@ -94,10 +116,27 @@ const OneTeacherViz = ({ type }) => {
       }
     }
 
-    const result = [
-      Object.values(structure["primary"]),
-      Object.values(structure["secondary"]),
-    ];
+    // const result = [
+    //   Object.values(structure["primary"]),
+    //   Object.values(structure["secondary"]),
+    // ];
+    let result = [];
+    for (let key in structure) {
+      let arr = [];
+      let i = 0;
+      for (let subKey in structure[key]) {
+        // let space =   Object.keys(object).find(key => object[key] === value);
+        let value = structure[key][subKey];
+        arr.push({
+          id: labels[i],
+          nested: { value: value, label: subKey },
+        });
+        i += 1;
+      }
+      result.push(arr);
+    }
+
+    // console.log(result);
     return result;
   };
 
@@ -115,7 +154,6 @@ const OneTeacherViz = ({ type }) => {
           setSpatialPedagogyPrimaryData(result[0]);
           setSpatialPedagogySecondaryData(result[1]);
           setIsError(false);
-          console.log(result);
         }
       } catch (error) {
         console.log(error);
@@ -128,13 +166,13 @@ const OneTeacherViz = ({ type }) => {
     labels,
     datasets: [
       {
-        label: "Primary",
+        label: "Primary sub-spaces",
         data: spatialPedagogyPrimaryData,
         borderColor: "rgb(129,15,124)",
         backgroundColor: "rgb(129,15,124, 0.5)",
       },
       {
-        label: "Secondary",
+        label: "Secondary sub-spaces",
         data: spatialPedagogySecondaryData,
         borderColor: "rgb(140,150,198)",
         backgroundColor: "rgba(140,150,198, 0.5)",
