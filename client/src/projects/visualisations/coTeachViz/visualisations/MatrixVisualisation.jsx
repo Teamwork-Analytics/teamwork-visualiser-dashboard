@@ -14,7 +14,13 @@ const SquareBox = ({ object }) => {
   };
   const colour = actorColourMap[object.actor];
   const opacity = object.percentage / 100;
-  const bgColour = `rgba(${colour.r},${colour.g},${colour.b},${opacity})`;
+  // const bgColour = `rgba(${colour.r},${colour.g},${colour.b},${opacity})`;
+
+  // r: 117,
+  // g: 112,
+  // b: 179,
+  // 27,158,119
+  const bgColour = `rgba(99,99,99,${opacity})`;
 
   const styles = {
     square: {
@@ -24,6 +30,7 @@ const SquareBox = ({ object }) => {
       height: "5.5em",
       width: "5.5em",
       margin: "0.25em",
+      color: object.percentage >= 80 ? "white" : "black",
       background: bgColour,
     },
   };

@@ -24,7 +24,7 @@ DIRECTORIES = {
     "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 }
 
-DIRECTORY = DIRECTORIES["local_pc"]
+DIRECTORY = DIRECTORIES["rio_macbook"]
 
 CORS(app)
 

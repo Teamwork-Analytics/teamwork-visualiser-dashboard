@@ -4,11 +4,13 @@ import * as d3 from "d3";
 //Floor plans, please add manually here.
 import floorPlan from "./floor-plans/nur3312.svg";
 import dbFloorPlan from "./floor-plans/woodside.svg";
+import speechLegend from "./speech-legend.jpg";
 
 import HexagonComponent from "./Hexagon";
 import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import { useParams } from "react-router-dom";
+
 import SimpleErrorText from "../../../components/errors/ErrorMessage";
 
 const svgFloorMap = {
@@ -77,6 +79,11 @@ const HiveView = ({
             }}
           >
             <div ref={hiveRef} style={{ height: "99%" }} />
+            <img
+              src={speechLegend}
+              style={{ width: "60%" }}
+              alt={"speech intensity legend"}
+            />
           </div>
           {showFilter && <HivePrimaryControlView projectCode={projectCode} />}
         </div>
