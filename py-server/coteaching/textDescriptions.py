@@ -76,18 +76,21 @@ def get_text_description_coteaching_strategy(one_pair_max_coteaching, one_pair_m
 
     # Case 1: Both pairs do not have a coteaching strategy
     if one_pair_max_coteaching == 'None' and second_pair_max_coteaching == 'None':
-        text = "During this period, we did <b>not</b> identify any co-teaching strategies with the other TAs."
+        text = "During this period, we could <b>not</b> identify your co-teaching strategies with the other TAs."
 
     # Case 2: At least one has a co-teaching strategy
     else: 
         strategy = bgr_coteaching.iloc[0]['coteaching']
+        strategy_other = bgr_coteaching.iloc[1]['coteaching']
         text = f"""Your most common co-teaching strategy was 
         <a
         data-tooltip-id="{strategy.lower().replace(',','').replace(' ', '-')}" data-tooltip-place="top">
         <mark><b>{strategy}</b></mark>
         </a>, 
-        which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
-        with the <b>{bgr_coteaching.iloc[0]['names']}</b> TA. """  
+        with <b>{bgr_coteaching.iloc[0]['names']}</b> TA ({bgr_coteaching.iloc[0]['percentage']}%). With {bgr_coteaching.iloc[1]['names']} TA, the co-teaching strategy was <a
+        data-tooltip-id="{strategy_other.lower().replace(',','').replace(' ', '-')}" data-tooltip-place="top">
+        <mark><b>{strategy_other}</b></mark>
+        </a>, ({bgr_coteaching.iloc[1]['percentage']}%). """  
         
     text.replace('\n', '')
     text = ' '.join(text.split())
@@ -121,18 +124,17 @@ def get_text_description_all(df_time, spatial_type ):
         extra_text= ' and category'
 
     if (bg_coteaching == 'None') & (br_coteaching == 'None') & (gr_coteaching == 'None'):
-        text = f"During this period{extra_text}, we did not identify any co-teaching strategies with the other TAs."
+        text = f"We cannot find any co-teaching strategies with the other TAs in the selected period{extra_text}."
 
     ### Case 2: There's only one present
     elif len(bgr_coteaching) > 1: 
         strategy = bgr_coteaching.iloc[0]['coteaching']
-        text = f"""During this period{extra_text}, the most common co-teaching strategy was 
+        text = f"""During this period{extra_text}, the most common co-teaching strategy by {bgr_coteaching.iloc[0]['names']} was 
         <a
         data-tooltip-id="{strategy.lower().replace(',','').replace(' ', '-')}" data-tooltip-place="top">
         <mark><b>{strategy}</b></mark>
         </a>, 
-        which was used {bgr_coteaching.iloc[0]['percentage']}% of the time 
-        by the {bgr_coteaching.iloc[0]['names']}. """ 
+        {bgr_coteaching.iloc[0]['percentage']}% of the time. """ 
 
 
     text.replace('\n', '')

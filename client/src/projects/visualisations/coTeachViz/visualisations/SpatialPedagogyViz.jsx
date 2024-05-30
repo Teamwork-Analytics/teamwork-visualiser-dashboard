@@ -39,6 +39,9 @@ export const options = {
     x: {
       ticks: {
         beginAtZero: true,
+        callback: (value) => {
+          return `${value}%`;
+        },
       },
       grid: {
         display: false, // Hide x grid
