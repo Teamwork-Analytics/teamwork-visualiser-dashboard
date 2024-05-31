@@ -10,8 +10,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { faker } from "@faker-js/faker";
-import { PedagogyMapEnums, TeacherBackEndEnums } from "../enums";
+import { PedagogyMapEnums, PedagogyLabelMapping } from "../enums";
 import { useTimeline } from "../../../observation/visualisationComponents/TimelineContext";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -109,6 +108,7 @@ const SpatialPedagogyViz = ({ type }) => {
       if (pedagogy === type) {
         for (let teacher in data[pedagogy]) {
           let temp = data[pedagogy][teacher];
+          console.log(pedLabels[0]);
           // const teacherColour = TeacherBackEndEnums[teacher];
           structure["primary"][teacher] = temp[pedLabels[0]];
           structure["secondary"][teacher] = temp[pedLabels[1]];
@@ -120,7 +120,6 @@ const SpatialPedagogyViz = ({ type }) => {
       Object.values(structure["primary"]),
       Object.values(structure["secondary"]),
     ];
-
     // let orderActor = { RED: 1, GREEN: 2, BLUE: 3 };
     // result.sort((a, b) => orderActor[a.actor] - orderActor[b.actor]);
 
@@ -152,13 +151,13 @@ const SpatialPedagogyViz = ({ type }) => {
     labels,
     datasets: [
       {
-        label: pedLabels[0],
+        label: PedagogyLabelMapping[pedLabels[0]],
         data: primaryData,
         borderColor: "rgb(129,15,124)",
         backgroundColor: "rgb(129,15,124, 0.5)",
       },
       {
-        label: pedLabels[1],
+        label: PedagogyLabelMapping[pedLabels[1]],
         data: secondaryData,
         borderColor: "rgb(140,150,198)",
         backgroundColor: "rgba(140,150,198, 0.5)",

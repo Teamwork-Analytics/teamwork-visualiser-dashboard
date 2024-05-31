@@ -14,6 +14,7 @@ import {
 import { getCoTeachByTeacherData } from "../../../../services/py-server";
 import { useEffect, useState } from "react";
 import { useTimeline } from "../../../observation/visualisationComponents/TimelineContext";
+import { PedagogyLabelMapping } from "../enums";
 import { useParams } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 
@@ -64,7 +65,7 @@ export const options = {
           var dataPoint = context.dataset.data[context.dataIndex];
           const labelName = dataPoint.nested.label;
           const value = dataPoint.nested.value;
-          label += `${labelName}: ${value}%`;
+          label += `${PedagogyLabelMapping[labelName]}: ${value}%`;
           return label;
         },
       },
@@ -169,13 +170,13 @@ const OneTeacherViz = ({ type }) => {
     labels,
     datasets: [
       {
-        label: "Primary sub-spaces",
+        label: "Primary space-usage categories",
         data: spatialPedagogyPrimaryData,
         borderColor: "rgb(129,15,124)",
         backgroundColor: "rgb(129,15,124, 0.5)",
       },
       {
-        label: "Secondary sub-spaces",
+        label: "Secondary space-usage categories",
         data: spatialPedagogySecondaryData,
         borderColor: "rgb(140,150,198)",
         backgroundColor: "rgba(140,150,198, 0.5)",

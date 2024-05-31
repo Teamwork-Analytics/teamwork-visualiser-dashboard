@@ -81,7 +81,7 @@ const HiveView = ({
             <div ref={hiveRef} style={{ height: "99%" }} />
             <img
               src={speechLegend}
-              style={{ width: "60%" }}
+              style={{ width: "70%" }}
               alt={"speech intensity legend"}
             />
           </div>

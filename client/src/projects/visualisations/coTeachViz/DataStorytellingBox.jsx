@@ -75,8 +75,8 @@ const DataStorytellingBox = () => {
 
   return (
     <div style={styles.container}>
-      <small style={{ fontSize: "0.8em", textAlign: "right" }}>
-        <b>Co-teaching</b>
+      <small style={{ fontSize: "0.8em" }}>
+        <b>Co-teaching Strategy</b>
       </small>
 
       {!isLoading ? (
@@ -109,6 +109,10 @@ const DataStorytellingBox = () => {
           Loading...
         </div>
       )}
+      <small style={{ color: "#5a5a5a", fontSize: "0.8em" }}>
+        <b>*% of the selected period with time slider</b>
+      </small>
+
       {Object.keys(CoTeachToolTips).map((e) => (
         <Tooltip id={e} place="top" className="tooltip">
           {CoTeachToolTips[e]}
