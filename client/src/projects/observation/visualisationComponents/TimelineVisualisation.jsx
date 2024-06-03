@@ -351,6 +351,7 @@ export const TimeSliderController = ({ trackEvent }) => {
             }}
             xs="auto"
           >
+            <small>Phases: </small>
             <ButtonGroup aria-label="phases buttons">
               {phases.map((phase, index) => (
                 <Button

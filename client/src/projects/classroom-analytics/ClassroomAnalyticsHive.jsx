@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 import { TimeSliderController } from "../observation/visualisationComponents/TimelineVisualisation";
 import { HiveView } from "../visualisations/hive";
 import { useLocation, useParams } from "react-router-dom";
 import { useTracking } from "react-tracking";
-import { Row, Col } from "react-bootstrap";
 import { CoTeachVizView } from "../visualisations/coTeachViz";
 
 const ClassroomAnalyticsHive = () => {
