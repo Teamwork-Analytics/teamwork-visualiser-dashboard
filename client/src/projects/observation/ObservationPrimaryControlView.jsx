@@ -81,14 +81,14 @@ const ObservationPrimaryControlView = () => {
         disabled={observation.baselineTime !== null}
       >
         Start Baseline
-      </Button>
+      </Button> 
       <Button
         variant="success"
         disabled={observation.startTime !== null}
         value={"startTime"}
         onClick={sendRecordedTime}
       >
-        Start Simulation
+        Start Recording
       </Button>
       <Button
         variant="dark"
@@ -96,7 +96,7 @@ const ObservationPrimaryControlView = () => {
         value={"stopTime"}
         onClick={sendRecordedTime}
       >
-        Stop Simulation
+        Stop Recording
       </Button>
       <ReactTooltip />
       <small style={{ fontSize: "10px" }}>

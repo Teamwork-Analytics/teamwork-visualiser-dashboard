@@ -37,7 +37,7 @@ const socket = io(ioUrl, {
 
 const SimulationView = () => {
   const { tool, setTool } = useSimulation();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true); // true = open, false = closed.
 
   return (
     <div

@@ -57,7 +57,7 @@ def call_visualization(simulationid):
     #
     simulation_obj = db.get_collection(
         "simulations").find_one({"simulationId": simulationid})
-    #
+    # #
     observation_obj = db.get_collection("observations").find_one(
         {"_id": simulation_obj["observation"]})
 

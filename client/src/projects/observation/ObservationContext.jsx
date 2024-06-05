@@ -45,6 +45,7 @@ function ObservationProvider({ simulationId, children }) {
   };
 
   const [isDataReady, setIsDataReady] = React.useState(false);
+  
   React.useEffect(() => {
     SimulationSessionAPI.isReady(simulationId)
       .then((res) => {
@@ -71,10 +72,10 @@ function ObservationProvider({ simulationId, children }) {
       }
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-      const intervalId = setInterval(fetchData, 10000);
+      // const intervalId = setInterval(fetchData, 10000);
 
       // Clean up the interval when the component is unmounted or when data is fetched
-      return () => clearInterval(intervalId);
+      // return () => clearInterval(intervalId);
     }
   }, [isDataReady, simulationId]);
 

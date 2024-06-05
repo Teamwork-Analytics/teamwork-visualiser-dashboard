@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { defaultStyles as styles } from "../page-styles";
 import { Link } from "react-router-dom";
 import SessionCard from "./SessionCard";
 import { Button, Form } from "react-bootstrap";
 import { MainProvider, useMain } from "./MainContext";
+import { checkServersStatus } from "../../services/eureka";
 
 /**
  * First page to select and create simulations
@@ -35,6 +36,7 @@ const MainPage = () => {
     },
   };
 
+  const DEFAULT_PROJECT_NAME = "Classroom Analytics Database Units 2024"
   const { simulations } = useMain();
   const [q, setQ] = useState("");
   const [params] = useState(["simulationId", "name"]);
@@ -47,6 +49,10 @@ const MainPage = () => {
       )
     );
   }
+
+  useEffect(() => {
+    checkServersStatus()
+  }, [])
 
   return (
     <div style={styles.main}>
@@ -68,7 +74,7 @@ const MainPage = () => {
       <div style={{ overflowY: "scroll", width: "100vw" }}>
         <div style={pageStyles.list}>
           {!!simulations
-            ? search(simulations).filter((sim) => sim.project.name === "Peninsula Nursing Simulation 2023" ).map((sim, i) => (
+            ? search(simulations).filter((sim) => sim.project.name === DEFAULT_PROJECT_NAME ).map((sim, i) => (
                 <Link
                   key={i}
                   to={`/visualisation/${sim.simulationId}`}

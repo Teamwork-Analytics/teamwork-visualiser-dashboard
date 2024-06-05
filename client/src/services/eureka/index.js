@@ -46,8 +46,8 @@ Object.keys(portStrategy).forEach((k) => {
       }
       message += `${k} service error:`;
 
-      // toast.error(`${message} (${error})`);
       console.error(`${message} (${error})`);
+      toast.error(`${message} (${error})`);
       // Do something with response error
       // return Promise.reject(error);
     }
@@ -92,10 +92,19 @@ const stopDebriefAudio = () => {
   return eurekaAxiosStrategy[2]["axios"].get(`/audio/debrief-stop/`);
 };
 
+const checkServersStatus = () =>{
+  return Promise.all(
+    eurekaAxiosStrategy.map(async (s) => {
+      return await s["axios"].get(`/${s.key}/checkStatus`);
+    })
+  );
+}
+
 export {
   startBaselineAll,
   startAll,
   stopAll,
   startDebriefAudio,
   stopDebriefAudio,
+  checkServersStatus
 };
