@@ -114,6 +114,8 @@ server/saved_data/
 # python server
 py-server/__pycache__
 py-server/position/__pycache__
+py-server/vad/__pycache__
+py-server/env
 *.pyc
 
 .DS_Store
