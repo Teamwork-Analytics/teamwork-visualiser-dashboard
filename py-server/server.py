@@ -14,11 +14,12 @@ IP_ADDRESS = "49.127.70.209"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-TEST_MODE_LINX = False
-if TEST_MODE_LINX:
-    DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
-else:
-    DIRECTORY = "C:\\develop\\saved_data\\"
+# TEST_MODE_LINX = False
+# if TEST_MODE_LINX:
+#     DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
+# else:
+#     DIRECTORY = "C:\\develop\\saved_data\\"
+DIRECTORY = "C:\\Work\\teamwork-visualiser-dashboard\\server\\saved_data"
 
 
 CORS(app)
