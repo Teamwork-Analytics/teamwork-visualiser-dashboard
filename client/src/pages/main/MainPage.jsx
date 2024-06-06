@@ -18,6 +18,7 @@ const MainPage = () => {
       display: "flex",
       flexDirection: "row",
       flexWrap: "wrap",
+      justifyContent: "center",
       columnGap: "2em",
       rowGap: "1.5em",
       padding: "1em",
