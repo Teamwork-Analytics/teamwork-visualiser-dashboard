@@ -119,17 +119,17 @@ class HexagonComponent {
       if (!acc[obj.tagId] || hr > Number(acc[obj.tagId].heartRate)) {
         const baseline = baselines[obj.tagId];
         // NOTE: Changes from baseline
-        // acc[obj.tagId] = {
-        //   ...obj,
-        //   heartRate: obj.heartRate - baseline,
-        //   baselineHr: baseline,
-        // };
-
-        // just Maximum
         acc[obj.tagId] = {
           ...obj,
+          heartRate: obj.heartRate - baseline,
           baselineHr: baseline,
         };
+
+        // // just Maximum
+        // acc[obj.tagId] = {
+        //   ...obj,
+        //   baselineHr: baseline,
+        // };
       }
       return acc;
     }, {});
@@ -172,24 +172,6 @@ class HexagonComponent {
       // })
       // .style("opacity", 1);
     } else if (shotFlag === "fixed") {
-      // this.svg
-      //   .append("g")
-      //   .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
-      //   .selectAll(".hexagon")
-      //   .data(hexbin([subjectPos]))
-      //   .enter()
-      //   .append("path")
-      //   .attr("d", function (d) {
-      //     const x = -d.y + CONSTANTS.IMG_WIDTH;
-      //     const y = d.x;
-      //     // const x = d.x;
-      //     // const y = d.y;
-      //     return "M" + x + "," + y + h2.hexagon();
-      //   })
-      //   .attr("stroke", "black")
-      //   .attr("fill", cssColourMatcher[colour])
-      //   .attr("fill-opacity", "0.7")
-      //   .attr("stroke-width", "1em");
       const posX = CONSTANTS.IMG_WIDTH - subjectPos[1];
       const posY = CONSTANTS.IMG_HEIGHT - subjectPos[0];
       let heartPath =
@@ -214,7 +196,7 @@ class HexagonComponent {
       // FOR TEXT
       this.svg
         .append("text")
-        .text(value)
+        .text(value >= 0 ? `+${value}` : value) // if value is positive, add +
         .attr("x", posX - 2 * (posX / 100))
         .attr("y", posY + 2 * (posY / 100))
         .attr("fill", "black")
@@ -224,3 +206,25 @@ class HexagonComponent {
 }
 
 export default HexagonComponent;
+
+/**
+ * Unused code:
+      // this.svg
+      //   .append("g")
+      //   .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
+      //   .selectAll(".hexagon")
+      //   .data(hexbin([subjectPos]))
+      //   .enter()
+      //   .append("path")
+      //   .attr("d", function (d) {
+      //     const x = -d.y + CONSTANTS.IMG_WIDTH;
+      //     const y = d.x;
+      //     // const x = d.x;
+      //     // const y = d.y;
+      //     return "M" + x + "," + y + h2.hexagon();
+      //   })
+      //   .attr("stroke", "black")
+      //   .attr("fill", cssColourMatcher[colour])
+      //   .attr("fill-opacity", "0.7")
+      //   .attr("stroke-width", "1em");
+ */
