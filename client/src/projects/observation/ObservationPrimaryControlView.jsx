@@ -59,7 +59,7 @@ const ObservationPrimaryControlView = () => {
     });
     try {
       if (opt === "baselineTime") {
-        await startBaselineAll(simulationId);
+        // await startBaselineAll(simulationId);
         // ping FitBit server to start receiving data
         // TODO: make this prettier
         const response = await fetch("http://localhost:3168/start-simulation", {
