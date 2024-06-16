@@ -1,8 +1,10 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3168; // Use non-standard port to avoid conflicts (web server is on 3000)
 const dataHandler = require("./dataHandler");
 
+app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // for parsing application/json
 
 let simulationId = null;
