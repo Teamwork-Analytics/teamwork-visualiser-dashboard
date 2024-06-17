@@ -11,7 +11,7 @@ import os
 
 from pathlib import Path
 
-IP_ADDRESS = "49.127.70.209"  # this/local server
+IP_ADDRESS = "localhost"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)

@@ -59,7 +59,8 @@ const ObservationPrimaryControlView = () => {
     });
     try {
       if (opt === "baselineTime") {
-        // await startBaselineAll(simulationId);
+        await startBaselineAll(simulationId);
+
         // ping FitBit server to start receiving data
         // TODO: make this prettier
         const response = await fetch("http://localhost:3168/start-simulation", {
@@ -69,12 +70,14 @@ const ObservationPrimaryControlView = () => {
           },
           body: JSON.stringify({ simulationId }),
         });
-        const data = await response.json();
-        console.log("Asked FitBit start receiving", data);
+
+        console.log("Started baseline with fitbit server")
+
       } else if (opt === "startTime") {
         await startAll(simulationId);
       } else if (opt === "stopTime") {
         await stopAll();
+
         // ping FitBit server to stop receiving data
         // TODO: make this prettier
         const response = await fetch("http://localhost:3168/stop-simulation", {
@@ -83,8 +86,8 @@ const ObservationPrimaryControlView = () => {
             "Content-Type": "application/json",
           },
         });
-        const data = await response.json();
-        console.log("Asked FitBit to stop receiving", data);
+        console.log("Stop recording with fitbit server", );
+
       } else {
         return;
       }

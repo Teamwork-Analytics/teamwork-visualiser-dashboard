@@ -3,7 +3,8 @@
     "client": "cd client && npm start",
     "server": "cd server && npm run dev",
     "pyserver": "cd py-server && python server.py",
-    "all": "concurrently \"npm run server\" \" npm run client \"  \"npm run pyserver\""
+    "fitbitserver": "cd fitbit-receiver && npm start",
+    "all": "concurrently \"npm run server\" \" npm run client \"  \"npm run pyserver\" \" npm run fitbitserver\" "
   },
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

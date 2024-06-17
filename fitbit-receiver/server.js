@@ -12,7 +12,7 @@ let simulationId = null;
 // Endpoint to receive the simulationId
 app.post("/start-simulation", (req, res) => {
   simulationId = req.body.simulationId;
-  console.log("Received simulationId:", simulationId);
+  console.log("Fitbit server Received simulationId:", simulationId);
   res.status(200).send("Simulation ID received");
 });
 
@@ -40,5 +40,5 @@ app.post("/data", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+  console.log(`Fitbit - Server listening at http://localhost:${port}`);
 });

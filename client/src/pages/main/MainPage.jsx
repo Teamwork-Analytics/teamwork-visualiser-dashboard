@@ -36,6 +36,12 @@ const MainPage = () => {
   };
   const { simulations } = useMain();
   const [q, setQ] = React.useState("");
+  const[params] = React.useState(["simulationId", "name"])
+
+  function search(items) {
+    return items.filter((item) => params.some((paramItem) => item[paramItem].toLowerCase().indexOf(q.toLowerCase()> -1) ))
+  }
+
 
   return (
       <div style={styles.main}>
@@ -56,8 +62,7 @@ const MainPage = () => {
 
         <div style={{ overflowY: "scroll", width: "100vw" }}>
           <div style={pageStyles.list}>
-            {!!simulations &&
-                simulations.map((sim, i) => (
+            {!!simulations ? search(simulations).filter((sim) => sim.project.name === "Peninsula Nursing Simulation 2024" ).map((sim, i) => (
                     <Link
                         key={i}
                         to={`/visualisation/${sim.simulationId}`}
@@ -66,7 +71,7 @@ const MainPage = () => {
                     >
                       <SessionCard key={i} sim={sim} />
                     </Link>
-                ))}
+                )) : null }
           </div>
         </div>
       </div>

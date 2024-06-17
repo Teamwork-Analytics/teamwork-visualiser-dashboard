@@ -2,7 +2,7 @@
  * @file SessionList.tsx
  * @description This file exports a list of cards, each card is a session.
  */
-import React from "react";
+import React, {useState }from "react";
 import { Simulation } from "../../types/SimulationProps";
 import SimulationCard from "../card/SimulationCard";
 import "./SessionList.css";
