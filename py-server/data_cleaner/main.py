@@ -41,7 +41,8 @@ USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 # Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
 if USE_ABSOLUTE_PATH == 'true':
     # Location defined as teamwork-visualiser-dashboard/server/saved_data/
-    BASE_PATH = os.path.join(parent_directory, 'server', 'saved_data')
+    # BASE_PATH = os.path.join(parent_directory, 'server', 'saved_data')
+    BASE_PATH = "C:\\develop\\saved_data"
 else:
     # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
     BASE_PATH = os.getenv('VISUALISATION_DIR')
@@ -457,7 +458,7 @@ send get request to localhost:5000/audio-pos
 if __name__ == '__main__':
     # app.run(host="0.0.0.0", port=5050, debug=False)
 
-    call_visualization("296")
+    call_visualization("401")
     # test_formation_detection("225")
     # os.system("ffmpeg -i {audio_in} - ar 48000 {audio_out}")
 
