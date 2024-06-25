@@ -5,16 +5,18 @@ import numpy as np
 # CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4, "responding": 5, "acknowledging": 6}
 # ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding", "acknowledging"]
 # updated on 7/17/2023, because the responding and acknowledging os merged as one single acknowledging
-CODE_TO_ID_MAPPER = {"task allocation": 0, "escalation": 1, "questioning": 2,
-                     "acknowledging": 3}
-ID_TO_CODE_MAPPER = ["task allocation", "escalation", "questioning",
-                     "acknowledging"]
+# CODE_TO_ID_MAPPER = {"task allocation": 0, "escalation": 1, "questioning": 2,
+#                      "acknowledging": 3}
+# ID_TO_CODE_MAPPER = ["task allocation", "escalation", "questioning",
+#                      "acknowledging"]
 
 # CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "call-out": 2, "escalation": 3, "questioning": 4,
 #                      "responding": 5, "acknowledging": 6}
 # ID_TO_CODE_MAPPER = ["task allocation", "handover", "call-out", "escalation", "questioning", "responding",
 #                      "acknowledging"]
 
+ID_TO_CODE_MAPPER = ["task allocation", "handover", "escalation", "call-out", "questioning", "acknowledging"]
+CODE_TO_ID_MAPPER = {"task allocation": 0, "handover": 1, "escalation": 2, "call-out": 3, "questioning": 4, "acknowledging": 5}
 
 def to_binary(x):
     if x > 0:
@@ -54,12 +56,15 @@ def scaling_adjacent_matrix(matrix: np.ndarray):
 def adjacent_matrix_to_json(adjacent_matrix: np.ndarray):
     result_json = {}
     d2_list = adjacent_matrix.tolist()
+    # print(d2_list)
     for i in range(len(d2_list)):
         result_json[ID_TO_CODE_MAPPER[i]] = {}
 
         for j in range(len(d2_list[i])):
             result_json[ID_TO_CODE_MAPPER[i]
                         ][ID_TO_CODE_MAPPER[j]] = d2_list[i][j]
+        # print ("result_json")
+        # print(result_json)
     return result_json
 
 def __merging_codes(data_df: pd.DataFrame, codes_to_merge: list, merge_to_column: str):
