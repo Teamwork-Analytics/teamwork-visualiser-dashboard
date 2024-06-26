@@ -28,7 +28,9 @@ USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 # Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
 if USE_ABSOLUTE_PATH == 'true':
     # Location defined as teamwork-visualiser-dashboard/server/saved_data/
-    DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
+    # DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
+    DIRECTORY = "C:\\develop\\saved_data"
+
 else:
     # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
     DIRECTORY = os.getenv('VISUALISATION_DIR')
