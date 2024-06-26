@@ -13,11 +13,17 @@ const { USE_ABSOLUTE_PATH } = process.env;
 // connect to db
 require("./config/db")(app);
 
+// const corsOptions = {
+//   origin:
+//     process.env.NODE_ENV === "development"
+//       ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
+//       : process.env.CURRENT_URL,
+//   credentials: false,
+// };
+
+// general policy for ease of development
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV === "development"
-      ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
-      : process.env.CURRENT_URL,
+  origin: "*",
   credentials: false,
 };
 
@@ -29,8 +35,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routers
 app.use("/api", require("./routes/index"));
-
-
 
 let VISUALISATION_DIR;
 if (USE_ABSOLUTE_PATH === "false") {
