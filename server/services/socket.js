@@ -5,10 +5,11 @@ const { createActivity } = require("./useractivity");
 const createSocket = async (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
-      origin:
-        process.env.NODE_ENV === "development"
-          ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
-          : process.env.CURRENT_URL,
+      // origin:
+      //   process.env.NODE_ENV === "development"
+      //     ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
+      //     : process.env.CURRENT_URL,
+      origin:"*",
       methods: ["GET", "POST"],
     },
   });
