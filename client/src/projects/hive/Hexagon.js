@@ -15,8 +15,8 @@ const CONSTANTS = {
 
 export const cssColourMatcher = {
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
-  RED: COLOURS.PRIMARY_NURSE_1, //red
-  BLUE: COLOURS.PRIMARY_NURSE_2, // blue
+  RED: COLOURS.PRIMARY_NURSE_2, //red
+  BLUE: COLOURS.PRIMARY_NURSE_1, // blue
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
 };
 
@@ -86,16 +86,16 @@ class HexagonComponent {
     if (!!shotFlag) {
       this.svg
         .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
+        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
         .selectAll(".hexagon")
         .data(hexbin([subjectPos]))
         .enter()
         .append("path")
         .attr("d", function (d) {
-          const x = -d.y + CONSTANTS.IMG_WIDTH;
-          const y = d.x;
-          // const x = d.x;
-          // const y = d.y;
+          // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
+          // const y = d.x; // used in the nursing data before 2024
+          const x = d.x;
+          const y = d.y;
           return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)

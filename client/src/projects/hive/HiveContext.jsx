@@ -12,7 +12,7 @@ const HiveContext = React.createContext();
 
 function HiveProvider({ simulationId, children }) {
   const [hiveState, hiveSetState] = React.useState({
-    participants: { RED: true, BLUE: true, GREEN: true, YELLOW: true },
+    participants: { BLUE: true, RED: true, GREEN: true, YELLOW: true },
     phase: [0, 100],
     isPositionOnly: false,
   });
