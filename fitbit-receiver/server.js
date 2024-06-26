@@ -40,5 +40,6 @@ app.post("/data", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Fitbit - Server listening at http://localhost:${port}`);
+  // console.log(`Fitbit - Server listening at http://localhost:${port}`);
+  console.log(`Fitbit - Server listening at http://49.127.33.177:${port}`);
 });
