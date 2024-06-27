@@ -15,8 +15,8 @@ const CONSTANTS = {
 
 export const cssColourMatcher = {
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
-  RED: COLOURS.PRIMARY_NURSE_2, //red
-  BLUE: COLOURS.PRIMARY_NURSE_1, // blue
+  RED: COLOURS.PRIMARY_NURSE_1, //red
+  BLUE: COLOURS.PRIMARY_NURSE_2, // blue
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
 };
 

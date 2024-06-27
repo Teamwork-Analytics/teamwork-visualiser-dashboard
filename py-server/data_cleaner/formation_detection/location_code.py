@@ -9,7 +9,7 @@ from scipy import interpolate
 
 from data_cleaner.audio_processing.pozyx_extraction import extract_interpolate_single_session
 # before 318 green id is 27160
-ID_TO_COLOR = {"27261": "blue", "27226": "red", "27176": "green", "27263": "yellow", "27209": "white", "27152": "black"}
+ID_TO_COLOR = {"27209": "blue", "27226": "red", "27176": "green", "27263": "yellow", "27261": "white", "27152": "black"}
 def get_interpolated_data(data_frame, audio_start_timestamp: float, sensor_id):
     """
     using scipy to generate a interpolation model for the data points
@@ -248,7 +248,7 @@ def __extract_single_session(input_path: str, coordinate_rules_df: pd.DataFrame,
     # coordinates_path = "Coordinates.csv"
     # input_path = "testing/182.json"
     RED_ID = 27226
-    BLUE_ID = 27261
+    BLUE_ID = 27209
     GREEN_ID = 27176    # before 318 green id is 27160
     YELLOW_ID = 27263
     """'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"""
