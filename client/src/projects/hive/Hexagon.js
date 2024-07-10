@@ -3,20 +3,20 @@ import * as d3hex from "d3-hexbin";
 import { COLOURS } from "../../config/colours";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 9500,
-  HEIGHT: 6960,
+  WIDTH: 10500,
+  HEIGHT: 7060,
 };
 const CONSTANTS = {
   HEX_RADIUS: 50,
-  IMG_WIDTH: 2297,
+  IMG_WIDTH: 2697,
   IMG_HEIGHT: 1715,
   HEXAGON_OPACITY: "0.5",
 };
 
 export const cssColourMatcher = {
+  BLUE: COLOURS.PRIMARY_NURSE_1, // blue
+  RED: COLOURS.PRIMARY_NURSE_2, //red
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
-  RED: COLOURS.PRIMARY_NURSE_1, //red
-  BLUE: COLOURS.PRIMARY_NURSE_2, // blue
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
 };
 
@@ -146,24 +146,47 @@ class HexagonComponent {
     const strokeWidth = "0.15em";
     const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
     if (shotFlag === "made" || shotFlag === "missed") {
-      this.svg
-        .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
-        .selectAll(".hexagon")
-        .data(hexbin([subjectPos]))
-        .enter()
-        .append("path")
-        .attr("d", function (d) {
-          const x = -d.y + CONSTANTS.IMG_WIDTH;
-          const y = d.x;
-          // const x = d.x;
-          // const y = d.y;
-          return "M" + x + "," + y + hexbin.hexagon();
-        })
-        .attr("stroke", strokeColour)
-        .attr("fill", shotFlag === "made" ? cssColourMatcher[colour] : "white")
-        .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
-        .attr("stroke-width", strokeWidth);
+      if (colour === "BLUE") {
+        this.svg
+          .append("g")
+          .selectAll(".hexagon")
+          .data(hexbin([subjectPos]))
+          .enter()
+          .append("path")
+          .attr("d", function (d) {
+            const x = d.x;
+            const y = d.y;
+            // const x = d.x;
+            // const y = d.y;
+            return "M" + x + "," + y + hexbin.hexagon();
+          })
+          .attr("stroke", strokeColour)
+          .attr(
+            "fill",
+            shotFlag === "made" ? cssColourMatcher[colour] : "white"
+          )
+          .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
+          .attr("stroke-width", strokeWidth);
+      } else {
+        this.svg
+          .append("g")
+          .selectAll(".hexagon")
+          .data(hexbin([subjectPos]))
+          .enter()
+          .append("path")
+          .attr("d", function (d) {
+            const x = d.x;
+            const y = d.y;
+            return "M" + x + "," + y + hexbin.hexagon();
+          })
+          .attr("stroke", strokeColour)
+          .attr(
+            "fill",
+            shotFlag === "made" ? cssColourMatcher[colour] : "white"
+          )
+          .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
+          .attr("stroke-width", strokeWidth);
+      }
       // .style("opacity", 0)
       // .transition()
       // .duration(1000)
