@@ -3,20 +3,20 @@ import * as d3hex from "d3-hexbin";
 import { COLOURS } from "../../config/colours";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 9500,
+  WIDTH: 10500,
   HEIGHT: 6960,
 };
 const CONSTANTS = {
   HEX_RADIUS: 50,
-  IMG_WIDTH: 2297,
-  IMG_HEIGHT: 1715,
+  IMG_WIDTH: 2697,
+  IMG_HEIGHT: 1815,
   HEXAGON_OPACITY: "0.5",
 };
 
 export const cssColourMatcher = {
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
-  RED: COLOURS.PRIMARY_NURSE_1, //red
-  BLUE: COLOURS.PRIMARY_NURSE_2, // blue
+  RED: COLOURS.PRIMARY_NURSE_2, //red
+  BLUE: COLOURS.PRIMARY_NURSE_1, // blue
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
 };
 
