@@ -116,3 +116,6 @@ py-server/env
 *.pyc
 
 .DS_Store
+client/.env
+.env
+server/config.env
