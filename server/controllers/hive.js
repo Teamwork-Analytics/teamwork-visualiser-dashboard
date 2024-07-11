@@ -20,6 +20,8 @@ const getCsvFile = (req, res, next) => {
     const result_dir = path.join(directory, path.sep, "result");
     const pathJoined = path.join(result_dir, path.sep, fileName);
 
+    console.log("HIVE DIR", process.env.VISUALISATION_DIR);
+
     // res.setHeader("cache-control", "max-age=8640000");
     res.setHeader("content-type", "text/csv");
 
