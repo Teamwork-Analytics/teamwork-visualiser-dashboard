@@ -63,10 +63,12 @@ const HivePrimaryControlView = () => {
             <FormCheck
               defaultChecked={hiveState["showPositionAudioData"]}
               onChange={(e) => {
-                hiveSetState({
+                const modifiedData = {
                   ...hiveState,
                   showPositionAudioData: e.target.checked,
-                });
+                };
+                hiveSetState(modifiedData);
+                taggingSocket.emit("send-nurse-filter", modifiedData);
               }}
             />
             pos+audio
@@ -75,10 +77,12 @@ const HivePrimaryControlView = () => {
             <FormCheck
               defaultChecked={hiveState["showHeartRateData"]}
               onChange={(e) => {
-                hiveSetState({
+                const modifiedData = {
                   ...hiveState,
                   showHeartRateData: e.target.checked,
-                });
+                };
+                hiveSetState(modifiedData);
+                taggingSocket.emit("send-nurse-filter", modifiedData);
               }}
             />
             heart rate
