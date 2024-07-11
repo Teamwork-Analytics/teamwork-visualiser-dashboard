@@ -57,8 +57,8 @@ const HiveView = ({
 
   const HeartRateBaseline = (
     <div>
-      <small>Heart rate baseline:</small>
       <Row>
+        <small>Heart rate baseline:</small>
         {hrData &&
           Object.keys(hrData).map((d) => {
             return (
@@ -68,7 +68,7 @@ const HiveView = ({
                     color: cssColourMatcher[hrData[d]["tagId"]],
                   }}
                 >
-                  {hrData[d]["baselineHr"]}
+                  ❤️{hrData[d]["baselineHr"]}
                 </b>
               </Col>
             );
@@ -98,8 +98,8 @@ const HiveView = ({
               borderRadius: "1em",
             }}
           >
-            {HeartRateBaseline}
             <div ref={hiveRef} />
+            {HeartRateBaseline}
           </div>
           {showFilter && <HivePrimaryControlView />}
         </div>
