@@ -11,8 +11,7 @@ import os
 
 from pathlib import Path
 
-# IP_ADDRESS = "localhost"  # this/local server
-IP_ADDRESS = "49.127.33.177"  # this/local server
+IP_ADDRESS = "localhost"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
@@ -27,7 +26,7 @@ parent_directory = os.path.dirname(current_root)
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 
 # Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
-if USE_ABSOLUTE_PATH == 'true':
+if USE_ABSOLUTE_PATH == 'false':
     # Location defined as teamwork-visualiser-dashboard/server/saved_data/
     # DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
     DIRECTORY = "C:\\develop\\saved_data"
