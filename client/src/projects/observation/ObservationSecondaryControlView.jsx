@@ -39,10 +39,10 @@ const ObservationSecondaryControlView = () => {
     setDevices(tempDevice);
   };
 
- 
+
   return (
     <div>
-     
+
 
       <h1>Synchronisation</h1>
       <hr />
@@ -58,26 +58,34 @@ const ObservationSecondaryControlView = () => {
               : "No timestamp";
 
             return (
-              <Row key={d._id} className="my-4">
-                <Col sm="3">
-                  <label style={{ color: "grey" }}>{d.name}</label>
-                  <label>{d.deviceType}</label>
-                </Col>
-                <Col sm="7">
-                  <label>{time}</label>
-                </Col>
-                <Col sm="1">
-                  <Button
-                    id={d._id}
-                    size="sm"
-                    onClick={(e) => {
-                      buttonClick(e.target.id, `${d.name} ${d.deviceType}`);
-                    }}
-                  >
-                    Log
-                  </Button>
-                </Col>
-              </Row>
+                <Row key={i} className="my-4">
+                  <Col sm="3">
+                    {d ? (
+                        <>
+                          <label style={{ color: "grey" }}>{d.name}</label>
+                          <label>{d.deviceType}</label>
+                        </>
+                    ) : (
+                        <label>No device available</label>
+                    )}
+                  </Col>
+                  <Col sm="7">
+                    <label>{time}</label>
+                  </Col>
+                  <Col sm="1">
+                    {d && (
+                        <Button
+                            id={d._id}
+                            size="sm"
+                            onClick={(e) => {
+                              buttonClick(e.target.id, `${d.name} ${d.deviceType}`);
+                            }}
+                        >
+                          Log
+                        </Button>
+                    )}
+                  </Col>
+                </Row>
             );
           })
         )}

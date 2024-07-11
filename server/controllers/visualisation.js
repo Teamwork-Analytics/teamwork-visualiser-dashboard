@@ -45,6 +45,8 @@ const checkDataReadiness = async (req, res, next) => {
     const pathJoined = path.join(directory, path.sep, "result");
     console.log(pathJoined);
 
+    console.log("DIRECTORY: ", process.env.VISUALISATION_DIR + simulationId);
+
     const hiveFileName = `${simulationId}_all.csv`;
     const positionFileName = `${simulationId}_network_data.csv`;
     const communicationFileName = `${simulationId}.csv`;

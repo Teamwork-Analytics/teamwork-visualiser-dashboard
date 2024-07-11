@@ -8,13 +8,13 @@ import pandas
 
 RED_ID = 27226
 
-BLUE_ID = 27261
+BLUE_ID = 27209
 # before 318 green id is 27160
 GREEN_ID = 27176
 
 YELLOW_ID = 27263
 
-ID_TO_COLOR = {27261: "blue", 27176: "green", 27226: "red", 27263: "yellow"}
+ID_TO_COLOR = {27209: "blue", 27176: "green", 27226: "red", 27263: "yellow"}
 
 REGION_COLORS = ("region_blue", "region_green", "region_red", "region_yellow")
 

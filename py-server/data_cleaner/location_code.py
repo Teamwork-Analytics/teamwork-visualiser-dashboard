@@ -164,7 +164,7 @@ def __extract_single_session(input_path: str, coordinate_rules_df: pd.DataFrame,
     # coordinates_path = "Coordinates.csv"
     # input_path = "testing/182.json"
     RED_ID = 27226
-    BLUE_ID = 27261
+    BLUE_ID = 27209
     GREEN_ID = 27176    # before 318 green id is 27160
     YELLOW_ID = 27263
     """'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"""

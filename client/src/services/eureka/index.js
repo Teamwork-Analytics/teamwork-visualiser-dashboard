@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = process.env.REACT_APP_EUREKA_IP; // This current server
-const DOMAIN_NAME_SECOND_DEVICE = process.env.REACT_APP_AUDIO_IP; // audio laptop server
+const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.74.7"; // audio laptop server
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,

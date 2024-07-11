@@ -16,14 +16,14 @@ from scipy import interpolate
  # currently fake id
 # todo: change the id once we got the number, in the following three data variables
 
-COLOR_TO_ID = {"blue": 27261, "red": 27226, "green": 27176, "yellow": 27263, "white": 27209, "black": 27152}
-ID_TO_COLOR = {"27261": "blue", "27226": "red", "27176": "green", "27263": "yellow", "27209": "white", "27152": "black"}
+COLOR_TO_ID = {"blue": 27209, "red": 27226, "green": 27176, "yellow": 27263, "white": 27261, "black": 27152}
+ID_TO_COLOR = {"27209": "blue", "27226": "red", "27176": "green", "27263": "yellow", "27261": "white", "27152": "black"}
 
 RED_ID = 27226
-BLUE_ID = 27261
+BLUE_ID = 27209
 GREEN_ID = 27176    # before 318 green id is 27160
 YELLOW_ID = 27263
-WHITE_ID = 27209    # currently fake id
+WHITE_ID = 27261    # currently fake id
 BLACK_ID = 27152
 ###############################
 

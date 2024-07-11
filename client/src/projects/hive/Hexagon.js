@@ -145,48 +145,25 @@ class HexagonComponent {
     const h2 = d3hex.hexbin().radius(100);
     const strokeWidth = "0.15em";
     const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
-    if (shotFlag === "made" || shotFlag === "missed") {
-      if (colour === "BLUE") {
-        this.svg
-          .append("g")
-          .selectAll(".hexagon")
-          .data(hexbin([subjectPos]))
-          .enter()
-          .append("path")
-          .attr("d", function (d) {
-            const x = d.x;
-            const y = d.y;
-            // const x = d.x;
-            // const y = d.y;
-            return "M" + x + "," + y + hexbin.hexagon();
-          })
-          .attr("stroke", strokeColour)
-          .attr(
-            "fill",
-            shotFlag === "made" ? cssColourMatcher[colour] : "white"
-          )
-          .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
-          .attr("stroke-width", strokeWidth);
-      } else {
-        this.svg
-          .append("g")
-          .selectAll(".hexagon")
-          .data(hexbin([subjectPos]))
-          .enter()
-          .append("path")
-          .attr("d", function (d) {
-            const x = d.x;
-            const y = d.y;
-            return "M" + x + "," + y + hexbin.hexagon();
-          })
-          .attr("stroke", strokeColour)
-          .attr(
-            "fill",
-            shotFlag === "made" ? cssColourMatcher[colour] : "white"
-          )
-          .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
-          .attr("stroke-width", strokeWidth);
-      }
+    if (!!shotFlag) {
+      this.svg
+        .append("g")
+        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
+        .selectAll(".hexagon")
+        .data(hexbin([subjectPos]))
+        .enter()
+        .append("path")
+        .attr("d", function (d) {
+          // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
+          // const y = d.x; // used in the nursing data before 2024
+          const x = d.x;
+          const y = d.y;
+          return "M" + x + "," + y + hexbin.hexagon();
+        })
+        .attr("stroke", strokeColour)
+        .attr("fill", shotFlag === "made" ? cssColourMatcher[colour] : "white")
+        .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
+        .attr("stroke-width", strokeWidth);
       // .style("opacity", 0)
       // .transition()
       // .duration(1000)

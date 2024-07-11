@@ -60,10 +60,36 @@ const ObservationPrimaryControlView = () => {
     try {
       if (opt === "baselineTime") {
         await startBaselineAll(simulationId);
+
+        // ping FitBit server to start receiving data
+        // TODO: make this prettier
+        // const response = await fetch("http://localhost:3168/start-simulation", {
+        const response = await fetch("http://49.127.33.177:3168/start-simulation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ simulationId }),
+        });
+
+        console.log("Started baseline with fitbit server")
+
       } else if (opt === "startTime") {
         await startAll(simulationId);
       } else if (opt === "stopTime") {
         await stopAll();
+
+        // ping FitBit server to stop receiving data
+        // TODO: make this prettier
+        // const response = await fetch("http://localhost:3168/stop-simulation", {
+        const response = await fetch("http://49.127.33.177:3168/stop-simulation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("Stop recording with fitbit server", );
+
       } else {
         return;
       }
@@ -123,7 +149,11 @@ const ObservationPrimaryControlView = () => {
           </Button>
         </ButtonGroup>
       ) : (
-        <Button variant="secondary" value={"resetAllTime"} onClick={areYouSure}>
+        <Button
+          variant="secondary"
+          value={"resetAllTime"}
+          onClick={areYouSure}
+        >
           Reset Simulation
         </Button>
       )}

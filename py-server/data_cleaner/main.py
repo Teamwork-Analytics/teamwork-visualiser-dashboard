@@ -11,6 +11,7 @@ from vad.pozyx_extraction import main, get_timestamp_from_sync, generate_single_
 from vad.hive_automation import hive_main
 from pymongo import MongoClient
 import matplotlib.pyplot as plt
+from dotenv import load_dotenv
 
 import shutil
 from data_cleaner.social_network_generation import audio_visual
@@ -27,15 +28,27 @@ TEST_MODE_LINX = False
 
 IP_ADDRESS = "0.0.0.0"
 
-# todo: if you want to test locally, change this path to your local test_data_folder
-if TEST_MODE_LINX:
-    BASE_PATH = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
-    # BASE_PATH = r"F:\code folder\data_cleaner\data"
+# Load variables from .env file located in the root folder
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..','.env')
+load_dotenv(dotenv_path)
+current_file_dir = os.path.dirname(os.path.abspath(__file__))
+current_root = os.path.dirname(current_file_dir)
+parent_directory = os.path.dirname(current_root)
+
+# Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
+USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
+
+# Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
+if USE_ABSOLUTE_PATH == 'true':
+    # Location defined as teamwork-visualiser-dashboard/server/saved_data/
+    # BASE_PATH = os.path.join(parent_directory, 'server', 'saved_data')
+    BASE_PATH = "C:\\develop\\saved_data"
 else:
-    BASE_PATH = "C:\\develop\\saved_data\\"
+    # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
+    BASE_PATH = os.getenv('VISUALISATION_DIR')
 
     app = Flask(__name__)
-
+print("BASE_PATH DIRECTORY:", BASE_PATH)
 
 # folder_path, simulationid, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
 
@@ -445,7 +458,7 @@ send get request to localhost:5000/audio-pos
 if __name__ == '__main__':
     # app.run(host="0.0.0.0", port=5050, debug=False)
 
-    call_visualization("296")
+    call_visualization("401")
     # test_formation_detection("225")
     # os.system("ffmpeg -i {audio_in} - ar 48000 {audio_out}")
 

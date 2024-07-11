@@ -6,22 +6,37 @@ from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
+from dotenv import load_dotenv
 import os
 
 from pathlib import Path
 
-IP_ADDRESS = "49.127.70.209"  # this/local server
+# IP_ADDRESS = "localhost"  # this/local server
+IP_ADDRESS = "49.127.33.177"  # this/local server
 PORT = "5003"
 
 app = Flask(__name__)
-# TEST_MODE_LINX = False
-# if TEST_MODE_LINX:
-#     DIRECTORY = "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
-# else:
-#     DIRECTORY = "C:\\develop\\saved_data\\"
-DIRECTORY = "C:\\Work\\teamwork-visualiser-dashboard\\server\\saved_data"
 
+# Load variables from .env file located in the root folder
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path)
+current_root = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_root)
 
+# Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
+USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
+
+# Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
+if USE_ABSOLUTE_PATH == 'true':
+    # Location defined as teamwork-visualiser-dashboard/server/saved_data/
+    # DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
+    DIRECTORY = "C:\\develop\\saved_data"
+
+else:
+    # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
+    DIRECTORY = os.getenv('VISUALISATION_DIR')
+
+print("PYTHON DIRECTORY:", DIRECTORY)
 CORS(app)
 
 
