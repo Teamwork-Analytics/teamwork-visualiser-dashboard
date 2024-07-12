@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask import Flask, jsonify, request
 import pandas as pd
 from ena_replacement_algo import calculate_ena_metric, __merging_codes
+from helper.sna_algo import process_csv
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
@@ -103,7 +104,12 @@ def give_sna_test_data():
     :return:
     """
     try:
+        
         id = request.args['sessionId']
+        start_time = float(request.args["start"])
+        end_time = float(request.args["end"])
+        doc_enter_time = float(request.args["doc_enter"])
+
         file_new = "%s_sna.csv" % id
         file_old = "%s_network_data.csv" % id
         # file_path = DIRECTORY / id / "result" / file
@@ -115,10 +121,12 @@ def give_sna_test_data():
         else:
             file_path = file_path_old
         df = pd.read_csv(file_path)
+        df = process_csv(df, start_time, end_time, doc_enter_time) # update with 2024 data
         df.fillna("", inplace=True)
         output_data = df.to_dict(orient="records")
         return jsonify(output_data)
-    except Exception:
+    except Exception as e:
+        print(e)
         message = "Network data is missing."
         print(message)
         return message, 500
@@ -149,7 +157,8 @@ def give_ena_test_data():
     session_view = session_df[
         (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
     window_size = 3
-    output_data = calculate_ena_metric(session_view, window_size)
+    column_names = ["task allocation", "handover", "call-out", "escalation", "questioning", "acknowledging"]
+    output_data = calculate_ena_metric(session_view, window_size, column_names)
 
     # session_view = pd.DataFrame(all_df[all_df["session_id"] == id])
     # output_data = calculate_ena_metric(all_df, window_size)

@@ -3,6 +3,9 @@ import CytoscapeComponent from "react-cytoscapejs";
 import { processing_csv } from "./cyto_control";
 import { useDebriefing } from "../debriefing-projection/DebriefContext";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
+import { useParams } from "react-router-dom";
+import { getSNAdata } from "../../services/py-server";
+import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 
 const CytoComponent = ({ netData, height = "30vh" }) => {
   const net_options = {
@@ -84,24 +87,61 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
 };
 
 const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
-  const { snaData } = useDebriefing();
+  // const { snaData } = useDebriefing();
+  const { simulationId } = useParams();
   const startTime = timeRange[0];
   const endTime = timeRange[1];
+  const { timelineTags } = useTimeline();
+
+  const [snaData, setSNAdata] = useState([]);
   const [netData, setNetData] = useState([]);
   const [isError, setIsError] = useState(netData.length === 0);
+
+  useEffect(() => {
+    async function callData() {
+      try {
+        const doctorTime =
+          timelineTags.length !== 0
+            ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
+            : 1000;
+
+        console.log(doctorTime);
+        const res = await getSNAdata({
+          simulationId: simulationId,
+          startTime: startTime,
+          endTime: endTime,
+          docEnterTime: doctorTime,
+        });
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setSNAdata(res.data);
+          setIsError(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+      }
+      // Fetch data immediately when component mounts
+    }
+
+    callData();
+
+    // Clean up the interval when the component is unmounted or when data is fetched
+    // return () => clearInterval(intervalId);
+  }, [simulationId, startTime, endTime]);
 
   /* getData from backend */
   useEffect(() => {
     if (snaData.length !== 0) {
       setIsError(false);
-      const net_data = processing_csv(snaData, startTime, endTime, 3, 100);
+      const net_data = processing_csv(snaData, 3, 100);
       if (net_data !== undefined) {
         setNetData(net_data["nodes"].concat(net_data["edges"]));
       }
     } else {
       setIsError(true);
     }
-  }, [snaData, startTime, endTime]);
+  }, [snaData]);
 
   return (
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>

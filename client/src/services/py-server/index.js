@@ -45,8 +45,12 @@ communicationAPI.interceptors.response.use(
   }
 );
 
-const getSNAdata = async (simulationId) => {
-  return await communicationAPI.get(`/get_data?sessionId=${simulationId}`);
+const getSNAdata = async (body) => {
+  const { simulationId, startTime, endTime, docEnterTime } = body;
+
+  return await communicationAPI.get(
+    `/get_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}&doc_enter=${docEnterTime}`
+  );
 };
 
 const getENAdata = async (body) => {

@@ -36,6 +36,34 @@ const NODE_NAME_MAPPER = {
   relative: "Relative",
 };
 
+const LABEL_HALIGNMENT_MAPPER = {
+  blue: "right",
+  red: "right",
+  green: "right",
+  yellow: "right",
+  patient: "left",
+  doctor: "left",
+  relative: "left",
+};
+const LABEL_VALIGNMENT_MAPPER = {
+  blue: "center",
+  red: "center",
+  green: "center",
+  yellow: "center",
+  patient: "bottom",
+  doctor: "left",
+  relative: "center",
+};
+const COLOR_MAPPER = {
+  blue: "blue",
+  red: "red",
+  green: "green",
+  yellow: "yellow",
+  patient: "grey",
+  doctor: "white",
+  relative: "black",
+};
+
 let logging = function (input) {
   if (LOGGING) console.log(input);
 };
@@ -162,10 +190,10 @@ let generate_a_node_dict = function (
       "background-opacity": 1,
       "border-color": "#333",
       "border-width": 1,
-      "text-halign": label_halignment,
-      "text-valign": label_valignment,
+      "text-halign": LABEL_HALIGNMENT_MAPPER[color.toUpperCase()],
+      "text-valign": LABEL_VALIGNMENT_MAPPER[color.toUpperCase()],
       "text-margin-x": MARGIN_MAPPER[node_name],
-      "font-size": 40,
+      "font-size": "2.5em",
     },
   };
 };
@@ -231,14 +259,7 @@ let generate_social_network = function (network_data, container_id) {
   };
 };
 
-let processing_csv = function (
-  raw_json_data,
-  start_time,
-  end_time,
-  max_edge_width,
-  max_node_size,
-  use_comm
-) {
+let processing_csv = function (raw_json_data, max_edge_width, max_node_size) {
   // selection of data: https://danfo.jsdata.org/getting-started#selection-with-boolean-mask
 
   // use Danfo.js to create the slice of data
@@ -247,8 +268,6 @@ let processing_csv = function (
 
     const test_df = new dfd.DataFrame(raw_json_data);
 
-    if (use_comm) {
-    }
     // moved into for loop, because glitch will happen if use mask loading on slice
 
     // const init_slice = test_df.iloc({
@@ -258,22 +277,21 @@ let processing_csv = function (
     //   rows: init_slice["start_time"].le(end_time),
     // });
 
-    console.log("Start time: ", start_time, " type: ", typeof start_time);
-    console.log("End time: ", end_time, " type: ", typeof end_time);
-    console.log("DataFrame start_time column: ", test_df["start_time"]);
-
-    const new_df_slice = test_df.query(
-      test_df["start_time"]
-        .ge(start_time)
-        .and(test_df["start_time"].le(end_time))
-    );
+    // console.log("Start time: ", start_time, " type: ", typeof start_time);
+    // console.log("End time: ", end_time, " type: ", typeof end_time);
+    // console.log("DataFrame start_time column: ", test_df["start_time"]);
+    // const new_df_slice = test_df.query(
+    //   test_df["start_time"]
+    //     .ge(start_time)
+    //     .and(test_df["start_time"].le(end_time))
+    // );
 
     // const new_df_slice = test_df
     //   .query({ column: "start_time", is: ">=", to: start_time })
     //   .query({ column: "end_time", is: "<=", to: end_time });
 
     // df_slice["initiator"].print();
-    const df_slice = regenerating_df(new_df_slice);
+    const df_slice = regenerating_df(test_df);
 
     // for each student, get their total duration of speaking time, and the duration of speaking time to others
     const students = ["blue", "green", "red", "yellow"];
@@ -283,8 +301,8 @@ let processing_csv = function (
     let node_size = [];
     let edge_width = [];
 
-    for (const a_student_index in students) {
-      let a_student = students[a_student_index];
+    for (const a_student_index in students_and_others) {
+      let a_student = students_and_others[a_student_index];
 
       let slice = df_slice["initiator"].eq(a_student);
       // slice.print();
@@ -295,8 +313,8 @@ let processing_csv = function (
       if (student_slice.shape[0] === 0) {
         node_size.push(
           generate_a_node_dict(
-            students[a_student_index],
-            students[a_student_index],
+            students_and_others[a_student_index],
+            students_and_others[a_student_index],
             MIN_NODE_SIZE,
             "right",
             "center"
@@ -307,7 +325,6 @@ let processing_csv = function (
 
       const student_slice_new = regenerating_df(student_slice);
       const time_sum = student_slice_new["duration"].sum();
-
       logging(time_sum);
 
       // here calculates the node size of students
@@ -322,8 +339,8 @@ let processing_csv = function (
 
       node_size.push(
         generate_a_node_dict(
-          students[a_student_index],
-          students[a_student_index],
+          students_and_others[a_student_index],
+          students_and_others[a_student_index],
           node_size_value,
           "right",
           "center"
@@ -333,9 +350,17 @@ let processing_csv = function (
       // calculating edge weights
       logging("======= start to record the generation of edges ==============");
       for (let an_id in students_and_others) {
-        if (students[a_student_index] === students_and_others[an_id]) continue;
+        if (
+          students_and_others[a_student_index] === students_and_others[an_id]
+        ) {
+          logging("");
+          logging(students_and_others[a_student_index]);
+          logging(students_and_others[an_id]);
+          continue;
+        }
+
         logging(an_id);
-        logging(students[an_id]);
+        logging(students_and_others[an_id]);
 
         // get the rows that one student talk to another
         let talk_to_df = str_isin_column(
@@ -345,7 +370,7 @@ let processing_csv = function (
         );
         let talking_to_time = talk_to_df["duration"].sum();
         logging(
-          students[a_student_index] +
+          students_and_others[a_student_index] +
             " to " +
             students_and_others[an_id] +
             ":" +
@@ -356,10 +381,10 @@ let processing_csv = function (
           group: "edges",
           data: {
             id:
-              NODE_NAME_MAPPER[students[a_student_index]] +
+              NODE_NAME_MAPPER[students_and_others[a_student_index]] +
               "_" +
               NODE_NAME_MAPPER[students_and_others[an_id]],
-            source: NODE_NAME_MAPPER[students[a_student_index]],
+            source: NODE_NAME_MAPPER[students_and_others[a_student_index]],
             target: NODE_NAME_MAPPER[students_and_others[an_id]],
           },
           style: {
@@ -376,16 +401,19 @@ let processing_csv = function (
       }
     }
 
-    for (let an_other_index in others)
-      node_size.push(
-        generate_a_node_dict(
-          others[an_other_index],
-          others[an_other_index],
-          OTHER_NODE_SIZE,
-          "left"
-        )
-      );
-    return { nodes: node_size, edges: edge_width };
+    const filtered_edge_with = [];
+    for (const i in edge_width) {
+      const edge_data = edge_width[i];
+      if (
+        edge_data["data"]["id"] === "Relative_Doctor" ||
+        edge_data["data"]["id"] === "Doctor_Relative" ||
+        edge_data["data"]["id"] === "Relative_Patient" ||
+        edge_data["data"]["id"] === "Doctor_Patient"
+      )
+        continue;
+      filtered_edge_with.push(edge_data);
+    }
+    return { nodes: node_size, edges: filtered_edge_with };
   } catch (error) {
     // toast.error(`SNA error: unable to change visualisation based on time`);
     console.error(error);
