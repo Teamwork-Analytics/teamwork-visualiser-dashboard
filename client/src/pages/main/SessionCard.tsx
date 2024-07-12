@@ -11,18 +11,21 @@ const SimulationCard = ({
   onClick?: (...args: any[]) => any;
 }) => {
   return (
-    <TACard height={70} width={700} onClick={onClick}>
-      <Row style={{ display: "flex", flexDirection: "row" }}>
-        <Col>
-          <label>{sim.simulationId}</label>
-        </Col>
-        <Col sm="5">
-          <label>{sim.name}</label>
-        </Col>
+    <TACard height={200} width={200} onClick={onClick}>
+      <Row style={{ display: "flex", flexDirection: "column" }}>
+        {/* <Col> */}
+        <h1>{sim.simulationId}</h1>
+        {/* </Col> */}
+        {/* <Col sm="5"> */}
+        <label>{sim.name}</label>
+        {/* </Col> */}
         {sim.project && (
-          <Col sm="5">
-            <label>{sim.project.name}</label>{" "}
-          </Col>
+          // <Col sm="5">
+          <small>
+            <br />
+            <i>{sim.project.name}</i>
+          </small>
+          // </Col>
         )}
       </Row>
 

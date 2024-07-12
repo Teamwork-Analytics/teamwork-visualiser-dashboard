@@ -4,19 +4,19 @@ import { COLOURS } from "../../config/colours";
 
 const CLASSROOM_SIZE = {
   WIDTH: 10500,
-  HEIGHT: 6960,
+  HEIGHT: 7060,
 };
 const CONSTANTS = {
   HEX_RADIUS: 50,
   IMG_WIDTH: 2697,
-  IMG_HEIGHT: 1815,
+  IMG_HEIGHT: 1715,
   HEXAGON_OPACITY: "0.5",
 };
 
 export const cssColourMatcher = {
-  GREEN: COLOURS.SECONDARY_NURSE_1, //lime
-  RED: COLOURS.PRIMARY_NURSE_2, //red
   BLUE: COLOURS.PRIMARY_NURSE_1, // blue
+  RED: COLOURS.PRIMARY_NURSE_2, //red
+  GREEN: COLOURS.SECONDARY_NURSE_1, //lime
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
 };
 
@@ -25,7 +25,17 @@ const timeParser = (timestamp) => {
 };
 
 class HexagonComponent {
-  constructor(svg, csvData, posOnly, selectedColours, timeStart, timeEnd) {
+  constructor(
+    svg,
+    csvData,
+    posOnly,
+    selectedColours,
+    timeStart,
+    timeEnd,
+    setHrData,
+    showPosAudio = true,
+    showHr = true
+  ) {
     this.svg = svg;
 
     d3.csv(csvData).then(
@@ -39,35 +49,69 @@ class HexagonComponent {
           const currTime = timeParser(data["audio time"]);
           if (startTime <= currTime && currTime <= endTime) return data;
         });
+        if (showPosAudio) {
+          clean.forEach((record, j) => {
+            // NOTE: formula = (data * image-resolution) / actual-size
+            const posX =
+              (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
+            const posY =
+              (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
 
-        clean.forEach((record, j) => {
-          // NOTE: formula = (data * image-resolution) / actual-size
-          const posX = (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
-          const posY =
-            (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
-
-          // TODO: convert time to make it
-          if (record["audio time"] === timeEnd) {
-            return;
-          }
-
-          if (
-            record.tagId in cssColourMatcher &&
-            selectedColours[record.tagId] //NOTE: the key must match with the default state in HiveProvider!
-          ) {
-            if (record.audio === "1") {
-              this.render(
-                [posX, posY],
-                posOnly ? "missed" : "made",
-                record.tagId
-              );
-            } else if (record.audio === "0") {
-              this.render([posX, posY], "missed", record.tagId);
-            } else if (record.audio === "2") {
-              this.render([posX, posY], "fixed", record.tagId, record.tracker);
+            // TODO: convert time to make it
+            if (record["audio time"] === timeEnd) {
+              return;
             }
+
+            if (
+              record.tagId in cssColourMatcher &&
+              selectedColours[record.tagId] //NOTE: the key must match with the default state in HiveProvider!
+            ) {
+              if (record.audio === "1") {
+                this.render(
+                  [posX, posY],
+                  posOnly ? "missed" : "made",
+                  record.tagId
+                );
+              } else if (record.audio === "0") {
+                this.render([posX, posY], "missed", record.tagId);
+              }
+            }
+          });
+        }
+
+        if (showHr) {
+          let hasHeartRateKey = clean.some((obj) =>
+            obj.hasOwnProperty("heartrate")
+          );
+
+          if (hasHeartRateKey) {
+            let hrBaselines = this.getBaselineHeartRate(d); // always get from first data.
+            const hrData = this.constructHeartRateData(clean, hrBaselines); // only 4 data
+            hrData.forEach((record) => {
+              const posX =
+                (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
+              const posY =
+                (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
+              if (
+                record.tagId in cssColourMatcher &&
+                selectedColours[record.tagId] //NOTE: the key must match with the default state in HiveProvider!
+              ) {
+                this.render(
+                  [posX, posY],
+                  "fixed",
+                  record.tagId, // Colour
+                  record.displayedHR // value: maximuma heart rate
+                );
+              }
+            });
+            const tagIdOrder = ["BLUE", "RED", "GREEN", "YELLOW"];
+            hrData.sort(
+              (a, b) =>
+                tagIdOrder.indexOf(a.tagId) - tagIdOrder.indexOf(b.tagId)
+            );
+            setHrData(hrData);
           }
-        });
+        }
       }.bind(this)
     );
 
@@ -78,12 +122,53 @@ class HexagonComponent {
     //     .attr("fill", "white");
   }
 
-  render(subjectPos, shotFlag, colour, number) {
-    const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
-    const h2 = d3hex.hexbin().radius(30);
+  getBaselineHeartRate(data) {
+    let tagIds = ["RED", "GREEN", "BLUE", "YELLOW"];
+    let result = {};
+
+    for (let tagId of tagIds) {
+      let firstItem = data.find((item) => item.tagId === tagId);
+      if (firstItem) {
+        result[tagId] = Number(firstItem.heartrate);
+      }
+    }
+    return result;
+  }
+
+  constructHeartRateData(data, baselines) {
+    let maxHeartRates = data.reduce((d, obj) => {
+      const hr = Number(obj.heartrate);
+      if (!d[obj.tagId] || hr > Number(d[obj.tagId].heartrate)) {
+        const baseline = baselines[obj.tagId];
+        // NOTE: Changes from baseline
+        d[obj.tagId] = {
+          ...obj,
+          heartrate: obj.heartrate - baseline,
+          displayedHR: obj.heartrate.replace(".0", ""),
+          baselineHr: baseline,
+        };
+
+        // just Maximum
+        // d[obj.tagId] = {
+        //   ...obj,
+        //   baselineHr: baseline,
+        // };
+      }
+      return d;
+    }, {});
+    let res = Object.entries(maxHeartRates).map(([tagId, value]) => ({
+      tagId,
+      ...value,
+    }));
+    return res;
+  }
+
+  render(subjectPos, shotFlag, colour, value) {
     const strokeWidth = "0.15em";
     const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
-    if (!!shotFlag) {
+    if (shotFlag === "made" || shotFlag === "missed") {
+      const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
+      const h2 = d3hex.hexbin().radius(100);
       this.svg
         .append("g")
         // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
@@ -109,31 +194,62 @@ class HexagonComponent {
       //   return i * 50;
       // })
       // .style("opacity", 1);
-    } else if (shotFlag === "fixed") {
+    }
+    if (shotFlag === "fixed") {
+      const posX = subjectPos[0];
+      const posY = subjectPos[1];
+
+      let heartPath =
+        "M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z";
+
+      const heartPosX = posX;
+      const heartPosY = posY;
+
       this.svg
         .append("g")
-        .selectAll(".hexagon")
-        .data(hexbin([subjectPos]))
-        .enter()
         .append("path")
-        .attr("d", function (d) {
-          return "M" + d.x + "," + d.y + h2.hexagon();
-        })
-        .attr("stroke", "white")
-        .attr("fill", "yellow")
-        .attr("fill-opacity", "0.7")
-        .attr("stroke-width", strokeWidth);
+        .attr("d", heartPath)
+        .attr("fill", cssColourMatcher[colour])
+        .attr("fill-opacity", "0.8")
+        .attr("stroke", "black")
+        .attr("stroke-width", "0.1em")
+        .style(
+          "transform",
+          `translate(${heartPosX}px, ${heartPosY}px) scale(10)`
+        );
 
       // FOR TEXT
       this.svg
         .append("text")
-        .text(number)
-        .attr("x", subjectPos[0] + 10)
-        .attr("y", subjectPos[1] + 5)
-        .attr("fill", "white")
-        .style("font-size", "20px");
+        .text(value) // if value is positive, add + // .text(value >= 0 ? `+${value}` : value)
+        .attr("x", posX - 2 * (posX / 100) + 100)
+        .attr("y", posY + 2 * (posY / 100) + 120)
+        .attr("fill", "black")
+        .style("font-size", "5em");
     }
   }
 }
 
 export default HexagonComponent;
+
+/**
+ * Unused code:
+      // this.svg
+      //   .append("g")
+      //   .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
+      //   .selectAll(".hexagon")
+      //   .data(hexbin([subjectPos]))
+      //   .enter()
+      //   .append("path")
+      //   .attr("d", function (d) {
+      //     const x = -d.y + CONSTANTS.IMG_WIDTH;
+      //     const y = d.x;
+      //     // const x = d.x;
+      //     // const y = d.y;
+      //     return "M" + x + "," + y + h2.hexagon();
+      //   })
+      //   .attr("stroke", "black")
+      //   .attr("fill", cssColourMatcher[colour])
+      //   .attr("fill-opacity", "0.7")
+      //   .attr("stroke-width", "1em");
+ */

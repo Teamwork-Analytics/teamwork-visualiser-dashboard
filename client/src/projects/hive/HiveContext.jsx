@@ -11,11 +11,15 @@ import HiveAPI from "../../services/api/hive";
 const HiveContext = React.createContext();
 
 function HiveProvider({ simulationId, children }) {
+  const [hrData, setHrData] = React.useState({});
   const [hiveState, hiveSetState] = React.useState({
     participants: { BLUE: true, RED: true, GREEN: true, YELLOW: true },
     phase: [0, 100],
     isPositionOnly: false,
+    showPositionAudioData: true,
+    showHeartRateData: true,
   });
+
   const [isHiveReady, setIsReady] = React.useState(false);
   useEffect(() => {
     HiveAPI.isDataReady(simulationId)
@@ -48,12 +52,14 @@ function HiveProvider({ simulationId, children }) {
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
     }
-  }, [isHiveReady, simulationId]);
+  }, [isHiveReady, simulationId, setHrData, hrData]);
 
   const value = {
     hiveState,
     hiveSetState,
     isHiveReady,
+    setHrData,
+    hrData,
   };
 
   return <HiveContext.Provider value={value}>{children}</HiveContext.Provider>;

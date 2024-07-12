@@ -2,7 +2,6 @@ const timeToPercentage = (phases) => {
   const dataInSec = phases.map((d) => {
     return { ...d, markers: Date.parse(`1 Jan 1970 ${d.timestamp} GMT`) };
   });
-  console.log(dataInSec);
   const totalDuration = dataInSec[dataInSec.length - 1].markers;
   return dataInSec.map((d) => {
     return { ...d, markers: Math.round((d.markers / totalDuration) * 100) };

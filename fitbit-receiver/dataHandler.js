@@ -22,15 +22,18 @@ function writeToCsv(filename, data) {
 
 // Function to handle received data
 function handleReceivedData(receivedData, simulationId) {
-  const filename = `${receivedData.type.toLowerCase()}-${receivedData.user.toLowerCase()}.csv`;
+  const filename = `${receivedData.type.toLowerCase()}-${receivedData.user.toUpperCase()}.csv`;
 
   // const filePath = path.join(
   //   `/Users/jiexiangfan/Documents/GitHub/teamwork-visualiser-dashboard/server/saved_data/${simulationId}/result/`,
   //   filename
-  // ); 
-  
+  // );
+
   // Absolute path of developer
-  const filePath = path.join(`C:\\develop\\saved_data\\${simulationId}\\result\\`, filename); // Absolute path for data collection
+  const filePath = path.join(
+    `C:\\develop\\saved_data\\${simulationId}\\`,
+    filename
+  ); // Absolute path for data collection
 
   // Ensure directory exists
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
