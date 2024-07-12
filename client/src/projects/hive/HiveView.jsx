@@ -7,6 +7,8 @@ import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
 import { useParams } from "react-router-dom";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
+import { useVizChat } from "../../contexts/VizChatContext";
+import { Button } from "react-bootstrap";
 
 const HiveView = ({
   timeRange,
@@ -18,6 +20,8 @@ const HiveView = ({
 }) => {
   const hiveRef = useRef();
   const { hiveState: hiveStateHook, isHiveReady } = useHive(); // renamed state to distinguish it from prop
+
+  const { takeScreenShot } = useVizChat();
   const hiveState = hiveStateProp || hiveStateHook; // Use prop if available, otherwise use state from hook
   const { simulationId } = useParams();
   const csvUrl = process.env.PUBLIC_URL + "/api/hives/" + simulationId;
@@ -46,6 +50,10 @@ const HiveView = ({
     } catch (err) {}
   }, [csvUrl, hiveState, isHiveReady, timeRange, showModal]);
 
+  const captureHive = () => {
+    takeScreenShot(hiveRef.current);
+  };
+
   return (
     <Fragment>
       {!isHiveReady ? (
@@ -69,6 +77,7 @@ const HiveView = ({
           >
             <div ref={hiveRef} style={{ height: "99%" }} />
           </div>
+          <Button onClick={captureHive}> Click</Button>
           {showFilter && <HivePrimaryControlView />}
         </div>
       )}

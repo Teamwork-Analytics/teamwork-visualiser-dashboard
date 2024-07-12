@@ -1,4 +1,7 @@
 import { Bar } from "react-chartjs-2";
+import { useVizChat } from "../../contexts/VizChatContext";
+import { useRef } from "react";
+import { Button } from "react-bootstrap";
 
 const Barchart = ({
   data,
@@ -17,6 +20,14 @@ const Barchart = ({
     ],
   };
 
+  const barChartRef = useRef();
+
+  const { takeScreenShot } = useVizChat();
+
+  const capture = () => {
+    takeScreenShot(barChartRef.current);
+  };
+
   return (
     <div
       style={{
@@ -25,6 +36,7 @@ const Barchart = ({
         margin: "auto",
         textAlign: "center",
       }}
+      ref={barChartRef}
     >
       <Bar
         data={chartData}
@@ -70,6 +82,7 @@ const Barchart = ({
           aspectRatio: customAspectRatio,
         }}
       />
+      <Button onClick={capture}>Click</Button>
     </div>
   );
 };

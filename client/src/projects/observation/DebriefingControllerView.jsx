@@ -18,6 +18,7 @@ import VisualisationInfoModal from "./visualisationComponents/VisualisationInfoM
 import NurseNameBadges from "./visualisationComponents/NurseNameBadges";
 import ToolInPrep from "../../components/loadingComponents/ToolInPrep";
 import { useTracking } from "react-tracking";
+import { VizChatProvider } from "../../contexts/VizChatContext";
 
 const debriefStyles = {
   activeTab: {
@@ -316,114 +317,118 @@ const DebriefingControllerView = () => {
               backgroundColor: "white",
             }}
           >
-            <div
-              className="scrollable-div"
-              style={{
-                display: "flex",
-                overflowX: "auto",
-                whiteSpace: "nowrap",
-                marginBottom: "5px",
-              }}
-            >
-              {isDataReady ? (
-                bottomVisualisations(range, showPreviewModal).map(
-                  (tab, index) => (
-                    <div
-                      style={{
-                        minWidth: "23rem",
-                        margin: "5px",
-                        padding: "5px",
-                        borderStyle: "solid",
-                        borderColor: "rgba(0, 0, 0, 0.176)",
-                        borderRadius: "0.5rem",
-                      }}
-                      key={index}
-                    >
-                      <Row>
-                        <Col xs="auto" style={{ margin: "auto" }}>
-                          <div
-                            style={{
-                              marginTop: "10px",
-                              marginBottom: "10px",
-                              fontSize: "16px",
-                              position: "relative",
-                              paddingRight: "15px",
-                            }}
-                            onClick={() => {
-                              trackEvent({
-                                action: "click",
-                                element: "titleWithShowInfoIcon",
-                                data: tab.title,
-                              });
-                              handleInfoShow(tab.title, tab.info());
-                            }}
-                          >
-                            {tab.title}
-                            <BsInfoCircle
+            <VizChatProvider>
+              <div
+                className="scrollable-div"
+                style={{
+                  display: "flex",
+                  overflowX: "auto",
+                  whiteSpace: "nowrap",
+                  marginBottom: "5px",
+                }}
+              >
+                {isDataReady ? (
+                  bottomVisualisations(range, showPreviewModal).map(
+                    (tab, index) => (
+                      <div
+                        style={{
+                          minWidth: "23rem",
+                          margin: "5px",
+                          padding: "5px",
+                          borderStyle: "solid",
+                          borderColor: "rgba(0, 0, 0, 0.176)",
+                          borderRadius: "0.5rem",
+                        }}
+                        key={index}
+                      >
+                        <Row>
+                          <Col xs="auto" style={{ margin: "auto" }}>
+                            <div
                               style={{
-                                position: "absolute",
-                                top: "0",
-                                right: "0",
+                                marginTop: "10px",
+                                marginBottom: "10px",
+                                fontSize: "16px",
+                                position: "relative",
+                                paddingRight: "15px",
                               }}
-                              size="0.7em"
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Button
-                            variant={
-                              selectedVis.some((vis) => vis.id === tab.eventKey)
-                                ? "danger"
-                                : "success"
-                            }
-                            style={{
-                              fontSize: "14px",
-                              padding: "5px",
-                              whiteSpace: "nowrap",
-                            }}
-                            onClick={() => {
-                              trackEvent({
-                                action: "click",
-                                element: "addOrRemoveVisToPreview(Bottom)",
-                                data: tab.eventKey,
-                              });
-                              handleAddVis(tab.eventKey);
-                            }}
-                          >
-                            {selectedVis.some(
-                              (vis) => vis.id === tab.eventKey
-                            ) ? (
-                              <>
-                                <FaCheckSquare
-                                  style={{ marginBottom: "2px" }}
-                                />{" "}
-                                Remove from projector
-                              </>
-                            ) : (
-                              <>
-                                <FaSquare style={{ marginBottom: "2px" }} /> Add
-                                to projector
-                              </>
-                            )}
-                          </Button>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Container style={{ margin: "5px" }}>
-                          {tab.component()}
-                        </Container>
-                      </Row>
-                    </div>
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "titleWithShowInfoIcon",
+                                  data: tab.title,
+                                });
+                                handleInfoShow(tab.title, tab.info());
+                              }}
+                            >
+                              {tab.title}
+                              <BsInfoCircle
+                                style={{
+                                  position: "absolute",
+                                  top: "0",
+                                  right: "0",
+                                }}
+                                size="0.7em"
+                              />
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <Button
+                              variant={
+                                selectedVis.some(
+                                  (vis) => vis.id === tab.eventKey
+                                )
+                                  ? "danger"
+                                  : "success"
+                              }
+                              style={{
+                                fontSize: "14px",
+                                padding: "5px",
+                                whiteSpace: "nowrap",
+                              }}
+                              onClick={() => {
+                                trackEvent({
+                                  action: "click",
+                                  element: "addOrRemoveVisToPreview(Bottom)",
+                                  data: tab.eventKey,
+                                });
+                                handleAddVis(tab.eventKey);
+                              }}
+                            >
+                              {selectedVis.some(
+                                (vis) => vis.id === tab.eventKey
+                              ) ? (
+                                <>
+                                  <FaCheckSquare
+                                    style={{ marginBottom: "2px" }}
+                                  />{" "}
+                                  Remove from projector
+                                </>
+                              ) : (
+                                <>
+                                  <FaSquare style={{ marginBottom: "2px" }} />{" "}
+                                  Add to projector
+                                </>
+                              )}
+                            </Button>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Container style={{ margin: "5px" }}>
+                            {tab.component()}
+                          </Container>
+                        </Row>
+                      </div>
+                    )
                   )
-                )
-              ) : (
-                <Container style={{ display: "flex", minHeight: "30vh" }}>
-                  <ToolInPrep />
-                </Container>
-              )}
-            </div>
+                ) : (
+                  <Container style={{ display: "flex", minHeight: "30vh" }}>
+                    <ToolInPrep />
+                  </Container>
+                )}
+              </div>
+            </VizChatProvider>
           </Container>
         </Col>
       </Row>
