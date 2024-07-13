@@ -9,7 +9,7 @@ const createSocket = async (httpServer) => {
       //   process.env.NODE_ENV === "development"
       //     ? [`http://${process.env.IP}:3000`, "http://localhost:3000"]
       //     : process.env.CURRENT_URL,
-      origin:"*",
+      origin: "*",
       methods: ["GET", "POST"],
     },
   });
@@ -67,6 +67,12 @@ const createSocket = async (httpServer) => {
       console.log("Received nurse filter from server");
       taggingNamespace.emit("receive-nurse-filter", nurseFilter);
       console.log("Broadcasted nurse filter to client");
+    });
+
+    socket.on("send-tagging-data", (taggingData) => {
+      taggingNamespace.emit("receive-tagging-data", taggingData);
+      console.log(taggingData);
+      console.log("Broadcasted tagging data to client");
     });
   });
 };

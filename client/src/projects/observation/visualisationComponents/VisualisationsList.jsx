@@ -76,7 +76,7 @@ const topTabVisualisations = (timeRange) => [
 ];
 
 // Configuration for bottom visualisations -> for carousel
-const bottomVisualisations = (timeRange, showPreviewModal) => [
+const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   {
     eventKey: "priorBar",
     title: "Prioritisation Bar",
@@ -114,7 +114,9 @@ const bottomVisualisations = (timeRange, showPreviewModal) => [
   {
     eventKey: "commNetwork",
     title: "Communication Network",
-    component: () => <SocialNetworkView timeRange={timeRange} />,
+    component: () => (
+      <SocialNetworkView timeRange={timeRange} timelineTags={timelineTags} />
+    ),
     info: () => (
       <div>
         The size of the circle represents the time a student spent talking. The

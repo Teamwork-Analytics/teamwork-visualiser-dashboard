@@ -40,7 +40,7 @@ const SIZE_STYLES = {
   single: { width: "90vw", height: "70vh", margin: "auto" },
 };
 
-const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
+const DisplayViz = ({ selectedVis, range, marks, optionalHiveState }) => {
   // Define the visualisation components and their sizes
   // TODO: consider using useMemo for viz
 
@@ -67,6 +67,7 @@ const DisplayViz = ({ selectedVis, range, optionalHiveState }) => {
       viz: (
         <SocialNetworkView
           timeRange={range}
+          timelineTags={marks}
           height={selectedVis.length === 1 ? "60vh" : "50vh"}
         />
       ),

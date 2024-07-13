@@ -86,12 +86,11 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
   );
 };
 
-const SocialNetworkView = ({ timeRange, height = "30vh" }) => {
+const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
   // const { snaData } = useDebriefing();
   const { simulationId } = useParams();
   const startTime = timeRange[0];
   const endTime = timeRange[1];
-  const { timelineTags } = useTimeline();
 
   const [snaData, setSNAdata] = useState([]);
   const [netData, setNetData] = useState([]);

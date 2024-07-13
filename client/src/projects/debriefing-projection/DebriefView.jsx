@@ -18,6 +18,7 @@ import { useParams } from "react-router-dom";
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(taggingSocket.connected);
   const [dispList, setDispList] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [range, setRange] = useState([0, 0]);
   const [hiveState, setHiveState] = useState();
 
@@ -51,10 +52,15 @@ const DebriefView = () => {
       setHiveState(hiveState);
     };
 
+    const onReceiveTaggingNotesInfo = (taggingData) => {
+      setNotes(taggingData);
+    };
+
     taggingSocket.on("connect", onConnect);
     taggingSocket.on("disconnect", onDisconnect);
     taggingSocket.on("receive-disp-list", onUpdateList);
     taggingSocket.on("receive-nurse-filter", onReceiveNurseFilter);
+    taggingSocket.on("receive-tagging-data", onReceiveTaggingNotesInfo);
 
     // Cleanup function for useEffect
     return () => {
@@ -62,6 +68,7 @@ const DebriefView = () => {
       taggingSocket.off("disconnect", onDisconnect);
       taggingSocket.off("receive-disp-list", onUpdateList);
       taggingSocket.off("receive-nurse-filter", onReceiveNurseFilter);
+      taggingSocket.off("receive-tagging-data", onReceiveTaggingNotesInfo);
     };
   }, []);
 
@@ -85,6 +92,7 @@ const DebriefView = () => {
         <DisplayViz
           selectedVis={dispList}
           range={range}
+          marks={notes} // user's tagging data (notes) as marks in the timeline
           optionalHiveState={hiveState}
         />
       </div>

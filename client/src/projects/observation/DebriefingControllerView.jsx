@@ -57,7 +57,7 @@ const debriefStyles = {
 const DebriefingControllerView = () => {
   const { Track, trackEvent } = useTracking({ page: "Debriefing" });
   const { simulationId } = useParams();
-  const { range } = useTimeline();
+  const { range, timelineTags } = useTimeline();
   const { isDataReady } = useObservation();
 
   // send selected Vis
@@ -326,7 +326,7 @@ const DebriefingControllerView = () => {
               }}
             >
               {isDataReady ? (
-                bottomVisualisations(range, showPreviewModal).map(
+                bottomVisualisations(range, timelineTags, showPreviewModal).map(
                   (tab, index) => (
                     <div
                       style={{

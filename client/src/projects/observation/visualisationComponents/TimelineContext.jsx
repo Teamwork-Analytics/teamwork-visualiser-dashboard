@@ -11,6 +11,7 @@
 
 import * as React from "react";
 import { useObservation } from "../ObservationContext";
+import { taggingSocket } from "../../debriefing-projection/socket";
 
 // Create TimelineContext
 const TimelineContext = React.createContext();
@@ -46,15 +47,15 @@ function TimelineProvider({ children }) {
   // State and effect for timeline tags, mapped from notes
   const [timelineTags, setTimelineTags] = React.useState([]);
   React.useEffect(() => {
-    setTimelineTags(
-      notes.map((note) => {
-        const value = calculateDuration(simStartTimestamp, note.timestamp);
-        const label = note.message;
-        const favourite = note.favourite;
-        const performers = note.performers;
-        return { value, label, favourite, performers };
-      })
-    );
+    const mapNotes = notes.map((note) => {
+      const value = calculateDuration(simStartTimestamp, note.timestamp);
+      const label = note.message;
+      const favourite = note.favourite;
+      const performers = note.performers;
+      return { value, label, favourite, performers };
+    });
+    setTimelineTags(mapNotes);
+    taggingSocket.emit("send-tagging-data", mapNotes);
   }, [notes, simStartTimestamp]);
 
   // State for play-head position
