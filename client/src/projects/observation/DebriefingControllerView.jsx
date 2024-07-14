@@ -57,17 +57,29 @@ const debriefStyles = {
 const DebriefingControllerView = () => {
   const { Track, trackEvent } = useTracking({ page: "Debriefing" });
   const { simulationId } = useParams();
-  const { range, timelineTags } = useTimeline();
+  const { range, timelineTags, simDuration } = useTimeline();
   const { isDataReady } = useObservation();
 
   // send selected Vis
   const handleConfirmProjection = (selectedVis) => {
     console.log(selectedVis);
-    const cleanScreenData = prepareData(range, [], simulationId);
+    const cleanScreenData = prepareData(
+      range,
+      [],
+      simulationId,
+      simDuration,
+      timelineTags
+    );
     taggingSocket.emit("send-disp-list", cleanScreenData, () => {
       console.log("Socket sent empty list to clean screen.");
     });
-    const preparedData = prepareData(range, selectedVis, simulationId);
+    const preparedData = prepareData(
+      range,
+      selectedVis,
+      simulationId,
+      simDuration,
+      timelineTags
+    );
     taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log(
         "Socket sent selected displays to server in a form of a list."

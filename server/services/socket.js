@@ -68,12 +68,6 @@ const createSocket = async (httpServer) => {
       taggingNamespace.emit("receive-nurse-filter", nurseFilter);
       console.log("Broadcasted nurse filter to client");
     });
-
-    socket.on("send-tagging-data", (taggingData) => {
-      taggingNamespace.emit("receive-tagging-data", taggingData);
-      console.log(taggingData);
-      console.log("Broadcasted tagging data to client");
-    });
   });
 };
 

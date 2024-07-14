@@ -55,7 +55,6 @@ function TimelineProvider({ children }) {
       return { value, label, favourite, performers };
     });
     setTimelineTags(mapNotes);
-    taggingSocket.emit("send-tagging-data", mapNotes);
   }, [notes, simStartTimestamp]);
 
   // State for play-head position

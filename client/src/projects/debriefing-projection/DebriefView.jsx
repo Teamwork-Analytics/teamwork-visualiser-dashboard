@@ -14,15 +14,23 @@ import ConnectionManager from "./socketComponents/ConnectionManager";
 import DisplayViz from "../../components/displays/DisplayViz";
 import { unpackData } from "../../utils/socketUtils";
 import { useParams } from "react-router-dom";
+import { manualLabels } from "../observation";
 
 const DebriefView = () => {
   const [isConnected, setIsConnected] = useState(taggingSocket.connected);
   const [dispList, setDispList] = useState([]);
-  const [notes, setNotes] = useState([]);
+  const [timelineTags, setTimelineTags] = useState([]);
   const [range, setRange] = useState([0, 0]);
+  const [simDuration, setSimDuration] = useState(0);
   const [hiveState, setHiveState] = useState();
 
   const params = useParams();
+
+  const isKeyEvent = (label) =>
+    manualLabels.phases.some((item) => item.label === label);
+
+  const filterTimelineTagsForKeyEvent = (tags) =>
+    tags.filter((tag) => isKeyEvent(tag.label));
 
   // Connection and data update events handlers
   useEffect(() => {
@@ -46,21 +54,25 @@ const DebriefView = () => {
       const parsedList = unpackedData.vizSelected;
       setRange(unpackedData.range);
       setDispList(parsedList); // WARNING: abrupt mutation
+      setSimDuration(unpackedData.simDuration);
+      const modifiedTimelineTags = filterTimelineTagsForKeyEvent(
+        unpackedData.timelineTags
+      );
+      setTimelineTags(modifiedTimelineTags);
     };
 
     const onReceiveNurseFilter = (hiveState) => {
       setHiveState(hiveState);
     };
 
-    const onReceiveTaggingNotesInfo = (taggingData) => {
-      setNotes(taggingData);
-    };
+    // const onReceiveTaggingNotesInfo = (taggingData) => {
+    //   setNotes(taggingData);
+    // };
 
     taggingSocket.on("connect", onConnect);
     taggingSocket.on("disconnect", onDisconnect);
     taggingSocket.on("receive-disp-list", onUpdateList);
     taggingSocket.on("receive-nurse-filter", onReceiveNurseFilter);
-    taggingSocket.on("receive-tagging-data", onReceiveTaggingNotesInfo);
 
     // Cleanup function for useEffect
     return () => {
@@ -68,7 +80,6 @@ const DebriefView = () => {
       taggingSocket.off("disconnect", onDisconnect);
       taggingSocket.off("receive-disp-list", onUpdateList);
       taggingSocket.off("receive-nurse-filter", onReceiveNurseFilter);
-      taggingSocket.off("receive-tagging-data", onReceiveTaggingNotesInfo);
     };
   }, []);
 
@@ -92,7 +103,8 @@ const DebriefView = () => {
         <DisplayViz
           selectedVis={dispList}
           range={range}
-          marks={notes} // user's tagging data (notes) as marks in the timeline
+          timelineTags={timelineTags} // user's tagging data (notes) as marks in the timeline
+          simDuration={simDuration}
           optionalHiveState={hiveState}
         />
       </div>
