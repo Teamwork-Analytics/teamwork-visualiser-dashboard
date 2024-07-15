@@ -28,7 +28,11 @@ const TeamworkBarchart = ({
     })
       .then((res) => {
         if (res.status === 200) {
-          setTeamworkData(res.data);
+          const filteredData = res.data;
+          const finalData = filteredData.filter(
+            (d) => d["label"][0] !== "Moving around"
+          );
+          setTeamworkData(finalData);
           setIsError(false);
         }
       })

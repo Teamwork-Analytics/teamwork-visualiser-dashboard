@@ -1,4 +1,5 @@
 import { Bar } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const Barchart = ({
   data,
@@ -28,9 +29,16 @@ const Barchart = ({
     >
       <Bar
         data={chartData}
+        plugins={[ChartDataLabels]}
         options={{
           indexAxis: "y",
           plugins: {
+            datalabels: {
+              formatter: function (value, context) {
+                return Math.round(value) + "%";
+              },
+              textAlign: "end",
+            },
             legend: {
               labels: {
                 font: { size: 10 },

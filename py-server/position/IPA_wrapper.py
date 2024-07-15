@@ -147,6 +147,6 @@ def IPA_for_front_end(df_import: pd.DataFrame, sessionid: str, positioning_start
 
     for an_element in return_list:
         an_element["value"] = an_element["value"] / total_percentage * 100
-
+        # an_element["value"] = round(an_element["value"], 0)
 
     return return_list

@@ -15,7 +15,7 @@ export const COLOURS = {
   // Colors for nurses
   PRIMARY_NURSE_1: "#088FFA", // blue
   PRIMARY_NURSE_2: "#ff0000", //red
-  SECONDARY_NURSE_1: "#00FF00", //lime
+  SECONDARY_NURSE_1: "#31a354", //lime
   SECONDARY_NURSE_2: "#f39c11", // gold
 
   // Color for key events and actions
