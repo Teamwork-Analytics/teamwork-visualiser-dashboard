@@ -1,7 +1,9 @@
 import * as d3 from "d3";
 import * as d3hex from "d3-hexbin";
 import { COLOURS } from "../../config/colours";
+import { coordinatesForDebugging } from "./utils";
 
+const IS_DEBUGGING_COORDINATE = false;
 const CLASSROOM_SIZE = {
   WIDTH: 10500,
   HEIGHT: 7060,
@@ -49,6 +51,7 @@ class HexagonComponent {
           const currTime = timeParser(data["audio time"]);
           if (startTime <= currTime && currTime <= endTime) return data;
         });
+
         if (showPosAudio) {
           clean.forEach((record, j) => {
             // NOTE: formula = (data * image-resolution) / actual-size
@@ -76,6 +79,22 @@ class HexagonComponent {
                 this.render([posX, posY], "missed", record.tagId);
               }
             }
+          });
+        }
+
+        if (IS_DEBUGGING_COORDINATE) {
+          coordinatesForDebugging.forEach((record) => {
+            const posX =
+              (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
+            const posY =
+              (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
+
+            this.render(
+              [posX, posY],
+              "coordinate",
+              record.tagId, // Colour
+              record.displayedHR // value: maximuma heart rate
+            );
           });
         }
 
@@ -168,7 +187,6 @@ class HexagonComponent {
     const strokeColour = shotFlag === "made" ? null : cssColourMatcher[colour];
     if (shotFlag === "made" || shotFlag === "missed") {
       const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
-      const h2 = d3hex.hexbin().radius(100);
       this.svg
         .append("g")
         // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
@@ -200,7 +218,7 @@ class HexagonComponent {
       const posY = subjectPos[1];
 
       let heartPath =
-        "M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z";
+        "M0 0c-31.48-54.02-120-38.25-120 29.44 0 46.61 55.71 94.27 120 158.08 64.3-63.81 120-111.47 120-158.08 0-67.92-88.75-83.06-120-29.44z";
 
       const heartPosX = posX;
       const heartPosY = posY;
@@ -212,20 +230,63 @@ class HexagonComponent {
         .attr("fill", cssColourMatcher[colour])
         .attr("fill-opacity", "0.8")
         .attr("stroke", "black")
-        .attr("stroke-width", "0.1em")
+        .attr("stroke-width", "1em")
         .style(
           "transform",
-          `translate(${heartPosX}px, ${heartPosY}px) scale(10)`
+          `translate(${heartPosX}px, ${heartPosY}px) scale(1)`
         );
 
       // FOR TEXT
       this.svg
         .append("text")
         .text(value) // if value is positive, add + // .text(value >= 0 ? `+${value}` : value)
-        .attr("x", posX - 2 * (posX / 100) + 100)
-        .attr("y", posY + 2 * (posY / 100) + 120)
+        .attr("x", posX - 2 * (posX / 100) - 35)
+        .attr("y", posY + 2 * (posY / 100) + 90)
         .attr("fill", "black")
         .style("font-size", "5em");
+    }
+
+    if (shotFlag === "coordinate") {
+      const hexbin = d3hex.hexbin().radius(50);
+      const posX = subjectPos[0];
+      const posY = subjectPos[1];
+
+      let circlePath = "M 0, 0 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0";
+
+      const heartPosX = posX;
+      const heartPosY = posY;
+
+      // this.svg
+      //   .append("g")
+      //   .append("path")
+      //   .attr("d", circlePath)
+      //   .attr("fill", cssColourMatcher[colour])
+      //   .attr("fill-opacity", "0.8")
+      //   .attr("stroke", "black")
+      //   .attr("stroke-width", "0.1em")
+      //   .style(
+      //     "transform",
+      //     `translate(${heartPosX}px, ${heartPosY}px) scale(2)`
+      //   );
+
+      this.svg
+        .append("g")
+        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
+        .selectAll(".hexagon")
+        .data(hexbin([subjectPos]))
+        .enter()
+        .append("path")
+        .attr("d", function (d) {
+          // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
+          // const y = d.x; // used in the nursing data before 2024
+          const x = d.x;
+          const y = d.y;
+          return "M" + x + "," + y + hexbin.hexagon();
+        })
+        .attr("stroke", "black")
+        .attr("fill", "black")
+        .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
+        .attr("stroke-width", strokeWidth);
     }
   }
 }

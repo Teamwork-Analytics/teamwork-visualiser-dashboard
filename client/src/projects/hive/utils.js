@@ -34,4 +34,14 @@ const cleanRawPhases = (phases) => {
   );
 };
 
-export { cleanRawPhases };
+const coordinatesForDebugging = [
+  { label: "Resource_Phone", x: 8437, y: 4097, rad: 500 },
+  { label: "Resource_IV1left", x: 0, y: 5693, rad: 1000 },
+  { label: "Resource_IV2right", x: 0, y: 1038, rad: 1000 },
+  { label: "B4_Centre", x: 6916, y: 1187, rad: 2000 },
+  { label: "B1_Centre", x: 6060, y: 5957, rad: 2000 },
+  { label: "B3_Centre", x: 2720, y: 1187, rad: 2000 },
+  { label: "B2_Centre", x: 2443, y: 5957, rad: 2000 },
+];
+
+export { cleanRawPhases, coordinatesForDebugging };

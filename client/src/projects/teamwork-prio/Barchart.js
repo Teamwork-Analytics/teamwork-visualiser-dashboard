@@ -34,6 +34,7 @@ const Barchart = ({
           indexAxis: "y",
           plugins: {
             datalabels: {
+              color: "#1a1a1a",
               formatter: function (value, context) {
                 return Math.round(value) + "%";
               },
