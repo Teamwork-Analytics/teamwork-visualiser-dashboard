@@ -27,32 +27,32 @@ const MARGIN_MAPPER = {
   relative: 0,
 };
 const NODE_NAME_MAPPER = {
-  blue: "Primary Nurse 1",
-  red: "Primary Nurse 2",
-  green: "Secondary Nurse 1",
-  yellow: "Secondary Nurse 2",
+  blue: "PN1",
+  red: "PN2",
+  green: "SN1",
+  yellow: "SN2",
   patient: "Patient",
   doctor: "Doctor",
   relative: "Relative",
 };
 
 const LABEL_HALIGNMENT_MAPPER = {
-  blue: "right",
-  red: "right",
-  green: "right",
-  yellow: "right",
-  patient: "left",
-  doctor: "left",
-  relative: "left",
+  BLUE: "right",
+  RED: "right",
+  GREEN: "right",
+  YELLOW: "right",
+  PATIENT: "left",
+  DOCTOR: "left",
+  RELATIVE: "left",
 };
 const LABEL_VALIGNMENT_MAPPER = {
-  blue: "center",
-  red: "center",
-  green: "center",
-  yellow: "center",
-  patient: "bottom",
-  doctor: "left",
-  relative: "center",
+  BLUE: "center",
+  RED: "center",
+  GREEN: "center",
+  YELLOW: "bottom",
+  PATIENT: "bottom",
+  DOCTOR: "center",
+  RELATIVE: "center",
 };
 const COLOR_MAPPER = {
   blue: "blue",
@@ -177,8 +177,9 @@ let generate_a_node_dict = function (
   node_size,
   label_halignment = "center",
   label_valignment = "top",
-  show_label = true
+  show_label = true,
 ) {
+  // const fontSize = node_size + MIN_NODE_SIZE 
   return {
     group: "nodes",
     data: { id: NODE_NAME_MAPPER[node_name] },
@@ -193,7 +194,7 @@ let generate_a_node_dict = function (
       "text-halign": LABEL_HALIGNMENT_MAPPER[color.toUpperCase()],
       "text-valign": LABEL_VALIGNMENT_MAPPER[color.toUpperCase()],
       "text-margin-x": MARGIN_MAPPER[node_name],
-      "font-size": "2.5em",
+      "font-size": 40,
     },
   };
 };
@@ -301,6 +302,8 @@ let processing_csv = function (raw_json_data, max_edge_width, max_node_size) {
     let node_size = [];
     let edge_width = [];
 
+    let nodeSizeFromList = [];
+
     for (const a_student_index in students_and_others) {
       let a_student = students_and_others[a_student_index];
 
@@ -317,7 +320,7 @@ let processing_csv = function (raw_json_data, max_edge_width, max_node_size) {
             students_and_others[a_student_index],
             MIN_NODE_SIZE,
             "right",
-            "center"
+            "center",
           )
         );
         continue;
@@ -337,15 +340,18 @@ let processing_csv = function (raw_json_data, max_edge_width, max_node_size) {
         MAX_NODE_SIZE
       );
 
+
       node_size.push(
         generate_a_node_dict(
           students_and_others[a_student_index],
           students_and_others[a_student_index],
           node_size_value,
           "right",
-          "center"
+          "center",
         )
       );
+
+      nodeSizeFromList.push(node_size_value)
 
       // calculating edge weights
       logging("======= start to record the generation of edges ==============");
@@ -399,6 +405,12 @@ let processing_csv = function (raw_json_data, max_edge_width, max_node_size) {
         });
         logging("---------- next student ------------------");
       }
+    }
+
+
+    for(let n = 0; n < node_size.length; n++){
+      const max = Math.max(...nodeSizeFromList)
+      node_size[n]["style"]["font-size"] = 30 * max / MAX_NODE_SIZE
     }
 
     const filtered_edge_with = [];

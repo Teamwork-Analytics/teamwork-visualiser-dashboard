@@ -3,7 +3,6 @@ import * as d3hex from "d3-hexbin";
 import { COLOURS } from "../../config/colours";
 import { coordinatesForDebugging } from "./utils";
 
-const IS_DEBUGGING_COORDINATE = false;
 const CLASSROOM_SIZE = {
   WIDTH: 10500,
   HEIGHT: 7060,
@@ -20,6 +19,8 @@ export const cssColourMatcher = {
   RED: COLOURS.PRIMARY_NURSE_2, //red
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
+  DOCTOR: "#f0f0f0",
+  RELATIVE: "black",
 };
 
 const timeParser = (timestamp) => {
@@ -36,7 +37,8 @@ class HexagonComponent {
     timeEnd,
     setHrData,
     showPosAudio = true,
-    showHr = true
+    showHr = true,
+    showCoordinates = true
   ) {
     this.svg = svg;
 
@@ -82,7 +84,7 @@ class HexagonComponent {
           });
         }
 
-        if (IS_DEBUGGING_COORDINATE) {
+        if (showCoordinates) {
           coordinatesForDebugging.forEach((record) => {
             const posX =
               (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
@@ -251,42 +253,42 @@ class HexagonComponent {
       const posX = subjectPos[0];
       const posY = subjectPos[1];
 
-      let circlePath = "M 0, 0 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0";
+      let circlePath = "M 0, 0 a 300,300 0 1,1 600,0 a 300,300 0 1,1 -600,0";
 
       const heartPosX = posX;
       const heartPosY = posY;
 
-      // this.svg
-      //   .append("g")
-      //   .append("path")
-      //   .attr("d", circlePath)
-      //   .attr("fill", cssColourMatcher[colour])
-      //   .attr("fill-opacity", "0.8")
-      //   .attr("stroke", "black")
-      //   .attr("stroke-width", "0.1em")
-      //   .style(
-      //     "transform",
-      //     `translate(${heartPosX}px, ${heartPosY}px) scale(2)`
-      //   );
-
       this.svg
         .append("g")
-        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
-        .selectAll(".hexagon")
-        .data(hexbin([subjectPos]))
-        .enter()
         .append("path")
-        .attr("d", function (d) {
-          // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
-          // const y = d.x; // used in the nursing data before 2024
-          const x = d.x;
-          const y = d.y;
-          return "M" + x + "," + y + hexbin.hexagon();
-        })
-        .attr("stroke", "black")
-        .attr("fill", "black")
-        .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
-        .attr("stroke-width", strokeWidth);
+        .attr("d", circlePath)
+        .attr("fill", cssColourMatcher[colour])
+        .attr("fill-opacity", "0.2")
+        .attr("stroke", "grey")
+        .attr("stroke-width", "0.1em")
+        .style(
+          "transform",
+          `translate(${heartPosX}px, ${heartPosY}px) scale(1)`
+        );
+
+      // this.svg
+      //   .append("g")
+      //   // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
+      //   .selectAll(".hexagon")
+      //   .data(hexbin([subjectPos]))
+      //   .enter()
+      //   .append("path")
+      //   .attr("d", function (d) {
+      //     // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
+      //     // const y = d.x; // used in the nursing data before 2024
+      //     const x = d.x;
+      //     const y = d.y;
+      //     return "M" + x + "," + y + hexbin.hexagon();
+      //   })
+      //   .attr("stroke", "black")
+      //   .attr("fill", "black")
+      //   .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
+      //   .attr("stroke-width", strokeWidth);
     }
   }
 }

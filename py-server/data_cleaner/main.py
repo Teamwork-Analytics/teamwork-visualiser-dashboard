@@ -27,7 +27,6 @@ import subprocess
 
 TEST_MODE_LINX = False
 
-IP_ADDRESS = "0.0.0.0"
 
 # Load variables from .env file located in the root folder
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..','.env')
@@ -35,6 +34,9 @@ load_dotenv(dotenv_path)
 current_file_dir = os.path.dirname(os.path.abspath(__file__))
 current_root = os.path.dirname(current_file_dir)
 parent_directory = os.path.dirname(current_root)
+
+
+IP_ADDRESS = os.getenv('IP')
 
 # Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
@@ -45,7 +47,7 @@ if USE_ABSOLUTE_PATH == 'false':
     # BASE_PATH = os.path.join(parent_directory, 'server', 'saved_data')
     BASE_PATH = "C:\\develop\\saved_data"
 else:
-    BASE_PATH = "C:\\Work\\teamwork-visualiser-dashboard\\server\\saved_data\\"
+    BASE_PATH = os.getenv('VISUALISATION_DIR')
     # "C:\\develop\\saved_data\\"
 
     app = Flask(__name__)
@@ -411,6 +413,7 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
             os.remove(audio_out)
         # # --------------------------------------------------------------------------------------------------------
         #
+        print(audio_in)
         stream = ffmpeg.input(audio_in)
         audio = stream.audio
 
@@ -418,7 +421,6 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
         stream = ffmpeg.output(audio, audio_out, **{'ar': '32000'})
         ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
 
-        print(audio_out)
 
         # hive_audio_folder = raw_audio_folder + 'out\\audio-sim'
         # hive_positioning_folder = raw_audio_folder + 'out\\pos'

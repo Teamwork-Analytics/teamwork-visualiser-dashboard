@@ -64,7 +64,7 @@ const ObservationPrimaryControlView = () => {
         // ping FitBit server to start receiving data
         // TODO: make this prettier
         // const response = await fetch("http://localhost:3168/start-simulation", {
-        const response = await fetch("http://49.127.33.177:3168/start-simulation", {
+        const response = await fetch(`${process.env.REACT_APP_EXPRESS_IP}:3168/start-simulation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const ObservationPrimaryControlView = () => {
         // ping FitBit server to stop receiving data
         // TODO: make this prettier
         // const response = await fetch("http://localhost:3168/stop-simulation", {
-        const response = await fetch("http://49.127.33.177:3168/stop-simulation", {
+        const response = await fetch(`${process.env.REACT_APP_EXPRESS_IP}:3168/stop-simulation`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

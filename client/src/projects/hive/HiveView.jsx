@@ -48,7 +48,8 @@ const HiveView = ({
             timeRange[1],
             setHrData,
             hiveState["showPositionAudioData"],
-            hiveState["showHeartRateData"]
+            hiveState["showHeartRateData"],
+            hiveState["showCoordinatesData"]
           );
         }
       });

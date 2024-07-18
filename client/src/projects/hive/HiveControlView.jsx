@@ -75,6 +75,20 @@ const HivePrimaryControlView = () => {
           </label>
           <label style={styles.label}>
             <FormCheck
+              defaultChecked={hiveState["showCoordinatesData"]}
+              onChange={(e) => {
+                const modifiedData = {
+                  ...hiveState,
+                  showCoordinatesData: e.target.checked,
+                };
+                hiveSetState(modifiedData);
+                taggingSocket.emit("send-nurse-filter", modifiedData);
+              }}
+            />
+            black circles
+          </label>
+          <label style={styles.label}>
+            <FormCheck
               defaultChecked={hiveState["showHeartRateData"]}
               onChange={(e) => {
                 const modifiedData = {
@@ -87,6 +101,7 @@ const HivePrimaryControlView = () => {
             />
             heart rate
           </label>
+        
         </div>
         {/* <label style={{ color: "#5a5a5a" }}>FILTER:</label> */}
         {participantsKeys.map((k, i) => (

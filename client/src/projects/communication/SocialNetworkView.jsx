@@ -104,7 +104,6 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
             ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
             : 1000;
 
-        console.log(doctorTime);
         const res = await getSNAdata({
           simulationId: simulationId,
           startTime: startTime,

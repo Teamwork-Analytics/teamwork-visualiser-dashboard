@@ -74,7 +74,7 @@ let generate_a_ena_node_dict = function (
       // "height": 150,
       width: calculated_node_size,
       height: calculated_node_size,
-      // "background-color": color,
+      // "background-color": "#385f8c",
       "background-opacity": 0.5,
       "border-color": "#333",
       "border-width": 1,
@@ -178,6 +178,7 @@ let processing_adjacent_matrix = function (raw_json_data, startTime, end) {
           ),
         },
         style: {
+          
           width: calculating_weights(
             raw_json_data[current_code][other_code],
             MIN_INDIVIDUAL_TALKING_TIME,
@@ -187,6 +188,7 @@ let processing_adjacent_matrix = function (raw_json_data, startTime, end) {
             20
           ),
           "z-index": 10,
+          "line-color": "black",
         },
       });
       j++;

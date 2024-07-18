@@ -12,8 +12,6 @@ import os
 
 from pathlib import Path
 
-IP_ADDRESS = "localhost"  # this/local server
-PORT = "5003"
 
 app = Flask(__name__)
 
@@ -23,6 +21,10 @@ load_dotenv(dotenv_path)
 current_root = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_root)
 
+
+IP_ADDRESS = os.getenv('IP')  # this/local server
+PORT = "5003"
+
 # Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 
@@ -30,7 +32,7 @@ USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 if USE_ABSOLUTE_PATH == 'false':
     # Location defined as teamwork-visualiser-dashboard/server/saved_data/
     # DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
-    DIRECTORY = "C:\\develop\\saved_data"
+    DIRECTORY = "C:\\develop\\saved_data\\"
 
 else:
     # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)

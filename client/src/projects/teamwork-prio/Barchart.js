@@ -13,7 +13,7 @@ const Barchart = ({
     datasets: [
       {
         data: data.map((row) => row.value),
-        backgroundColor: "rgba(30,144,255, 0.8)",
+        backgroundColor: "#3a3a3a"  //rgba(30,144,255, 0.8), "#8856a7",
       },
     ],
   };
@@ -34,11 +34,14 @@ const Barchart = ({
           indexAxis: "y",
           plugins: {
             datalabels: {
-              color: "#1a1a1a",
+              color: "#ffffff",
               formatter: function (value, context) {
                 return Math.round(value) + "%";
               },
               textAlign: "end",
+              align: "end",
+              anchor: "end",
+              offset: "-30"
             },
             legend: {
               labels: {
@@ -56,7 +59,7 @@ const Barchart = ({
               // max: 100,
               // min: 0,
               title: {
-                display: true,
+                display: false,
                 text: "Percentage (%)",
                 //https://www.chartjs.org/docs/latest/general/fonts.html
                 font: { size: 18 },

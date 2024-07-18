@@ -35,13 +35,13 @@ const cleanRawPhases = (phases) => {
 };
 
 const coordinatesForDebugging = [
-  { label: "Resource_Phone", x: 8437, y: 4097, rad: 500 },
-  { label: "Resource_IV1left", x: 0, y: 5693, rad: 1000 },
-  { label: "Resource_IV2right", x: 0, y: 1038, rad: 1000 },
-  { label: "B4_Centre", x: 6916, y: 1187, rad: 2000 },
-  { label: "B1_Centre", x: 6060, y: 5957, rad: 2000 },
-  { label: "B3_Centre", x: 2720, y: 1187, rad: 2000 },
-  { label: "B2_Centre", x: 2443, y: 5957, rad: 2000 },
+  // { label: "Resource_Phone", x: 8037, y: 4097, rad: 500 },
+  // { label: "Resource_IV1left", x: -900, y: 5693, rad: 1000 },
+  // { label: "Resource_IV2right", x: -900, y: 1038, rad: 1000 },
+  { label: "B4_Centre", x: 6116, y: 1487, rad: 3000 },
+  { label: "B1_Centre", x: 5060, y: 5457, rad: 2000 },
+  { label: "B3_Centre", x: 1820, y: 1487, rad: 2000 },
+  { label: "B2_Centre", x: 1443, y: 5457, rad: 2000 },
 ];
 
 export { cleanRawPhases, coordinatesForDebugging };

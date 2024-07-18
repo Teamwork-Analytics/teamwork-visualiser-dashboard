@@ -1,8 +1,8 @@
 area,x,y,distance
-Resource_Phone,8437,4097,500
-Resource_IV1left,0,5693,1000
-Resource_IV2right,0,1038,1000
-B4_Centre,6916,1187,2000
-B1_Centre,6060,5957,2000
-B3_Centre,2720,1187,2000
-B2_Centre,2443,5957,2000
+Resource_Phone,8037,4097,500
+Resource_IV1left,-900,5693,1000
+Resource_IV2right,-900,1038,1000
+B4_Centre,6516,1587,3000
+B1_Centre,5060,5457,2000
+B3_Centre,2020,1387,2000
+B2_Centre,1443,5457,2000

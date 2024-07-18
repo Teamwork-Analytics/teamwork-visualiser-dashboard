@@ -93,7 +93,7 @@ const DebriefingControllerView = () => {
   const handleRevertAllProjections = () => {
     const toastId = toast.loading("Loading...");
     setSelectedVis([]);
-    const preparedData = prepareData(range, [], simulationId);
+    const preparedData = prepareData(range, [], simulationId, simDuration, timelineTags);
     taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
