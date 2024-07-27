@@ -38,10 +38,10 @@ const coordinatesForDebugging = [
   // { label: "Resource_Phone", x: 8037, y: 4097, rad: 500 },
   // { label: "Resource_IV1left", x: -900, y: 5693, rad: 1000 },
   // { label: "Resource_IV2right", x: -900, y: 1038, rad: 1000 },
-  { label: "B4_Centre", x: 6116, y: 1487, rad: 3000 },
-  { label: "B1_Centre", x: 5060, y: 5457, rad: 2000 },
-  { label: "B3_Centre", x: 1820, y: 1487, rad: 2000 },
-  { label: "B2_Centre", x: 1443, y: 5457, rad: 2000 },
+  { label: "B4_Centre", x: 5116, y: 1787, rad: 3000 },
+  { label: "B1_Centre", x: 4360, y: 5857, rad: 2000 },
+  { label: "B3_Centre", x: 1220, y: 1487, rad: 2000 },
+  { label: "B2_Centre", x: 943, y: 5857, rad: 2000 },
 ];
 
 export { cleanRawPhases, coordinatesForDebugging };

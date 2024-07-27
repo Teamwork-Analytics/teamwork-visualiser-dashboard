@@ -253,7 +253,7 @@ class HexagonComponent {
       const posX = subjectPos[0];
       const posY = subjectPos[1];
 
-      let circlePath = "M 0, 0 a 300,300 0 1,1 600,0 a 300,300 0 1,1 -600,0";
+      let circlePath = "M 0, 0 a 450,450 0 1,1 900,0 a 450,450 0 1,1 -900,0";
 
       const heartPosX = posX;
       const heartPosY = posY;

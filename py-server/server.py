@@ -4,10 +4,14 @@ from flask import Flask, jsonify, request
 import pandas as pd
 from ena_replacement_algo import calculate_ena_metric, __merging_codes
 from helper.sna_algo import process_csv
+from helper.helper import get_critical_timestamps
+from helper.helper import run_auto_transcription_coding
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
 from dotenv import load_dotenv
+
+
 import os
 
 from pathlib import Path
@@ -21,7 +25,8 @@ load_dotenv(dotenv_path)
 current_root = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_root)
 
-
+DATABASE_CONFIGURATION = "2023"
+data_folder = ""
 IP_ADDRESS = os.getenv('IP')  # this/local server
 PORT = "5003"
 
@@ -58,6 +63,27 @@ def call_viz():
         return error_message, 500
 
     return "Visualisations have been generated.", 200
+
+
+@ app.route("/generate_viz_audio", methods=['GET'])
+def generate_viz_with_audio_data():
+    args = request.args
+    try:
+        start_time = float(args["start"])
+        end_time = float(args["end"])
+        session_id = args["session"]
+         # todo: this path should be changed once used in actual scenario
+        handover, secondary, doctor = get_critical_timestamps()
+        run_auto_transcription_coding(data_folder, session_id, handover, secondary, doctor)
+    except Exception as err:
+        print("Error happened when extracting GET params: maybe not all arguments are provided.")
+        print(err)
+        error_message = "Unable to generate visualisation. Check terminal."
+        print(error_message)
+        return error_message, 500
+
+   
+    return "Visualisations with audio data have been generated (SNA and ENA).", 200
 
 
 @ app.route("/get_teamwork_prio_data", methods=['GET'])

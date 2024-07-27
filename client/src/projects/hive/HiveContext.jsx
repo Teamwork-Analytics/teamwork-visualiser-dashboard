@@ -18,7 +18,7 @@ function HiveProvider({ simulationId, children }) {
     isPositionOnly: false,
     showPositionAudioData: true,
     showHeartRateData: false,
-    showCoordinatesData: true,
+    showCoordinatesData: false,
   });
 
   const [isHiveReady, setIsReady] = React.useState(false);

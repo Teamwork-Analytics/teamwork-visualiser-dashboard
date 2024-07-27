@@ -85,7 +85,7 @@ const HivePrimaryControlView = () => {
                 taggingSocket.emit("send-nurse-filter", modifiedData);
               }}
             />
-            black circles
+            beds radius
           </label>
           <label style={styles.label}>
             <FormCheck
@@ -101,7 +101,6 @@ const HivePrimaryControlView = () => {
             />
             heart rate
           </label>
-        
         </div>
         {/* <label style={{ color: "#5a5a5a" }}>FILTER:</label> */}
         {participantsKeys.map((k, i) => (
