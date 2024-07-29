@@ -119,3 +119,5 @@ py-server/env
 client/.env
 .env
 server/config.env
+*.bin
+*.xlsx
