@@ -2,6 +2,9 @@
 
 A NodeJS server that trigger Firebase Cloud Messaging service and send notification to devices registered.
 
+> [!WARNING]  
+> The firebase admin key was pushed on this repo. Google found out and depreciated the key. Please generate a new key to use the notification feature.
+
 ## Overview
 
 This server open port `4222` to receive API call. Once it received a POST request at `send-notification` it uses [FCM Admin SDK](https://firebase.google.com/docs/reference/admin/node) to send notification to devices in the list.
