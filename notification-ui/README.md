@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## What does this server do:
+
+This server (notification-ui) provides a simple ui to send text message to the app.
+
 ## Available Scripts
 
 In the project directory, you can run:

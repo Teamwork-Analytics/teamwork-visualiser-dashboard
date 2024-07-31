@@ -10,7 +10,7 @@ const NurseSchema = new Schema({
 
 const PrivateNoteSchema = new Schema({
   nurses: NurseSchema,
-  createdAt: { type: Date, expires: "24h", default: Date.now }, // TTL index, delete after 24h
+  createdAt: { type: Date, expires: 3 * 365 * 24 * 60 * 60, default: Date.now }, // TTL index, extend to 3 years
 });
 
 const PrivateNote = mongoose.model("privateNote", PrivateNoteSchema);
