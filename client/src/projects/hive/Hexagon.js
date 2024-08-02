@@ -6,7 +6,7 @@ import { coordinatesForDebugging } from "./utils";
 const CLASSROOM_SIZE = {
   WIDTH: 10175,
   HEIGHT: 7500,
-}; 
+};
 //X-axis: 7543 or 6449
 //y-axis: 9689 or 10661
 
@@ -164,19 +164,20 @@ class HexagonComponent {
       const hr = Number(obj.heartrate);
       if (!d[obj.tagId] || hr > Number(d[obj.tagId].heartrate)) {
         const baseline = baselines[obj.tagId];
-        // NOTE: Changes from baseline
+        // NOTE: Changes/difference from baseline
+        // d[obj.tagId] = {
+        //   ...obj,
+        //   heartrate: obj.heartrate - baseline,
+        //   displayedHR: obj.heartrate.replace(".0", ""),
+        //   baselineHr: baseline,
+        // };
+
+        // NOTE: just Maximum
         d[obj.tagId] = {
           ...obj,
-          heartrate: obj.heartrate - baseline,
           displayedHR: obj.heartrate.replace(".0", ""),
           baselineHr: baseline,
         };
-
-        // just Maximum
-        // d[obj.tagId] = {
-        //   ...obj,
-        //   baselineHr: baseline,
-        // };
       }
       return d;
     }, {});
@@ -194,7 +195,7 @@ class HexagonComponent {
       const hexbin = d3hex.hexbin().radius(CONSTANTS.HEX_RADIUS);
       this.svg
         .append("g")
-        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
+        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
         .selectAll(".hexagon")
         .data(hexbin([subjectPos]))
         .enter()
@@ -216,7 +217,6 @@ class HexagonComponent {
       // .delay(function (_, i) {
       //   return i * 50;
       // })
-      // .style("opacity", 1);
     }
     if (shotFlag === "fixed") {
       const posX = subjectPos[0];
@@ -232,7 +232,7 @@ class HexagonComponent {
 
       this.svg
         .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
+        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
         .append("path")
         .attr("d", heartPath)
         .attr("fill", cssColourMatcher[colour])
@@ -241,17 +241,21 @@ class HexagonComponent {
         .attr("stroke-width", "1em")
         .style(
           "transform",
-          `translate(0, ${heartPosX}px, ${heartPosY}px) scale(1, -1)`
+          `translate(${heartPosX}px, ${heartPosY}px) scale(-1,-1)`
         );
 
       // FOR TEXT
       this.svg
         .append("text")
         .text(value) // if value is positive, add + // .text(value >= 0 ? `+${value}` : value)
-        .attr("x", posX - 2 * (posX / 100) - 35)
-        .attr("y", posY + 2 * (posY / 100) + 90)
         .attr("fill", "black")
-        .style("font-size", "5em");
+        .style("font-size", "5em")
+        .attr(
+          "transform",
+          `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1) translate(${
+            heartPosX - 50
+          }, ${heartPosY - 100}) scale(1,-1)  `
+        );
     }
 
     if (shotFlag === "coordinate") {
@@ -259,14 +263,14 @@ class HexagonComponent {
       const posX = subjectPos[0];
       const posY = subjectPos[1];
 
-      let circlePath = "M 0, 0 a 450,450 0 1,1 900,0 a 450,450 0 1,1 -900,0";
+      let circlePath = "M 0, 0 a 350,350 0 1,1 700,0 a 350,350 0 1,1 -700,0";
 
       const circlePosX = -posY + CONSTANTS.IMG_WIDTH;
       const circlePosY = posX;
 
       this.svg
         .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
+        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
         .append("path")
         .attr("d", circlePath)
         .attr("fill", cssColourMatcher[colour])
@@ -275,27 +279,8 @@ class HexagonComponent {
         .attr("stroke-width", "0.1em")
         .style(
           "transform",
-          `translate(${circlePosX}px, ${circlePosY}px) scale(1)`
+          `translate(${circlePosX + 320}px, ${circlePosY}px) scale(-1,-1)`
         );
-
-      // this.svg
-      //   .append("g")
-      //   // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
-      //   .selectAll(".hexagon")
-      //   .data(hexbin([subjectPos]))
-      //   .enter()
-      //   .append("path")
-      //   .attr("d", function (d) {
-      //     // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
-      //     // const y = d.x; // used in the nursing data before 2024
-      //     const x = d.x;
-      //     const y = d.y;
-      //     return "M" + x + "," + y + hexbin.hexagon();
-      //   })
-      //   .attr("stroke", "black")
-      //   .attr("fill", "black")
-      //   .attr("fill-opacity", CONSTANTS.HEXAGON_OPACITY)
-      //   .attr("stroke-width", strokeWidth);
     }
   }
 }

@@ -73,6 +73,21 @@ const HivePrimaryControlView = () => {
             />
             pos+audio
           </label>
+
+          <label style={styles.label}>
+            <FormCheck
+              defaultChecked={hiveState["showHeartRateData"]}
+              onChange={(e) => {
+                const modifiedData = {
+                  ...hiveState,
+                  showHeartRateData: e.target.checked,
+                };
+                hiveSetState(modifiedData);
+                taggingSocket.emit("send-nurse-filter", modifiedData);
+              }}
+            />
+            max heartrate
+          </label>
           <label style={styles.label}>
             <FormCheck
               defaultChecked={hiveState["showCoordinatesData"]}
@@ -86,20 +101,6 @@ const HivePrimaryControlView = () => {
               }}
             />
             beds radius
-          </label>
-          <label style={styles.label}>
-            <FormCheck
-              defaultChecked={hiveState["showHeartRateData"]}
-              onChange={(e) => {
-                const modifiedData = {
-                  ...hiveState,
-                  showHeartRateData: e.target.checked,
-                };
-                hiveSetState(modifiedData);
-                taggingSocket.emit("send-nurse-filter", modifiedData);
-              }}
-            />
-            heart rate
           </label>
         </div>
         {/* <label style={{ color: "#5a5a5a" }}>FILTER:</label> */}
