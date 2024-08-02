@@ -4,13 +4,16 @@ import { COLOURS } from "../../config/colours";
 import { coordinatesForDebugging } from "./utils";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 10500,
-  HEIGHT: 7060,
-};
+  WIDTH: 10175,
+  HEIGHT: 7500,
+}; 
+//X-axis: 7543 or 6449
+//y-axis: 9689 or 10661
+
 const CONSTANTS = {
   HEX_RADIUS: 50,
-  IMG_WIDTH: 2697,
-  IMG_HEIGHT: 1715,
+  IMG_WIDTH: 2170,
+  IMG_HEIGHT: 1705,
   HEXAGON_OPACITY: "0.5",
 };
 
@@ -197,10 +200,10 @@ class HexagonComponent {
         .enter()
         .append("path")
         .attr("d", function (d) {
-          // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
-          // const y = d.x; // used in the nursing data before 2024
-          const x = d.x;
-          const y = d.y;
+          const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
+          const y = d.x; // used in the nursing data before 2024
+          // const x = d.x;
+          // const y = d.y;
           return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
@@ -222,11 +225,14 @@ class HexagonComponent {
       let heartPath =
         "M0 0c-31.48-54.02-120-38.25-120 29.44 0 46.61 55.71 94.27 120 158.08 64.3-63.81 120-111.47 120-158.08 0-67.92-88.75-83.06-120-29.44z";
 
-      const heartPosX = posX;
-      const heartPosY = posY;
+      // const heartPosX = posX;
+      // const heartPosY = posY;
+      const heartPosX = -posY + CONSTANTS.IMG_WIDTH;
+      const heartPosY = posX;
 
       this.svg
         .append("g")
+        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
         .append("path")
         .attr("d", heartPath)
         .attr("fill", cssColourMatcher[colour])
@@ -235,7 +241,7 @@ class HexagonComponent {
         .attr("stroke-width", "1em")
         .style(
           "transform",
-          `translate(${heartPosX}px, ${heartPosY}px) scale(1)`
+          `translate(0, ${heartPosX}px, ${heartPosY}px) scale(1, -1)`
         );
 
       // FOR TEXT
@@ -255,11 +261,12 @@ class HexagonComponent {
 
       let circlePath = "M 0, 0 a 450,450 0 1,1 900,0 a 450,450 0 1,1 -900,0";
 
-      const heartPosX = posX;
-      const heartPosY = posY;
+      const circlePosX = -posY + CONSTANTS.IMG_WIDTH;
+      const circlePosY = posX;
 
       this.svg
         .append("g")
+        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`)
         .append("path")
         .attr("d", circlePath)
         .attr("fill", cssColourMatcher[colour])
@@ -268,7 +275,7 @@ class HexagonComponent {
         .attr("stroke-width", "0.1em")
         .style(
           "transform",
-          `translate(${heartPosX}px, ${heartPosY}px) scale(1)`
+          `translate(${circlePosX}px, ${circlePosY}px) scale(1)`
         );
 
       // this.svg

@@ -13,13 +13,13 @@ from sklearn.metrics import cohen_kappa_score
 
 
 RECT_BOUNDARY = {
-        "bed1": [0, 0, 3521, 5151],  # it is a rectangle space, format is (x0, y0, x1, y1)
-        "bed2": [0, 4772, 3521, 8772],
-        "bed3": [3521, 4091, 7000, 8772],
-        "bed4": [3521, 0, 7000, 4091],
+        "bed1": [0, 0, 3521, 5552],  # it is a rectangle space, format is (x0, y0, x1, y1)
+        "bed2": [0, 5552, 3521, 8772],
+        "bed3": [3521, 4391, 8000, 8772],
+        "bed4": [3521, 0, 8000, 4391],
         # "IV left": [0, 8172, 3521, 10000],
         # "IV right": [3521, 8172, 7000, 10000],
-        "IV": [0, 8772, 7000, 10000],
+        "IV": [0, 8772, 8000, 11000],
     }
 CIRCLE_BOUNDARY = {
         "phone": [2986, 181, 700],  # format is (x, y, radius)
@@ -33,8 +33,8 @@ def generating_testing_data(density: int):
     This function generate a 2d array contains the scatter points for testing
     @return:
     """
-    ROOM_X_MAX = 7000
-    ROOM_Y_MAX = 10000
+    ROOM_X_MAX = 8000
+    ROOM_Y_MAX = 11000
 
     testing_data = {"x": [], "y": []}
     if ROOM_X_MAX % density != 0 or ROOM_Y_MAX % density != 0:

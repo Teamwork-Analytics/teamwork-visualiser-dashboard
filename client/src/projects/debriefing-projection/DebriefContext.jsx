@@ -11,7 +11,7 @@ const DebriefingContext = React.createContext();
 function DebriefingProvider({ simulationId, children }) {
   const [isStarted, setIsStarted] = React.useState(false);
   // const [enaData, setENAdata] = useState([]);
-  // const [snaData, setSNAdata] = useState([]);
+  const [snaData, setSNAdata] = useState([]);
   // const [networkENAData, setNetworkENAData] = useState([]);
 
   /* getData from backend */
@@ -24,48 +24,48 @@ function DebriefingProvider({ simulationId, children }) {
   //   });
   // }, [simulationId]);
 
-  // useEffect(() => {
-  //   if (snaData.length == 0) {
-  //     function callData() {
-  //       // Fetch data immediately when component mounts
-  //       const body = {
-  //         simulationId: simulationId,
-  //         // startTime: startTime,
-  //         // endTime: endTime,
-  //         // docEnterTime: docEnterTime,
-  //       };
-  //       getSNAdata(body)
-  //         .then((res) => {
-  //           if (res.status === 200) {
-  //             // const cleanedPhases = cleanRawPhases(phases);
-  //             setSNAdata(res.data);
-  //           }
-  //         })
-  //         .catch((e) => {
-  //           console.error(e);
-  //         });
-  //     }
+  useEffect(() => {
+    if (snaData.length == 0) {
+      function callData() {
+        // Fetch data immediately when component mounts
+        const body = {
+          simulationId: simulationId,
+          // startTime: startTime,
+          // endTime: endTime,
+          // docEnterTime: docEnterTime,
+        };
+        getSNAdata(body)
+          .then((res) => {
+            if (res.status === 200) {
+              // const cleanedPhases = cleanRawPhases(phases);
+              setSNAdata(res.data);
+            }
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      }
 
-  //     // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
-  //     const intervalId = setInterval(callData, 10000);
+      // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
+      const intervalId = setInterval(callData, 10000);
 
-  //     // Clean up the interval when the component is unmounted or when data is fetched
-  //     return () => clearInterval(intervalId);
-  //   }
-  // }, [simulationId, snaData]);
+      // Clean up the interval when the component is unmounted or when data is fetched
+      return () => clearInterval(intervalId);
+    }
+  }, [simulationId, snaData]);
 
-  // useEffect(() => {
-  //   getSNAdata(simulationId)
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         // const cleanedPhases = cleanRawPhases(phases);
-  //         setSNAdata(res.data);
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       console.error(e);
-  //     });
-  // }, [simulationId]);
+  useEffect(() => {
+    getSNAdata(simulationId)
+      .then((res) => {
+        if (res.status === 200) {
+          // const cleanedPhases = cleanRawPhases(phases);
+          setSNAdata(res.data);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, [simulationId]);
 
   // useEffect(() => {
   //   try {
