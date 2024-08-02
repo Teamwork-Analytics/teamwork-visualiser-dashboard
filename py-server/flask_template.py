@@ -4,7 +4,7 @@ from flask import request
 from pymongo import MongoClient
 
 from auto_coding_transcription_runner import run_auto_transcription_coding
-from data_collection_sys_2023.audio_transcription.pozyx_extraction import get_timestamp
+from ai_audio.audio_transcription.pozyx_extraction import get_timestamp
 
 DATABASE_CONFIGURATION = "2023"
 data_folder = ""

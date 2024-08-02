@@ -2,11 +2,11 @@ import nltk
 import os
 import shutil
 import ffmpeg
-from deepmultilingualpunctuation import PunctuationModel
+# from deepmultilingualpunctuation import PunctuationModel
 import whisper
-from data_collection_sys_2023.audio_transcription.pozyx_extraction import get_timestamp
-from data_collection_sys_2023.changing_names import change_name_of_black_and_white
-from data_collection_sys_2023.main import auto_transcription_and_coding, generate_sna_csv, \
+from ai_audio.audio_transcription.pozyx_extraction import get_timestamp
+from ai_audio.changing_names import change_name_of_black_and_white
+from ai_audio.main import auto_transcription_and_coding, generate_sna_csv, \
     auto_transcription_and_coding_without_force_alignment
 
 nltk.download('punkt')
@@ -25,7 +25,7 @@ def run_auto_transcription_coding(data_folder, the_session_id, handover, seconda
         sna_df = change_name_of_black_and_white(sna_df)
         sna_df.to_csv("{}_sna.csv".format(the_session_id))
         # sna_df.to_csv(os.path.join(data_folder_drive_path, the_session_id, "{}_sna.csv".format(the_session_id)))
-
+        print("started transcription and coding")
         coded_df = auto_transcription_and_coding_without_force_alignment(data_folder, the_session_id, handover,secondary, doctor,whisper_model_name,formation_dict)
 
     coded_df = change_name_of_black_and_white(coded_df)

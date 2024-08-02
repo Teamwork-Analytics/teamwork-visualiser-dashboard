@@ -5,20 +5,21 @@ import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { startDebriefAudio, stopDebriefAudio } from "../../services/eureka";
 import { useDebriefing } from "./DebriefContext";
-import { processAllVisualisations } from "../../services/py-server";
+import { processAllVisualisations, processCommBehaviourViz } from "../../services/py-server";
 
 const DebriefPrimaryControlView = () => {
   const { simulationId } = useParams();
   const { isStarted, setIsStarted } = useDebriefing();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessingAllViz, setIsProcessingAllViz] = useState(false);
+  const [isProcessingENA, setIsProcessingENA] = useState(false);
+
 
   const styles = {
     wrapper: {
       fontSize: "3em",
       display: "flex",
-      height: "28vh",
       flexDirection: "column",
-      rowGap: "1em",
+      rowGap: "0.4em",
     },
   };
 
@@ -43,29 +44,53 @@ const DebriefPrimaryControlView = () => {
     }
   };
 
-  const handleClick = async () => {
+  const processAllViz = async () => {
     try {
-      setIsProcessing(true);
+      setIsProcessingAllViz(true);
       const response = await processAllVisualisations(simulationId);
       if (response) {
         toast.success(response.data);
-        setIsProcessing(false);
+        setIsProcessingAllViz(false);
       }
     } catch (error) {
       console.error(error);
     }
-    setIsProcessing(false);
+    setIsProcessingAllViz(false);
   };
+
+  const generateCommBehaviourViz = async () => {
+    try {
+      setIsProcessingENA(true);
+      const response = await processCommBehaviourViz(simulationId);
+      if (response) {
+        toast.success(response.data);
+        setIsProcessingENA(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setIsProcessingENA(false);
+  };
+
 
   return (
     <div style={styles.wrapper}>
       <Button
         variant="dark"
         value={"baselineTime"}
-        onClick={handleClick}
-        disabled={isProcessing}
+        onClick={processAllViz}
+        disabled={isProcessingAllViz}
       >
-        {isProcessing ? "Processing..." : "Generate All Visualisations"}
+        {isProcessingAllViz ? "Processing..." : "Generate All Visualisations"}
+      </Button>
+
+      <Button
+        variant="dark"
+        value={"baselineTime"}
+        onClick={generateCommBehaviourViz}
+        disabled={isProcessingENA}
+      >
+        {isProcessingENA ? "Processing..." : "Generate Comm. Behaviour Viz"}
       </Button>
 
       <Button

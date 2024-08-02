@@ -1,0 +1,3 @@
+file,begin,end,speaker,overall_log_likelihood,speech_log_likelihood,phone_duration_deviation
+346.23_360.87,0.0,14.64,force_alignment_test,-4.256996584699454,-52.122322819444456,0.6751151639556543
+364.68_387.96,0.0,23.28,force_alignment_test,-4.457255154639175,-52.68241237857144,0.829039538371251

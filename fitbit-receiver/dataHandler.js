@@ -31,7 +31,7 @@ function handleReceivedData(receivedData, simulationId) {
 
   // Absolute path of developer
   const filePath = path.join(
-    `C:\\Users\\colam\\Documents\\saved_data\\${simulationId}\\`,
+    `S:\\saved_data\\${simulationId}\\`,
     filename
   ); // Absolute path for data collection
 

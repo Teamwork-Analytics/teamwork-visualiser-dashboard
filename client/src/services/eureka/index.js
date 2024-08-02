@@ -1,8 +1,8 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const DOMAIN_NAME = process.env.REACT_APP_EUREKA_IP; // This current server
-const DOMAIN_NAME_SECOND_DEVICE = "http://49.127.74.7"; // audio laptop server
+const DOMAIN_NAME = process.env.REACT_APP_EUREKA_IP; // This current server [CONTROL ROOM]
+const DOMAIN_NAME_SECOND_DEVICE = process.env.REACT_APP_EXPRESS_IP; // audio laptop server [CONTROL ROOM]
 
 const portStrategy = {
   video: `${DOMAIN_NAME}:7101`,
@@ -56,6 +56,7 @@ Object.keys(portStrategy).forEach((k) => {
 });
 
 const startBaselineAll = async (simulationId, action) => {
+  console.log(eurekaAxiosStrategy[2])
   eurekaAxiosStrategy[2]["axios"].get(`/audio/start-baseline/${simulationId}`);
   eurekaAxiosStrategy[0]["axios"].get(`/video/init/${simulationId}`);
 };

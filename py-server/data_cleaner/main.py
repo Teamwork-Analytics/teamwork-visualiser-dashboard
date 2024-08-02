@@ -207,7 +207,10 @@ def call_visualization(simulationid):
               sep=',', encoding='utf-8', index=False)
     
 
-
+    # # DELETE PROCESSED FILES (audio and CSV)
+    # clean_up_delete(audio_folder)
+    # clean_up_delete(hive_positioning_data_folder)
+    # clean_up_delete(hive_data_folder)
 
 
     # plt.show()
@@ -221,11 +224,6 @@ def call_visualization(simulationid):
     # # remember to add a rename
     # sna_df = change_name_of_black_and_white(sna_df)
     # sna_df.to_csv(os.path.join(result_dir, "{}_sna.csv".format(session)))
-
-    # DELETE PROCESSED FILES (audio and CSV)
-    clean_up_delete(audio_folder)
-    clean_up_delete(hive_positioning_data_folder)
-    clean_up_delete(hive_data_folder)
 
     print("finish creating hive file.")
 
@@ -380,8 +378,7 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
     is_hr_data_exist = False
     hr_file_path = '{}/heart rate-{}.csv'.format(raw_audio_folder, colour)
 
-    if colour in ("BLACK", "WHITE"):
-        return
+
 
     try:
         filename_list = os.listdir(raw_audio_folder)
@@ -420,7 +417,8 @@ def hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positio
         # , 'acodec': 'flac'})
         stream = ffmpeg.output(audio, audio_out, **{'ar': '32000'})
         ffmpeg.run(stream, capture_stdout=True, capture_stderr=True)
-
+        if colour in ("BLACK", "WHITE"):
+            return
 
         # hive_audio_folder = raw_audio_folder + 'out\\audio-sim'
         # hive_positioning_folder = raw_audio_folder + 'out\\pos'

@@ -26,7 +26,7 @@ current_root = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_root)
 
 DATABASE_CONFIGURATION = "2023"
-data_folder = ""
+data_folder = "S:\\saved_data\\"
 IP_ADDRESS = os.getenv('IP')  # this/local server
 PORT = "5003"
 
@@ -65,18 +65,16 @@ def call_viz():
     return "Visualisations have been generated.", 200
 
 
-@ app.route("/generate_viz_audio", methods=['GET'])
+@ app.route("/generate_ena_viz", methods=['GET'])
 def generate_viz_with_audio_data():
     args = request.args
     try:
-        start_time = float(args["start"])
-        end_time = float(args["end"])
-        session_id = args["session"]
+        session_id = args["sessionId"]
          # todo: this path should be changed once used in actual scenario
-        handover, secondary, doctor = get_critical_timestamps()
+        handover, secondary, doctor = get_critical_timestamps(session_id, data_folder)
         run_auto_transcription_coding(data_folder, session_id, handover, secondary, doctor)
     except Exception as err:
-        print("Error happened when extracting GET params: maybe not all arguments are provided.")
+        # print("Error happened when extracting GET params: maybe not all arguments are provided.")
         print(err)
         error_message = "Unable to generate visualisation. Check terminal."
         print(error_message)
@@ -154,7 +152,6 @@ def give_sna_test_data():
         output_data = df.to_dict(orient="records")
         return jsonify(output_data)
     except Exception as e:
-        print(e)
         message = "Network data is missing."
         print(message)
         return message, 500
@@ -167,31 +164,34 @@ def give_ena_test_data():
     The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
     :return:
     """
+    try:
+        id = request.args['sessionId']
+        start_time = request.args["start"]
+        end_time = request.args["end"]
 
-    id = request.args['sessionId']
-    start_time = request.args["start"]
-    end_time = request.args["end"]
+        file = "%s_network_data.csv" % id
+        # file_path = DIRECTORY / id / "result" / file
+        file_path = os.path.join(DIRECTORY, id, "result", file)
 
-    file = "%s_network_data.csv" % id
-    # file_path = DIRECTORY / id / "result" / file
-    file_path = os.path.join(DIRECTORY, id, "result", file)
+        os.path.join(DIRECTORY, os.sep, )
+        session_df = pd.read_csv(file_path)
+        # updated on 17/7/2023, merged the acknowledging and responding
+        __merging_codes(session_df, ["acknowledging",
+                        "responding"], "acknowledging")
 
-    os.path.join(DIRECTORY, os.sep, )
-    session_df = pd.read_csv(file_path)
-    # updated on 17/7/2023, merged the acknowledging and responding
-    __merging_codes(session_df, ["acknowledging",
-                    "responding"], "acknowledging")
+        session_view = session_df[
+            (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
+        window_size = 3
+        column_names = ["task allocation", "handover", "call-out", "escalation", "questioning", "acknowledging"]
+        output_data = calculate_ena_metric(session_view, window_size, column_names)
 
-    session_view = session_df[
-        (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
-    window_size = 3
-    column_names = ["task allocation", "handover", "call-out", "escalation", "questioning", "acknowledging"]
-    output_data = calculate_ena_metric(session_view, window_size, column_names)
+        # session_view = pd.DataFrame(all_df[all_df["session_id"] == id])
+        # output_data = calculate_ena_metric(all_df, window_size)
 
-    # session_view = pd.DataFrame(all_df[all_df["session_id"] == id])
-    # output_data = calculate_ena_metric(all_df, window_size)
-
-    return jsonify(output_data)
+        return jsonify(output_data)
+    except Exception as e:
+        print("ENA file not available")
+        return "500: No ENA data, please check the folder.", 500
 
 
 if __name__ == '__main__':
