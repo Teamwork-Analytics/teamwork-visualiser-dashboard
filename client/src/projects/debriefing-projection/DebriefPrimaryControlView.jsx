@@ -5,14 +5,16 @@ import { useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import { startDebriefAudio, stopDebriefAudio } from "../../services/eureka";
 import { useDebriefing } from "./DebriefContext";
-import { processAllVisualisations, processCommBehaviourViz } from "../../services/py-server";
+import {
+  processAllVisualisations,
+  processCommBehaviourViz,
+} from "../../services/py-server";
 
 const DebriefPrimaryControlView = () => {
   const { simulationId } = useParams();
   const { isStarted, setIsStarted } = useDebriefing();
   const [isProcessingAllViz, setIsProcessingAllViz] = useState(false);
   const [isProcessingENA, setIsProcessingENA] = useState(false);
-
 
   const styles = {
     wrapper: {
@@ -71,7 +73,6 @@ const DebriefPrimaryControlView = () => {
     }
     setIsProcessingENA(false);
   };
-
 
   return (
     <div style={styles.wrapper}>

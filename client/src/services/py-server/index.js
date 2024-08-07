@@ -71,15 +71,23 @@ const processAllVisualisations = async (simulationId) => {
   return await communicationAPI.get(`/generate_viz?sessionId=${simulationId}`);
 };
 
+const processCommBehaviourViz = async (simulationId) => {
+  return await communicationAPI.get(
+    `/generate_ena_viz?sessionId=${simulationId}`
+  );
+};
 
-const processCommBehaviourViz = async(simulationId) => {
-  return await communicationAPI.get(`/generate_ena_viz?sessionId=${simulationId}`);
-}
+const processVideoTranscoding = async (simulationId) => {
+  return await communicationAPI.get(
+    `/transcode_video?sessionId=${simulationId}`
+  );
+};
 
 export {
   getSNAdata,
   getENAdata,
   getTeamworkBarchart,
   processAllVisualisations,
-  processCommBehaviourViz
+  processCommBehaviourViz,
+  processVideoTranscoding,
 };

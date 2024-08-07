@@ -55,6 +55,28 @@ print("BASE_PATH DIRECTORY:", BASE_PATH)
 
 # folder_path, simulationid, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
 
+
+def transcode_video(simulationid, data_dir, result_dir):
+    input_file = "{}/{}.mp4".format(data_dir, simulationid)
+    output_file = "{}/transcoded_output.mp4".format(result_dir)
+
+    if not(os.path.exists(output_file)):
+        ffmpeg_command = [
+            "ffmpeg",
+            "-i", input_file,
+            "-c:v", "libx264",
+            "-c:a", "aac",
+            "-strict", "experimental",
+            output_file
+        ]
+
+        # Execute the FFmpeg command using subprocess
+        try:
+            subprocess.run(ffmpeg_command, check=True)
+            print("Transcoding completed successfully.")
+        except subprocess.CalledProcessError:
+            print("Transcoding failed.")
+
 def call_visualization(simulationid):
     """------------ extracting timestamps ------------------------"""
     # ================= commented out for testing ======================================
@@ -245,25 +267,7 @@ def call_visualization(simulationid):
 
     """-------- section to transcode video"""
     # ffmpeg -i input.mp4 -c:v libx264 -c:a aac -strict experimental transcoded_output.mp4
-    input_file = "{}/{}.mp4".format(data_dir, simulationid)
-    output_file = "{}/transcoded_output.mp4".format(result_dir)
-
-    if not(os.path.exists(output_file)):
-        ffmpeg_command = [
-            "ffmpeg",
-            "-i", input_file,
-            "-c:v", "libx264",
-            "-c:a", "aac",
-            "-strict", "experimental",
-            output_file
-        ]
-
-        # Execute the FFmpeg command using subprocess
-        try:
-            subprocess.run(ffmpeg_command, check=True)
-            print("Transcoding completed successfully.")
-        except subprocess.CalledProcessError:
-            print("Transcoding failed.")
+    transcode_video(simulationid,data_dir,result_dir)
 
     return "success"
 
