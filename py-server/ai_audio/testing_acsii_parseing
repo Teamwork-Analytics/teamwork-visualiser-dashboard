@@ -1,6 +1,0 @@
-text = "– yep. Great. 500 mils. Yes. And we're running at – Dr. Holly?"
-text = "# MBC 뉴스 김성현입니다"
-# Remove non-ASCII characters
-ascii_text = text.encode('ascii', 'ignore').decode('ascii')
-
-print(ascii_text)
