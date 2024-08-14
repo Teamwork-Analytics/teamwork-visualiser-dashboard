@@ -1,8 +1,8 @@
 import { useState } from "react";
-import * as Hive from "../visualisations/hive";
+import * as Hive from "../hive";
 
 import { useParams } from "react-router-dom";
-import Tooltip from "react-tooltip";
+import ReactTooltip from "react-tooltip";
 import { Button, ButtonGroup, Carousel, Image } from "react-bootstrap";
 import Clock from "react-live-clock";
 
@@ -26,41 +26,41 @@ const VisualisationView = () => {
       height: "90vh",
     },
   };
-  const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
+  // const csvUrl = process.env.PUBLIC_URL + "/api/visualisations/" + simulationId;
 
-  const visualisations = [
-    {
-      id: "teamwork-barchart",
-      label: "Teamwork",
-      view: (
-        <div style={styles.middle}>
-          <Image
-            width={"850px"}
-            src={`${csvUrl}/teamwork-barchart`}
-            onError={() => setHasVisualisation(false)}
-          />
-        </div>
-      ),
-    },
-    {
-      id: "hive-button",
-      label: "Location and Speaking",
-      view: <Hive.HiveView />,
-    },
-    {
-      id: "audio-socnet",
-      label: "Speaking Interaction",
-      view: (
-        <div style={styles.middle}>
-          <Image
-            width={"650px"}
-            src={`${csvUrl}/audio-socnet`}
-            onError={() => setHasVisualisation(false)}
-          />{" "}
-        </div>
-      ),
-    },
-  ];
+  // const visualisations = [
+  //   {
+  //     id: "teamwork-barchart",
+  //     label: "Teamwork",
+  //     view: (
+  //       <div style={styles.middle}>
+  //         <Image
+  //           width={"850px"}
+  //           src={`${csvUrl}/teamwork-barchart`}
+  //           onError={() => setHasVisualisation(false)}
+  //         />
+  //       </div>
+  //     ),
+  //   },
+  //   {
+  //     id: "hive-button",
+  //     label: "Location and Speaking",
+  //     view: <Hive.HiveView />,
+  //   },
+  //   {
+  //     id: "audio-socnet",
+  //     label: "Speaking Interaction",
+  //     view: (
+  //       <div style={styles.middle}>
+  //         <Image
+  //           width={"650px"}
+  //           src={`${csvUrl}/audio-socnet`}
+  //           onError={() => setHasVisualisation(false)}
+  //         />{" "}
+  //       </div>
+  //     ),
+  //   },
+  // ];
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
@@ -116,7 +116,7 @@ const VisualisationView = () => {
         </div>
       )}
 
-      <Tooltip />
+      <ReactTooltip />
     </div>
   );
 };

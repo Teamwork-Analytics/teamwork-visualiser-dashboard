@@ -20,7 +20,7 @@ app = Flask(__name__)
 TEST_MODE_LINX = True
 DIRECTORIES = {
     "monash_pc": "C:\\develop\\saved_data\\",
-    "local_pc":"E:\\research\\projects\\teamwork-visualiser-dashboard\\server\\saved_data\\",
+    "local_pc":"C:\\Work\\teamwork-visualiser-dashboard\\server\\saved_data\\",
     "rio_macbook": "/Users/riordanalfredo/Desktop/research-softeng/teamwork-visualiser-dashboard/server/saved_data"
 }
 

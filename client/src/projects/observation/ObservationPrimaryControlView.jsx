@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import ReactTooltip, { Tooltip } from "react-tooltip";
+import { Tooltip } from "react-tooltip";
 import { OBSERVATION_TOAST_MESSAGES } from "../../data/manualLabels";
 import ObservationAPI from "../../services/api/observation";
 import { startBaselineAll, startAll, stopAll } from "../../services/eureka";

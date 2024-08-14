@@ -30,7 +30,8 @@ app.use("/api", require("./routes/index"));
 
 let VISUALISATION_DIR;
 if (process.platform === "win32") {
-  VISUALISATION_DIR = "C:\\develop\\saved_data";
+  VISUALISATION_DIR =
+    "C:\\Work\\teamwork-visualiser-dashboard\\server\\saved_data\\";
 } else {
   VISUALISATION_DIR = path.join(__dirname, "/saved_data");
 }
