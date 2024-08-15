@@ -4,7 +4,7 @@ import { processing_csv } from "./cyto_control";
 import { useDebriefing } from "../debriefing-projection/DebriefContext";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { useParams } from "react-router-dom";
-import { getSNAdata } from "../../services/py-server";
+import { getSNAdata } from "../../services/py-server/indexVisualiser";
 import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
 
 const CytoComponent = ({ netData, height = "30vh" }) => {
@@ -102,7 +102,7 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
         const doctorTime =
           timelineTags.length !== 0
             ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
-            : 1000;
+            : 0;
 
         const res = await getSNAdata({
           simulationId: simulationId,

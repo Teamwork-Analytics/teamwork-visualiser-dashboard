@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getTeamworkBarchart } from "../../services/py-server";
+import { getTeamworkBarchart } from "../../services/py-server/indexVisualiser";
 import Barchart from "./Barchart";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";

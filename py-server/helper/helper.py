@@ -11,7 +11,7 @@ from ai_audio.main import auto_transcription_and_coding, generate_sna_csv, \
 from pymongo import MongoClient
 
 nltk.download('punkt')
-whisper_model_name = "large"  # @param ["medium.en", "small.en", "base.en", "large"]
+whisper_model_name = "medium.en"  # @param ["medium.en", "small.en", "base.en", "large"]
 use_force_alignment = False  # @param {type:"boolean"}
 DATABASE_CONFIGURATION = "2023"
 

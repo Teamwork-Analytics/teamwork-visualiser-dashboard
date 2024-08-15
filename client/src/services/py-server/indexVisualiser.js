@@ -2,9 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = process.env.REACT_APP_PYSERVER_IP;
-const PORT_NUMBER = process.env.REACT_APP_PYSERVER_PORT;
-const PORT_NUMBER_VISUALISER = process.env.REACT_APP_PYSERVER_PORT_VISUALISER;
-
+const PORT_NUMBER =  "5004";
 
 const communicationAPI = axios.create({
   baseURL: `${DOMAIN_NAME}:${PORT_NUMBER}`, //Change this if the port is being used.
@@ -69,27 +67,9 @@ const getTeamworkBarchart = async (body) => {
   );
 };
 
-const processAllVisualisations = async (simulationId) => {
-  return await communicationAPI.get(`/generate_viz?sessionId=${simulationId}`);
-};
-
-const processCommBehaviourViz = async (simulationId) => {
-  return await communicationAPI.get(
-    `/generate_ena_viz?sessionId=${simulationId}`
-  );
-};
-
-const processVideoTranscoding = async (simulationId) => {
-  return await communicationAPI.get(
-    `/transcode_video?sessionId=${simulationId}`
-  );
-};
 
 export {
   getSNAdata,
   getENAdata,
   getTeamworkBarchart,
-  processAllVisualisations,
-  processCommBehaviourViz,
-  processVideoTranscoding,
 };

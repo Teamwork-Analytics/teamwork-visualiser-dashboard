@@ -4,7 +4,7 @@
 // * with audio (default) or position only
 
 import React, { useState, useEffect } from "react";
-import { getSNAdata } from "../../services/py-server";
+import { getSNAdata } from "../../services/py-server/indexVisualiser";
 
 const DebriefingContext = React.createContext();
 
@@ -25,7 +25,7 @@ function DebriefingProvider({ simulationId, children }) {
   // }, [simulationId]);
 
   useEffect(() => {
-    if (snaData.length == 0) {
+    if (snaData.length === 0) {
       function callData() {
         // Fetch data immediately when component mounts
         const body = {

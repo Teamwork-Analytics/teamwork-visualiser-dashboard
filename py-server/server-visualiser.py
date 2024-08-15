@@ -9,7 +9,6 @@ from helper.helper import run_auto_transcription_coding
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
 from data_cleaner.main import call_visualization
-from data_cleaner.main import transcode_video
 from dotenv import load_dotenv
 
 
@@ -27,9 +26,9 @@ current_root = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_root)
 
 DATABASE_CONFIGURATION = "2023"
-data_folder = "C:\\Users\\colam\\Documents\\saved_data"
+data_folder = "C:\\Users\\colam\\Documents\\saved_data\\"
 IP_ADDRESS = os.getenv('IP')  # this/local server
-PORT = "5003"
+PORT = "5004"
 
 # Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
@@ -47,23 +46,6 @@ else:
 print("PYTHON DIRECTORY:", DIRECTORY)
 CORS(app)
 
-
-@ app.route("/generate_viz", methods=['GET'])
-def call_viz():
-    """
-    This function is to run a script to clean data and generates visualisation
-    """
-    args = request.args
-    try:
-        simulationId = args["sessionId"]
-        call_visualization(simulationId)
-    except Exception as err:
-        print(err)
-        error_message = "Unable to generate visualisation. Check terminal."
-        print(error_message)
-        return error_message, 500
-
-    return "Visualisations have been generated.", 200
 
 
 @ app.route("/generate_ena_viz", methods=['GET'])
@@ -84,23 +66,6 @@ def generate_viz_with_audio_data():
    
     return "Visualisations with audio data have been generated (SNA and ENA).", 200
 
-@ app.route("/transcode_video", methods=['GET'])
-def transcode_video_move_to_result():
-    args = request.args
-    try:
-        session_id = args["sessionId"]
-        current_data_folder = os.path.join(data_folder, str(session_id))
-        result_dir = os.path.join(current_data_folder, "result")
-
-        transcode_video(session_id, current_data_folder, result_dir)
-    except Exception as err:
-        # print("Error happened when extracting GET params: maybe not all arguments are provided.")
-        print(err)
-        error_message = "Unable to transcode video. Check terminal."
-        print(error_message)
-        return error_message, 500
-    
-    return "Video has been transcoded and available in {}.".format(result_dir), 200
 
 @ app.route("/get_teamwork_prio_data", methods=['GET'])
 def give_prioritisation_test_data():
