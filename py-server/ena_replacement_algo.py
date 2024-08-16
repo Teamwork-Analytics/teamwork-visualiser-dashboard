@@ -142,8 +142,8 @@ def _calculate_matrix(data_df: pd.DataFrame, stanza_window_size: int, column_nam
             stanzas_sum = np.array(stanzas.sum().apply(to_binary).to_list())
             summed_matrix += array_to_adjacent_matrix(stanzas_sum)
             # breakpoint()
-        if break_after_run:
-            break
+            if break_after_run:
+                break
 
     if summed_matrix.shape[0] == 4:
         return adjacent_matrix_to_json(summed_matrix)
