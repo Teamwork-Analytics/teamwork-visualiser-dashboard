@@ -153,6 +153,7 @@ def give_sna_test_data():
         start_time = float(request.args["start"])
         end_time = float(request.args["end"])
         doc_enter_time = float(request.args["doc_enter"])
+        secondary_enter_time = float(request.args["secondary"])
 
         file_new = "%s_sna.csv" % id
         file_old = "%s_network_data.csv" % id
@@ -165,7 +166,7 @@ def give_sna_test_data():
         else:
             file_path = file_path_old
         df = pd.read_csv(file_path)
-        df = process_csv(df, start_time, end_time, doc_enter_time) # update with 2024 data
+        df = process_csv(df, start_time, end_time, doc_enter_time, secondary_enter_time, do_filter=True)# update with 2024 data
         df.fillna("", inplace=True)
         output_data = df.to_dict(orient="records")
         return jsonify(output_data)

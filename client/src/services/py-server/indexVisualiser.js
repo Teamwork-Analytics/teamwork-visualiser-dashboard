@@ -46,10 +46,10 @@ communicationAPI.interceptors.response.use(
 );
 
 const getSNAdata = async (body) => {
-  const { simulationId, startTime, endTime, docEnterTime } = body;
+  const { simulationId, startTime, endTime, docEnterTime, secEnterTime } = body;
 
   return await communicationAPI.get(
-    `/get_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}&doc_enter=${docEnterTime}`
+    `/get_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}&doc_enter=${docEnterTime}&secondary=${secEnterTime}`
   );
 };
 

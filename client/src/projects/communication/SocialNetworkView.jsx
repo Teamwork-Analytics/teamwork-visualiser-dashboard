@@ -99,6 +99,11 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
   useEffect(() => {
     async function callData() {
       try {
+        const secondaryTime =
+        timelineTags.length !== 0
+          ? timelineTags.filter((d) => d.label === "Secondary nurse enters")[0].value
+          : 0;
+
         const doctorTime =
           timelineTags.length !== 0
             ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
@@ -109,6 +114,7 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
           startTime: startTime,
           endTime: endTime,
           docEnterTime: doctorTime,
+          secEnterTime: secondaryTime
         });
         if (res.status === 200) {
           // const cleanedPhases = cleanRawPhases(phases);
