@@ -21,3 +21,28 @@ A dashboard to collect, analyse, and visualize all teamwork activities (i.e., mu
 6. The application will be running on `localhost:3000`.
 
 7. Check the sample data in the corresponding session.
+
+# Additional procedures if the MongoDB is not established
+
+Initialising the database: 
+Make a post to: http://localhost:5002/api/simulations/ 
+
+with json body:
+
+{
+    "simulationId": "494",
+    "name": "Thu 29 Aug 2pm-5pm: Session B",
+    "projectName": "Peninsula Nursing Simulation 2024"
+}
+
+Then, create a session by:
+
+Make a post to: http://localhost:5002/api/simulations/ 
+
+{
+    "simulationId": "494",
+    "name": "Thu 29 Aug 2pm-5pm: Session B",
+    "projectName": "Peninsula Nursing Simulation 2024"
+}
+
+Then there should be a session to enter the simulation panel.
