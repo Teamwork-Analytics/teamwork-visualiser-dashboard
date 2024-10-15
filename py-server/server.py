@@ -29,7 +29,7 @@ parent_directory = os.path.dirname(current_root)
 DATABASE_CONFIGURATION = "2023"
 data_folder = "C:\\Users\\colam\\Documents\\saved_data"
 IP_ADDRESS = os.getenv('IP')  # this/local server
-PORT = "5003"
+PORT = "5004"
 
 # Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
