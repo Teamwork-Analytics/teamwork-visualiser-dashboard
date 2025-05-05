@@ -8,8 +8,7 @@ from helper.helper import get_critical_timestamps
 from helper.helper import run_auto_transcription_coding
 from position.IPA import get_timestamp_from_sync
 from position.IPA_wrapper import IPA_for_front_end
-from data_cleaner.main import call_visualization
-from data_cleaner.main import transcode_video
+from data_cleaner.main import call_visualization, transcode_video
 from dotenv import load_dotenv
 
 
@@ -35,11 +34,9 @@ PORT = "5004"
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 
 # Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
-if USE_ABSOLUTE_PATH == 'false':
+if USE_ABSOLUTE_PATH == 'true':
     # Location defined as teamwork-visualiser-dashboard/server/saved_data/
-    # DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
-    DIRECTORY = "C:\\develop\\saved_data\\"
-
+    DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
 else:
     # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
     DIRECTORY = os.getenv('VISUALISATION_DIR')

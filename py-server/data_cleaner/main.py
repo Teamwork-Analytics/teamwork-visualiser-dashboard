@@ -35,20 +35,18 @@ current_file_dir = os.path.dirname(os.path.abspath(__file__))
 current_root = os.path.dirname(current_file_dir)
 parent_directory = os.path.dirname(current_root)
 
-
 IP_ADDRESS = os.getenv('IP')
 
 # Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
 USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
 
 # Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
-if USE_ABSOLUTE_PATH == 'false':
+if USE_ABSOLUTE_PATH == 'true':
     # Location defined as teamwork-visualiser-dashboard/server/saved_data/
-    # BASE_PATH = os.path.join(parent_directory, 'server', 'saved_data')
-    BASE_PATH = "C:\\develop\\saved_data"
+    BASE_PATH = os.path.join(parent_directory, 'server', 'saved_data')
 else:
+    # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
     BASE_PATH = os.getenv('VISUALISATION_DIR')
-    # "C:\\develop\\saved_data\\"
 
     app = Flask(__name__)
 print("BASE_PATH DIRECTORY:", BASE_PATH)
