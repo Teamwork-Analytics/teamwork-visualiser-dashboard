@@ -1,0 +1,4 @@
+these files duplicate at following locations
+
+ai_audio/force_alignment_test/formation_detection
+ai_audio/formation_detection

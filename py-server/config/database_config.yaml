@@ -1,0 +1,9 @@
+mongodb:
+  server:
+    username: admin
+    password: 5ZVy3RS0FIMcmTxn
+    host: cluster0.ravibmh.mongodb.net
+    database: app
+    options:
+      retryWrites: true
+      w: majority

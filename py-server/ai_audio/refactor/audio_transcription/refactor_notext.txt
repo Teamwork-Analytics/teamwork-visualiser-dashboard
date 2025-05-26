@@ -1,0 +1,6 @@
+these files duplicate at following locations
+
+ai_audio/audio_transcription
+ai_audio/force_alignment_test/audio_transcription
+
+note : files in the above two locations been accessed by different set of files.

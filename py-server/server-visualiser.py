@@ -1,147 +1,120 @@
-import json
-from flask_cors import CORS
-from flask import Flask, jsonify, request
-import pandas as pd
-from ena_replacement_algo import calculate_ena_metric, __merging_codes
-from helper.sna_algo import process_csv
-from helper.helper import get_critical_timestamps
-from helper.helper import run_auto_transcription_coding
-from position.IPA import get_timestamp_from_sync
-from position.IPA_wrapper import IPA_for_front_end
-from data_cleaner.main import call_visualization
-from dotenv import load_dotenv
-
-
 import os
 
-from pathlib import Path
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
+from refactor.ena_test_data.ena_test_data_management import get_ena_test_data
+from refactor.prioritisation_test_data.prioritisation_test_data_management import get_task_prioritisation_graph_data
+from refactor.sna_test_data.sna_test_data_management import get_sna_graph_data
+from refactor.visualisation.visualisation_audio_data.visualisation_management import \
+    generate_visualization_with_audio_data
+from util.data_save_location_handler import config_data_save_location
+from util.error_handling_util import build_http_error_response
+from util.logging_util import logger
 
 app = Flask(__name__)
-
-# Load variables from .env file located in the root folder
-dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
-load_dotenv(dotenv_path)
-current_root = os.path.dirname(os.path.abspath(__file__))
-parent_directory = os.path.dirname(current_root)
-
-DATABASE_CONFIGURATION = "2023"
-data_folder = "C:\\Users\\colam\\Documents\\saved_data\\"
-IP_ADDRESS = os.getenv('IP')  # this/local server
-PORT = "5004"
-
-# Get the value of USE_ABSOLUTE_PATH from the .env file (located in teamwork-visualiser-dashboard)
-USE_ABSOLUTE_PATH = os.getenv('USE_ABSOLUTE_PATH')
-
-# Check if USE_ABSOLUTE_PATH is equal true (defined in the .env located in teamwork-visualiser-dashboard)
-if USE_ABSOLUTE_PATH == 'false':
-    # Location defined as teamwork-visualiser-dashboard/server/saved_data/
-    # DIRECTORY = os.path.join(parent_directory, 'server', 'saved_data')
-    DIRECTORY = "C:\\develop\\saved_data\\"
-
-else:
-    # Assign the DIRECTORY to VISUALISATION_DIR (defined in the .env located in teamwork-visualiser-dashboard)
-    DIRECTORY = os.getenv('VISUALISATION_DIR')
-
-print("PYTHON DIRECTORY:", DIRECTORY)
+data_folder = config_data_save_location()
+logger().info(f"data_saving_location: {data_folder}")
 CORS(app)
 
 
 
-@ app.route("/generate_ena_viz", methods=['GET'])
+@app.route("/generate_ena_viz", methods=['GET'])
 def generate_viz_with_audio_data():
     args = request.args
     try:
         session_id = args["sessionId"]
-         # todo: this path should be changed once used in actual scenario
-        handover, secondary, doctor = get_critical_timestamps(session_id, data_folder)
-        run_auto_transcription_coding(data_folder, session_id, handover, secondary, doctor)
-    except Exception as err:
-        # print("Error happened when extracting GET params: maybe not all arguments are provided.")
-        print(err)
-        error_message = "Unable to generate visualisation. Check terminal."
-        print(error_message)
-        return error_message, 500
+        # handover, secondary, doctor = get_critical_timestamps(session_id, data_folder)
+        # run_auto_transcription_coding(data_folder, session_id, handover, secondary, doctor)
 
-   
-    return "Visualisations with audio data have been generated (SNA and ENA).", 200
+        generate_visualization_with_audio_data(session_id, data_folder)
+        return "Visualisations with audio data have been generated (SNA and ENA).", 200
+    except Exception as err:
+        error_message = "Unable to generate visualisation. Check terminal"
+        logger().exception(error_message)
+        return build_http_error_response(error_message, 500)
 
 
 @ app.route("/get_teamwork_prio_data", methods=['GET'])
 def give_prioritisation_test_data():
-    """
-    This function is to return the testing data for task prioritisation graph.
-    The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
-    :return:
-    """
-    args = request.args
-    try:
-        start_time = float(args["start"])
-        end_time = float(args["end"])
-        session_id = args["sessionId"]
-    except Exception:
-        error_message = "Error happened when extracting GET params: maybe not all arguments are provided."
-        print(error_message)
-        return error_message, 500
+    def give_prioritisation_test_data():
+        """
+        This function is to return the testing data for task prioritisation graph.
+        The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
+        :return:
+        """
+        args = request.args
+        try:
+            start_time = float(args["start"])
+            end_time = float(args["end"])
+            session_id = args["sessionId"]
 
-    # todo: this path should be changed once used in actual scenario
-    file = "%s.csv" % session_id
-    # dir_path = DIRECTORY / session_id / "result"
-    dir_path = os.path.join(DIRECTORY, session_id, "result")
+            # todo: this path should be changed once used in actual scenario
+            # file = "%s.csv" % session_id
+            # dir_path = os.path.join(data_folder, session_id, "result")
+            #
+            # file_path = os.path.join(dir_path, file)
+            # # test_data_path = "test_data/{}.csv".format(session_id)
+            # # sync_data_path = dir_path / "sync.txt"
+            # sync_data_path = os.path.join(dir_path, "sync.txt")
+            #
+            # positioning_start_timestamp = get_timestamp_from_sync(
+            #     sync_data_path, "positioning")
+            # processed_pozyx_data = pd.read_csv(file_path)
+            #
+            # # output_data = IPA_for_front_end(processed_pozyx_data, session_id, positioning_start_timestamp,
+            # #                               start_time, end_time)
+            #
 
-    # file_path = dir_path / file
-    file_path = os.path.join(dir_path, file)
-    # test_data_path = "test_data/{}.csv".format(session_id)
-    # sync_data_path = dir_path / "sync.txt"
-    sync_data_path = os.path.join(dir_path, "sync.txt")
-
-    positioning_start_timestamp = get_timestamp_from_sync(
-        sync_data_path, "positioning")
-    processed_pozyx_data = pd.read_csv(file_path)
-    # session_id_int = int(session_id)  # TODO: please change me!
-
-    output_data = IPA_for_front_end(processed_pozyx_data, session_id, positioning_start_timestamp,
-                                    start_time, end_time)
-    return jsonify(output_data)
+            # get data -start and end time from rio
+            output_data = get_task_prioritisation_graph_data(data_folder, session_id, start_time, end_time)
+            return jsonify(output_data)
+        except Exception:
+            error_message = "Error happened when extracting GET params: maybe not all arguments are provided."
+            logger().exception(error_message)
+            return build_http_error_response(error_message, 500)
 
 
 @ app.route("/get_data", methods=['GET'])
 def give_sna_test_data():
     """
-    This function is to return the testing data for the sna graph
-    The returned json is created by pandas, using "records" format.
-    :return:
-    """
+       This function is to return the testing data for the sna graph
+       The returned json is created by pandas, using "records" format.
+       :return:
+       """
     try:
-        
+
         id = request.args['sessionId']
         start_time = float(request.args["start"])
         end_time = float(request.args["end"])
         doc_enter_time = float(request.args["doc_enter"])
         secondary_enter_time = float(request.args["secondary"])
 
-        file_new = "%s_sna.csv" % id
-        file_old = "%s_network_data.csv" % id
-        # file_path = DIRECTORY / id / "result" / file
-        file_path_old = os.path.join(DIRECTORY, id, "result", file_old)
-        file_path_new = os.path.join(DIRECTORY, id, "result", file_new)
-        # this is for backward compatibility. Previously we used _network_data, now we change the file name to _sna
-        if(os.path.exists(file_path_new)):
-            file_path = file_path_new
-        else:
-            file_path = file_path_old
-        df = pd.read_csv(file_path)
-        df = process_csv(df, start_time, end_time, doc_enter_time, secondary_enter_time, do_filter=True)# update with 2024 data
-        df.fillna("", inplace=True)
-        output_data = df.to_dict(orient="records")
+        # file_new = "%s_sna.csv" % id
+        # file_old = "%s_network_data.csv" % id
+        # # file_path = DIRECTORY / id / "result" / file
+        # file_path_old = os.path.join(data_folder, id, "result", file_old)
+        # file_path_new = os.path.join(data_folder, id, "result", file_new)
+        # # this is for backward compatibility. Previously we used _network_data, now we change the file name to _sna
+        # if (os.path.exists(file_path_new)):
+        #     file_path = file_path_new
+        # else:
+        #     file_path = file_path_old
+        # df = pd.read_csv(file_path)
+        # df = process_csv(df, start_time, end_time, doc_enter_time, secondary_enter_time,
+        #                  do_filter=True)  # update with 2024 data
+        # df.fillna("", inplace=True)
+        # output_data = df.to_dict(orient="records")
+
+        output_data = get_sna_graph_data(id, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time)
         return jsonify(output_data)
     except Exception as e:
-        message = "Network data is missing."
-        print(message)
-        return message, 500
+        error_message = "Network data is missing."
+        logger().exception(error_message)
+        return build_http_error_response(error_message, 500)
 
 
-@ app.route("/get_ena_data", methods=['GET'])
+@app.route("/get_ena_data", methods=['GET'])
 def give_ena_test_data():
     """
     This function is to return the testing data for mimic ena.
@@ -153,29 +126,28 @@ def give_ena_test_data():
         start_time = request.args["start"]
         end_time = request.args["end"]
 
-        file = "%s_network_data.csv" % id
-        # file_path = DIRECTORY / id / "result" / file
-        file_path = os.path.join(DIRECTORY, id, "result", file)
+        # file = "%s_network_data.csv" % id
+        # # file_path = DIRECTORY / id / "result" / file
+        # file_path = os.path.join(data_folder, id, "result", file)
+        #
+        # os.path.join(data_folder, os.sep, )
+        # session_df = pd.read_csv(file_path)
+        # # updated on 17/7/2023, merged the acknowledging and responding
+        # __merging_codes(session_df, ["acknowledging",
+        #                              "responding"], "acknowledging")
+        #
+        # session_view = session_df[
+        #     (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
+        # window_size = 3
+        # column_names = ["task allocation", "handover", "call-out", "escalation", "questioning", "acknowledging"]
+        # output_data = calculate_ena_metric(session_view, window_size, column_names)
 
-        os.path.join(DIRECTORY, os.sep, )
-        session_df = pd.read_csv(file_path)
-        # updated on 17/7/2023, merged the acknowledging and responding
-        __merging_codes(session_df, ["acknowledging",
-                        "responding"], "acknowledging")
-
-        session_view = session_df[
-            (session_df["start_time"] >= float(start_time)) & (session_df["start_time"] <= float(end_time))]
-        window_size = 3
-        column_names = ["task allocation", "handover", "call-out", "escalation", "questioning", "acknowledging"]
-        output_data = calculate_ena_metric(session_view, window_size, column_names)
-
-        # session_view = pd.DataFrame(all_df[all_df["session_id"] == id])
-        # output_data = calculate_ena_metric(all_df, window_size)
-
+        output_data = get_ena_test_data(id, data_folder, start_time, end_time)
         return jsonify(output_data)
     except Exception as e:
-        print("ENA file not available")
-        return "500: No ENA data, please check the folder.", 500
+        error_message = "ENA file not available"
+        logger().exception(error_message)
+        return build_http_error_response(error_message, 500)
 
 
 if __name__ == '__main__':
@@ -184,4 +156,8 @@ if __name__ == '__main__':
     # json_data = give_test_data()
     # print(give_test_data())
     # print()
+
+    IP_ADDRESS = os.getenv('IP')  # this/local server
+    print(IP_ADDRESS)
+    PORT = "5004"
     app.run(host=IP_ADDRESS, port=PORT)

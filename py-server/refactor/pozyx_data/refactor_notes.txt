@@ -1,0 +1,11 @@
+Duplicate function content found:
+  - Function 'get_timestamp'
+ - /home/dasun-dev/python-workspace/mmla-tool/py-server-main/ai_audio/audio_transcription/pozyx_extraction.py
+  - Function 'get_timestamp'
+ - /home/dasun-dev/python-workspace/mmla-tool/py-server-main/ai_audio/force_alignment_test/audio_transcription/pozyx_extraction.py
+  - Function 'get_timestamp'
+ - /home/dasun-dev/python-workspace/mmla-tool/py-server-main/refactor/pozyx_data/pozyx_data_management.py
+  - Function 'get_timestamp'
+ - /home/dasun-dev/python-workspace/mmla-tool/py-server-main/data_cleaner/pozyx_extraction.py
+  - Function 'get_timestamp'
+ - /home/dasun-dev/python-workspace/mmla-tool/py-server-main/data_cleaner/audio_processing/pozyx_extraction.py
