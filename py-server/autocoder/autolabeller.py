@@ -293,32 +293,39 @@ def _classify_text_single_label(text, index, df):
     return classifications
 
 
-def process_csv(csv_file, type="multilabel"):
+def process_classification_with_genai(df: pd.DataFrame):
+    processed_rows = []
+    for index, row in df.iterrows():
+        if pd.notnull(row['communication_type']) and pd.notnull(row['text']):
+            processed_entry = _add_chunk_to_database(
+                text=row['text'],
+                index=index,
+                df=df,
+                type=type  # Make sure 'type' is defined or passed as an argument
+            )
+            processed_rows.append({
+                'text': processed_entry['text'],
+                'conversation_id': row['conversation_id'],
+                'utterance_id': row['utterance_id'],
+                'initiator': row['initiator'],
+                'receiver': row['receiver'],
+                **dict(zip(DEFINITIONS.keys(), processed_entry['labels']))
+            })
+    processed_df = pd.DataFrame(processed_rows)
+    return processed_df
+
+
+def write_df_to_csv(df, classification_type):
+    filename = f"labeled_dataset-{classification_type}-{FILE_TIMESTAMP}-{CLASSIFICATION_MODEL.replace(':','_')}.csv"
+    df.to_csv(filename)
+
+
+def process_csv(csv_file, classification_type="multilabel"):
 
     # Load the entire dataset first for conversation context
     df = pd.read_csv(csv_file)
-    
-    # Open output file
-    with open(f"labeled_dataset-{type}-{FILE_TIMESTAMP}-{CLASSIFICATION_MODEL.replace(':','_')}.csv", 'a', newline='') as f_out:
-        writer = csv.writer(f_out)
-        
-        # Write header if empty
-        if f_out.tell() == 0:
-            writer.writerow(['text', 'conversation_id', 'utterance_id', 'initiator', 'receiver' ] + list(DEFINITIONS.keys()))
-        
-        # Process each row with conversation context
-        for index, row in df.iterrows():
-            if pd.notnull(row['communication_type']) & pd.notnull(row['text']):
-                processed_entry = _add_chunk_to_database(
-                    text=row['text'],
-                    index=index,
-                    df=df,
-                    type=type
-                )
-                writer.writerow([processed_entry['text'], row['conversation_id'], row['utterance_id'], row['initiator'], row['receiver']] + processed_entry['labels'])                
-                f_out.flush()
-                timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-                print(f'Processed {row["utterance_id"]} in conversation {row["conversation_id"]} at {timestamp}')
+    processed_df = process_classification_with_genai(df)
+    write_df_to_csv(processed_df, classification_type)
 
 
 if __name__ == "__main__":
@@ -361,6 +368,6 @@ if __name__ == "__main__":
             if args.convert:
                 data_converter()
             elif args.binary:
-                process_csv(args.csv, type="binary")
+                process_csv(args.csv, classification_type="binary")
             else:
-                process_csv(args.csv, type="multilabel")
+                process_csv(args.csv, classification_type="multilabel")

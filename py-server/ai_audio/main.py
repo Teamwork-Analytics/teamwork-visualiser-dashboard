@@ -12,8 +12,7 @@ from ai_audio.audio_transcription.pozyx_extraction import extract_interpolate_si
 from ai_audio.audio_transcription.whisper_transcription import transcribing_audio_clips, \
     initialise_whisper_model, calculate_duration_of_clips
 from ai_audio.auto_coding.auto_punctuation import add_punctuation
-from ai_audio.auto_coding.processing_conversation_for_classification import perform_classification, \
-    get_conv_df, \
+from ai_audio.auto_coding.processing_conversation_for_classification import get_conv_df, \
     filtering_conv_text, CODE_NAME_MAPPER
 from ai_audio.dividing_simulation_spaces.testing_corrdinates import assigning_location_in_ena_data, \
     assigning_conversation
@@ -23,6 +22,8 @@ from ai_audio.fine_graining_utterances.refining_conversation_ready_excel import 
 from ai_audio.formation_detection.formation_differentiation import get_formation_dict, \
     detecting_receiver
 from ai_audio.my_util.Timer import Timers
+from autocoder import perform_classification
+
 
 # in test mode, file will be copy, not move
 TEST_MODE = True

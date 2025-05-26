@@ -34,6 +34,8 @@ def _run_auto_transcription_coding(data_folder, the_session_id, handover, second
         # sna_df.to_csv("{}_sna.csv".format(the_session_id))
         sna_df.to_csv(os.path.join(data_folder, the_session_id, "result", "{}_sna.csv".format(the_session_id)))
 
+
+
         coded_df = auto_transcription_and_coding_without_force_alignment(data_folder, the_session_id, handover,
                                                                          secondary, doctor, whisper_model_name,
                                                                          formation_dict)
