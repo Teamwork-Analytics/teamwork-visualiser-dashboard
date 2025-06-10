@@ -119,6 +119,7 @@ def create_path(path):
             return path
         else:
             logger().info(f"{path} already exists")
+            return path
     except PermissionError:
         logger().exception(f" do not have permission for this operation")
     except Exception as e:

@@ -161,10 +161,10 @@ def get_total_duration(input):
     df['duration'] = df["start"] - df["end"]
     print(df['duration'].sum())
 
-
-original_path = "all_intervals_merged_small.xlsx"
-transcription_folder = "transcribes_medical"
-# bulk_transcription("audio_clips_output", "transcribes_medical")
-output_path = "completed_intervals_v3.xlsx"
-transcription_to_excel(original_path, transcription_folder, output_path)
-get_total_duration("completed_with_WER_v5.xlsx")
+if(__name__ == "main"):
+    original_path = "all_intervals_merged_small.xlsx"
+    transcription_folder = "transcribes_medical"
+    # bulk_transcription("audio_clips_output", "transcribes_medical")
+    output_path = "completed_intervals_v3.xlsx"
+    transcription_to_excel(original_path, transcription_folder, output_path)
+    get_total_duration("completed_with_WER_v5.xlsx")

@@ -4,7 +4,7 @@ from refactor.video_transcode.video_transcode_management import transcode_video
 from refactor.visualisation.file_system_management import configure_folders, configure_paths
 from refactor.visualisation.visualisation_general.hive_data_management import generate_csv_files_for_hive, \
     generate_positioning_csv_files
-from util.data_save_location_handler import config_data_save_location
+from util.data_saving_location_helper import set_data_save_location
 from util.file_handling_util import *
 
 
@@ -32,7 +32,7 @@ def generate_visualization(simulation_id: str):
             None
         """
     session = simulation_id
-    base_path = config_data_save_location()
+    base_path = set_data_save_location()
     data_dir, audio_folder, raw_audio_folder, processed_audio_folder, hive_data_folder, hive_positioning_data_folder, hive_csv_output_folder, result_dir = configure_folders(
         simulation_id, base_path)
     json_csv_output_path, raw_pozyx_data_path, sync_txt_path = configure_paths(data_dir, result_dir, session)

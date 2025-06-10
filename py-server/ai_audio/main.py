@@ -22,7 +22,7 @@ from ai_audio.fine_graining_utterances.refining_conversation_ready_excel import 
 from ai_audio.formation_detection.formation_differentiation import get_formation_dict, \
     detecting_receiver
 from ai_audio.my_util.Timer import Timers
-from autocoder import perform_classification
+from ai_audio_labeller import perform_classification
 
 
 # in test mode, file will be copy, not move

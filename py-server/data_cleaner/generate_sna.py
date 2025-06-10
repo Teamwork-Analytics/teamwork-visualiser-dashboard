@@ -121,6 +121,7 @@ def clip_to_excel_with_filtering(clips_folder, handover_ends: float,
                 result_list.append(a_dict)
 
     intervals_df = pd.DataFrame(result_list)
+    print(list(intervals_df.columns))
     intervals_df.sort_values(by=["start_time"], inplace=True)
     intervals_df.reset_index(drop=True, inplace=True)
     intervals_df.sort_values(by=["start_time"], inplace=True)

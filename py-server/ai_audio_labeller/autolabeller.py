@@ -2,6 +2,7 @@ import csv
 import argparse
 import ollama
 import re
+import os
 import pandas as pd
 from contextlib import redirect_stdout
 from datetime import datetime
@@ -31,19 +32,26 @@ COLOUR_MAP = {
 PROMPT_ROLE = "You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students. Your task objective is to classify communication constructs ONLY when the interaction is DIRECTLY between nurses/students."
 PROMPT_CONSTRAINT = "Utterances directed to the patient 'Ruth' or relative, including questions asked to Ruth or relative, must result in ALL communication constructs being classified as '0'." 
 
+
+# Usage inside a nested module:
+def load_definitions():
+    # Get the directory where this script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Build the path to your CSV file (adjust as needed)
+    csv_path = os.path.join(script_dir, '..', 'ai_audio_labeller', 'codebook.csv')
+    csv_path = os.path.normpath(csv_path)  # Clean up the path
+    return read_definitions_csv(csv_path)
+
 def read_definitions_csv(csv_path):
-    constructs = []
-    definitions = {}
-    with open(csv_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            construct = row['construct'].strip()
-            definition = row['definition'].strip()
-            constructs.append(construct)
-            definitions[construct] = definition
+    df = pd.read_csv(csv_path, encoding='utf-8')
+    # Strip whitespace from columns if needed
+    df['construct'] = df['construct'].str.strip()
+    df['definition'] = df['definition'].str.strip()
+    constructs = df['construct'].tolist()
+    definitions = dict(zip(df['construct'], df['definition']))
     return constructs, definitions
 
-CONSTRUCTS, DEFINITIONS = read_definitions_csv(CSV_DEFINITIONS)
+CONSTRUCTS, DEFINITIONS = load_definitions() 
 
 
 def data_converter():
@@ -165,12 +173,13 @@ def _label_colour(colour_tag):
 
 def _classify_text_multilabel(text, index, df):
     
-    previous_texts = _get_previous_texts(index, df)
+    # previous_texts = _get_previous_texts(index, df)
     initiator = df.loc[index]['initiator']
     receiver = df.loc[index]['receiver']
 
     labelled_initiator = _label_colour(initiator) 
     labelled_receiver = _label_colour(receiver)
+    # Here are few sentences to give you a context on the conversation: {previous_texts if previous_texts else "Ignore this, no previous conversation."}
 
     prompt = f"""
     ROLE:
@@ -180,8 +189,6 @@ def _classify_text_multilabel(text, index, df):
     These nursing students were assigned a color label, either red, blue, green, or yellow. 
     Communication constructs and their definitions are as follows:
     {chr(10).join([f"- {k}: {v}" for k,v in DEFINITIONS.items()])}
-    
-    Here are few sentences to give you a context on the conversation: {previous_texts if previous_texts else "Ignore this, no previous conversation."}
 
     INSTRUCTION:
     Analyze if this text/utterance from {labelled_initiator} when talking to {labelled_receiver}: "{text}" exemplifies communication constructs outlined above.

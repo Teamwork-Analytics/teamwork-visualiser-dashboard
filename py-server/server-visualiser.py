@@ -8,12 +8,12 @@ from refactor.prioritisation_test_data.prioritisation_test_data_management impor
 from refactor.sna_test_data.sna_test_data_management import get_sna_graph_data
 from refactor.visualisation.visualisation_audio_data.visualisation_management import \
     generate_visualization_with_audio_data
-from util.data_save_location_handler import config_data_save_location
+from util.data_saving_location_helper import set_data_save_location
 from util.error_handling_util import build_http_error_response
 from util.logging_util import logger
 
 app = Flask(__name__)
-data_folder = config_data_save_location()
+data_folder = set_data_save_location()
 logger().info(f"data_saving_location: {data_folder}")
 CORS(app)
 
@@ -37,42 +37,41 @@ def generate_viz_with_audio_data():
 
 @ app.route("/get_teamwork_prio_data", methods=['GET'])
 def give_prioritisation_test_data():
-    def give_prioritisation_test_data():
-        """
-        This function is to return the testing data for task prioritisation graph.
-        The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
-        :return:
-        """
-        args = request.args
-        try:
-            start_time = float(args["start"])
-            end_time = float(args["end"])
-            session_id = args["sessionId"]
+    """
+    This function is to return the testing data for task prioritisation graph.
+    The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
+    :return:
+    """
+    args = request.args
+    try:
+        start_time = float(args["start"])
+        end_time = float(args["end"])
+        session_id = args["sessionId"]
 
-            # todo: this path should be changed once used in actual scenario
-            # file = "%s.csv" % session_id
-            # dir_path = os.path.join(data_folder, session_id, "result")
-            #
-            # file_path = os.path.join(dir_path, file)
-            # # test_data_path = "test_data/{}.csv".format(session_id)
-            # # sync_data_path = dir_path / "sync.txt"
-            # sync_data_path = os.path.join(dir_path, "sync.txt")
-            #
-            # positioning_start_timestamp = get_timestamp_from_sync(
-            #     sync_data_path, "positioning")
-            # processed_pozyx_data = pd.read_csv(file_path)
-            #
-            # # output_data = IPA_for_front_end(processed_pozyx_data, session_id, positioning_start_timestamp,
-            # #                               start_time, end_time)
-            #
+        # todo: this path should be changed once used in actual scenario
+        # file = "%s.csv" % session_id
+        # dir_path = os.path.join(data_folder, session_id, "result")
+        #
+        # file_path = os.path.join(dir_path, file)
+        # # test_data_path = "test_data/{}.csv".format(session_id)
+        # # sync_data_path = dir_path / "sync.txt"
+        # sync_data_path = os.path.join(dir_path, "sync.txt")
+        #
+        # positioning_start_timestamp = get_timestamp_from_sync(
+        #     sync_data_path, "positioning")
+        # processed_pozyx_data = pd.read_csv(file_path)
+        #
+        # # output_data = IPA_for_front_end(processed_pozyx_data, session_id, positioning_start_timestamp,
+        # #                               start_time, end_time)
+        #
 
-            # get data -start and end time from rio
-            output_data = get_task_prioritisation_graph_data(data_folder, session_id, start_time, end_time)
-            return jsonify(output_data)
-        except Exception:
-            error_message = "Error happened when extracting GET params: maybe not all arguments are provided."
-            logger().exception(error_message)
-            return build_http_error_response(error_message, 500)
+        # get data -start and end time from rio
+        output_data = get_task_prioritisation_graph_data(data_folder, session_id, start_time, end_time)
+        return jsonify(output_data)
+    except Exception:
+        error_message = "Error happened when extracting GET params: maybe not all arguments are provided."
+        logger().exception(error_message)
+        return build_http_error_response(error_message, 500)
 
 
 @ app.route("/get_data", methods=['GET'])
@@ -85,10 +84,10 @@ def give_sna_test_data():
     try:
 
         id = request.args['sessionId']
-        start_time = float(request.args["start"])
-        end_time = float(request.args["end"])
-        doc_enter_time = float(request.args["doc_enter"])
-        secondary_enter_time = float(request.args["secondary"])
+        start_time = request.args["start"]
+        end_time = request.args["end"]
+        doc_enter_time = request.args["doc_enter"]
+        secondary_enter_time = request.args["secondary"]
 
         # file_new = "%s_sna.csv" % id
         # file_old = "%s_network_data.csv" % id

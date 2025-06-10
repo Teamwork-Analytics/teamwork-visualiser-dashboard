@@ -2,7 +2,7 @@ import os
 import ffmpeg
 import pandas as pd
 
-from refactor.pozyx_data.pozyx_data_management import generate_pozyx_csv_files
+from refactor.pozyx_data.pozyx_data_management import _generate_pozyx_csv_files
 from util.logging_util import logger
 from util.os_util import is_linux
 from vad.hive_automation import hive_main
@@ -76,8 +76,8 @@ def _hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positi
         Raises:
             Exception: If audio files are missing or cannot be processed.
         """
-    if colour in ("BLACK", "WHITE"):
-        return
+    # if colour in ("BLACK", "WHITE"):
+    #     return
     audio_in = None
     audio_out = None
     is_hr_data_exist = False
@@ -112,7 +112,6 @@ def _hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positi
         audio_csv_out = "{}/{}_{}.csv".format(
             hive_audio_folder, session, colour)
 
-        # % run hive_automation.py - a {audio_out} - o {audio_csv_out} - s "145" - w "1" - t "3"
         # todo: the code above here is for preprocessing the audio data, commented for testing.
         """comment here to remove multithreding audio processing"""
 
@@ -125,30 +124,32 @@ def _hive_data(colour, session, raw_audio_folder, hive_audio_folder, hive_positi
         logger().exception("Audio files are missing or cannot be processed.")
     if is_linux():
         colour = colour.lower()
-    dfp = pd.read_csv(
-        '{}/{}_{}.csv'.format(hive_positioning_folder, session, colour))
+    
+    hive_pos_file_path = '{}/{}_{}.csv'.format(hive_positioning_folder, session, colour)
     audio_file_path = '{}/{}_{}.csv'.format(hive_audio_folder, session, colour)
-    # when the audio files don't exist or something is wrong, it will use position data without audio.
-    if (os.path.exists(audio_file_path)):
-        dfa = pd.read_csv(audio_file_path)
-        # dfp.head()
-        res = pd.merge(dfp, dfa, on="audio time")
-        final = res.drop(
-            labels=["Unnamed: 0_x", "Unnamed: 0_y", "session"], axis=1)
-        final['tagId'] = colour
-        final.head()
-    else:
-        dfp['audio'] = 0
-        final = dfp
-        final['tagId'] = colour
-    # PROCESS HR data
-    if (is_hr_data_exist):
-        final = hive_heartrate_data(final, hr_file_path)
-    if is_linux():
-        colour = colour.upper()
-    result_csv = "{}/{}_{}.csv".format(hive_csv_output_folder, session, colour)
-    final.to_csv(result_csv, sep=',', encoding='utf-8', index=False)
-    logger().info(f"{result_csv} successfully created under {hive_csv_output_folder}")
+    if(os.path.exists(hive_pos_file_path)):
+        dfp = pd.read_csv(
+            '{}/{}_{}.csv'.format(hive_positioning_folder, session, colour))
+        # when the audio files don't exist or something is wrong, it will use position data without audio.
+        if (os.path.exists(audio_file_path) and colour not in ('BLACK', 'WHITE')):
+            dfa = pd.read_csv(audio_file_path)
+            res = pd.merge(dfp, dfa, on="audio time")
+            final = res.drop(
+                labels=["Unnamed: 0_x", "Unnamed: 0_y", "session"], axis=1)
+            final['tagId'] = colour
+            final.head()
+        else:
+            dfp['audio'] = 0
+            final = dfp
+            final['tagId'] = colour
+        # PROCESS HR data
+        if (is_hr_data_exist):
+            final = hive_heartrate_data(final, hr_file_path)
+        if is_linux():
+            colour = colour.upper()
+        result_csv = "{}/{}_{}.csv".format(hive_csv_output_folder, session, colour)
+        final.to_csv(result_csv, sep=',', encoding='utf-8', index=False)
+        logger().info(f"{result_csv} successfully created under {hive_csv_output_folder}")
 
 
 def hive_heartrate_data(processed_hive_df, hr_file_path):
