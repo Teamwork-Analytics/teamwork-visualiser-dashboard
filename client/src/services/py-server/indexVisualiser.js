@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 const DOMAIN_NAME = process.env.REACT_APP_PYSERVER_IP;
-const PORT_NUMBER =  "5004";
+const PORT_NUMBER = "5004";
 
 const communicationAPI = axios.create({
   baseURL: `${DOMAIN_NAME}:${PORT_NUMBER}`, //Change this if the port is being used.
@@ -67,9 +67,4 @@ const getTeamworkBarchart = async (body) => {
   );
 };
 
-
-export {
-  getSNAdata,
-  getENAdata,
-  getTeamworkBarchart,
-};
+export { getSNAdata, getENAdata, getTeamworkBarchart };

@@ -1,6 +1,7 @@
 import os
 
 import pandas as pd
+import numpy as np
 
 
 def get_sna_graph_data(id: str, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time):
@@ -29,6 +30,7 @@ def _process_csv(df: pd.DataFrame, start_time: float, end_time: float, doc_enter
             splited = row["receiver"].split(",")
             return ",".join([name for name in splited if name != "doctor"])
         return row["receiver"]
+  
 
     def filter_secondary_in_receiver(row: pd.Series):
         if ("green" in row["receiver"] or "yellow" in row["receiver"]) and row["start_time"] < secondary_enter_time:
@@ -39,6 +41,12 @@ def _process_csv(df: pd.DataFrame, start_time: float, end_time: float, doc_enter
                 splited.remove("green")
             return ",".join(splited)
         return row["receiver"]
+
+    # convert to float64 (mismatch error)
+    start_time = np.float64(start_time)
+    end_time = np.float64(end_time)
+    secondary_enter_time = np.float64(secondary_enter_time)
+    doc_enter_time = np.float64(doc_enter_time)
 
     # select based on start and end
     time_selected = pd.DataFrame(df[(df["start_time"] > start_time) & (df["end_time"] < end_time)])

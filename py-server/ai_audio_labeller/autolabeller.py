@@ -12,13 +12,14 @@ from contextlib import redirect_stdout
 # Each element in the VECTOR_DB will be a tuple (chunk, embedding)
 # The embedding is a list of floats, for example: [0.1, 0.04, -0.34, 0.21, ...]
 VECTOR_DB = []
+DEEPSEEK_MODEL = 'deepseek-r1:14b'
 
 FILE_TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
 CSV_DEFINITIONS= 'codebook.csv'
 CSV_FILE_INPUT = 'original-filtered.csv'
 EMBEDDING_MODEL = 'nomic-embed-text'
-# CLASSIFICATION_MODEL  = 'deepseek-r1:14b'
+# CLASSIFICATION_MODEL  = DEEPSEEK_MODEL 
 CLASSIFICATION_MODEL = 'gemma3:27b'
 
 COLOUR_MAP = {
@@ -209,7 +210,7 @@ def _classify_text_multilabel(text, index, df):
 
      # Parse the response
     try:
-        print(f"Prompt sent to model:\n{prompt}\n")
+        # print(f"Prompt sent to model:\n{prompt}\n")
         response = ollama.chat(
             model=CLASSIFICATION_MODEL,
             messages=[{'role': 'user', 'content': prompt}],
@@ -217,9 +218,9 @@ def _classify_text_multilabel(text, index, df):
         )
         
         content = response['message']['content'].strip()
-        print(f"Raw model output: {content}")
+        # print(f"Raw model output: {content}")
 
-        if CLASSIFICATION_MODEL == "deepseek-r1:14b":
+        if CLASSIFICATION_MODEL == DEEPSEEK_MODEL:
             return _parse_response_deepseek_multilabel(content)
         else:
             return _parse_response(content)
@@ -280,7 +281,7 @@ def _classify_text_single_label(text, index, df):
         """
         
         try:
-            print(prompt)
+            # print(prompt)
             response = ollama.chat(
                 model=CLASSIFICATION_MODEL,
                 messages=[{'role': 'user', 'content': prompt}],

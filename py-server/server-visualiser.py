@@ -89,6 +89,8 @@ def give_sna_test_data():
         doc_enter_time = request.args["doc_enter"]
         secondary_enter_time = request.args["secondary"]
 
+
+
         # file_new = "%s_sna.csv" % id
         # file_old = "%s_network_data.csv" % id
         # # file_path = DIRECTORY / id / "result" / file

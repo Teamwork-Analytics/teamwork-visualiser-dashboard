@@ -34,16 +34,16 @@ function DebriefingProvider({ simulationId, children }) {
           // endTime: endTime,
           // docEnterTime: docEnterTime,
         };
-        getSNAdata(body)
-          .then((res) => {
-            if (res.status === 200) {
-              // const cleanedPhases = cleanRawPhases(phases);
-              setSNAdata(res.data);
-            }
-          })
-          .catch((e) => {
-            console.error(e);
-          });
+        // getSNAdata(body)
+        //   .then((res) => {
+        //     if (res.status === 200) {
+        //       // const cleanedPhases = cleanRawPhases(phases);
+        //       setSNAdata(res.data);
+        //     }
+        //   })
+        //   .catch((e) => {
+        //     console.error(e);
+        //   });
       }
 
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
@@ -55,16 +55,16 @@ function DebriefingProvider({ simulationId, children }) {
   }, [simulationId, snaData]);
 
   useEffect(() => {
-    getSNAdata(simulationId)
-      .then((res) => {
-        if (res.status === 200) {
-          // const cleanedPhases = cleanRawPhases(phases);
-          setSNAdata(res.data);
-        }
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    // getSNAdata(simulationId)
+    //   .then((res) => {
+    //     if (res.status === 200) {
+    //       // const cleanedPhases = cleanRawPhases(phases);
+    //       setSNAdata(res.data);
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     console.error(e);
+    //   });
   }, [simulationId]);
 
   // useEffect(() => {
