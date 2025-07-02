@@ -97,6 +97,7 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
   const [isError, setIsError] = useState(netData.length === 0);
 
   useEffect(() => {
+
     async function callData() {
       try {
         const secondaryTime =
@@ -129,9 +130,14 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
       }
       // Fetch data immediately when component mounts
     }
+    callData()
 
-    callData();
-
+    if (snaData.length === 0) {
+      // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
+      const intervalId = setInterval(callData, 10000);
+      // Clean up the interval when the component is unmounted or when data is fetched
+      return () => clearInterval(intervalId);
+    }
     // Clean up the interval when the component is unmounted or when data is fetched
     // return () => clearInterval(intervalId);
   }, [simulationId, startTime, endTime]);

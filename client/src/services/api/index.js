@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 const usingRp = true;
 // const localServerUrl = usingRp ? "/api" : "http://localhost:5002";
-const localServerUrl = usingRp ? "/api" : "http://49.127.33.177:5002";
+const localServerUrl = usingRp ? "/api" : "http://130.194.72.3:5002";
 const api = axios.create({
   baseURL: localServerUrl,
   withCredentials: false,
