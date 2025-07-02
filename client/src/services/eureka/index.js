@@ -58,7 +58,7 @@ Object.keys(portStrategy).forEach((k) => {
 const startBaselineAll = async (simulationId, action) => {
   console.log(eurekaAxiosStrategy[2])
   eurekaAxiosStrategy[2]["axios"].get(`/audio/start-baseline/${simulationId}`);
-  eurekaAxiosStrategy[0]["axios"].get(`/video/init/${simulationId}`);
+  // eurekaAxiosStrategy[0]["axios"].get(`/video/init/${simulationId}`); // replaced with depth-camera that uses py-server.
 };
 
 const startAll = (simulationId) => {
