@@ -1,2 +1,0 @@
-ECHO HI
-ECHO BYE
