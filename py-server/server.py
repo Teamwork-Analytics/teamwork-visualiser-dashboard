@@ -66,6 +66,10 @@ def transcode_video_move_to_result():
         logger().exception(error_message)
         return build_http_error_response(error_message, 500)
 
+# controllers
+from depth_videos.controller import video_bp
+
+app.register_blueprint(video_bp)
 
 
 if __name__ == '__main__':

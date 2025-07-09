@@ -51,7 +51,7 @@ else:
     # "C:\\develop\\saved_data\\"
 
     app = Flask(__name__)
-print("BASE_PATH DIRECTORY:", BASE_PATH)
+# print("BASE_PATH DIRECTORY:", BASE_PATH)
 
 # folder_path, simulationid, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
 

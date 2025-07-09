@@ -114,8 +114,9 @@ def create_pipeline(depth):
 
     return pipeline
 
-save_path = r"C:\Users\colam\Documents\GitHub\teamwork-visualiser-dashboard\py-server\camera"
 # save_path = r"C:\Users\colam\Documents\DepthCamera_Videos"
+directory = os.getenv("VISUALISATION_DIR")
+save_path = directory 
 os.makedirs(save_path, exist_ok=True)
 
 while True:
