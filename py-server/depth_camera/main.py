@@ -60,19 +60,19 @@ class DepthAIServiceManager:
                 }
                 
                 # Start service in separate thread
-                service_thread = threading.Thread(
-                    target=self._run_service,
-                    args=(session_id, service),
-                    daemon=True
-                )
+                # service_thread = threading.Thread(
+                #     target=self._run_service,
+                #     args=(session_id, service),
+                #     daemon=True
+                # )              
+                # service_info['thread'] = service_thread
+                # self.services[session_id] = service_info
                 
-                service_info['thread'] = service_thread
-                self.services[session_id] = service_info
+                # service_thread.start()
                 
-                service_thread.start()
-                
+                self._run_service(session_id, service)
                 # Wait a moment to check if service started successfully
-                time.sleep(2)
+                time.sleep(5)
                 
                 if service_info['status'] == ServiceStatus.ERROR:
                     return {"error": service_info['error_message']}

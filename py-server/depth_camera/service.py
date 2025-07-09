@@ -5,10 +5,11 @@ import cv2
 import os
 import signal
 from typing import Optional
-from depth_camera.service import ServerManager
+from depth_camera.servers import ServerManager
 from depth_camera.pipeline import PipelineManager, DetectionProcessor
 from depth_camera.recorder import VideoRecorder
-from depth_camera.main import logger
+from util.logging_util import logger
+logger = logger()
 
 class DepthAIService:
     """Main service class that orchestrates all components"""
@@ -28,9 +29,9 @@ class DepthAIService:
         self.running = False
         self.device = None
         
-        # Setup signal handlers for graceful shutdown
-        signal.signal(signal.SIGINT, self._signal_handler)
-        signal.signal(signal.SIGTERM, self._signal_handler)
+        # # Setup signal handlers for graceful shutdown
+        # signal.signal(signal.SIGINT, self._signal_handler)
+        # signal.signal(signal.SIGTERM, self._signal_handler)
     
     def _get_save_path(self) -> str:
         """Get save path with session ID support"""

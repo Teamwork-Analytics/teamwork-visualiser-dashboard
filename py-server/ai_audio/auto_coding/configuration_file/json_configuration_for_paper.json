@@ -1,0 +1,100 @@
+{
+    "task allo and plann": [
+        {
+            "path": "models/task allo and plann/79606",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 3,
+            "splitting_seed": 79606,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.783,
+            "accuracy": 0.936
+        }
+    ],
+    "provision of handover information": [
+        {
+            "path": "models/provision of handover information/57831",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 7,
+            "splitting_seed": 57831,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.917,
+            "accuracy": 0.989
+        }
+    ],
+    "escalation": [
+        {
+            "path": "models/escalation/27802",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 4,
+            "splitting_seed": 27802,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.909,
+            "accuracy": 0.979
+        }
+    ],
+    "info sharing and situ assess": [
+        {
+            "path": "models/info sharing and situ assess/27802",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 7,
+            "splitting_seed": 27802,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.633,
+            "accuracy": 0.878
+        }
+    ],
+    "information requesting": [
+        {
+            "path": "models/information requesting/27802",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 3,
+            "splitting_seed": 27802,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.909,
+            "accuracy": 0.979
+        }
+    ],
+    "responding to request": [
+        {
+            "path": "models/responding to request/74747",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 3,
+            "splitting_seed": 74747,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.583,
+            "accuracy": 0.915
+        }
+    ],
+    "agreement": [
+        {
+            "path": "models/agreement/57831",
+            "tokenizer": "DeepPavlov/bert-base-cased-conversational",
+            "granularity": "clause",
+            "context_size": 1,
+            "splitting_seed": 57831,
+            "training_seed": 283,
+            "recall": -1,
+            "precision": -1,
+            "kappa": 0.931,
+            "accuracy": 0.972
+        }
+    ]
+}

@@ -43,7 +43,7 @@ class VideoStreamHandler(BaseHTTPRequestHandler):
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
-server_TCP = socketserver.TCPServer(('localhost', 8070), TCPServerRequest)
+server_TCP = socketserver.TCPServer(('localhost', 8071), TCPServerRequest)
 th = threading.Thread(target=server_TCP.serve_forever)
 th.daemon = True
 th.start()
@@ -114,9 +114,9 @@ def create_pipeline(depth):
 
     return pipeline
 
-# save_path = r"C:\Users\colam\Documents\DepthCamera_Videos"
-directory = os.getenv("VISUALISATION_DIR")
-save_path = directory 
+save_path = r"C:\Users\colam\Documents\saved_data\depth_camera_recordings"
+# directory = os.getenv("VISUALISATION_DIR")
+# save_path = directory 
 os.makedirs(save_path, exist_ok=True)
 
 while True:

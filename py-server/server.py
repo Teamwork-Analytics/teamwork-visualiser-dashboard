@@ -3,11 +3,11 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 # from ai_audio.audio_processing.cloud_transcription import output_path
-from ena_replacement_algo import calculate_ena_metric, __merging_codes
-from helper.helper import get_critical_timestamps, run_auto_transcription_coding
-from helper.sna_algo import process_csv
-from position.IPA import get_timestamp_from_sync
-from position.IPA_wrapper import IPA_for_front_end
+# from ena_replacement_algo import calculate_ena_metric, __merging_codes
+# from helper.helper import get_critical_timestamps, run_auto_transcription_coding
+# from helper.sna_algo import process_csv
+# from position.IPA import get_timestamp_from_sync
+# from position.IPA_wrapper import IPA_for_front_end
 from refactor.ena_test_data.ena_test_data_management import get_ena_test_data
 from refactor.prioritisation_test_data.prioritisation_test_data_management import get_task_prioritisation_graph_data
 from refactor.sna_test_data.sna_test_data_management import get_sna_graph_data
@@ -67,9 +67,8 @@ def transcode_video_move_to_result():
         return build_http_error_response(error_message, 500)
 
 # controllers
-from depth_videos.controller import video_bp
-
-app.register_blueprint(video_bp)
+from depth_camera.camera_controller import camera_bp
+app.register_blueprint(camera_bp)
 
 
 if __name__ == '__main__':

@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 import os
 from datetime import datetime
-from depth_camera.main import logger
-
+from util.logging_util import logger
+logger = logger()
 class VideoRecorder:
     """Handles video recording functionality"""
     

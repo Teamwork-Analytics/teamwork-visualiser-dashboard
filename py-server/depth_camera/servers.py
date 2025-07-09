@@ -4,7 +4,9 @@ from socketserver import ThreadingMixIn
 import threading
 import cv2
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from depth_camera.main import logger
+from util.logging_util import logger
+logger = logger()
+
 
 class TCPServerRequest(socketserver.BaseRequestHandler):
     def handle(self):

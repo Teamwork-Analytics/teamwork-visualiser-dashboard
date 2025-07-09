@@ -2,7 +2,10 @@ from flask import Blueprint, request, jsonify
 import atexit
 import os
 from datetime import datetime
-from depth_camera.main import logger, ServiceStatus, DepthAIServiceManager
+from depth_camera.main import ServiceStatus, DepthAIServiceManager
+from util.logging_util import logger
+logger = logger()
+
 
 video_bp = Blueprint('video', __name__, url_prefix='/api/videos')
 
