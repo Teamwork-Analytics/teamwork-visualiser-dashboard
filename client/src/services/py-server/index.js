@@ -85,6 +85,17 @@ const processVideoTranscoding = async (simulationId) => {
   );
 };
 
+
+const startDepthCamera = async(sessionId) => {
+  return await communicationAPI.post(`/cameras/start?sessionId=${sessionId}`)
+}
+
+const stopDepthCamera = async() => {
+  return await communicationAPI.post(`/cameras/stop`)
+}
+
+
+
 export {
   getSNAdata,
   getENAdata,
@@ -92,4 +103,6 @@ export {
   processAllVisualisations,
   processCommBehaviourViz,
   processVideoTranscoding,
+  startDepthCamera,
+  stopDepthCamera
 };

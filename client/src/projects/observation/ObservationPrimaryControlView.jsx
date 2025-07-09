@@ -90,11 +90,10 @@ const ObservationPrimaryControlView = () => {
         });
         console.log("Stop recording with fitbit server", );
 
-      } else {
-        return;
-      }
+      } 
     } catch (err) {
-      toast.error(err);
+      console.error(err)
+      toast.error(`Error in recording the timestamp.`);
     }
   };
 

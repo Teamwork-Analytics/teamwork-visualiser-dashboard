@@ -1,5 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import { startDepthCamera, stopDepthCamera } from "../py-server";
 
 const DOMAIN_NAME = process.env.REACT_APP_EUREKA_IP; // This current server [CONTROL ROOM]
 const DOMAIN_NAME_SECOND_DEVICE = process.env.REACT_APP_EXPRESS_IP; // audio laptop server [CONTROL ROOM]
@@ -56,16 +57,17 @@ Object.keys(portStrategy).forEach((k) => {
 });
 
 const startBaselineAll = async (simulationId, action) => {
-  console.log(eurekaAxiosStrategy[2])
+  // console.log(eurekaAxiosStrategy[2])
   eurekaAxiosStrategy[2]["axios"].get(`/audio/start-baseline/${simulationId}`);
-  // eurekaAxiosStrategy[0]["axios"].get(`/video/init/${simulationId}`); // replaced with depth-camera that uses py-server.
+  eurekaAxiosStrategy[0]["axios"].get(`/video/init/${simulationId}`); // replaced with depth-camera that uses py-server.
+  await startDepthCamera(simulationId);
 };
 
-const startAll = (simulationId) => {
+const startAll = async (simulationId) => {
   return Promise.all(
     eurekaAxiosStrategy.map(async (s) => {
       return await s["axios"].get(`/${s.key}/start/${simulationId}`);
-    })
+    }),
   );
 };
 
@@ -73,7 +75,8 @@ const stopAll = async () => {
   return Promise.all(
     eurekaAxiosStrategy.map(async (s) => {
       return await s["axios"].get(`/${s.key}/stop`);
-    })
+    }),
+    await stopDepthCamera()
   );
 };
 

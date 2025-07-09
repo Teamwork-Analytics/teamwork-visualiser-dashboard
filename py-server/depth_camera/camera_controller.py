@@ -8,14 +8,19 @@ camera_control = importlib.util.module_from_spec(spec)
 sys.modules["camera_control"] = camera_control
 spec.loader.exec_module(camera_control)
 
-camera_bp = Blueprint('camera', __name__, url_prefix='/api/cameras')
+camera_bp = Blueprint('camera', __name__, url_prefix='/cameras')
 
 
 @camera_bp.route('/start', methods=['POST'])
 def start_camera():
     """Start the camera system"""
     try:
-        result = camera_control.handle_start()
+        session_id = request.args.get('sessionId')
+    
+        if not session_id:
+            return jsonify({"error": "sessionId is required as URL parameter"}), 400
+    
+        result = camera_control.handle_start(session_id)
         return jsonify(result), 200
     except Exception as e:
         return jsonify({

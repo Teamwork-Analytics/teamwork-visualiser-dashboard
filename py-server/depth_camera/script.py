@@ -121,12 +121,13 @@ def create_pipeline(depth):
 
     return pipeline
 
-def start_camera():
+def start_camera(session_id):
     global is_running, should_stop
     
-    # directory = os.getenv("VISUALISATION_DIR")
-    # save_path = os.path.join(directory, 'depth_camera_recordings')
-    save_path = r"C:\Users\colam\Documents\saved_data\depth_camera_recordings"
+    directory = os.getenv("VISUALISATION_DIR") or r"C:\Users\colam\Documents\saved_data" 
+    save_path = os.path.join(directory, session_id)
+    # save_path = r"C:\Users\colam\Documents\saved_data\depth_camera_recordings"
+
     os.makedirs(save_path, exist_ok=True)
     
     with control_lock:
@@ -169,7 +170,7 @@ def start_camera():
                 color = (255, 255, 255)
 
                 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-                filename = os.path.join(save_path, f"output_{timestamp}.avi")
+                filename = os.path.join(save_path, f"depth_camera_{timestamp}.avi")
 
                 while not should_stop:
                     if not device.isPipelineRunning() or should_stop:
@@ -270,14 +271,14 @@ def get_status():
         }
 
 # Control interface functions
-def handle_start():
+def handle_start(session_id):
     global is_running
     with control_lock:
         if is_running:
             return {"status": "already_running", "message": "Camera is already running"}
     
     # Start camera in a separate thread
-    camera_thread = threading.Thread(target=start_camera)
+    camera_thread = threading.Thread(target=start_camera, kwargs={'session_id': session_id})
     camera_thread.daemon = True
     camera_thread.start()
     
@@ -307,7 +308,7 @@ if __name__ == "__main__":
     # For direct testing without Flask
     import time
     print("\nStarting camera...")
-    result = handle_start()
+    result = handle_start('recordings')
     print(f"Start result: {result}")
     
     # Let it run for a bit
