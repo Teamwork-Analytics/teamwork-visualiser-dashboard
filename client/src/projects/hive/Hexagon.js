@@ -4,16 +4,16 @@ import { COLOURS } from "../../config/colours";
 import { coordinatesForDebugging } from "./utils";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 10175,
-  HEIGHT: 7500,
+  WIDTH: 3654,
+  HEIGHT: 3860,
 };
 //X-axis: 7543 or 6449
 //y-axis: 9689 or 10661
 
 const CONSTANTS = {
   HEX_RADIUS: 50,
-  IMG_WIDTH: 2170,
-  IMG_HEIGHT: 1705,
+  IMG_WIDTH: 1876,
+  IMG_HEIGHT: 1937,
   HEXAGON_OPACITY: "0.5",
 };
 
@@ -22,7 +22,7 @@ export const cssColourMatcher = {
   RED: COLOURS.PRIMARY_NURSE_2, //red
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
-  DOCTOR: "#f0f0f0",
+  DOCTOR: "purple",
   RELATIVE: "black",
 };
 
@@ -201,10 +201,10 @@ class HexagonComponent {
         .enter()
         .append("path")
         .attr("d", function (d) {
-          const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
-          const y = d.x; // used in the nursing data before 2024
-          // const x = d.x;
-          // const y = d.y;
+          // const x = -d.y + CONSTANTS.IMG_WIDTH; // used in the nursing data before 2024
+          // const y = d.x; // used in the nursing data before 2024
+          const x = d.x;
+          const y = d.y;
           return "M" + x + "," + y + hexbin.hexagon();
         })
         .attr("stroke", strokeColour)
@@ -225,37 +225,37 @@ class HexagonComponent {
       let heartPath =
         "M0 0c-31.48-54.02-120-38.25-120 29.44 0 46.61 55.71 94.27 120 158.08 64.3-63.81 120-111.47 120-158.08 0-67.92-88.75-83.06-120-29.44z";
 
-      // const heartPosX = posX;
-      // const heartPosY = posY;
-      const heartPosX = -posY + CONSTANTS.IMG_WIDTH;
-      const heartPosY = posX;
+      const heartPosX = posX;
+      const heartPosY = posY;
+      // const heartPosX = -posY + CONSTANTS.IMG_WIDTH;
+      // const heartPosY = posX;
 
       this.svg
         .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
+        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
         .append("path")
         .attr("d", heartPath)
         .attr("fill", cssColourMatcher[colour])
         .attr("fill-opacity", "0.8")
         .attr("stroke", "black")
-        .attr("stroke-width", "1em")
-        .style(
-          "transform",
-          `translate(${heartPosX}px, ${heartPosY}px) scale(-1,-1)`
-        );
+        .attr("stroke-width", "1em");
+      // .style(
+      //   "transform",
+      //   `translate(${heartPosX}px, ${heartPosY}px) scale(-1,-1)`
+      // );
 
       // FOR TEXT
       this.svg
         .append("text")
         .text(value) // if value is positive, add + // .text(value >= 0 ? `+${value}` : value)
         .attr("fill", "black")
-        .style("font-size", "5em")
-        .attr(
-          "transform",
-          `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1) translate(${
-            heartPosX - 50
-          }, ${heartPosY - 100}) scale(1,-1)  `
-        );
+        .style("font-size", "5em");
+      // .attr(
+      //   "transform",
+      //   `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1) translate(${
+      //     heartPosX - 50
+      //   }, ${heartPosY - 100}) scale(1,-1)  `
+      // );
     }
 
     if (shotFlag === "coordinate") {
@@ -270,17 +270,17 @@ class HexagonComponent {
 
       this.svg
         .append("g")
-        .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
+        // .attr("transform", `translate(0, ${CONSTANTS.IMG_HEIGHT}) scale(1,-1)`) // used in the nursing data before 2024
         .append("path")
         .attr("d", circlePath)
         .attr("fill", cssColourMatcher[colour])
         .attr("fill-opacity", "0.2")
         .attr("stroke", "grey")
-        .attr("stroke-width", "0.1em")
-        .style(
-          "transform",
-          `translate(${circlePosX + 320}px, ${circlePosY}px) scale(-1,-1)`
-        );
+        .attr("stroke-width", "0.1em");
+      // .style(
+      //   "transform",
+      //   `translate(${circlePosX + 320}px, ${circlePosY}px) scale(-1,-1)`
+      // );
     }
   }
 }

@@ -7,10 +7,12 @@ import { taggingSocket } from "../observation/socket";
 import { FormCheck } from "react-bootstrap";
 
 const colourLabels = {
-  BLUE: "PN1",
-  RED: "PN2",
-  GREEN: "SN1",
-  YELLOW: "SN2",
+  BLUE: "N1",
+  RED: "N2",
+  GREEN: "N3",
+  YELLOW: "N4",
+  BLACK: "N5",
+  WHITE: "N6",
 };
 
 const styles = {
@@ -88,7 +90,7 @@ const HivePrimaryControlView = () => {
             />
             max heartrate
           </label>
-          <label style={styles.label}>
+          {/* <label style={styles.label}>
             <FormCheck
               defaultChecked={hiveState["showCoordinatesData"]}
               onChange={(e) => {
@@ -101,7 +103,7 @@ const HivePrimaryControlView = () => {
               }}
             />
             beds radius
-          </label>
+          </label> */}
         </div>
         {/* <label style={{ color: "#5a5a5a" }}>FILTER:</label> */}
         {participantsKeys.map((k, i) => (

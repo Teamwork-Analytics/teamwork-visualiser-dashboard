@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-import floorPlan from "./floor-plan/floor-plan.svg";
+import floorPlan from "./floor-plan/hospital-2025.svg";
 import HexagonComponent, { cssColourMatcher } from "./Hexagon";
 import { useHive } from "./HiveContext";
 import { HivePrimaryControlView } from "./HiveControlView";
@@ -95,7 +95,8 @@ const HiveView = ({
             style={{
               width: width,
               height: height,
-              maxHeight: "1080px",
+              maxWidth: "100%",
+              maxHeight: "50em",
               borderRadius: "1em",
             }}
           >
