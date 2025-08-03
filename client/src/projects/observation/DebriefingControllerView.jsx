@@ -93,7 +93,13 @@ const DebriefingControllerView = () => {
   const handleRevertAllProjections = () => {
     const toastId = toast.loading("Loading...");
     setSelectedVis([]);
-    const preparedData = prepareData(range, [], simulationId, simDuration, timelineTags);
+    const preparedData = prepareData(
+      range,
+      [],
+      simulationId,
+      simDuration,
+      timelineTags
+    );
     taggingSocket.emit("send-disp-list", preparedData, () => {
       console.log("Socket sent empty list to revert displays.");
     });
@@ -272,41 +278,41 @@ const DebriefingControllerView = () => {
                     </Tab.Pane>
                   ))}
                 </Tab.Content>
+                <Button
+                  variant={
+                    selectedVis.some((vis) => vis.id === topActiveTab)
+                      ? "danger"
+                      : "success"
+                  }
+                  style={{
+                    ...debriefStyles.addVisButton,
+                    opacity: selectedVis.some((vis) => vis.id === topActiveTab)
+                      ? "0.65"
+                      : "1",
+                    display: topActiveTab === "video" ? "block" : "none", // button will be hidden when the video tab is not active
+                  }}
+                  onClick={() => {
+                    trackEvent({
+                      action: "click",
+                      element: "addOrRemoveVisToPreview(Top)",
+                      data: topActiveTab,
+                    });
+                    handleAddVis(topActiveTab);
+                  }}
+                >
+                  {selectedVis.some((vis) => vis.id === "video") ? (
+                    <>
+                      <FaCheckSquare style={{ marginBottom: "2px" }} /> Remove
+                      from projector
+                    </>
+                  ) : (
+                    <>
+                      <FaSquare style={{ marginBottom: "2px" }} /> Add to
+                      projector
+                    </>
+                  )}
+                </Button>
               </Row>
-              <Button
-                variant={
-                  selectedVis.some((vis) => vis.id === topActiveTab)
-                    ? "danger"
-                    : "success"
-                }
-                style={{
-                  ...debriefStyles.addVisButton,
-                  opacity: selectedVis.some((vis) => vis.id === topActiveTab)
-                    ? "0.65"
-                    : "1",
-                  display: topActiveTab === "video" ? "block" : "none", // button will be hidden when the video tab is not active
-                }}
-                onClick={() => {
-                  trackEvent({
-                    action: "click",
-                    element: "addOrRemoveVisToPreview(Top)",
-                    data: topActiveTab,
-                  });
-                  handleAddVis(topActiveTab);
-                }}
-              >
-                {selectedVis.some((vis) => vis.id === "video") ? (
-                  <>
-                    <FaCheckSquare style={{ marginBottom: "2px" }} /> Remove
-                    from projector
-                  </>
-                ) : (
-                  <>
-                    <FaSquare style={{ marginBottom: "2px" }} /> Add to
-                    projector
-                  </>
-                )}
-              </Button>
             </Tab.Container>
           </Container>
         </Col>
@@ -343,6 +349,8 @@ const DebriefingControllerView = () => {
                     <div
                       style={{
                         minWidth: "23rem",
+                        height: "50vh",
+                        maxHeight: "30rem",
                         margin: "5px",
                         padding: "5px",
                         borderStyle: "solid",

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { processing_adjacent_matrix } from "./mimic_ena_control";
-import { toast } from "react-hot-toast";
 import { getENAdata } from "../../services/py-server/indexVisualiser";
 import { useParams } from "react-router-dom";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 
-const ENANetworkView = ({ timeRange, height = "30vh" }) => {
+const ENANetworkView = ({ timeRange, height = "30vh", width = "100%" }) => {
   const { simulationId } = useParams();
   const [enaData, setENAdata] = useState([]);
   const [networkENAData, setNetworkENAData] = useState([]);
@@ -134,7 +133,7 @@ const ENANetworkView = ({ timeRange, height = "30vh" }) => {
       <div
         style={{
           // minWidth: "300px",
-          width: "100%",
+          width: width,
           height: height,
           position: "relative",
         }}

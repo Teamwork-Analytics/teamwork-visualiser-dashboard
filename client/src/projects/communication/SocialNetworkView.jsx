@@ -86,7 +86,12 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
   );
 };
 
-const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
+const SocialNetworkView = ({
+  timeRange,
+  timelineTags,
+  height = "30vh",
+  width = "100%",
+}) => {
   // const { snaData } = useDebriefing();
   const { simulationId } = useParams();
   const startTime = timeRange[0];
@@ -97,7 +102,6 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
   const [isError, setIsError] = useState(netData.length === 0);
 
   useEffect(() => {
-
     async function callData() {
       try {
         const secondaryTime =
@@ -130,7 +134,7 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
       }
       // Fetch data immediately when component mounts
     }
-    callData()
+    callData();
 
     if (snaData.length === 0) {
       // Set up interval to fetch data every X milliseconds. Here, we use 5000ms (5 seconds) as an example.
@@ -160,7 +164,7 @@ const SocialNetworkView = ({ timeRange, timelineTags, height = "30vh" }) => {
       <div
         style={{
           // minWidth: "300px",
-          width: "100%",
+          width: width,
           height: height,
           position: "relative",
         }}

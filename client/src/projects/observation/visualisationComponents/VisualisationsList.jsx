@@ -10,14 +10,12 @@
  * The exported lists include topTabVisualisations, bottomLeftVisualisations, bottomRightVisualisations, and bottomVisualisations.
  */
 
-import React from "react";
 import TimelineVisualisation from "./TimelineVisualisation";
 import VideoVisualisation from "./VideoVisualisation";
 
 // visualisations
 import { ENANetworkView, SocialNetworkView } from "../../communication";
 import { HiveView } from "../../hive";
-import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
 
 // Styles for different visualisation components
 const visStyles = {
@@ -78,31 +76,15 @@ const topTabVisualisations = (timeRange) => [
 // Configuration for bottom visualisations -> for carousel
 const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   {
-    eventKey: "priorBar",
-    title: "Prioritisation Bar",
-    component: () => (
-      <TeamworkBarchart
-        style={visStyles.imageContainer}
-        timeRange={timeRange}
-        width="350px"
-        height="250px"
-        fluid
-        yLabelsFontSize={11}
-        customAspectRatio={1.5}
-      />
-    ),
-    info: () => (
-      <div>
-        Each bar represents the percentage of time that the team spent on a
-        specific task during that time frame.
-      </div>
-    ),
-  },
-  {
     eventKey: "wardMap",
     title: "Ward Map",
     component: () => (
-      <HiveView timeRange={timeRange} showModal={showPreviewModal} />
+      <HiveView
+        timeRange={timeRange}
+        showModal={showPreviewModal}
+        width="100%"
+        height="30vh"
+      />
     ),
     info: () => (
       <div>
@@ -115,7 +97,12 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
     eventKey: "commNetwork",
     title: "Communication Network",
     component: () => (
-      <SocialNetworkView timeRange={timeRange} timelineTags={timelineTags} />
+      <SocialNetworkView
+        timeRange={timeRange}
+        timelineTags={timelineTags}
+        width="100%"
+        height="30vh"
+      />
     ),
     info: () => (
       <div>
@@ -128,7 +115,9 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   {
     eventKey: "commBehaviour",
     title: "Communication Behaviour",
-    component: () => <ENANetworkView timeRange={timeRange} />,
+    component: () => (
+      <ENANetworkView timeRange={timeRange} width="100%" height="30vh" />
+    ),
     info: () => (
       <div>
         <h5>Call-out</h5>

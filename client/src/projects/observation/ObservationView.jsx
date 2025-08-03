@@ -60,7 +60,7 @@ const ObservationView = () => {
           <br />
           <label>Stop time: {timeString(state.stopTime)}</label>
         </div> */}
-          <h1>Session {simulationId}</h1>
+          <h4>Session {simulationId}</h4>
           <hr style={{ marginBottom: "0px" }} />
           <Tabs
             defaultActiveKey={currentTab}
