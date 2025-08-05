@@ -27,10 +27,12 @@ MERGED_CODE_LIST = ["task allocation", "escalation", "information sharing",
                     "provision of handover information",
                     "information requesting", "responding to request", "acknowledgement"]
 
-CODE_NAME_MAPPER = {"task allo and plann": "task allocation", "escalation": "escalation",
+CODE_NAME_MAPPER = {"task allo and plann": "task allocation", 
+                    "escalation": "escalation",
                     "info sharing and situ assess": "call-out",
                     "provision of handover information": "handover",
-                    "information requesting": "questioning", "responding to request": "responding",
+                    "information requesting": "questioning", 
+                    "responding to request": "responding",
                     "agreement": "acknowledging"}
 
 THIS_FILE_PATH = os.path.dirname(__file__)

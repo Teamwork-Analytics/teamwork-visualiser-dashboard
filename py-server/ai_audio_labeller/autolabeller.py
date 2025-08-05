@@ -2,25 +2,26 @@ import csv
 import argparse
 import ollama
 import re
-import os
 import pandas as pd
+import random
+import multiprocessing
 from contextlib import redirect_stdout
 from datetime import datetime
 from functools import partial
-from contextlib import redirect_stdout
 
 # Each element in the VECTOR_DB will be a tuple (chunk, embedding)
 # The embedding is a list of floats, for example: [0.1, 0.04, -0.34, 0.21, ...]
 VECTOR_DB = []
-DEEPSEEK_MODEL = 'deepseek-r1:14b'
-
 FILE_TIMESTAMP = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-CSV_DEFINITIONS= 'codebook.csv'
 CSV_FILE_INPUT = 'original-filtered.csv'
+# EMBEDDING_MODEL = 'hf.co/CompendiumLabs/bge-base-en-v1.5-gguf'
 EMBEDDING_MODEL = 'nomic-embed-text'
-# CLASSIFICATION_MODEL  = DEEPSEEK_MODEL 
-CLASSIFICATION_MODEL = 'gemma3:27b'
+CLASSIFICATION_MODEL  = 'deepseek-r1:14b'
+# CLASSIFICATION_MODEL = 'hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF'
+# CLASSIFICATION_MODEL = 'gemma3'
+# CLASSIFICATION_MODEL = 'mistral:7b-instruct-v0.3-q5_K_S'
+# CLASSIFICATION_MODEL = 'gemma3:27b'
 
 COLOUR_MAP = {
     "red": 'student',
@@ -29,31 +30,104 @@ COLOUR_MAP = {
     "yellow": 'student',
 }
 
-# PROMPTS 
-PROMPT_ROLE = "You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students. Your task objective is to classify communication constructs ONLY when the interaction is DIRECTLY between nurses/students."
-PROMPT_CONSTRAINT = "Utterances directed to the patient 'Ruth' or relative, including questions asked to Ruth or relative, must result in ALL communication constructs being classified as '0'." 
+CONSTRUCTS = ["task_allocation", "handover", "sharing_information", "escalation", "questioning", "responding", "acknowledging"]
+DEFINITIONS = {
+   "task_allocation": "A nurse/student explicitly assigns a task to another nurse/student OR proactively self-allocates a task, where the task is not directed to patient.", 
+   "handover": "A nurse/student updates to others regarding the health state of a patient structurally following some handover protoquick handover protocol.", 
+   "sharing_information": "A nurse/student proactively shares information with other nurses/students that has not been requested, excluding information provided to patient.",
+   "escalation": "A nurse/student informs other nurses/students that the situation exceeds their capabilities and requires extra assistance.",
+   "questioning": "A nurse/student asks another nurse/student a question to obtain information. Questions asked to patient should always result in '0' for all constructs.", 
+   "responding": "A nurse/student responds to the question asked in the conversation, this response can be more active and often substantive reaction or reply.",
+   "acknowledging": "A nurse/student acknowledges receipt of information or instructions from other nurses/students, which is a passive action, without necessarily agreeing or disagreeing.", 
+}
+
+def format_random_examples(example_list, n=1):
+    selected = random.sample(example_list, min(n, len(example_list)))
+    numerals = ['(i)', '(ii)', '(iii)', '(iv)']
+    formatted = [f'{numerals[i]} "{ex}"' for i, ex in enumerate(selected)]
+    
+    # Join all but the last with semicolons, then add "and" before the final one
+    if len(formatted) > 1:
+        return "; ".join(formatted[:-1]) + f"; and {formatted[-1]}"
+    else:
+        return formatted[0]
+
+DEFINITIONS_WITH_EXAMPLES = {
+   "task_allocation": ("A nursing student explicitly assigns a task to another nursing student OR proactively self-allocates a task, where the task is not directed to patient."), 
+   "handover": ("A nursing student is performing a handover when they verbally update other nursing student/s about the current state or recent care of a patient to ensure shared understanding and continuity of care. "),
+   "sharing_information": ("A nursing student proactively shares brief information with other nursing student/s that has not been requested, excluding information provided to patient. "),
+   "escalation": ("A nursing student informs other nursing student/s that the situation exceeds their capabilities and requires extra assistance or call for help."), 
+   "questioning": ("A nursing student asks another nursing student a question to obtain information. Questions asked to patient should always result in '0' for all constructs. "),
+   "responding": ("A nursing student responds to the question asked in the conversation by another nursing student, this response can be more active and often substantive reaction or reply. The response should contribute meaningful information, confirm intent with elaboration, or involve a decision or explanation. "),     
+   "acknowledging": ("A nursing student acknowledges receipt of information or instructions from other nursing student, which is a passive action, without necessarily agreeing or disagreeing. "),    
+}
+
+SAMPLE_TEXTS = [
+    "You do the medical observation, and I will do the discharge for the bed three patient",
+    "She is day-one post total hysterectomy. She has got a history of heart disease...",
+    "I think we need to call the emergency team for help.",
+    "She is due for antibiotics and pain meds, and we also need to call her family.",
+    "Her wound is dry and intact. There is no concern now.",
+    "Is the IV necessary for this patient?",
+    "She does not need it.",
+    "Yes",
+    "I agree",
+    "Okay",
+    "Can you give her 1ml IV fluid?",
+    "Here, 1ml IV fluid."
+] 
 
 
-# Usage inside a nested module:
-def load_definitions():
-    # Get the directory where this script is located
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    # Build the path to your CSV file (adjust as needed)
-    csv_path = os.path.join(script_dir, '..', 'ai_audio_labeller', 'codebook.csv')
-    csv_path = os.path.normpath(csv_path)  # Clean up the path
-    return read_definitions_csv(csv_path)
+def _get_utterance_snippet(current_index, df):
+    """
+    Retrieve the texts with same conversation ID for context.
+    Reset the context if the conversation_id changes.
+    """
+    # Get the current conversation ID
+    current_conversation_id = df.loc[current_index, 'conversation_id']
+    
+    # Initialize a list to store sinippet
+    utterance_snippet = []
+        
+    # Look backward - get up to 2 previous utterances
+    prev_indices = []
+    i = current_index - 1
+    while i >= 0 and df.loc[i, 'conversation_id'] == current_conversation_id and len(prev_indices) < 2:
+        prev_indices.insert(0, i)
+        i -= 1
 
-def read_definitions_csv(csv_path):
-    df = pd.read_csv(csv_path, encoding='utf-8')
-    # Strip whitespace from columns if needed
-    df['construct'] = df['construct'].str.strip()
-    df['definition'] = df['definition'].str.strip()
-    constructs = df['construct'].tolist()
-    definitions = dict(zip(df['construct'], df['definition']))
-    return constructs, definitions
+    # Look forward - get up to 2 following utterances
+    next_indices = []
+    i = current_index + 1
+    while i < len(df) and df.loc[i, 'conversation_id'] == current_conversation_id and len(next_indices) < 2:
+        next_indices.append(i)
+        i += 1
 
-CONSTRUCTS, DEFINITIONS = load_definitions() 
+    # Build the snippet list
+    for idx in prev_indices:
+        initiator = df.loc[idx, 'initiator']
+        receiver = df.loc[idx, 'receiver']
+        text = df.loc[idx, 'text']
+        # Format: [Initiator -> Receiver]: text
+        utterance = f"[{_label_colour(initiator)} talks to {_label_colour(receiver)}]:  \"{text}\" ; "
+        utterance_snippet.append(utterance)
 
+    initiator = df.loc[current_index, 'initiator']
+    receiver = df.loc[current_index, 'receiver']
+    text = df.loc[current_index, 'text']
+    # Format: [Initiator -> Receiver]: text
+    utterance = f"[{_label_colour(initiator)} talks to {_label_colour(receiver)}]:  \"{text}\" ; "
+    utterance_snippet.append(utterance)
+
+    for idx in next_indices:
+        initiator = df.loc[idx, 'initiator']
+        receiver = df.loc[idx, 'receiver']
+        text = df.loc[idx, 'text']
+        # Format: [Initiator -> Receiver]: text
+        utterance = f"[{_label_colour(initiator)} talks to {_label_colour(receiver)}]: \"{text}\" ; "
+        utterance_snippet.append(utterance)
+
+    return "\n".join(utterance_snippet)
 
 def data_converter():
     import pandas as pd
@@ -174,38 +248,31 @@ def _label_colour(colour_tag):
 
 def _classify_text_multilabel(text, index, df):
     
-    # previous_texts = _get_previous_texts(index, df)
     initiator = df.loc[index]['initiator']
     receiver = df.loc[index]['receiver']
 
     labelled_initiator = _label_colour(initiator) 
     labelled_receiver = _label_colour(receiver)
-    # Here are few sentences to give you a context on the conversation: {previous_texts if previous_texts else "Ignore this, no previous conversation."}
+    
+    utterance_snippet = _get_utterance_snippet(index, df)
+
+    if utterance_snippet:
+        context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session:\n{utterance_snippet}"
+    else:
+        context_msg = ""
 
     prompt = f"""
-    ROLE:
-    {PROMPT_ROLE}
-    
-    CONTEXT:
-    These nursing students were assigned a color label, either red, blue, green, or yellow. 
+    You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students.
+
     Communication constructs and their definitions are as follows:
     {chr(10).join([f"- {k}: {v}" for k,v in DEFINITIONS.items()])}
 
-    INSTRUCTION:
-    Analyze if this text/utterance from {labelled_initiator} when talking to {labelled_receiver}: "{text}" exemplifies communication constructs outlined above.
-    If text represents an exchange between nurses/students, output '1' if the construct is present and '0' if absent. 
+    {context_msg}
+    
+    Your task is to analyze the utterance contained in the dialogue snippet "{text}" and determine which of the communication constructs outlined above the utterance exemplifies any of the communication constructs detailed above.
 
-    When analysing an utterance, please follow these rules:
-    1. Your response must be EXACTLY {len(CONSTRUCTS)} digits of 0 or 1, separated by commas.
-    2. The order of the digits must match the order of constructs listed above.
-    3. No explanations, reasoning, or additional text
-    4. Use exactly this format: 1,0,1,0,1,0,0
-    5. Your entire response should be only these {len(CONSTRUCTS)} digits and commas. 
+    Your response should only consist of {len(CONSTRUCTS)} digits separated by commas and the order of the digits should match the order of communication constructs detailed above. Each digit can be either '1' or '0', with '1' indicating the presence of a specific communication construct and '0' indicating the absence of the communication construct. There is no need to provide explanations, reasoning, or additional text.
     
-    For example, a valid and complete response would look exactly like this: 1,0,1,0,1,0,0
-    
-    CONSTRAINT:
-    {PROMPT_CONSTRAINT}
     """
 
      # Parse the response
@@ -220,7 +287,7 @@ def _classify_text_multilabel(text, index, df):
         content = response['message']['content'].strip()
         # print(f"Raw model output: {content}")
 
-        if CLASSIFICATION_MODEL == DEEPSEEK_MODEL:
+        if CLASSIFICATION_MODEL == "deepseek-r1:14b":
             return _parse_response_deepseek_multilabel(content)
         else:
             return _parse_response(content)
@@ -260,24 +327,26 @@ def _classify_text_single_label(text, index, df):
     labelled_initiator = _label_colour(initiator) 
     labelled_receiver = _label_colour(receiver)
         
-    # Loop through each construct individually
-    for construct, definition in DEFINITIONS.items():
-        prompt = f"""
-        ROLE: 
-        {PROMPT_ROLE}
+    utterance_snippet = _get_utterance_snippet(index,df)
 
-        CONTEXT:
-        These nursing students were assigned a color label, either red, blue, green, or yellow. 
-        The communication construct is "{construct}" with the definition: {definition} 
-        Here are few sentences to give you a context on the conversation: {previous_texts if previous_texts else "Ignore this, no previous conversation."}
-
-        INSTRUCTION:
-        Analyze if this text/utterance from {labelled_initiator} when talking to {labelled_receiver}: "{text}" exemplifies communication construct outlined above.
-        If the text represents an exchange between nurses/students, output '1' if the construct is present and '0' if absent. 
-        Your response must be EXACTLY either 0 or 1.
+    if utterance_snippet:
+        context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session:\n{utterance_snippet}"
+    else:
+        context_msg = ""
         
-        CONSTRAINT:
-        {PROMPT_CONSTRAINT}
+    # Loop through each construct individually
+    for construct, definition in DEFINITIONS_WITH_EXAMPLES.items():
+        prompt = f"""
+        You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students.
+
+        The communication construct is "{construct}" with the definition: {definition}
+
+        {context_msg}
+        
+        Your task is to analyze the utterance contained in the dialogue snippet "{text}" and determine whether the utterance exemplifies the communication construct outlined above.
+
+        Your response should be a single digit that can be either '1' or '0', with '1' indicating the presence of the specific communication construct and '0' indicating the absence of the communication construct. There is no need to provide explanations, reasoning, or additional text.
+  
         """
         
         try:
@@ -302,7 +371,25 @@ def _classify_text_single_label(text, index, df):
 
 
 def process_classification_with_genai(df: pd.DataFrame):
+    import os
+    from datetime import datetime
+    import csv
     processed_rows = []
+    # Prepare output directory and file
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(script_dir, "gen-ai-classification-results")
+    os.makedirs(output_dir, exist_ok=True)
+    timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    output_file = os.path.join(output_dir, f"{timestamp}.csv")
+
+    # Write header
+    header = ['text', 'conversation_id', 'utterance_id', 'initiator', 'receiver'] + list(DEFINITIONS.keys())
+    # Write header first if file does not exist
+    if not os.path.exists(output_file):
+        with open(output_file, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=header)
+            writer.writeheader()
+
     for index, row in df.iterrows():
         if pd.notnull(row['communication_type']) and pd.notnull(row['text']):
             processed_entry = _add_chunk_to_database(
@@ -311,14 +398,19 @@ def process_classification_with_genai(df: pd.DataFrame):
                 df=df,
                 type=type  # Make sure 'type' is defined or passed as an argument
             )
-            processed_rows.append({
+            result_row = {
                 'text': processed_entry['text'],
                 'conversation_id': row['conversation_id'],
                 'utterance_id': row['utterance_id'],
                 'initiator': row['initiator'],
                 'receiver': row['receiver'],
-                **dict(zip(DEFINITIONS.keys(), processed_entry['labels']))
-            })
+            }
+            result_row.update(dict(zip(DEFINITIONS.keys(), processed_entry['labels'])))
+            with open(output_file, 'a', newline='', encoding='utf-8') as f:
+                writer = csv.DictWriter(f, fieldnames=header)
+                writer.writerow(result_row)
+            processed_rows.append(result_row)
+
     processed_df = pd.DataFrame(processed_rows)
     return processed_df
 
@@ -332,8 +424,28 @@ def process_csv(csv_file, classification_type="multilabel"):
 
     # Load the entire dataset first for conversation context
     df = pd.read_csv(csv_file)
-    processed_df = process_classification_with_genai(df)
-    write_df_to_csv(processed_df, classification_type)
+    
+    # Open output file
+    with open(f"labeled_dataset-{type}-{FILE_TIMESTAMP}-{CLASSIFICATION_MODEL.replace(':','_')}.csv", 'a', newline='') as f_out:
+        writer = csv.writer(f_out) 
+         
+        # Write header if empty
+        if f_out.tell() == 0:
+            writer.writerow(['text', 'conversation_id', 'utterance_id', 'initiator', 'receiver' ] + list(DEFINITIONS.keys()))
+        
+        # Process each row with conversation context
+        for index, row in df.iterrows():
+            if pd.notnull(row['communication_type']) & pd.notnull(row['text']):
+                processed_entry = _add_chunk_to_database(
+                    text=row['text'],
+                    index=index,
+                    df=df,
+                    type=classification_type
+                )
+                writer.writerow([processed_entry['text'], row['conversation_id'], row['utterance_id'], row['initiator'], row['receiver']] + processed_entry['labels'])                
+                f_out.flush()
+                timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+                print(f'Processed {row["utterance_id"]} in conversation {row["conversation_id"]} at {timestamp}')
 
 
 if __name__ == "__main__":
@@ -343,7 +455,7 @@ if __name__ == "__main__":
         '-m',
         "--model",
         type=str,
-        default="gemma3:27b",
+        default=CLASSIFICATION_MODEL,
         help="Name of the classification model to use."
     )
  
