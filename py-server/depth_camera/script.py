@@ -121,21 +121,80 @@ def create_pipeline(depth):
 
     return pipeline
 
-def start_camera(session_id):
-    global is_running, should_stop
-    
-    directory = os.getenv("VISUALISATION_DIR") or r"C:\Users\colam\Documents\saved_data" 
-    save_path = os.path.join(directory, session_id)
-    # save_path = r"C:\Users\colam\Documents\saved_data\depth_camera_recordings"
 
-    os.makedirs(save_path, exist_ok=True)
-    
-    with control_lock:
-        is_running = True
-        should_stop = False
-    
-    print("Starting camera system...")
-    
+def initialise_depth_RGB_only_pipeline():
+
+    pipeline = dai.Pipeline()
+    # result_excel = pd.DataFrame({"timestamp": [], "depth_frame": [], "rgb_frame": [] })
+    # Create mono cameras
+    monoLeft = pipeline.create(dai.node.MonoCamera)
+    monoRight = pipeline.create(dai.node.MonoCamera)
+    monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
+    monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
+    monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
+    monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_800_P)
+
+    # Create stereo depth node
+    stereo = pipeline.create(dai.node.StereoDepth)
+    stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
+    monoLeft.out.link(stereo.left)
+    monoRight.out.link(stereo.right)
+
+    # Output
+    xoutDepth = pipeline.create(dai.node.XLinkOut)
+    xoutDepth.setStreamName("depth")
+    stereo.depth.link(xoutDepth.input)
+
+    # create the pipeline rgb color
+    # https://docs.luxonis.com/software/depthai/examples/rgb_full_resolution_saver/
+    camRgb = pipeline.create(dai.node.ColorCamera)
+    camRgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+    camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_800_P)
+    xoutRgb = pipeline.create(dai.node.XLinkOut)
+    xoutRgb.setStreamName("rgb")
+    camRgb.video.link(xoutRgb.input)
+    return pipeline
+
+
+def start_capture_depth_RGB(pipeline, save_folder, save_interval):
+
+    with dai.Device(pipeline) as device:
+        depthQueue = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
+        rgbQueue = device.getOutputQueue(name="rgb", maxSize=4, blocking=False)
+        last_save_time = time.time()
+
+        print("Starting depth capture and saving... Press Ctrl+C to stop.")
+
+        try:
+            while True and not should_stop:
+                inDepth = depthQueue.get()
+                inRGB = rgbQueue.get()
+                current_time = time.time()
+                
+                if (current_time - last_save_time) >= save_interval:
+                    # Retrieve depth frame as numpy array
+                    depthFrame = inDepth.getFrame()
+                    rgbFrame = inRGB.getCvFrame()
+                    # print(depthFrame)
+                    # print(depthFrame.shape)
+                    # print(rgbFrame)
+                    # print(rgbFrame.shape)
+                    # print(depthFrame.)
+                    # Save raw depth data matrix
+                    timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S.%f")
+                    depthSaveFileName = os.path.join(save_folder, f"depth_{timestamp_str}.npy")
+                    rgbSaveFileName = os.path.join(save_folder, f"rgb_{timestamp_str}.npy")
+                    np.save(depthSaveFileName, depthFrame)
+                    np.save(rgbSaveFileName, rgbFrame)
+                    # np.savetxt(csv_path, depth_frame, delimiter=",", fmt="%d")
+                    # print(f"Saved: {depthSaveFileName}, shape: {depthFrame.shape}")
+                    # print(f"Saved: {rgbSaveFileName}, shape: {rgbFrame.shape}")
+                    last_save_time = current_time
+
+        except KeyboardInterrupt:
+            print("Stopped by user.")
+
+def capture_camera_data_legacy():
     while not should_stop:
         out = None
         filename = None
@@ -256,6 +315,27 @@ def start_camera(session_id):
     with control_lock:
         is_running = False
     print("Camera system stopped.")
+
+
+
+def start_camera(session_id):
+    global is_running, should_stop
+    
+    directory = os.getenv("VISUALISATION_DIR") or r"C:\Users\colam\Documents\saved_data" 
+    save_path = os.path.join(directory, session_id)
+    # save_path = r"C:\Users\colam\Documents\saved_data\depth_camera_recordings"
+
+    os.makedirs(save_path, exist_ok=True)
+    depth_camera_save_path = os.path.join(save_path, "depth_camera")
+    os.makedirs(depth_camera_save_path, exist_ok=True)
+    with control_lock:
+        is_running = True
+        should_stop = False
+    
+    print("Starting camera system...")
+    pipeline = initialise_depth_RGB_only_pipeline()
+    start_capture_depth_RGB(pipeline, save_path, 0.3)
+    
 
 def stop_camera():
     global should_stop
