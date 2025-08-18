@@ -4,11 +4,15 @@ import { COLOURS } from "../../config/colours";
 import { coordinatesForDebugging } from "./utils";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 3654,
-  HEIGHT: 3860,
+  WIDTH: 3762,
+  HEIGHT: 4947,
 };
 //X-axis: 7543 or 6449
 //y-axis: 9689 or 10661
+
+//OFFSETS:
+// x: -975
+// y: -250
 
 const CONSTANTS = {
   HEX_RADIUS: 50,
@@ -22,9 +26,9 @@ export const cssColourMatcher = {
   RED: COLOURS.PRIMARY_NURSE_2, //red
   GREEN: COLOURS.SECONDARY_NURSE_1, //lime
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
-  DOCTOR: "purple",
-  RELATIVE: "black",
-  PATIENT: "orange"
+  PATIENT: "#FFA500",
+  DOCTOR: "#800080",
+  RELATIVE: "#000000",
 };
 
 const timeParser = (timestamp) => {
@@ -129,7 +133,15 @@ class HexagonComponent {
                 );
               }
             });
-            const tagIdOrder = ["BLUE", "RED", "GREEN", "YELLOW"];
+            const tagIdOrder = [
+              "BLUE",
+              "RED",
+              "GREEN",
+              "YELLOW",
+              "DOCTOR",
+              "RELATIVE",
+              "PATIENT",
+            ];
             hrData.sort(
               (a, b) =>
                 tagIdOrder.indexOf(a.tagId) - tagIdOrder.indexOf(b.tagId)

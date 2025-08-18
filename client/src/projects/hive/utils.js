@@ -10,10 +10,10 @@ const timeToPercentage = (phases) => {
 
 const labels = [
   "Start",
-  "Handover",
-  "Bed 4 emergency",
-  "Ward nurses start",
-  "MET doctor start",
+  "Stage 1",
+  "Stage 2",
+  "Stage 3",
+  // "MET doctor start",
   "End",
 ];
 

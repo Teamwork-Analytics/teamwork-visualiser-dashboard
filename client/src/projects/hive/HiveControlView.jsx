@@ -11,8 +11,9 @@ const colourLabels = {
   RED: "N2",
   GREEN: "N3",
   YELLOW: "N4",
-  BLACK: "N5",
-  WHITE: "N6",
+  DOCTOR: "N5",
+  RELATIVE: "N6",
+  // PATIENT: "N7",
 };
 
 const styles = {

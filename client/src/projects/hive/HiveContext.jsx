@@ -13,7 +13,15 @@ const HiveContext = React.createContext();
 function HiveProvider({ simulationId, children }) {
   const [hrData, setHrData] = React.useState({});
   const [hiveState, hiveSetState] = React.useState({
-    participants: { BLUE: true, RED: true, GREEN: true, YELLOW: true },
+    participants: {
+      BLUE: true,
+      RED: true,
+      GREEN: true,
+      YELLOW: true,
+      DOCTOR: true,
+      RELATIVE: true,
+      // PATIENT: true,
+    },
     phase: [0, 100],
     isPositionOnly: false,
     showPositionAudioData: true,
