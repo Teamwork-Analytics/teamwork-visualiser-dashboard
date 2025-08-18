@@ -85,6 +85,19 @@ def adjacent_matrix_to_json_6codes(adjacent_matrix: np.ndarray):
             result_json[ID_TO_CODE_MAPPER[i]][ID_TO_CODE_MAPPER[j]] = d2_list[i][j]
     return result_json
 
+def adjacent_matrix_to_json_5codes(adjacent_matrix: np.ndarray):
+    CODE_TO_ID_MAPPER = {"task allocation": 0, "call-out": 1, "escalation": 2, "questioning": 3, "acknowledging": 4}
+    ID_TO_CODE_MAPPER = ["task allocation", "call-out", "escalation", "questioning", "acknowledging"]
+
+    result_json = {}
+    d2_list = adjacent_matrix.tolist()
+    for i in range(len(d2_list)):
+        result_json[ID_TO_CODE_MAPPER[i]] = {}
+
+        for j in range(len(d2_list[i])):
+            result_json[ID_TO_CODE_MAPPER[i]][ID_TO_CODE_MAPPER[j]] = d2_list[i][j]
+    return result_json
+
 
 def __merging_codes(data_df: pd.DataFrame, codes_to_merge: list, merge_to_column: str):
     merged_series = pd.Series(data_df[codes_to_merge[0]])
@@ -147,6 +160,8 @@ def _calculate_matrix(data_df: pd.DataFrame, stanza_window_size: int, column_nam
 
     if summed_matrix.shape[0] == 4:
         return adjacent_matrix_to_json(summed_matrix)
+    if summed_matrix.shape[0] == 5:
+        return adjacent_matrix_to_json_5codes(summed_matrix)
     elif summed_matrix.shape[0] == 6:
         return adjacent_matrix_to_json_6codes(summed_matrix)
     else:

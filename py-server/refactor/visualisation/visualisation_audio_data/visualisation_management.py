@@ -30,7 +30,7 @@ def _run_auto_transcription_coding(data_folder, the_session_id, handover, second
     else:
         sna_df, formation_dict = generate_sna_csv(data_folder, the_session_id, handover, secondary, doctor)
 
-        sna_df = change_name_of_black_and_white(sna_df)
+        # sna_df = change_name_of_black_and_white(sna_df)
         # sna_df.to_csv("{}_sna.csv".format(the_session_id))
         sna_df.to_csv(os.path.join(data_folder, the_session_id, "result", "{}_sna.csv".format(the_session_id)))
 
@@ -40,7 +40,7 @@ def _run_auto_transcription_coding(data_folder, the_session_id, handover, second
                                                                          secondary, doctor, whisper_model_name,
                                                                          formation_dict)
 
-    coded_df = change_name_of_black_and_white(coded_df)
+    # coded_df = change_name_of_black_and_white(coded_df)
     # coded_df.to_csv("{}_network_data.csv".format(the_session_id))
     coded_df.to_csv(os.path.join(data_folder, the_session_id, "result",
                                  "{}_network_data.csv".format(the_session_id)))

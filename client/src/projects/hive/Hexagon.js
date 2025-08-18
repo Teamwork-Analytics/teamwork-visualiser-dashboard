@@ -24,6 +24,7 @@ export const cssColourMatcher = {
   YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
   DOCTOR: "purple",
   RELATIVE: "black",
+  PATIENT: "orange"
 };
 
 const timeParser = (timestamp) => {

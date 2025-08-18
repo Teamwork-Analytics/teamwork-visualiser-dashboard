@@ -345,7 +345,7 @@ def auto_transcription_and_coding(the_data_folder: str, the_session_id: int, han
                                                            sync_txt_path=sync_data_path)
         assigning_location_in_ena_data(conversation_df, the_session_id, location_dict)
         assigning_conversation(conversation_df, secondary_enter_timestamp=secondary_entered,
-                               doctor_enter_timestamp=doctor_entered)
+        doctor_enter_timestamp=doctor_entered)
 
         # This function uses the f-foramtion based detection algorithm to find the receiver of a conversation.
         formation_dict = get_formation_dict(raw_audio_folder, the_session_id, raw_pozyx_file_path, sync_data_path)

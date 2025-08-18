@@ -11,6 +11,8 @@ from refactor.visualisation.visualisation_audio_data.visualisation_management im
 from util.data_saving_location_helper import set_data_save_location
 from util.error_handling_util import build_http_error_response
 from util.logging_util import logger
+from util.env_util import load_env_file
+load_env_file(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 app = Flask(__name__)
 data_folder = set_data_save_location()

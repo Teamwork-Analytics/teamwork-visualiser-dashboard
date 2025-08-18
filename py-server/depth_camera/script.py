@@ -123,7 +123,7 @@ def create_pipeline(depth):
 
 
 def initialise_depth_RGB_only_pipeline():
-
+    fps_limit_rgb = 16
     pipeline = dai.Pipeline()
     # result_excel = pd.DataFrame({"timestamp": [], "depth_frame": [], "rgb_frame": [] })
     # Create mono cameras
@@ -138,61 +138,108 @@ def initialise_depth_RGB_only_pipeline():
     stereo = pipeline.create(dai.node.StereoDepth)
     stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
     monoLeft.out.link(stereo.left)
+    monoLeft.setFps(fps_limit_rgb)
     monoRight.out.link(stereo.right)
+    monoRight.setFps(fps_limit_rgb)
 
     # Output
     xoutDepth = pipeline.create(dai.node.XLinkOut)
+    # xoutDepth.setFpsLimit(save_frequency_hz)
     xoutDepth.setStreamName("depth")
+
     stereo.depth.link(xoutDepth.input)
 
     # create the pipeline rgb color
     # https://docs.luxonis.com/software/depthai/examples/rgb_full_resolution_saver/
+    # https://docs.luxonis.com/software/depthai/examples/rgb_encoding/ 
+
+
+    # camRgb = pipeline.create(dai.node.ColorCamera)
+    # camRgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
+    # camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_800_P)
+    # camRgb.setFps(30)
+    # xoutRgb = pipeline.create(dai.node.XLinkOut)
+    # xoutRgb.setStreamName("rgb")
+    # camRgb.video.link(xoutRgb.input)
+
+
     camRgb = pipeline.create(dai.node.ColorCamera)
+    videoEnc = pipeline.create(dai.node.VideoEncoder)
+    xout = pipeline.create(dai.node.XLinkOut)
+
+    xout.setStreamName('rgb')
+
+    # Properties
     camRgb.setBoardSocket(dai.CameraBoardSocket.CAM_A)
     camRgb.setResolution(dai.ColorCameraProperties.SensorResolution.THE_800_P)
-    xoutRgb = pipeline.create(dai.node.XLinkOut)
-    xoutRgb.setStreamName("rgb")
-    camRgb.video.link(xoutRgb.input)
+    camRgb.setFps(fps_limit_rgb)
+    videoEnc.setDefaultProfilePreset(fps_limit_rgb, dai.VideoEncoderProperties.Profile.H265_MAIN)
+
+    # Linking
+    camRgb.video.link(videoEnc.input)
+    videoEnc.bitstream.link(xout.input)
     return pipeline
 
 
 def start_capture_depth_RGB(pipeline, save_folder, save_interval):
 
-    with dai.Device(pipeline) as device:
-        depthQueue = device.getOutputQueue(name="depth", maxSize=4, blocking=False)
-        rgbQueue = device.getOutputQueue(name="rgb", maxSize=4, blocking=False)
-        last_save_time = time.time()
+   with dai.Device(pipeline) as device:
+        depthQueue = device.getOutputQueue(name="depth", maxSize=30,blocking=False)
+        rgbQueue = device.getOutputQueue(name="rgb", maxSize=30, blocking=False)
+        last_save_time = 0
 
         print("Starting depth capture and saving... Press Ctrl+C to stop.")
 
         try:
-            while True and not should_stop:
-                inDepth = depthQueue.get()
-                inRGB = rgbQueue.get()
-                current_time = time.time()
-                
-                if (current_time - last_save_time) >= save_interval:
-                    # Retrieve depth frame as numpy array
-                    depthFrame = inDepth.getFrame()
-                    rgbFrame = inRGB.getCvFrame()
-                    # print(depthFrame)
-                    # print(depthFrame.shape)
-                    # print(rgbFrame)
-                    # print(rgbFrame.shape)
-                    # print(depthFrame.)
-                    # Save raw depth data matrix
-                    timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S.%f")
-                    depthSaveFileName = os.path.join(save_folder, f"depth_{timestamp_str}.npy")
-                    rgbSaveFileName = os.path.join(save_folder, f"rgb_{timestamp_str}.npy")
-                    np.save(depthSaveFileName, depthFrame)
-                    np.save(rgbSaveFileName, rgbFrame)
-                    # np.savetxt(csv_path, depth_frame, delimiter=",", fmt="%d")
-                    # print(f"Saved: {depthSaveFileName}, shape: {depthFrame.shape}")
-                    # print(f"Saved: {rgbSaveFileName}, shape: {rgbFrame.shape}")
-                    last_save_time = current_time
+            start_time = time.time()
+
+            with open(os.path.join(save_folder, 'rgb_video','depthcam_rgb_video.h265'), 'wb') as videoFile:
+                while not should_stop:
+                    inDepth = depthQueue.get()
+                    # inRGB = rgbQueue.get()
+                    current_time = time.time()
+                    
+                    if (current_time - last_save_time) >= save_interval:
+                        # Retrieve depth frame as numpy array
+                        depthFrame = inDepth.getFrame()
+                        # print(depthQueue)
+                        # print(depthFrame)
+                        # print(depthFrame.shape)
+                        # print(rgbFrame)
+                        # print(rgbFrame.shape)
+                        # print(depthFrame.)
+                        # Save raw depth data matrix
+                        timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S.%f")
+                        depthSaveFileName = os.path.join(save_folder, f"depth_{timestamp_str}.npy")
+                        # rgbSaveFileName = os.path.join(save_folder, f"rgb_{timestamp_str}.npy")
+                        np.save(depthSaveFileName, depthFrame)
+                        # np.save(rgbSaveFileName, rgbFrame)
+                        # np.savetxt(csv_path, depth_frame, delimiter=",", fmt="%d")
+                        # print(f"Saved: {depthSaveFileName}, shape: {depthFrame.shape}")
+                        # print(f"Saved: {rgbSaveFileName}, shape: {rgbFrame.shape}")
+                        last_save_time = current_time
+
+
+                    # rgbFrame = inRGB.getCvFrame()
+                    # if out is None:
+                    #     out = cv2.VideoWriter(
+                    #         "rgbcam.avi",
+                    #         cv2.VideoWriter_fourcc(*'XVID'),
+                    #         30,
+                    #         (rgbFrame.shape[1], rgbFrame.shape[0])
+                    #     )
+                    #     if not out.isOpened():
+                    #         print("Error: Could not open video writer.")
+                    #         break
+                    # out.write(rgbFrame)
+                    h265Packet = rgbQueue.get()  # Blocking call, will wait until a new data has arrived
+                    h265Packet.getData().tofile(videoFile)
+
 
         except KeyboardInterrupt:
             print("Stopped by user.")
+            print(time.time() - start_time)
+
 
 def capture_camera_data_legacy():
     while not should_stop:
@@ -328,13 +375,14 @@ def start_camera(session_id):
     os.makedirs(save_path, exist_ok=True)
     depth_camera_save_path = os.path.join(save_path, "depth_camera")
     os.makedirs(depth_camera_save_path, exist_ok=True)
+    os.makedirs(os.path.join(depth_camera_save_path, "rgb_video"), exist_ok=True)
     with control_lock:
         is_running = True
         should_stop = False
     
     print("Starting camera system...")
     pipeline = initialise_depth_RGB_only_pipeline()
-    start_capture_depth_RGB(pipeline, save_path, 0.3)
+    start_capture_depth_RGB(pipeline, depth_camera_save_path, 0.3)
     
 
 def stop_camera():

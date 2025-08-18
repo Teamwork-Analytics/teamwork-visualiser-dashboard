@@ -22,9 +22,9 @@ export const sortNotesDescending = (observationObj) => {
 export const manualLabels = {
   phases: [
     { _id: "phaseId001", label: "Scenario started" },
-    { _id: "phaseId002", label: "Handover ends" },
-    { _id: "phaseId003", label: "Secondary nurse enters" },
-    { _id: "phaseId004", label: "Doctor enters" },
+    { _id: "phaseId002", label: "Stage 1" },
+    { _id: "phaseId003", label: "Stage 2" },
+    { _id: "phaseId004", label: "Stage 3" },
     { _id: "phaseId005", label: "Teamwork actions" },
   ],
   actions: [

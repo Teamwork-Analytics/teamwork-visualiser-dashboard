@@ -26,14 +26,23 @@ const MARGIN_MAPPER = {
   doctor: 0,
   relative: 0,
 };
+// const NODE_NAME_MAPPER = {
+//   blue: "PN1",
+//   red: "PN2",
+//   green: "SN1",
+//   yellow: "SN2",
+//   patient: "Patient",
+//   doctor: "Doctor",
+//   relative: "Relative",
+// };
 const NODE_NAME_MAPPER = {
-  blue: "PN1",
-  red: "PN2",
-  green: "SN1",
-  yellow: "SN2",
-  patient: "Patient",
-  doctor: "Doctor",
-  relative: "Relative",
+  blue: "Blue",
+  red: "Red",
+  green: "Green",
+  yellow: "Yellow",
+  patient: "Orange",
+  doctor: "Purple",
+  relative: "Black",
 };
 
 const LABEL_HALIGNMENT_MAPPER = {

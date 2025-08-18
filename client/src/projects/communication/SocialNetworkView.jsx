@@ -57,7 +57,7 @@ const CytoComponent = ({ netData, height = "30vh" }) => {
         "target-arrow-color": "black",
         "target-arrow-shape": "triangle-backcurve",
         "curve-style": "bezier",
-        "arrow-scale": 1.3,
+        "arrow-scale": 1.0,
       },
     },
   ];
