@@ -13,6 +13,10 @@ def get_receiver(target_list: list):
     max_value = max(target_list, key=target_list.count)
     return max_value
 
+# def detecting_receiver_dummy(conversation_df: pd.DataFrame):
+#     for i, row in conversation_df.iterrows():
+#         conversation_df.loc[i, "receiver"] = "all"
+
 
 def detecting_receiver(conversation_df: pd.DataFrame, formation_dict: dict):
     interval_dict = {}
@@ -129,6 +133,10 @@ def get_formation_dict(data_folder_path, simulationid, path_pozyx_json,
     #                           doctor_enter_time=doctor_enter_time)
     audio_dict = extract_information_with_yaw(data_folder_path, path_pozyx_json, sync_path, testing=False,
                                               fov_thres=200, dist_thres=2000, absolute_thres=600)
+    print(audio_dict)
+    for a_color in audio_dict:
+        print(f"Color: {a_color}")
+        audio_dict[a_color].to_excel(f"{a_color}_audio_test.xlsx")
     return audio_dict
     # generating_social_network(audio_dict, adjacent_temp_path, session_type, save_path=fig_save_path,
     #                           size_method=size_method, norm_method=norm_method, output_dict=output_dict,

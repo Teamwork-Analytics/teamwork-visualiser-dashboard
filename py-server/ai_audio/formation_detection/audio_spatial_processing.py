@@ -295,9 +295,12 @@ def unpackaging_comma_separation(package_in_list: list):
 def responded_detection_using_yaw(audio_dict, coord_yaw_dict, extended_boundary=0):
     for a_color in audio_dict:
         main_audio_df = audio_dict[a_color]
-        main_coord_yaw_df = coord_yaw_dict[a_color]
+
         main_audio_df["target"] = ""
         main_audio_df["in_sight"] = ""
+        if a_color not in coord_yaw_dict:
+            continue
+        main_coord_yaw_df = coord_yaw_dict[a_color]
 
         for i, row in main_audio_df.iterrows():
             boundary_start = row["start"] - extended_boundary
@@ -309,6 +312,8 @@ def responded_detection_using_yaw(audio_dict, coord_yaw_dict, extended_boundary=
             # split the comma separation into a list
             unpackaged_targets = unpackaging_comma_separation(potential_targets)
             for a_target_color in unpackaged_targets:
+                if a_target_color not in coord_yaw_dict:
+                    continue
                 tar_coord_yaw_df = coord_yaw_dict[a_target_color]
                 tar_rows = tar_coord_yaw_df[(tar_coord_yaw_df["audio_timestamp"] >= boundary_start) &
                                             (tar_coord_yaw_df["audio_timestamp"] <= boundary_end)]

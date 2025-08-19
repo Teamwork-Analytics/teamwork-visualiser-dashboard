@@ -10,10 +10,10 @@ from refactor.helper.sync_file_processor import get_timestamp_from_sync
 from util.logging_util import logger
 
 RED_ID = 27226
-BLUE_ID = 27209
+BLUE_ID = 27261
 # before 318 green id is 27160
 GREEN_ID = 27176
-YELLOW_ID = 27263
+YELLOW_ID = 27152
 
 
 def _get_hms_time_list(timestamp_array):
@@ -90,7 +90,7 @@ def _generate_pozyx_csv_files(raw_pozyx_path: str, output_folder_path: str, audi
     yellow = _get_interpolated_data(a_dict[YELLOW_ID], audio_start_timestamp)
     color = ("blue", "green", "red", "yellow")
 
-    print("Finish interpolating data")
+    # print("Finish interpolating data")
     file_name = os.path.basename(raw_pozyx_path).split(".")[0]
     if not os.path.exists(output_folder_path):
         os.makedirs(output_folder_path)

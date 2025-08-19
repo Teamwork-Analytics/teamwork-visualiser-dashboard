@@ -420,6 +420,55 @@ def generate_sna_csv(the_data_folder: str, the_session_id: int,
     detecting_receiver(intervals_df, formation_dict)
     print("detecting receiver finishd")
     return intervals_df, formation_dict
+
+def generate_sna_csv_without_positioning(the_data_folder: str, the_session_id: int,
+                                                          handover_ends: float,
+                                                          secondary_entered: float,
+                                                          doctor_entered: float):
+    raw_audio_folder = os.path.join(the_data_folder, str(the_session_id))
+    audio_folder = os.path.join(the_data_folder, str(the_session_id), "audio_clip_folder")
+    audio_clip_folder = os.path.join(audio_folder, "audio_clips")
+    raw_pozyx_file_path = os.path.join(the_data_folder, str(the_session_id), "{}.json".format(the_session_id))
+    sync_data_path = os.path.join(the_data_folder, str(the_session_id), "sync.txt")
+
+    audio_processing(the_data_folder, the_session_id)  # took less than 5 seconds
+    intervals_df: pd.DataFrame = clip_to_excel_with_filtering(
+        clips_folder=audio_clip_folder,
+        handover_ends=handover_ends,
+        secondary_entered=secondary_entered,
+        met_entered=doctor_entered)
+
+    formation_dict = get_formation_dict(raw_audio_folder, the_session_id, raw_pozyx_file_path, sync_data_path)
+    print("get_formation_dict finishd")
+    # detecting_receiver_dummy(intervals_df, formation_dict)
+    print("detecting receiver finishd")
+
+    stage1_participants = ["blue", "red"]
+    all_partifipants = ["blue", "red", "green", "yellow"]
+
+    for a_color in formation_dict:
+        changing_all_to_color_in_receiver(formation_dict[a_color], secondary_entered, stage1_participants, all_partifipants)
+    changing_all_to_color_in_receiver(intervals_df, secondary_entered, stage1_participants, all_partifipants)
+
+    return intervals_df, formation_dict
+
+
+def changing_all_to_color_in_receiver(a_df: pd.DataFrame, stage2_ts, participant_name_list, stage1_participant_name_list):
+    if "target" in a_df.columns:
+        for i, row in a_df.iterrows():
+            if row["target"] == "all" and row["start"] < stage2_ts:
+                a_df.loc[i, "target"] = ",".join([name for name in stage1_participant_name_list if name != row["color"]])
+            elif row["target"] == "all" and row["start"] >=  stage2_ts:
+                a_df.loc[i, "target"] = ",".join([name for name in participant_name_list if name != row["color"]])
+    elif "receiver" in a_df.columns:
+        for i, row in a_df.iterrows():
+            if row["receiver"] == "all" and row["start_time"] < stage2_ts:
+                a_df.loc[i, "receiver"] = ",".join([name for name in stage1_participant_name_list if name != row["initiator"]])
+            elif row["receiver"] == "all" and row["start_time"] >= stage2_ts:
+                a_df.loc[i, "receiver"] = ",".join([name for name in participant_name_list if name != row["initiator"]])
+    else:
+        raise ValueError("target column and receiver column not found")
+
 def auto_transcription_and_coding_without_force_alignment(the_data_folder: str, the_session_id: int,
                                                           handover_ends: float,
                                                           secondary_entered: float,
