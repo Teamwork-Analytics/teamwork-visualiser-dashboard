@@ -17,7 +17,7 @@ def get_sna_graph_data(id: str, data_folder, start_time, end_time, doc_enter_tim
         file_path = file_path_old
     df = pd.read_csv(file_path)
     df = _process_csv(df, start_time, end_time, doc_enter_time, secondary_enter_time,
-                     do_filter=True)  # update with 2024 data
+                     do_filter=False)  # update with 2024 data
     df.fillna("", inplace=True)
     output_data = df.to_dict(orient="records")
     return output_data

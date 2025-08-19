@@ -4,7 +4,7 @@ import { COLOURS } from "../../config/colours";
 import { coordinatesForDebugging } from "./utils";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 3762,
+  WIDTH: 4562,
   HEIGHT: 4947,
 };
 //X-axis: 7543 or 6449

@@ -96,6 +96,7 @@ def get_formation_dict(data_folder_path, simulationid, path_pozyx_json,
     # path_processed_audio_output_folder = os.path.join(data_folder_path, "audio", "processed_audio_for_formation")
     # path_pozyx_json = os.path.join(data_folder_path, "positioning_data", "raw_positioning", "{}.json".format(simulationid))  # pozyx data path
     # sync_path = os.path.join(data_folder_path, "sync.txt")  # the file holding the synchronization information
+    print("running refactored formation dict {}".format(simulationid))
     path_coordinates = "Coordinates.csv"  # a configuration file, not necessary in current code,
     # just hold it not to have unexpected error
     session_id = simulationid

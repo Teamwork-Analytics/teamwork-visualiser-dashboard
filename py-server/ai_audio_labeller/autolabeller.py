@@ -41,7 +41,7 @@ DEFINITIONS = {
    "acknowledging": "A nurse/student acknowledges receipt of information or instructions from other nurses/students, which is a passive action, without necessarily agreeing or disagreeing.", 
 }
 
-def format_random_examples(example_list, n=1):
+def format_random_examples(example_list, n=3):
     selected = random.sample(example_list, min(n, len(example_list)))
     numerals = ['(i)', '(ii)', '(iii)', '(iv)']
     formatted = [f'{numerals[i]} "{ex}"' for i, ex in enumerate(selected)]
@@ -52,16 +52,122 @@ def format_random_examples(example_list, n=1):
     else:
         return formatted[0]
 
-DEFINITIONS_WITH_EXAMPLES = {
-   "task_allocation": ("A nursing student explicitly assigns a task to another nursing student OR proactively self-allocates a task, where the task is not directed to patient."), 
-   "handover": ("A nursing student is performing a handover when they verbally update other nursing student/s about the current state or recent care of a patient to ensure shared understanding and continuity of care. "),
-   "sharing_information": ("A nursing student proactively shares brief information with other nursing student/s that has not been requested, excluding information provided to patient. "),
-   "escalation": ("A nursing student informs other nursing student/s that the situation exceeds their capabilities and requires extra assistance or call for help."), 
-   "questioning": ("A nursing student asks another nursing student a question to obtain information. Questions asked to patient should always result in '0' for all constructs. "),
-   "responding": ("A nursing student responds to the question asked in the conversation by another nursing student, this response can be more active and often substantive reaction or reply. The response should contribute meaningful information, confirm intent with elaboration, or involve a decision or explanation. "),     
-   "acknowledging": ("A nursing student acknowledges receipt of information or instructions from other nursing student, which is a passive action, without necessarily agreeing or disagreeing. "),    
-}
+#    The communication construct "task_allocation" refers to ....
+#    Utterrance examples of this communication construct include: 
 
+SAMPLE_TEXTS_TA = [
+    "You do the medical observation, and I will do the discharge for the bed three patient",
+    "Emma, how about we do vital signs ?",
+    "just need to arrange this chart document . And also, the wife is there as well .",
+    "Are you happy to get the dressings and stuff? Alright , beautiful.",
+    "And then I will absolutely look at her pain meds for you .",
+    "I'm going to do her oxygen, yes .",
+    "Do you want me to get the ECG ready if she's got chest pain ?",
+    "We will do that. Yes, we'll have a look .",
+    "So do you guys maybe want to do the meds and then I'll keep going on my assessment ?",
+    "I'm going to check with Gene, you can check with mine as well because she needs, whatever ."
+]
+
+SAMPLE_TEXTS_HO = [
+    "We just check on her obs and oxygen is dropping and her family is a bit worried, stressing",
+    "She is day-one post total hysterectomy. She has got a history of heart disease...",
+    "We have Ruth here. She's just been complaining of six out of ten chest pain.",
+    "So, second, bed number two is Bailey French. So she just came in from ED for appendicitis and her obs are okay, it's just she's febrile, 37.7 .",
+    "So, I'll just give you a quick handover. So this is Imani, she's day one post vaginal hysterectomy. So I just did her obs right now, she's due for antibiotics so if one of you could just come and check with me and then we can administer that .",
+    "Okay , so we just have Ruth Jenkins here, she's complaining of some chest pain, and she says that she can't breathe. So we're just going to do an ECG, we've done her obs and she's in pain. This is her daughter Karen .",
+    "So we just need to do the pre-op checklist because I got a call from the theatre nurse that they'll be coming in five minutes to get her .",
+    "Hi guys, very good thank you. This is Ruth, she's an elderly lady, she had got a bit of chest pain at the moment, it's central, it's not radiating anywhere .",
+    "We're about to do an ECG. She's also complaining of shortness of breath. We just put her on ten litres of O two, and her sats are okay at the moment, but they've just come up a little bit .",
+    "Yes . We've got patient three there. He's due for a script for analgesia, and he's due for discharge, so if you could just manage that for me ."
+]
+
+SAMPLE_TEXTS_SI = [
+    "We tried to ask her, but she left sort of before we could get an answer from her .",
+    "So we'll see. Yeah , there's nothing on the back .",
+    "Yeah, it's PCA .",
+    "She is due for antibiotics and pain meds, and we also need to call her family.",
+    "Her wound is dry and intact. There is no concern now.",
+    "Just the analgesics and stuff , okay .",
+    "Yes, that's active PRN, but then it says continuous, but she's got nothing running .",
+    "It's on 14, cool .",
+    "Because, yes, look, I'm a bit confused .",
+    "Okay, I just called the met call was going to be an hour away ."
+]
+
+SAMPLE_TEXTS_EC = [
+    "Kiera, I'm also going to call help in .",
+    "All right, let's just. Do you want to call in some help ?",
+    "I think we need to call the emergency team for help.",
+    "Kiera, I'm going to get the other nurses , okay ?",
+    "Beautiful I'm calling a met call because we're worried about her , could I have a hand hooking up the ECG ? I'm going to get a full set of obs, okay ",
+    "No , I can call for help first, I can call for help first , yes.",
+    "We might get a doctor to review .",
+    "They're currently on their ward review , do you want me to call a MET call ? Do you think it's really serious ?",
+    "Do you mind doing the oxygen and I'll just call for some help ?",
+    "I'll just press the emergency button . Oh, we just need a hand from other nurses ."
+]
+
+SAMPLE_TEXTS_QS = [
+    "Do you have a phone number for me to ring?",
+    "Do you know what the fluid was there?",
+    "Okay And um, what type of dressing was it like was it gauze and tag them or",
+    "Why is this not on ?",
+    "Are you okay ?",
+    "Is the IV necessary for this patient?",
+    "Do we want to get this on ?",
+    "Which ones the oxygen ?",
+    "We're doing our very best, okay?",
+    "Sorry. Where's the ?"
+]
+
+SAMPLE_TEXTS_RP = [
+    "I don't know, it's off",
+    "Dropping . Do some oxygen ? Yes.",
+    "Okay. So this one. Oh, the oxygen. Yes .",
+    "Continuous, but there's nothing there .",
+    "Her wound is dry and intact. There is no concern now.",
+    "We're just doing oxygen sats now .",
+    "Hip replacement .",
+    "Yes, we might call a MET call . And we'll get an ECG going .",
+    "I can't really hear it much , can you double check ?",
+    "Does she have any head protectors or something ? No, she doesn't really have any ."
+]
+
+SAMPLE_TEXTS_AK = [
+    "Complete though. Maybe do we ask the doctor ?",
+    "I reckon yes , I think we're going to call the doctor just to see if we .",
+    "Okay And um, what type of dressing was it like was it gauze and tag them or",
+    "We're able to get just a temperature of Ruth ",
+    "It's all on there. Yes, okay .",
+    "Sure ",
+    "Yes , we'll cover you up a little bit .",
+    "Oh no, alright",
+    "I agree",
+    "Yes, good idea, yes great ."
+]
+
+DEFINITIONS_WITH_EXAMPLES = {
+   "task_allocation": ("A nursing student explicitly assigns a task to another nursing student OR proactively self-allocates a task, where the task is not directed to patient." 
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_TA)}\n"), 
+
+   "handover": ("A nursing student is performing a handover when they verbally update other nursing student/s about the current state or recent care of a patient to ensure shared understanding and continuity of care. "
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_HO)}\n"), 
+
+   "sharing_information": ("A nursing student proactively shares brief information with other nursing student/s that has not been requested, excluding information provided to patient. "
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_SI)}\n"),
+
+   "escalation": ("A nursing student informs other nursing student/s that the situation exceeds their capabilities and requires extra assistance or call for help." 
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_EC)}\n"),
+
+   "questioning": ("A nursing student asks another nursing student a question to obtain information. Questions asked to patient should always result in '0' for all constructs. "
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_QS)}\n"), 
+
+   "responding": ("A nursing student responds to the question asked in the conversation by another nursing student, this response can be more active and often substantive reaction or reply. The response should contribute meaningful information, confirm intent with elaboration, or involve a decision or explanation. "     
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_RP)}\n"),
+
+   "acknowledging": ("A nursing student acknowledges receipt of information or instructions from other nursing student, which is a passive action, without necessarily agreeing or disagreeing. "     
+   f"Example utterances of this specific communication construct include: {format_random_examples(SAMPLE_TEXTS_AK)}\n"), 
+}
 SAMPLE_TEXTS = [
     "You do the medical observation, and I will do the discharge for the bed three patient",
     "She is day-one post total hysterectomy. She has got a history of heart disease...",
@@ -246,15 +352,13 @@ def _parse_response(content):
 def _label_colour(colour_tag):
     return f'{colour_tag} {COLOUR_MAP[colour_tag]}' if colour_tag in COLOUR_MAP else 'patient/relative' 
 
+"""
+MULTILABEL classification prompt
+"""
 def _classify_text_multilabel(text, index, df):
     
-    initiator = df.loc[index]['initiator']
-    receiver = df.loc[index]['receiver']
-
-    labelled_initiator = _label_colour(initiator) 
-    labelled_receiver = _label_colour(receiver)
-    
-    utterance_snippet = _get_utterance_snippet(index, df)
+    # previous_texts = _get_previous_texts(index, df)
+    utterance_snippet = _get_utterance_snippet(index,df)
 
     if utterance_snippet:
         context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session:\n{utterance_snippet}"
@@ -265,15 +369,14 @@ def _classify_text_multilabel(text, index, df):
     You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students.
 
     Communication constructs and their definitions are as follows:
-    {chr(10).join([f"- {k}: {v}" for k,v in DEFINITIONS.items()])}
+    {chr(10).join([f"- {k}: {v} \n" for k,v in DEFINITIONS_WITH_EXAMPLES.items()])}
 
-    {context_msg}
-    
-    Your task is to analyze the utterance contained in the dialogue snippet "{text}" and determine which of the communication constructs outlined above the utterance exemplifies any of the communication constructs detailed above.
+    Your task is to analyze the utterance contained in the dialogue snippet "{text}" and determine whether the utterance exemplifies any of the communication constructs detailed above.
 
-    Your response should only consist of {len(CONSTRUCTS)} digits separated by commas and the order of the digits should match the order of communication constructs detailed above. Each digit can be either '1' or '0', with '1' indicating the presence of a specific communication construct and '0' indicating the absence of the communication construct. There is no need to provide explanations, reasoning, or additional text.
+    Your response should only consist of 7 digits separated by commas and the order of the digits should match the order of communication constructs detailed above. Each digit can be either '1' or '0', with '1' indicating the presence of a specific communication construct and '0' indicating the absence of the communication construct. There is no need to provide explanations, reasoning, or additional text.
     
     """
+    
 
      # Parse the response
     try:

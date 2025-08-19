@@ -52,20 +52,20 @@ def extract_timestamps_for_phases(observation_data: Mapping[str, Any]) -> tuple[
 
     for item in observation_data["phases"]:
         if item["phaseKey"] == "handover_ends":
-            handover_finish_time = item["timestamp"].timestamp()
+            handover_finish_time = item["timestamp"].timestamp() + (3600 * 10)
         elif item["phaseKey"] == "secondary_nurse_enters":
-            secondary_nurses_enter_time = item["timestamp"].timestamp()
+            secondary_nurses_enter_time = item["timestamp"].timestamp() + (3600 * 10)
         elif item["phaseKey"] == "doctor_enters":
-            doctor_enter_time = item["timestamp"].timestamp()
+            doctor_enter_time = item["timestamp"].timestamp() + (3600 * 10)
         elif item["phaseKey"] == "bed_4":
             pass
 
     if handover_finish_time is None:
-        raise ValueError("Phase key 'handover_ends' is missing.")
+        raise ValueError("Phase key 'stage_1' is missing.")
     if secondary_nurses_enter_time is None:
-        raise ValueError("Phase key 'secondary_nurse_enters' is missing.")
+        raise ValueError("Phase key 'stage_2' is missing.")
     if doctor_enter_time is None:
-        raise ValueError("Phase key 'doctor_enters' is missing.")
+        raise ValueError("Phase key 'stage_3' is missing.")
 
     logger().info(f"timestamps for key events of the simulation:")
     logger().info(f"handover_finish_time: {handover_finish_time}")
