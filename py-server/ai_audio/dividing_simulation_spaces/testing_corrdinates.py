@@ -292,19 +292,11 @@ def assigning_location_in_ena_data(a_session_df: pd.DataFrame, session_id: int, 
         data_df_dict[ID_TO_COLOR[a_student_id]] = loaded_df
 
     for i, row in a_session_df.iterrows():
-        start_time = row["start_time"]
-        end_time = row["end_time"]
-        initiator = row["initiator"]
-        labelled_location = row["location"]
-        utterance_id = row["utterance_id"]
-        location = row["location"]
-
-        students_df = data_df_dict[initiator]
         a_session_df.loc[i, "location"] = 'single_bed'
         
 
 
-def assigning_location_in_ena_data_penin(a_session_df: pd.DataFrame, session_id: int, processed_location_dict: dict):
+def assigning_location_in_ena_data_penincampus(a_session_df: pd.DataFrame, session_id: int, processed_location_dict: dict):
     data_df_dict = {}
 
     for a_student_id in ID_TO_COLOR:

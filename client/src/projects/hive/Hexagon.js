@@ -4,8 +4,8 @@ import { COLOURS } from "../../config/colours";
 import { coordinatesForDebugging } from "./utils";
 
 const CLASSROOM_SIZE = {
-  WIDTH: 3462,
-  HEIGHT: 3847,
+  WIDTH: 4562,
+  HEIGHT: 4047,
 };
 //X-axis: 7543 or 6449
 //y-axis: 9689 or 10661
@@ -66,9 +66,9 @@ class HexagonComponent {
           clean.forEach((record, j) => {
             // NOTE: formula = (data * image-resolution) / actual-size
             const posX =
-              (record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH;
+              ((record.x * CONSTANTS.IMG_WIDTH) / CLASSROOM_SIZE.WIDTH)-300;
             const posY =
-              (record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT;
+              ((record.y * CONSTANTS.IMG_HEIGHT) / CLASSROOM_SIZE.HEIGHT)-200;
 
             // TODO: convert time to make it
             if (record["audio time"] === timeEnd) {
