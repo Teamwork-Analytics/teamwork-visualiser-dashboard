@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "./.env" });
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -12,7 +12,7 @@ app.use(express.json()); // for parsing application/json
 
 let simulationId = null;
 
-const mongoUri = process.env.IP_ATLAS_URI;
+const mongoUri = process.env.IP_MONGODB_URI;
 
 mongoose
   .connect(mongoUri)
@@ -69,10 +69,10 @@ app.post("/stop-simulation", (req, res) => {
 
 app.post("/data", (req, res) => {
   if (!simulationId) {
-    res
-      .status(400)
-      .send("Simulation ID not received OR simulation not started yet");
-    return;
+    console.warn(
+      "Data received but no active simulationId from dashboard, did you start the simulation?"
+    );
+    simulationId = "unknown-simulation-id";
   }
   console.log("Received data:", req.body);
   dataHandler.handleReceivedData(req.body, simulationId);
