@@ -72,7 +72,7 @@ app.post("/data", (req, res) => {
     console.warn(
       "Data received but no active simulationId from dashboard, did you start the simulation?"
     );
-    simulationId = "unknown-simulation-id";
+    simulationId = "unknown_simulation_id";
   }
   console.log("Received data:", req.body);
   dataHandler.handleReceivedData(req.body, simulationId);
