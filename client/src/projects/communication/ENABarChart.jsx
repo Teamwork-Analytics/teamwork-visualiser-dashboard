@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getTeamworkBarchart } from "../../services/py-server/indexVisualiser";
+import { getENABarchartData } from "../../services/py-server/indexVisualiser";
 import Barchart from "../teamwork-prio/Barchart";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
@@ -14,14 +14,14 @@ const SNABarChart = ({
   customAspectRatio,
 }) => {
   const { simulationId } = useParams();
-  const [snaCountData, setSnaCountData] = useState([]);
-  const [isError, setIsError] = useState(snaCountData.length === 0);
+  const [enaCountData, setEnaCountData] = useState([]);
+  const [isError, setIsError] = useState(enaCountData.length === 0);
 
   const startTime = timeRange[0];
   const endTime = timeRange[1];
 
   useEffect(() => {
-    getTeamworkBarchart({
+    getENABarchartData({
       simulationId: simulationId,
       startTime: startTime,
       endTime: endTime,
@@ -32,7 +32,7 @@ const SNABarChart = ({
           const finalData = filteredData.filter(
             (d) => d["label"][0] !== "Moving around"
           );
-          setSnaCountData(finalData);
+          setEnaCountData(finalData);
           setIsError(false);
         }
       })
@@ -44,17 +44,17 @@ const SNABarChart = ({
   }, [simulationId, startTime, endTime]);
 
   useEffect(() => {
-    if (snaCountData.length === 0) {
+    if (enaCountData.length === 0) {
       // Fetch data immediately when component mounts
       function fetchData() {
-        getTeamworkBarchart({
+        getENABarchartData({
           simulationId: simulationId,
           startTime: startTime,
           endTime: endTime,
         })
           .then((res) => {
             if (res.status === 200) {
-              setSnaCountData(res.data);
+              setEnaCountData(res.data);
               setIsError(false);
             }
           })
@@ -71,12 +71,12 @@ const SNABarChart = ({
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
     }
-  }, [endTime, simulationId, startTime, snaCountData]);
+  }, [endTime, simulationId, startTime, enaCountData]);
 
   return (
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
       <Barchart
-        data={snaCountData}
+        data={enaCountData}
         height={height}
         width={width}
         yLabelsFontSize={yLabelsFontSize}

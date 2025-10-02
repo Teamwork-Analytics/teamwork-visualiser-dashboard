@@ -71,7 +71,7 @@ const Barchart = ({
               },
               title: {
                 display: true,
-                text: "Student Colour",
+                text: "Behaviour Name",
                 font: { size: 18 },
               },
               ticks: {
