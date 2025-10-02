@@ -5,7 +5,7 @@ import subprocess
 import pandas as pd
 
 from ai_audio.audio_processing.organising_into_excel import clip_transcription_to_excel_with_filtering, \
-    clip_to_excel_with_filtering
+    clip_to_excel_with_filtering, filtering_by_phases
 from ai_audio.audio_processing.processing_audios import processing_audio_to_clips
 from ai_audio.audio_processing.whisper_transcription_cleansing import export_utterance_to_txt
 from ai_audio.audio_transcription.pozyx_extraction import extract_interpolate_single_session
@@ -20,8 +20,10 @@ from ai_audio.fine_graining_utterances.refining_conversation_ready_excel import 
     detecting_errors_in_detailized_xlsx_2022, feed_detailized_info_to_conversation, collapse_detailized_excels, \
     adding_timetag_to_collapsed_excels, add_utterance_id
 from ai_audio.formation_detection.formation_differentiation import get_formation_dict, \
-    detecting_receiver
+    detecting_receiver, calculate_receiver_by_responded_text
 from ai_audio.my_util.Timer import Timers
+from ai_audio.whisperX_script.main import initialise_whisperX
+from ai_audio.whisperX_script.new_penin_script import create_transcription_files, organsing_transcription_df
 from ai_audio_labeller import perform_classification
 
 
@@ -604,6 +606,136 @@ def auto_transcription_and_coding_without_force_alignment(the_data_folder: str, 
     conversation_df = get_conv_df(conversation_df)
 
 
+    coded_df = perform_classification(conversation_df)
+    if not os.path.exists(final_result_folder):
+        os.makedirs(final_result_folder)
+
+    # change the name of columns to the version that will be used in the visualisations
+    coded_df.rename(columns=CODE_NAME_MAPPER, inplace=True)
+    coded_df.to_csv(final_result_path)
+    return coded_df
+
+def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_session_id: int,
+                                                handover_ends: float,
+                                                secondary_entered: float,
+                                                doctor_entered: float,
+                                                whisper_model_name: str):
+    Timers.initialise_start_time()
+
+    transcription_folder_path_in_session = "transcriptions"  # the folder to do the transcription
+
+    transcription_excel_output_path_in_session = "transcriptions"
+    transcription_excel_name = "transcriptions.xlsx"
+
+    # todo this raw audio file path may need to be changed once we merged the system.
+    # new paths added for formation detection
+    raw_audio_folder = os.path.join(the_data_folder, str(the_session_id))
+    raw_pozyx_file_path = os.path.join(the_data_folder, str(the_session_id), "{}.json".format(the_session_id))
+    sync_data_path = os.path.join(the_data_folder, str(the_session_id), "sync.txt")
+    formation_detection_export_folder = os.path.join(the_data_folder, str(the_session_id), "audio_clip_folder",
+                                                     "formation_detection_export")
+
+    # new paths for autocoding:
+    final_result_folder = os.path.join(the_data_folder, str(the_session_id), "final_result")
+    final_result_path = os.path.join(final_result_folder, "{}_coded_conversation.csv".format(the_session_id))
+
+    # model configuration file
+
+    audio_folder = os.path.join(the_data_folder, str(the_session_id), "audio_clip_folder")
+    audio_clip_folder = os.path.join(audio_folder, "audio_clips")
+    transcription_folder = os.path.join(the_data_folder, str(the_session_id), transcription_folder_path_in_session)
+    transcription_excel_output_path = os.path.join(the_data_folder, str(the_session_id),
+                                                   transcription_excel_output_path_in_session,
+                                                   transcription_excel_name)
+    excel_result_in_middle_folder = os.path.join(the_data_folder, str(the_session_id), "audio_clip_folder",
+                                                 "excel_in_middle_output")
+    # m means the excels in the middle
+    m_detd_path = os.path.join(excel_result_in_middle_folder, "detd", "detd_" + str(the_session_id) + ".xlsx")
+    m_collapsed_path = os.path.join(excel_result_in_middle_folder, "collapsed",
+                                    "collapsed_" + str(the_session_id) + ".xlsx")
+    m_final_path = os.path.join(excel_result_in_middle_folder, "final", "final_" + str(the_session_id) + ".xlsx")
+
+    # todo: this path is for testing, do change it after testing
+    mfa_folder_path = os.path.join(audio_folder, "mfa_folder_{}".format(the_session_id))
+    mfa_excel_output_folder = os.path.join(mfa_folder_path, "mfa_excel")
+    mfa_excel_output_path = os.path.join(mfa_folder_path, "mfa_excel", str(the_session_id) + ".xlsx")
+    mfa_forcealignment_folder_name = "{}_force_alignment_files".format(the_session_id)
+    mfa_forcealignment_output_folder = os.path.join(mfa_forcealignment_folder_name,
+                                                    "{}_aligner_output".format(the_session_id))
+    # mfa_unzip_folder = os.path.join("")
+    uploaded_mfa_name = "{}_aligner_output".format(the_session_id)
+    uploaded_mfa_path = "{}.zip".format(uploaded_mfa_name)
+    textgrid_output_folder_path = os.path.join(mfa_folder_path, "{}_aligner_output".format(the_session_id))
+    textgrid_debug_folder = "debug_output"
+    finer_grained_utterances_path = os.path.join(mfa_excel_output_folder, str(the_session_id) + ".xlsx")
+    a_session_path = os.path.join(the_data_folder, str(the_session_id))
+    whisper_model = initialise_whisperX(model_name=whisper_model_name)
+
+    # # do the transcription
+    # # medium.en, transcription took 405.51 seconds, on 1740.72 seconds of audio
+    # # medium.en, transcription took 576.70 seconds, on 1849.52 seconds of audio
+    # # medium.en, transcription took 460.16 seconds, on 1521.21 seconds of audio
+    # # medium.en, transcription took 860.51 seconds, on 2068.16 seconds of audio
+    # # medium.en, transcription took 759.90 seconds, on 2426.07 seconds of audio
+    # transcribing_audio_clips_with_timestamp(whisper_model, the_session_id=str(the_session_id),
+    #                                         audio_clip_folder_path=the_data_folder, handover_ends=handover_ends,
+    #                                         secondary_entered=secondary_entered, met_entered=doctor_entered)
+    create_transcription_files(a_session_path, transcription_folder)
+    transcription_df = organsing_transcription_df(transcription_folder, transcription_excel_output_path)
+
+    # transcribing_audio_clips(whisper_model, session_id=str(the_session_id), audio_clip_folder_path=the_data_folder)
+    # calculate_duration_of_clips(session_id=str(the_session_id), audio_clip_folder_path=the_data_folder)
+
+    # usually the interval will be empty if there is no pozyx data
+    # intervals_df: pd.DataFrame = clip_transcription_to_excel_with_filtering(
+    #     transcription_folder,
+    #     transcription_excel_output_path,
+    #     handover_ends=handover_ends,
+    #     secondary_entered=secondary_entered,
+    #     met_entered=doctor_entered)
+
+    # force alignment code is removed
+    conversation_df = filtering_by_phases(transcription_df,
+                                              handover_ends=handover_ends,
+                                              secondary_entered=secondary_entered,
+                                              met_entered=doctor_entered
+                                          )
+
+    conversation_df["text"] = conversation_df["text"].apply(clean_nonutf8)
+    conversation_df["text"].fillna("", inplace=True)
+
+    add_utterance_id(conversation_df, "utterance_id")
+
+    # assigning conversation id of students by location and phases
+    # location_dict = extract_interpolate_single_session(raw_pozyx_file_path,
+    #                                                    sync_txt_path=sync_data_path)
+    # assigning_location_in_ena_data(conversation_df, the_session_id, location_dict)
+    # assigning_conversation(conversation_df, secondary_enter_timestamp=secondary_entered,
+    #                        doctor_enter_timestamp=doctor_entered)
+    conversation_df["conversation_id"] = 1
+    conversation_df["location"] = "room"
+
+    # This function uses the f-foramtion based detection algorithm to find the receiver of a conversation.
+    # use the f-formation theory based detection algo to detect the receiver of an utterance
+    conversation_df = calculate_receiver_by_responded_text(conversation_df)
+
+    # We now generate the sna data here
+    # conversation_df.to_csv(os.path.join(the_data_folder, str(the_session_id), "result", "{}_network_data.csv".format(the_session_id)))
+    # add session id to the df
+    conversation_df["the_session_id"] = the_session_id
+
+    # filter the text
+    filtering_conversation_text(conversation_df)
+    conversation_df["start_time","end_time","duration","initiator","receiver"].to_csv(os.path.join(the_data_folder, str(the_session_id), "result", "{}_sna.csv".format(the_session_id)))
+
+    # This function applies an external automated punctuation to the utterance without any punctuation.
+    # add_punctuation(conversation_df)
+
+
+    # filter the conversation data
+    # conversation_df = get_conv_df(conversation_df)
+
+    # todo: !!!!!!!! update classification function
     coded_df = perform_classification(conversation_df)
     if not os.path.exists(final_result_folder):
         os.makedirs(final_result_folder)
