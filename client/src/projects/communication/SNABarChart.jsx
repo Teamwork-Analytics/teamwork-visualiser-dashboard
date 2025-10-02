@@ -14,8 +14,8 @@ const SNABarChart = ({
   customAspectRatio,
 }) => {
   const { simulationId } = useParams();
-  const [teamworkData, setTeamworkData] = useState([]);
-  const [isError, setIsError] = useState(teamworkData.length === 0);
+  const [snaCountData, setSnaCountData] = useState([]);
+  const [isError, setIsError] = useState(snaCountData.length === 0);
 
   const startTime = timeRange[0];
   const endTime = timeRange[1];
@@ -32,7 +32,7 @@ const SNABarChart = ({
           const finalData = filteredData.filter(
             (d) => d["label"][0] !== "Moving around"
           );
-          setTeamworkData(finalData);
+          setSnaCountData(finalData);
           setIsError(false);
         }
       })
@@ -44,7 +44,7 @@ const SNABarChart = ({
   }, [simulationId, startTime, endTime]);
 
   useEffect(() => {
-    if (teamworkData.length === 0) {
+    if (snaCountData.length === 0) {
       // Fetch data immediately when component mounts
       function fetchData() {
         getTeamworkBarchart({
@@ -54,7 +54,7 @@ const SNABarChart = ({
         })
           .then((res) => {
             if (res.status === 200) {
-              setTeamworkData(res.data);
+              setSnaCountData(res.data);
               setIsError(false);
             }
           })
@@ -71,12 +71,12 @@ const SNABarChart = ({
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
     }
-  }, [endTime, simulationId, startTime, teamworkData]);
+  }, [endTime, simulationId, startTime, snaCountData]);
 
   return (
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
       <Barchart
-        data={teamworkData}
+        data={snaCountData}
         height={height}
         width={width}
         yLabelsFontSize={yLabelsFontSize}

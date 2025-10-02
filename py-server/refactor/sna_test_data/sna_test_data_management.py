@@ -5,6 +5,15 @@ import numpy as np
 
 
 def get_sna_graph_data(id: str, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time):
+    df = _processing_communication_data(id, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time)
+    return df.to_dict(orient="records")
+
+def get_sna_barchart_data(id: str, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time):
+    df = _processing_communication_data(id, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time)
+    output_data = df['initiator'].value_counts().to_dict()
+    return output_data
+
+def _processing_communication_data(id: str, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time):
     file_new = "%s_sna.csv" % id
     file_old = "%s_network_data.csv" % id
     # file_path = DIRECTORY / id / "result" / file
@@ -17,11 +26,10 @@ def get_sna_graph_data(id: str, data_folder, start_time, end_time, doc_enter_tim
         file_path = file_path_old
     df = pd.read_csv(file_path)
     df = _process_csv(df, start_time, end_time, doc_enter_time, secondary_enter_time,
-                     do_filter=False)  # update with 2024 data
+                      do_filter=False)  # update with 2024 data
     df.fillna("", inplace=True)
-    output_data = df.to_dict(orient="records")
-    return output_data
-
+    # output_data = df.to_dict(orient="records")
+    return df
 
 def _process_csv(df: pd.DataFrame, start_time: float, end_time: float, doc_enter_time: float,
                 secondary_enter_time: float, do_filter: bool) -> pd.DataFrame:

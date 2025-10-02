@@ -60,7 +60,7 @@ const Barchart = ({
               // min: 0,
               title: {
                 display: false,
-                text: "Percentage (%)",
+                text: "Count",
                 //https://www.chartjs.org/docs/latest/general/fonts.html
                 font: { size: 18 },
               },
@@ -71,7 +71,7 @@ const Barchart = ({
               },
               title: {
                 display: true,
-                text: "Behaviours",
+                text: "Student Colour",
                 font: { size: 18 },
               },
               ticks: {
