@@ -18,6 +18,24 @@ def get_receiver(target_list: list):
 #         conversation_df.loc[i, "receiver"] = "all"
 
 
+def calculate_receiver_by_responded_text(conv_data_df: pd.DataFrame, respond_threshold: float = 5):
+    receiver_df = pd.DataFrame(conv_data_df)
+    receiver_df["receiver"] = receiver_df["receiver"].astype(str)
+    for i, row in receiver_df.iterrows():
+
+        row_index = receiver_df.index.get_loc(i)
+        response_df = receiver_df[(receiver_df["start_time"] < (row["start_time"]  + respond_threshold)) & (receiver_df["start_time"] > row["start_time"])]
+        # print(response_df)
+        # responded_list.append(response_df.shape[0])
+        # print(col_index)
+        receiver_list = list(response_df["initiator"].unique().tolist())
+        if row["initiator"] in receiver_list:
+            receiver_list.remove(row["initiator"])
+        receiver_df.loc[i, "receiver"] = ",".join(receiver_list)
+
+    return receiver_df
+
+
 def detecting_receiver(conversation_df: pd.DataFrame, formation_dict: dict):
     interval_dict = {}
     # print(formation_dict)

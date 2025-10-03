@@ -2,6 +2,7 @@ import json
 import os.path
 
 import pandas
+import pandas as pd
 
 from ai_audio.my_util.algorithms import filter_unused_clips
 
@@ -109,6 +110,25 @@ def clip_transcription_to_excel(transcription_folder: str, output_folder: str, h
 
 
 
+def filtering_by_phases(a_df, handover_ends: float, met_entered: float, secondary_entered: float):
+    # filter_all_nurse before handover ends
+    a_df = a_df[(a_df["start"] > handover_ends)]
+    # filter secondary nurses, before met enters
+    a_df = a_df[(a_df["start"] > secondary_entered) & (a_df["initiator"].isin(['green', 'yellow', 'black', 'orange']))]
+    # filter doctor before they enter
+    a_df = a_df[(a_df["start"] > met_entered) & (a_df["initiator"].isin(['white']))]
+
+
+    # if a_color.lower() == "blue" or a_color.lower() == "red" or a_color.lower() == "black":
+    #     if handover_ends > float(start_time):
+    #         continue
+    # if a_color.lower() == "green" or a_color.lower() == "yellow":
+    #     if secondary_entered > float(start_time):
+    #         continue
+    # if a_color.lower() == "white":
+    #     if met_entered > float(start_time):
+    #         continue
+    return pd.DataFrame(a_df)
 
 def clip_transcription_to_excel_with_filtering(transcription_folder: str, output_folder: str, handover_ends: float,
                                 met_entered: float, secondary_entered: float):

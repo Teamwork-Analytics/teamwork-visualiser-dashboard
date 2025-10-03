@@ -54,6 +54,21 @@ def generate_viz_with_audio_data():
         logger().exception(error_message)
         return build_http_error_response(error_message, 500)
 
+@app.route("/generate_ena_viz_whisperx", methods=['GET'])
+def generate_viz_with_audio_data():
+    args = request.args
+    try:
+        session_id = args["sessionId"]
+        # handover, secondary, doctor = get_critical_timestamps(session_id, data_folder)
+        # run_auto_transcription_coding(data_folder, session_id, handover, secondary, doctor)
+
+        generate_visualization_with_audio_data_whisperx(session_id, data_folder)
+        return "Visualisations with audio data have been generated (SNA and ENA).", 200
+    except Exception as err:
+        error_message = "Unable to generate visualisation. Check terminal"
+        logger().exception(error_message)
+        return build_http_error_response(error_message, 500)
+
 
 @app.route("/transcode_video", methods=['GET'])
 def transcode_video_move_to_result():
