@@ -5,7 +5,6 @@ const DOMAIN_NAME = process.env.REACT_APP_PYSERVER_IP;
 const PORT_NUMBER = process.env.REACT_APP_PYSERVER_PORT;
 const PORT_NUMBER_VISUALISER = process.env.REACT_APP_PYSERVER_PORT_VISUALISER;
 
-
 const communicationAPI = axios.create({
   baseURL: `${DOMAIN_NAME}:${PORT_NUMBER}`, //Change this if the port is being used.
 });
@@ -79,22 +78,25 @@ const processCommBehaviourViz = async (simulationId) => {
   );
 };
 
+const processPeninsulaHospitalData = async (simulationId) => {
+  return await communicationAPI.get(
+    `/generate_viz_peninsula_2025?sessionId=${simulationId}`
+  );
+};
+
 const processVideoTranscoding = async (simulationId) => {
   return await communicationAPI.get(
     `/transcode_video?sessionId=${simulationId}`
   );
 };
 
+const startDepthCamera = async (sessionId) => {
+  return await communicationAPI.post(`/cameras/start?sessionId=${sessionId}`);
+};
 
-const startDepthCamera = async(sessionId) => {
-  return await communicationAPI.post(`/cameras/start?sessionId=${sessionId}`)
-}
-
-const stopDepthCamera = async() => {
-  return await communicationAPI.post(`/cameras/stop`)
-}
-
-
+const stopDepthCamera = async () => {
+  return await communicationAPI.post(`/cameras/stop`);
+};
 
 export {
   getSNAdata,
@@ -102,7 +104,8 @@ export {
   getTeamworkBarchart,
   processAllVisualisations,
   processCommBehaviourViz,
+  processPeninsulaHospitalData,
   processVideoTranscoding,
   startDepthCamera,
-  stopDepthCamera
+  stopDepthCamera,
 };

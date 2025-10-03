@@ -20,6 +20,8 @@ import HiveView from "../../projects/hive/HiveView";
 import VideoVisualisation from "../../projects/observation/visualisationComponents/VideoVisualisation";
 import { Slider } from "@mui/material";
 import { COLOURS } from "../../config/colours";
+import SNABarChart from "../../projects/communication/SNABarChart";
+import ENABarChart from "../../projects/communication/ENABarChart";
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {
@@ -123,6 +125,36 @@ const DisplayViz = ({
           height="39vh"
           // width="100%"
           hiveState={optionalHiveState}
+        />
+      ),
+    },
+    heartRateBarchart: {
+      size: "small",
+      viz: (
+        <SNABarChart // REPLACE THIS WITH HR BARCHART
+          timeRange={range}
+          timelineTags={timelineTags}
+          height={selectedVis.length === 1 ? "60vh" : "38vh"}
+        />
+      ),
+    },
+    enaBarchart: {
+      size: "small",
+      viz: (
+        <ENABarChart
+          timeRange={range}
+          timelineTags={timelineTags}
+          height={selectedVis.length === 1 ? "60vh" : "38vh"}
+        />
+      ),
+    },
+    snaBarchart: {
+      size: "small",
+      viz: (
+        <SNABarChart
+          timeRange={range}
+          timelineTags={timelineTags}
+          height={selectedVis.length === 1 ? "60vh" : "38vh"}
         />
       ),
     },

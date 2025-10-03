@@ -54,13 +54,13 @@ def generate_viz_with_audio_data():
         logger().exception(error_message)
         return build_http_error_response(error_message, 500)
 
-@app.route("/generate_ena_viz_whisperx", methods=['GET'])
+@app.route("/generate_viz_peninsula_2025", methods=['GET'])
 def generate_viz_with_audio_data():
     args = request.args
     try:
         session_id = args["sessionId"]
-        # handover, secondary, doctor = get_critical_timestamps(session_id, data_folder)
-        # run_auto_transcription_coding(data_folder, session_id, handover, secondary, doctor)
+        
+        # TODO: process HR CSV data, if we can run this and whisperx in parallel, that would be good.   
 
         generate_visualization_with_audio_data_whisperx(session_id, data_folder)
         return "Visualisations with audio data have been generated (SNA and ENA).", 200

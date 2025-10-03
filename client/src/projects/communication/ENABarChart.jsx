@@ -6,7 +6,7 @@ import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 
-const SNABarChart = ({
+const ENABarChart = ({
   height,
   width,
   timeRange,
@@ -86,4 +86,4 @@ const SNABarChart = ({
   );
 };
 
-export default SNABarChart;
+export default ENABarChart;

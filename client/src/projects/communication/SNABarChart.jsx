@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {getSNABarchartData} from "../../services/py-server/indexVisualiser";
+import { getSNABarchartData } from "../../services/py-server/indexVisualiser";
 import Barchart from "../teamwork-prio/Barchart";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
@@ -23,16 +23,15 @@ const SNABarChart = ({
 
   useEffect(() => {
     const secondaryTime =
-          timelineTags.length !== 0
-            ? timelineTags.filter(
-                (d) => d.label === "Secondary nurse enters"
-              )[0].value
-            : 0;
+      timelineTags.length !== 0
+        ? timelineTags.filter((d) => d.label === "Secondary nurse enters")[0]
+            .value
+        : 0;
 
-        const doctorTime =
-          timelineTags.length !== 0
-            ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
-            : 0;
+    const doctorTime =
+      timelineTags.length !== 0
+        ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
+        : 0;
 
     getSNABarchartData({
       simulationId: simulationId,
@@ -60,6 +59,16 @@ const SNABarChart = ({
 
   useEffect(() => {
     if (snaCountData.length === 0) {
+      const secondaryTime =
+        timelineTags.length !== 0
+          ? timelineTags.filter((d) => d.label === "Secondary nurse enters")[0]
+              .value
+          : 0;
+
+      const doctorTime =
+        timelineTags.length !== 0
+          ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
+          : 0;
       // Fetch data immediately when component mounts
       function fetchData() {
         getSNABarchartData({

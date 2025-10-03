@@ -65,10 +65,6 @@ const DebriefView = () => {
       setHiveState(hiveState);
     };
 
-    // const onReceiveTaggingNotesInfo = (taggingData) => {
-    //   setNotes(taggingData);
-    // };
-
     taggingSocket.on("connect", onConnect);
     taggingSocket.on("disconnect", onDisconnect);
     taggingSocket.on("receive-disp-list", onUpdateList);

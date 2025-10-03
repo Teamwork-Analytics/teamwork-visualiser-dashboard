@@ -16,6 +16,8 @@ import VideoVisualisation from "./VideoVisualisation";
 // visualisations
 import { ENANetworkView, SocialNetworkView } from "../../communication";
 import { HiveView } from "../../hive";
+import SNABarChart from "../../communication/SNABarChart";
+import ENABarChart from "../../communication/ENABarChart";
 
 // Styles for different visualisation components
 const visStyles = {
@@ -75,11 +77,30 @@ const topTabVisualisations = (timeRange) => [
 
 // Configuration for bottom visualisations -> for carousel
 const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
+  // {
+  //   eventKey: "wardMap",
+  //   title: "Ward Map",
+  //   component: () => (
+  //     <HiveView
+  //       timeRange={timeRange}
+  //       showModal={showPreviewModal}
+  //       width="100%"
+  //       height="30vh"
+  //     />
+  //   ),
+  //   info: () => (
+  //     <div>
+  //       Each hexagon represents a position of a student. The colour-filled
+  //       hexagon represents the student talking in that position.
+  //     </div>
+  //   ),
+  // },
+
   {
-    eventKey: "wardMap",
-    title: "Ward Map",
+    eventKey: "heartRateBarchart",
+    title: "Heart Rate Bar Chart",
     component: () => (
-      <HiveView
+      <ENABarChart
         timeRange={timeRange}
         showModal={showPreviewModal}
         width="100%"
@@ -88,66 +109,104 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
     ),
     info: () => (
       <div>
-        Each hexagon represents a position of a student. The colour-filled
-        hexagon represents the student talking in that position.
+        The height of each bar represents the amount of communication instances
+        in that category.
       </div>
     ),
   },
   {
-    eventKey: "commNetwork",
-    title: "Communication Network",
+    eventKey: "snaBarchart",
+    title: "SNA Bar Chart",
     component: () => (
-      <SocialNetworkView
+      <SNABarChart
         timeRange={timeRange}
         timelineTags={timelineTags}
+        showModal={showPreviewModal}
         width="100%"
         height="30vh"
       />
     ),
     info: () => (
       <div>
-        The size of the circle represents the time a student spent talking. The
-        arrow thickness represents the talking time a student spent with another
-        student.
+        The height of each bar represents the amount of communication instances
+        in that category.
       </div>
     ),
   },
   {
-    eventKey: "commBehaviour",
-    title: "Communication Behaviour",
+    eventKey: "enaBarchart",
+    title: "ENA Bar Chart",
     component: () => (
-      <ENANetworkView timeRange={timeRange} width="100%" height="30vh" />
+      <ENABarChart
+        timeRange={timeRange}
+        timelineTags={timelineTags}
+        showModal={showPreviewModal}
+        width="100%"
+        height="30vh"
+      />
     ),
     info: () => (
       <div>
-        <h5>Call-out</h5>
-        <ul>
-          <li>Her blood pressure's really low and then her oxygen.</li>
-          <li>Everything seems intact.</li>
-          <li>He's got a lot of pain as well.</li>
-        </ul>
-        <h5>Task allocation</h5>
-        <ul>
-          <li>I can do Imani, I can do the obs and the antibiotic.</li>
-          <li>Can you count respirate, please?</li>
-        </ul>
-        <h5>Questioning & Acknowledging</h5>
-        <ul>
-          <li>(Questioning): Do you remember how many grams we need?</li>
-          <li>(Responding): It's one gram.</li>
-        </ul>
-        <h5>Escalation</h5>
-        <ul>
-          <li>Should we just call both of them so that we get more help?</li>
-          <li>Just going to call a MET call on Ruth.</li>
-        </ul>
-        <h5>Handover</h5>
-        <ul>
-          <li>Number two, Bailey. The theatre has just picked…</li>
-        </ul>
+        The height of each bar represents the amount of communication behaviour
+        instances in that category.
       </div>
     ),
   },
+  // {
+  //   eventKey: "commNetwork",
+  //   title: "Communication Network",
+  //   component: () => (
+  //     <SocialNetworkView
+  //       timeRange={timeRange}
+  //       timelineTags={timelineTags}
+  //       width="100%"
+  //       height="30vh"
+  //     />
+  //   ),
+  //   info: () => (
+  //     <div>
+  //       The size of the circle represents the time a student spent talking. The
+  //       arrow thickness represents the talking time a student spent with another
+  //       student.
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   eventKey: "commBehaviour",
+  //   title: "Communication Behaviour",
+  //   component: () => (
+  //     <ENANetworkView timeRange={timeRange} width="100%" height="30vh" />
+  //   ),
+  //   info: () => (
+  //     <div>
+  //       <h5>Call-out</h5>
+  //       <ul>
+  //         <li>Her blood pressure's really low and then her oxygen.</li>
+  //         <li>Everything seems intact.</li>
+  //         <li>He's got a lot of pain as well.</li>
+  //       </ul>
+  //       <h5>Task allocation</h5>
+  //       <ul>
+  //         <li>I can do Imani, I can do the obs and the antibiotic.</li>
+  //         <li>Can you count respirate, please?</li>
+  //       </ul>
+  //       <h5>Questioning & Acknowledging</h5>
+  //       <ul>
+  //         <li>(Questioning): Do you remember how many grams we need?</li>
+  //         <li>(Responding): It's one gram.</li>
+  //       </ul>
+  //       <h5>Escalation</h5>
+  //       <ul>
+  //         <li>Should we just call both of them so that we get more help?</li>
+  //         <li>Just going to call a MET call on Ruth.</li>
+  //       </ul>
+  //       <h5>Handover</h5>
+  //       <ul>
+  //         <li>Number two, Bailey. The theatre has just picked…</li>
+  //       </ul>
+  //     </div>
+  // ),
+  // },
 ];
 
 export { topTabVisualisations, bottomVisualisations };
