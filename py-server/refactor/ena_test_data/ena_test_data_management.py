@@ -19,3 +19,20 @@ def get_ena_test_data(id: str, data_folder, start_time, end_time):
     column_names = ["task allocation",  "call-out", "escalation", "questioning", "acknowledging"]
     output_data = calculate_ena_metric(session_view, window_size, column_names)
     return output_data
+
+def get_ena_barchart_data(id: str, data_folder, start_time, end_time):
+    file = "%s_network_data.csv" % id
+    file_path = os.path.join(data_folder, id, "result", file)
+    os.path.join(data_folder, os.sep, )
+    session_df = pd.read_csv(file_path)
+    # updated on 17/7/2023, merged the acknowledging and responding
+    ## !!!!!! update here to change the response code.
+    COLUMNS_TO_SUM = [
+        "task allocation", "sharing information", "escalation", "questioning", "handover",
+        "acknowledgment", "responding"
+    ]
+
+    # This one returns the code response of each student
+    # return jsonify(session_df.groupby('initiator')[COLUMNS_TO_SUM].sum().to_dict('index'))
+    # This one return a sum of responses per student
+    return session_df[COLUMNS_TO_SUM].sum().to_dict()

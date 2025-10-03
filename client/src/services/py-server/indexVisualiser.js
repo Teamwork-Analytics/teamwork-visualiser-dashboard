@@ -67,4 +67,16 @@ const getTeamworkBarchart = async (body) => {
   );
 };
 
-export { getSNAdata, getENAdata, getTeamworkBarchart };
+const getENABarchartData = async (body) => {
+  const { simulationId, startTime, endTime } = body;
+  return await communicationAPI.get(
+    `/get_ena_barchart_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}`
+  );
+};
+const getSNABarchartData = async (body) => {
+  const { simulationId, startTime, endTime, docEnterTime, secEnterTime } = body;
+  return await communicationAPI.get(
+    `/get_sna_barchart_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}&doc_enter=${docEnterTime}&secondary=${secEnterTime}`
+  );
+};
+export { getSNAdata, getENAdata, getTeamworkBarchart, getENABarchartData, getSNABarchartData };
