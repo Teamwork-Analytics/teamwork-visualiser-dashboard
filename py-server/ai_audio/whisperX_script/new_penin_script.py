@@ -8,11 +8,11 @@ from main import whisperx_transcribe
 audio_folder = "audio/nursing"
 res_folder = "result/res_nursing"
 
-def create_transcription_files(audio_folder_path, res_folder_path):
+def create_transcription_files(whisper_model, audio_folder_path, res_folder_path):
     start = time.time()
     for a_audio in os.listdir(audio_folder_path):
         if "simulation_" in a_audio and ".wav" in a_audio:
-            whisperx_transcribe(os.path.join(audio_folder_path, a_audio), res_folder_path+"/" + a_audio + ".xlsx")
+            whisperx_transcribe(whisper_model,os.path.join(audio_folder_path, a_audio), res_folder_path+"/" + a_audio + ".xlsx")
         else:
             print("{} is not a simulation audio in wav format, skip".format(a_audio))
         # to_doc("result/"+a_audio, "doc/" + a_audio.split(".")[0] + ".docx")

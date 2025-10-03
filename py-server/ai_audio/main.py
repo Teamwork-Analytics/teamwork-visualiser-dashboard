@@ -680,7 +680,7 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
     # transcribing_audio_clips_with_timestamp(whisper_model, the_session_id=str(the_session_id),
     #                                         audio_clip_folder_path=the_data_folder, handover_ends=handover_ends,
     #                                         secondary_entered=secondary_entered, met_entered=doctor_entered)
-    create_transcription_files(a_session_path, transcription_folder)
+    create_transcription_files(whisper_model,a_session_path, transcription_folder)
     transcription_df = organsing_transcription_df(transcription_folder, transcription_excel_output_path)
 
     # transcribing_audio_clips(whisper_model, session_id=str(the_session_id), audio_clip_folder_path=the_data_folder)
