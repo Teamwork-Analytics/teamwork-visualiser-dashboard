@@ -35,7 +35,7 @@ function getLocalIpAddress() {
   return null;
 }
 
-const ipAddress = getLocalIpAddress();
+const ipAddress = "192.168.1.101"  //getLocalIpAddress();
 const deviceId = "main-server";
 
 async function updateIpAddress() {
