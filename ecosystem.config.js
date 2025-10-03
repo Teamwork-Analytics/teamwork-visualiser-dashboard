@@ -1,0 +1,38 @@
+module.exports = {
+  apps : [{
+    name: 'pyserver',
+    cmd: 'py-server/server.py',
+    autorestart: false,
+    watch: false,
+    instances: 1,
+    pid: 'py-sever/server.pid',
+  }, {
+    name: 'client',
+    cwd: 'client',
+    script: 'npm',
+    args: "start",
+    autorestart: false,
+    watch: false,
+    instances: 1,
+    pid: 'client/client.pid',
+  }, {
+    name: 'server',
+    cwd: 'server',
+    script: 'npm',
+    args: "run dev",
+    autorestart: false,
+    watch: false,
+    instances: 1,
+    pid: 'server/server.pid',
+  }, {
+    name: 'fitbitserver',
+    cwd: 'fitbit-receiver',
+    script: 'npm',
+    args: "start",
+    autorestart: false,
+    watch: false,
+    instances: 1,
+    pid: 'fitbit-receiver/fitbit-receiver.pid',
+  },
+],
+};

@@ -4,7 +4,7 @@
     "server": "cd server && npm run dev",
     "pyserver": "cd py-server && python server.py",
     "fitbitserver": "cd fitbit-receiver && npm start",
-    "all": "concurrently \"npm run server\" \" npm run client \" \" npm run fitbitserver\" "
+    "all": "concurrently \"npm run server\" \" npm run client \" \" npm run fitbitserver\" \" npm run pyserver\" "
   },
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -22,6 +22,7 @@
     "nodemon": "^3.0.3",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
+    "pm2": "^6.0.13",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap-icons": "^1.10.3",

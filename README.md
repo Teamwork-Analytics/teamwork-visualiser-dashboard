@@ -22,6 +22,16 @@ A dashboard to collect, analyse, and visualize all teamwork activities (i.e., mu
 
 7. Check the sample data in the corresponding session.
 
+# Running all required applications
+
+Alternatively, you can run all the required applications and monitor them using `pm2`. 
+
+1. Make sure `pm2` is installed by running `pm2 --version`. This should be installed with the current dependencies.
+2. Run all applications `pm2 start ecosystem.config.js`. If you would like to run only one application `pm2 start ecosystem.config.js --only <app_name>`. The app names are listed in `ecosystem.config.js` file.
+3. Monitor applications `pm2 monit`.
+4. Stop applications `pm2 stop ecosystem.config.js`.
+5. Delete applications from `pm2` `pm2 delete ecosystem.config.js`.
+
 # Additional procedures if the MongoDB is not established
 
 Initialising the database: 
