@@ -18,6 +18,7 @@ import { ENANetworkView, SocialNetworkView } from "../../communication";
 import { HiveView } from "../../hive";
 import SNABarChart from "../../communication/SNABarChart";
 import ENABarChart from "../../communication/ENABarChart";
+import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
 
 // Styles for different visualisation components
 const visStyles = {
@@ -207,6 +208,25 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   //     </div>
   // ),
   // },
+  {
+    eventKey: "hearRateVis",
+    title: "Heart Rate Visualisation",
+    component: () => (
+      <TeamworkBarchart
+        timeRange={timeRange}
+        showModal={showPreviewModal}
+        width={"100%"}
+        height={"30vh"}
+      />
+    ),
+    info: () => (
+      <div>
+        Heart rate Barchart.
+
+
+      </div>
+    ),
+  }
 ];
 
 export { topTabVisualisations, bottomVisualisations };
