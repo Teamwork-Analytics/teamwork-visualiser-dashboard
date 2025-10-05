@@ -32,6 +32,8 @@ Alternatively, you can run all the required applications and monitor them using 
 4. Stop applications `pm2 stop ecosystem.config.js`.
 5. Delete applications from `pm2` `pm2 delete ecosystem.config.js`.
 
+If using Windows `npx pm2 <...>`
+
 # Additional procedures if the MongoDB is not established
 
 Initialising the database: 
