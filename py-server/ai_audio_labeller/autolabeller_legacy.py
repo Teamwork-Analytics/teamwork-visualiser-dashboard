@@ -1,38 +1,3 @@
-"""
-Auto-labeller for Healthcare Communication Analysis
-
-This module processes healthcare simulation transcripts and classifies communication constructs
-using GenAI models. It supports both row-by-row and phase-based processing.
-
-PHASE-BASED PROCESSING (Recommended for large datasets):
-=========================================================
-Instead of processing row by row, you can now process data by phases using timestamps.
-
-Usage Example:
---------------
-python autolabeller.py --csv data.csv --phases "0,100,200,300,400"
-
-This will:
-1. Slice the data into 4 phases:
-   - Phase 1: timestamp 0 to 100
-   - Phase 2: timestamp 100 to 200
-   - Phase 3: timestamp 200 to 300
-   - Phase 4: timestamp 300 to 400
-2. Process each phase with GenAI classification
-3. Return results with columns: id, task_allocation, handover, sharing_information, 
-   escalation, questioning, responding, acknowledging
-4. Combine GenAI results with original data using utterance_id
-5. Save final results to CSV
-
-Additional Options:
--------------------
---model MODEL        : Specify classification model (default: deepseek-r1:14b)
---output OUTPUT.csv  : Specify output file path
--b, --binary         : Use binary classification mode
-
-Note: The DataFrame must have a 'timestamp' or 'time' column for phase-based processing.
-"""
-
 import csv
 import argparse
 import ollama
@@ -43,9 +8,6 @@ import multiprocessing
 from contextlib import redirect_stdout
 from datetime import datetime
 from functools import partial
-import pickle
-import os
-import tempfile
 
 # Each element in the VECTOR_DB will be a tuple (chunk, embedding)
 # The embedding is a list of floats, for example: [0.1, 0.04, -0.34, 0.21, ...]
@@ -511,176 +473,6 @@ def _classify_text_single_label(text, index, df):
     return classifications
 
 
-def slice_dataframe_by_phases(df: pd.DataFrame, phase_timestamps: list) -> list:
-    """
-    Slice the DataFrame based on phase timestamps.
-    
-    This function divides the data into phases based on the provided timestamps.
-    For example, with timestamps [0, 100, 200, 300, 400], it creates 4 phases:
-    - Phase 1: 0 to 100
-    - Phase 2: 100 to 200
-    - Phase 3: 200 to 300
-    - Phase 4: 300 to 400
-    
-    Args:
-        df: DataFrame with a timestamp column (named 'timestamp' or 'time')
-        phase_timestamps: List of timestamps [start, phase1, phase2, phase3, end]
-                         Example: [0, 100, 200, 300, 400]
-    
-    Returns:
-        List of DataFrames, one for each phase interval
-    """
-    if len(phase_timestamps) < 2:
-        raise ValueError("Need at least 2 timestamps (start and end)")
-    
-    # Ensure df has a timestamp column - adjust column name as needed
-    if 'timestamp' not in df.columns and 'time' not in df.columns:
-        raise ValueError("DataFrame must have a 'timestamp' or 'time' column")
-    
-    time_col = 'timestamp' if 'timestamp' in df.columns else 'time'
-    
-    phase_slices = []
-    for i in range(len(phase_timestamps) - 1):
-        start_time = phase_timestamps[i]
-        end_time = phase_timestamps[i + 1]
-        
-        # Slice data between start_time and end_time
-        phase_df = df[(df[time_col] >= start_time) & (df[time_col] < end_time)].copy()
-        phase_slices.append(phase_df)
-    
-    return phase_slices
-
-
-def process_phase_with_genai(phase_df: pd.DataFrame, phase_num: int, classification_type: str = "multilabel") -> pd.DataFrame:
-    """
-    Process a single phase DataFrame with GenAI classification.
-    
-    Args:
-        phase_df: DataFrame containing data for one phase
-        phase_num: Phase number (for logging)
-        classification_type: Type of classification ("multilabel" or "binary")
-    
-    Returns:
-        DataFrame with columns: id, plus dynamically generated columns based on CONSTRUCTS
-        (e.g., task_allocation, handover, sharing_information, escalation, questioning, 
-        responding, acknowledging)
-    """
-    processed_rows = []
-    
-    print(f"Processing Phase {phase_num} with {len(phase_df)} rows...")
-    
-    for index, row in phase_df.iterrows():
-        if pd.notnull(row.get('communication_type')) and pd.notnull(row.get('text')):
-            # Get the original index from the full dataframe
-            original_index = index
-            
-            processed_entry = _add_chunk_to_database(
-                text=row['text'],
-                index=original_index,
-                df=phase_df,
-                type=classification_type
-            )
-            
-            # Dynamically build result_row using CONSTRUCTS
-            result_row = {'id': row.get('utterance_id', original_index)}
-            
-            # Map labels to construct names dynamically
-            for i, construct_name in enumerate(CONSTRUCTS):
-                result_row[construct_name] = processed_entry['labels'][i]
-            
-            processed_rows.append(result_row)
-            
-            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-            print(f'  Processed utterance {result_row["id"]} at {timestamp}')
-    
-    return pd.DataFrame(processed_rows)
-
-
-def combine_genai_results_with_dataframe(df: pd.DataFrame, genai_results: pd.DataFrame, id_column: str = 'utterance_id') -> pd.DataFrame:
-    """
-    Combine GenAI classification results with original DataFrame.
-    
-    Args:
-        df: Original DataFrame
-        genai_results: DataFrame with GenAI results (must have 'id' column)
-        id_column: Name of the ID column in the original DataFrame
-    
-    Returns:
-        Combined DataFrame
-    """
-    # Rename 'id' in genai_results to match the original DataFrame's id column
-    genai_results_renamed = genai_results.rename(columns={'id': id_column})
-    
-    # Merge the DataFrames on the ID column
-    combined_df = df.merge(genai_results_renamed, on=id_column, how='left', suffixes=('', '_genai'))
-    
-    return combined_df
-
-
-def process_csv_by_phases(csv_file: str, phase_timestamps: list, classification_type: str = "multilabel") -> pd.DataFrame:
-    """
-    Process CSV file by phases instead of row by row.
-    
-    Args:
-        csv_file: Path to input CSV file
-        phase_timestamps: List of timestamps [start, phase1, phase2, phase3, end]
-        classification_type: Type of classification ("multilabel" or "binary")
-    
-    Returns:
-        Combined DataFrame with original data and GenAI classifications
-    """
-    # Load the entire dataset
-    df = pd.read_csv(csv_file)
-    print(f"Loaded {len(df)} rows from {csv_file}")
-    
-    # Slice DataFrame by phases
-    phase_slices = slice_dataframe_by_phases(df, phase_timestamps)
-    print(f"Sliced data into {len(phase_slices)} phases")
-    
-    # Create temporary directory for intermediate results
-    temp_dir = tempfile.mkdtemp(prefix="genai_phases_")
-    print(f"Using temporary directory: {temp_dir}")
-    
-    all_genai_results = []
-    
-    # Process each phase
-    for phase_num, phase_df in enumerate(phase_slices, start=1):
-        print(f"\n{'='*60}")
-        print(f"Processing Phase {phase_num}/{len(phase_slices)}")
-        print(f"{'='*60}")
-        
-        # Process phase with GenAI
-        phase_results = process_phase_with_genai(phase_df, phase_num, classification_type)
-        
-        # Save intermediate results to pickle
-        temp_file = os.path.join(temp_dir, f"phase_{phase_num}_results.pkl")
-        with open(temp_file, 'wb') as f:
-            pickle.dump(phase_results, f)
-        print(f"Saved Phase {phase_num} results to {temp_file}")
-        
-        all_genai_results.append(phase_results)
-    
-    # Combine all GenAI results
-    print(f"\n{'='*60}")
-    print("Combining all phase results...")
-    print(f"{'='*60}")
-    combined_genai_results = pd.concat(all_genai_results, ignore_index=True)
-    
-    # Merge with original DataFrame
-    final_df = combine_genai_results_with_dataframe(df, combined_genai_results)
-    
-    # Clean up temporary files
-    print(f"\nCleaning up temporary files in {temp_dir}...")
-    for phase_num in range(1, len(phase_slices) + 1):
-        temp_file = os.path.join(temp_dir, f"phase_{phase_num}_results.pkl")
-        if os.path.exists(temp_file):
-            os.remove(temp_file)
-    os.rmdir(temp_dir)
-    print("Cleanup complete!")
-    
-    return final_df
-
-
 def process_classification_with_genai(df: pd.DataFrame):
     import os
     from datetime import datetime
@@ -769,16 +561,6 @@ if __name__ == "__main__":
         default=CLASSIFICATION_MODEL,
         help="Name of the classification model to use."
     )
-    parser.add_argument(
-        '--phases',
-        type=str,
-        help='Comma-separated phase timestamps for phase-based processing (e.g., "0,100,200,300,400")'
-    )
-    parser.add_argument(
-        '--output',
-        type=str,
-        help='Output file path for results (optional)'
-    )
  
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-c', '--convert', action='store_true', help='Run converter')
@@ -788,9 +570,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
     CLASSIFICATION_MODEL = args.model # MUTATION!! to lazy to change XD
 
-    # Create logs directory if it doesn't exist
-    os.makedirs('logs', exist_ok=True)
-    
+    # Load the dataset
+    dataset = []
+    with open(args.csv, 'r', newline='', encoding='utf-8') as file:
+        csv_reader = csv.DictReader(file)
+        for row in csv_reader:
+            if row['text']:  # Check if the 'text' field is not empty
+                dataset.append(row['text'])
+
+    print(f'Loaded {len(dataset)} entries')
+
     # Create a timestamped filename
     log_filename = f'logs/output_{FILE_TIMESTAMP}.log'
 
@@ -801,23 +590,6 @@ if __name__ == "__main__":
         with redirect_stdout(f):
             if args.convert:
                 data_converter()
-            elif args.phases:
-                # Phase-based processing mode
-                phase_timestamps = [float(x.strip()) for x in args.phases.split(',')]
-                print(f"Phase-based processing with timestamps: {phase_timestamps}")
-                
-                classification_type = "binary" if args.binary else "multilabel"
-                result_df = process_csv_by_phases(args.csv, phase_timestamps, classification_type)
-                
-                # Save results
-                if args.output:
-                    output_file = args.output
-                else:
-                    output_file = f"labeled_dataset-phases-{classification_type}-{FILE_TIMESTAMP}-{CLASSIFICATION_MODEL.replace(':', '_')}.csv"
-                
-                result_df.to_csv(output_file, index=False)
-                print(f"\nResults saved to: {output_file}")
-                print(f"Total rows processed: {len(result_df)}")
             elif args.binary:
                 process_csv(args.csv, classification_type="binary")
             else:
