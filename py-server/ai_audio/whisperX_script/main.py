@@ -62,11 +62,12 @@ def whisperx_transcribe(model, audio_file, output_path, enable_diarization=False
         print(result["segments"])  # segments are now assigned speaker IDs
 
     print("start organising data")
-    res_dict = {"start": [], "end": [], "speaker": [], "text": [], "words_json": []}
+    res_dict = {"start": [], "end": [], "initiator": [],"receiver": [], "text": [], "words_json": []}
     for a_utterance in result["segments"]:
         res_dict["start"].append(a_utterance["start"])
         res_dict["end"].append(a_utterance["end"])
-        res_dict["speaker"].append(speaker_name)
+        res_dict["initiator"].append(speaker_name)
+        res_dict["receiver"].append("")
         res_dict["text"].append(a_utterance["text"])
         if "words" in res_dict:
             res_dict["words_json"].append(json.dumps(a_utterance["words"]))

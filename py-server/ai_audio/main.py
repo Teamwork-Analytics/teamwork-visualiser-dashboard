@@ -682,6 +682,7 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
     #                                         secondary_entered=secondary_entered, met_entered=doctor_entered)
     create_transcription_files(a_session_path, transcription_folder)
     transcription_df = organsing_transcription_df(transcription_folder, transcription_excel_output_path)
+    conversation_df = calculate_receiver_by_responded_text(transcription_df)
 
     # transcribing_audio_clips(whisper_model, session_id=str(the_session_id), audio_clip_folder_path=the_data_folder)
     # calculate_duration_of_clips(session_id=str(the_session_id), audio_clip_folder_path=the_data_folder)
@@ -695,7 +696,7 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
     #     met_entered=doctor_entered)
 
     # force alignment code is removed
-    conversation_df = filtering_by_phases(transcription_df,
+    conversation_df = filtering_by_phases(conversation_df,
                                               handover_ends=handover_ends,
                                               secondary_entered=secondary_entered,
                                               met_entered=doctor_entered
@@ -717,7 +718,6 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
 
     # This function uses the f-foramtion based detection algorithm to find the receiver of a conversation.
     # use the f-formation theory based detection algo to detect the receiver of an utterance
-    conversation_df = calculate_receiver_by_responded_text(conversation_df)
 
     # We now generate the sna data here
     # conversation_df.to_csv(os.path.join(the_data_folder, str(the_session_id), "result", "{}_network_data.csv".format(the_session_id)))
