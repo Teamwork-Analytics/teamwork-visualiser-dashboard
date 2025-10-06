@@ -1,27 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getTeamworkBarchart } from "../../services/py-server/indexVisualiser";
-import Barchart from "./Barchart";
+import { HeartRates } from "../../services/py-server/heartrate";
+// import BarchartForHeartRate from "./barchartForHeartRate";
+import BarchartForHeartRate from "./BarchartForHeartRate";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
 
-const TeamworkBarchart = ({
+
+const getHeartBeatVisualisationData = (data) => {
+
+  const keys = Object.keys(data);
+  const averageHeartBeat = {}
+
+  keys.forEach(element => {
+    const heartBeatValues = data[element].map((row) => row.Value);
+    averageHeartBeat[element] = {
+      'max': heartBeatValues.reduce((x,y) => x > y ? x : y),
+      'average': heartBeatValues.reduce((x,y) => x + y) / heartBeatValues.length,
+    }
+  });
+
+  return averageHeartBeat;
+};
+
+const HeartRateBarChart = ({
   height,
   width,
   timeRange,
   yLabelsFontSize,
   customAspectRatio,
+  timelineTags,
 }) => {
   const { simulationId } = useParams();
-  const [teamworkData, setTeamworkData] = useState([]);
-  const [isError, setIsError] = useState(teamworkData.length === 0);
+  const [heartRateData, setHeartRateData] = useState({});
+  const [isError, setIsError] = useState(heartRateData.length === 0);
 
   const startTime = timeRange[0];
   const endTime = timeRange[1];
 
   useEffect(() => {
-    getTeamworkBarchart({
+    HeartRates.get_by_id_and_time({
       simulationId: simulationId,
       startTime: startTime,
       endTime: endTime,
@@ -29,39 +48,34 @@ const TeamworkBarchart = ({
       .then((res) => {
         if (res.status === 200) {
           const filteredData = res.data;
-          const finalData = filteredData.filter(
-            (d) => d["label"][0] !== "Moving around"
-          );
-          setTeamworkData(finalData);
+          setHeartRateData(getHeartBeatVisualisationData(filteredData));
           setIsError(false);
         }
       })
       .catch((e) => {
         setIsError(true);
         console.error(e);
-        // toast.error("Teamwork Barchart error");
       });
   }, [simulationId, startTime, endTime]);
 
   useEffect(() => {
-    if (teamworkData.length === 0) {
+    if (heartRateData.length === 0) {
       // Fetch data immediately when component mounts
       function fetchData() {
-        getTeamworkBarchart({
+        HeartRates.get_by_id_and_time({
           simulationId: simulationId,
           startTime: startTime,
           endTime: endTime,
         })
           .then((res) => {
             if (res.status === 200) {
-              setTeamworkData(res.data);
+              setHeartRateData(getHeartBeatVisualisationData(res.data));
               setIsError(false);
             }
           })
           .catch((e) => {
-            setIsError(true);
             console.error('Erroreee', e);
-            // toast.error("Teamwork Barchart error");
+            setIsError(true);
           });
       }
 
@@ -71,12 +85,12 @@ const TeamworkBarchart = ({
       // Clean up the interval when the component is unmounted or when data is fetched
       return () => clearInterval(intervalId);
     }
-  }, [endTime, simulationId, startTime, teamworkData]);
+  }, [endTime, simulationId, startTime, heartRateData]);
 
   return (
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
-      <Barchart
-        data={teamworkData}
+      <BarchartForHeartRate
+        data={heartRateData}
         height={height}
         width={width}
         yLabelsFontSize={yLabelsFontSize}
@@ -86,4 +100,4 @@ const TeamworkBarchart = ({
   );
 };
 
-export default TeamworkBarchart;
+export default HeartRateBarChart;

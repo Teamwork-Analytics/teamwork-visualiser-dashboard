@@ -19,6 +19,7 @@ import { HiveView } from "../../hive";
 import SNABarChart from "../../communication/SNABarChart";
 import ENABarChart from "../../communication/ENABarChart";
 import TeamworkBarchart from "../../teamwork-prio/TeamworkBarchart";
+import HeartRateBarchart from "../../heartRate/HeartRateBarchart"
 
 // Styles for different visualisation components
 const visStyles = {
@@ -101,7 +102,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
     eventKey: "heartRateBarchart",
     title: "Heart Rate Bar Chart",
     component: () => (
-      <ENABarChart
+      <HeartRateBarchart
         timeRange={timeRange}
         showModal={showPreviewModal}
         width="100%"
@@ -222,8 +223,6 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
     info: () => (
       <div>
         Heart rate Barchart.
-
-
       </div>
     ),
   }

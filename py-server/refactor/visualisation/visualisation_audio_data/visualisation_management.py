@@ -1,3 +1,5 @@
+from refactor.heart_rate_data.heart_rate_data import HEART_RATE_DATA_RESULT_PATH, process_heart_rate_data, \
+    retrieve_heart_rate_data
 from refactor.observation_data.observation_data_management import *
 import nltk
 from ai_audio.changing_names import change_name_of_black_and_white
@@ -33,6 +35,15 @@ def generate_visualization_with_audio_data_whisperx(simulation_id: str, data_dir
     _run_auto_transcription_coding_whisperx(data_dir, simulation_id, handover_finish_time, secondary_nurses_enter_time,
                                    doctor_enter_time)
 
+def generate_visualization_with_heart_rate_data(simulation_id, data_dir):
+    session = simulation_id
+    data_dir_with_session = os.path.join(data_dir, str(session))
+    result_data_path = HEART_RATE_DATA_RESULT_PATH % session
+
+    session_start_timestamp = get_timestamp_from_sync(os.path.join(data_dir_with_session, "sync.txt"), "audio")
+
+    heart_rate_df = process_heart_rate_data(session, data_dir)
+    heart_rate_df.to_csv(os.path.join(data_dir_with_session, "result", result_data_path))
 
 def _run_auto_transcription_coding(data_folder, the_session_id, handover, secondary, doctor):
     # the_session_id = "416"  # @param {type:"string"}

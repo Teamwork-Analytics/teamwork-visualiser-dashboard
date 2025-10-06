@@ -79,4 +79,4 @@ const getSNABarchartData = async (body) => {
     `/get_sna_barchart_data?sessionId=${simulationId}&start=${startTime}&end=${endTime}&doc_enter=${docEnterTime}&secondary=${secEnterTime}`
   );
 };
-export { getSNAdata, getENAdata, getTeamworkBarchart, getENABarchartData, getSNABarchartData };
+export { communicationAPI, getSNAdata, getENAdata, getTeamworkBarchart, getENABarchartData, getSNABarchartData };

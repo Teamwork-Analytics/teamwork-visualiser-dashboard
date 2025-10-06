@@ -1,22 +1,31 @@
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
-const Barchart = ({
+const BarchartForHeartRate = ({
   data,
   height = "25vh",
   width = "40vw",
   yLabelsFontSize,
   customAspectRatio,
 }) => {
+
+  const labels = Object.keys(data);
+  const averages = []
+  
+  labels.forEach(key => averages.push(data[key].average));
+  console.log('averages', averages)
+
   const chartData = {
-    labels: data.map((row) => row.label),
+    labels: labels,
     datasets: [
       {
-        data: data.map((row) => row.value),
+        data: averages,
         backgroundColor: "#3a3a3a"  //rgba(30,144,255, 0.8), "#8856a7",
       },
     ],
   };
+
+  console.log('These are the entrres', data);
 
   return (
     <div
@@ -36,7 +45,7 @@ const Barchart = ({
             datalabels: {
               color: "#ffffff",
               formatter: function (value, context) {
-                return Math.round(value) + "%";
+                return Math.round(value);
               },
               textAlign: "end",
               align: "end",
@@ -60,7 +69,7 @@ const Barchart = ({
               // min: 0,
               title: {
                 display: false,
-                text: "Percentage (%)",
+                text: "Heart Rate",
                 //https://www.chartjs.org/docs/latest/general/fonts.html
                 font: { size: 18 },
               },
@@ -86,4 +95,4 @@ const Barchart = ({
   );
 };
 
-export default Barchart;
+export default BarchartForHeartRate;

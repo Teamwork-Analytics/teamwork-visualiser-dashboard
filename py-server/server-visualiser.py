@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from refactor.ena_test_data.ena_test_data_management import get_ena_test_data, get_ena_barchart_data
+from refactor.heart_rate_data.heart_rate_data import retrieve_heart_rate_data
 from refactor.prioritisation_test_data.prioritisation_test_data_management import get_task_prioritisation_graph_data
 from refactor.sna_test_data.sna_test_data_management import get_sna_graph_data, get_sna_barchart_data
 from refactor.visualisation.visualisation_audio_data.visualisation_management import \
@@ -77,7 +78,7 @@ def give_prioritisation_test_data():
 
 
 @ app.route("/get_data", methods=['GET'])
-def give_sna_test_data():
+def _give_sna_test_data():
     """
        This function is to return the testing data for the sna graph
        The returned json is created by pandas, using "records" format.
@@ -159,7 +160,7 @@ def give_sna_test_data():
 
 
 @app.route("/get_ena_data", methods=['GET'])
-def give_ena_test_data():
+def _give_ena_test_data():
     """
     This function is to return the testing data for mimic ena.
     The format of returned json is {"task allocation": {"task allocation": int, ...}, ...: {}, }
@@ -225,6 +226,37 @@ def give_ena_test_data():
         return jsonify(output_data)
     except Exception as e:
         error_message = "ENA file not available"
+        logger().exception(error_message)
+        return build_http_error_response(error_message, 500)
+
+
+@app.route("/get_heart_rate_data", methods=['GET'])
+def give_heart_rate_data():
+    """
+       This function returns the heart rate data, only filtered by start and end.
+       The json is created by pandas, it should be formatted as follows:
+       {
+        "red": [
+                {
+                "Server Time": <>,
+                "value": <>,
+                }
+            ],
+        "green": [],
+       }
+       :return:
+    """
+    try:
+        session_id = request.args['sessionId']
+        start_time = request.args["start"]
+        end_time = request.args["end"]
+        # TODO check if it must be filtered.
+        heart_rate_df_json_recovered = retrieve_heart_rate_data(int(session_id), data_folder, float(start_time), float(end_time))
+
+        return jsonify(heart_rate_df_json_recovered)
+
+    except Exception as e:
+        error_message = "Heart rate data not available"
         logger().exception(error_message)
         return build_http_error_response(error_message, 500)
 

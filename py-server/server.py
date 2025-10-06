@@ -40,7 +40,7 @@ def call_viz():
 
 
 @app.route("/generate_ena_viz", methods=['GET'])
-def generate_viz_with_audio_data():
+def _generate_viz_with_audio_data():
     args = request.args
     try:
         session_id = args["sessionId"]
@@ -60,8 +60,8 @@ def generate_viz_with_audio_data():
     try:
         session_id = args["sessionId"]
         
-        # TODO: process HR CSV data, if we can run this and whisperx in parallel, that would be good.   
-
+        # TODO: process HR CSV data, if we can run this and whisperx in parallel, that would be good.
+        generate_visualization_with_heart_rate_data(session_id, data_folder)
         generate_visualization_with_audio_data_whisperx(session_id, data_folder)
         return "Visualisations with audio data have been generated (SNA and ENA).", 200
     except Exception as err:
