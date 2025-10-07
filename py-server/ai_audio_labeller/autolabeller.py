@@ -352,16 +352,13 @@ def _parse_response(content):
 def _label_colour(colour_tag):
     return f'{colour_tag} {COLOUR_MAP[colour_tag]}' if colour_tag in COLOUR_MAP else 'patient/relative' 
 
-"""
-MULTILABEL classification prompt
-"""
 def _classify_text_multilabel(text, index, df):
     
     # previous_texts = _get_previous_texts(index, df)
     utterance_snippet = _get_utterance_snippet(index,df)
 
     if utterance_snippet:
-        context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session:\n{utterance_snippet}"
+        context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session: {utterance_snippet}"
     else:
         context_msg = ""
 
@@ -369,16 +366,17 @@ def _classify_text_multilabel(text, index, df):
     You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students.
 
     Communication constructs and their definitions are as follows:
-    {chr(10).join([f"- {k}: {v} \n" for k,v in DEFINITIONS_WITH_EXAMPLES.items()])}
+    {chr(10).join([f"- {k}: {v}" for k,v in DEFINITIONS_WITH_EXAMPLES.items()])}
 
     Your task is to analyze the utterance contained in the dialogue snippet "{text}" and determine whether the utterance exemplifies any of the communication constructs detailed above.
 
-    Your response should only consist of 7 digits separated by commas and the order of the digits should match the order of communication constructs detailed above. Each digit can be either '1' or '0', with '1' indicating the presence of a specific communication construct and '0' indicating the absence of the communication construct. There is no need to provide explanations, reasoning, or additional text.
-    
+    Your response should only consist of 7 digits separated by commas and the order of the digits should match the order of communication constructs detailed above. 
+    Each digit can be either '1' or '0', with '1' indicating the presence of a specific communication construct and '0' indicating the absence of the communication construct. 
+    There is no need to provide explanations, reasoning, or additional text.
     """
     
 
-     # Parse the response
+    # Parse the response
     try:
         # print(f"Prompt sent to model:\n{prompt}\n")
         response = ollama.chat(
@@ -433,7 +431,7 @@ def _classify_text_single_label(text, index, df):
     utterance_snippet = _get_utterance_snippet(index,df)
 
     if utterance_snippet:
-        context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session:\n{utterance_snippet}"
+        context_msg = f"There can be multiple nursing students in a healthcare simulation session. These nursing students were assigned a color label, either Red, Blue, Green, or Yellow. Here is a dialogue snippet in a healthcare simulation session:{utterance_snippet}"
     else:
         context_msg = ""
         

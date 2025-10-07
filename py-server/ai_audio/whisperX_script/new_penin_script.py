@@ -3,7 +3,7 @@ import time
 
 import pandas as pd
 
-from main import whisperx_transcribe
+from .main import whisperx_transcribe
 
 audio_folder = "audio/nursing"
 res_folder = "result/res_nursing"

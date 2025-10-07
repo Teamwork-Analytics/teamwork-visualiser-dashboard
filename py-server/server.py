@@ -40,7 +40,7 @@ def call_viz():
 
 
 @app.route("/generate_ena_viz", methods=['GET'])
-def generate_viz_with_audio_data():
+def _generate_viz_with_audio_data():
     args = request.args
     try:
         session_id = args["sessionId"]
