@@ -28,7 +28,11 @@ def whisperx_transcribe(model, audio_file, output_path, enable_diarization=False
         print(output_path + " already exists, skip processing")
         return
 
-    speaker_name = audio_file.split("_")[1]
+    # This should have only the filename not the full path.
+    audio_filename = os.path.basename(audio_file)
+    speaker_name = audio_filename.split("_")[1]
+
+    # speaker_name = audio_file.split("_")[1]
     # 1. Transcribe with original whisper (batched)
 
     # save model to local path (optional)
@@ -62,11 +66,16 @@ def whisperx_transcribe(model, audio_file, output_path, enable_diarization=False
         print(result["segments"])  # segments are now assigned speaker IDs
 
     print("start organising data")
-    res_dict = {"start": [], "end": [], "speaker": [], "text": [], "words_json": []}
+    res_dict = {"start_time": [], "end_time": [], "speaker": [], "initiator": [], "receiver": [], "text": [], "words_json": []}
     for a_utterance in result["segments"]:
-        res_dict["start"].append(a_utterance["start"])
-        res_dict["end"].append(a_utterance["end"])
+        res_dict["start_time"].append(a_utterance["start"])
+        res_dict["end_time"].append(a_utterance["end"])
+        
+        # Assuming speaker and initiator are the same because it was assigned to the same microphone.
         res_dict["speaker"].append(speaker_name)
+        res_dict["initiator"].append(speaker_name)
+        res_dict["receiver"].append("")
+        
         res_dict["text"].append(a_utterance["text"])
         if "words" in res_dict:
             res_dict["words_json"].append(json.dumps(a_utterance["words"]))

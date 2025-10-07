@@ -24,7 +24,9 @@ def calculate_receiver_by_responded_text(conv_data_df: pd.DataFrame, respond_thr
     for i, row in receiver_df.iterrows():
 
         row_index = receiver_df.index.get_loc(i)
-        response_df = receiver_df[(receiver_df["start_time"] < (row["start_time"]  + respond_threshold)) & (receiver_df["start_time"] > row["start_time"])]
+
+        # response_df = receiver_df[(receiver_df["start_time"] < (row["start_time"]  + respond_threshold)) & (receiver_df["start_time"] > row["start_time"])]
+        response_df = receiver_df[(receiver_df["start"] < (row["start"]  + respond_threshold)) & (receiver_df["start"] > row["start"])]
         # print(response_df)
         # responded_list.append(response_df.shape[0])
         # print(col_index)
