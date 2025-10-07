@@ -11,6 +11,8 @@ HEART_RATE_PREFIX_SEP = HEART_RATE_PREFIX + "-"
 HEART_RATE_PROCESSING_MSG = "Processing heart rate for: %s"
 SERVER_TIME_COLUMN = "Server Time"
 HEART_RATE_VALUE_COLUMN = "Value"
+HEART_RATE_BASELINE_KEY = "Baseline"
+HEART_RATES_KEY = "Values"
 SERVER_TIMESTAMP = "server_timestamp"
 SERVER_TIMESTAMP_RELATIVE = "server_timestamp_relative"
 FILE_SUFFIX = ".csv"
@@ -41,7 +43,6 @@ def process_heart_rate_data(session_id: int, data_dir: str, sort_by_timestamp: b
     if session_start_timestamp is None:
         session_start_timestamp = heart_rate_data[SERVER_TIMESTAMP].min()  # If none get the first available timestamp
 
-    heart_rate_data = heart_rate_data[heart_rate_data[SERVER_TIMESTAMP] >= session_start_timestamp]
     heart_rate_data[SERVER_TIMESTAMP_RELATIVE] = heart_rate_data[SERVER_TIMESTAMP] - session_start_timestamp
 
     return heart_rate_data
@@ -55,15 +56,27 @@ def retrieve_heart_rate_data(session_id: int, data_dir: str, start_time: float, 
     heart_rate_data_path = os.path.join(data_dir_with_session, "result", heart_rate_data_filename)
 
     heart_rate_data_df = pd.read_csv(heart_rate_data_path)
-    heart_rate_data_df = heart_rate_data_df[(heart_rate_data_df[SERVER_TIMESTAMP_RELATIVE] >= start_time) & (heart_rate_data_df[SERVER_TIMESTAMP_RELATIVE] <= end_time)]
+    # If relative data is above 0, it's because the value is larger than session start timestamp.
+    heart_rate_data_df_filter = heart_rate_data_df[heart_rate_data_df[SERVER_TIMESTAMP_RELATIVE] >= 0]
+    heart_rate_data_df_filter = heart_rate_data_df_filter[(heart_rate_data_df_filter[SERVER_TIMESTAMP_RELATIVE] >= start_time) & (heart_rate_data_df_filter[SERVER_TIMESTAMP_RELATIVE] <= end_time)]
 
+    heart_rate_data_df_filter = heart_rate_data_df_filter.groupby(TAG_ID)
     heart_rate_data_df = heart_rate_data_df.groupby(TAG_ID)
 
     dict_to_return = {}
 
-    for group_key, group_df in heart_rate_data_df:
+    for group_key, group_df in heart_rate_data_df_filter:
         group_df_dict = group_df[[SERVER_TIMESTAMP, SERVER_TIMESTAMP_RELATIVE, HEART_RATE_VALUE_COLUMN]].T.to_dict()
-        dict_to_return[group_key] = [v for k,v in group_df_dict.items()]
+        dict_to_return[group_key] = {HEART_RATES_KEY: [v for k,v in group_df_dict.items()]}
+
+        baseline_heart_rate = heart_rate_data_df.get_group(group_key)[HEART_RATE_VALUE_COLUMN].head(1)
+        if baseline_heart_rate.empty:
+            baseline_heart_rate = 0
+        else:
+            baseline_heart_rate = baseline_heart_rate.item()
+
+        dict_to_return[group_key][HEART_RATE_BASELINE_KEY] =  baseline_heart_rate # the first value will be the baseline
+
 
     return dict_to_return
 

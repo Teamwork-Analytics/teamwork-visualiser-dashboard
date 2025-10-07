@@ -22,3 +22,13 @@ export const COLOURS = {
   KEY_EVENT_PURPLE: "#9c27b0",
   ACTION_ORANGE: "#ed6c02",
 };
+
+export const cssColourMatcher = {
+  BLUE: COLOURS.PRIMARY_NURSE_1, // blue
+  RED: COLOURS.PRIMARY_NURSE_2, //red
+  GREEN: COLOURS.SECONDARY_NURSE_1, //lime
+  YELLOW: COLOURS.SECONDARY_NURSE_2, // gold
+  PATIENT: "#FFA500",
+  DOCTOR: "#800080",
+  RELATIVE: "#000000",
+};
