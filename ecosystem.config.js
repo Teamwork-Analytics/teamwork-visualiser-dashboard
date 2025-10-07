@@ -8,7 +8,7 @@ module.exports = {
     autorestart: false,
     watch: false,
     instances: 1,
-    pid: 'py-sever/server.pid',
+    pid: 'py-server/server.pid',
   }, {
     name: 'pyserver-visualiser',
     cmd: 'py-server/server-visualiser.py',
@@ -17,7 +17,7 @@ module.exports = {
     autorestart: false,
     watch: false,
     instances: 1,
-    pid: 'py-sever/server-visualiser.pid',
+    pid: 'py-server/server-visualiser.pid',
   },{
     name: 'client',
     cwd: 'client',
