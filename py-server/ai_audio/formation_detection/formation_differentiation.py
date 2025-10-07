@@ -20,7 +20,11 @@ def get_receiver(target_list: list):
 
 def calculate_receiver_by_responded_text(conv_data_df: pd.DataFrame, respond_threshold: float = 5):
     receiver_df = pd.DataFrame(conv_data_df)
-    receiver_df["receiver"] = receiver_df["receiver"].astype(str)
+    default_role = ""  # This role is only to remove the NA or empty values.
+
+    receiver_df["receiver"] = receiver_df["receiver"].fillna(default_role).astype(str)
+    receiver_df["initiator"] = receiver_df["initiator"].fillna(default_role).astype(str)
+
     for i, row in receiver_df.iterrows():
 
         row_index = receiver_df.index.get_loc(i)
@@ -30,7 +34,8 @@ def calculate_receiver_by_responded_text(conv_data_df: pd.DataFrame, respond_thr
         # print(response_df)
         # responded_list.append(response_df.shape[0])
         # print(col_index)
-        receiver_list = list(response_df["initiator"].unique().tolist())
+        receiver_list = response_df["initiator"].unique().tolist()
+        receiver_list = list(filter(lambda i: i != default_role, receiver_list))  # Remove the default role, we do not want "" in the receivers' list
         if row["initiator"] in receiver_list:
             receiver_list.remove(row["initiator"])
         receiver_df.loc[i, "receiver"] = ",".join(receiver_list)
