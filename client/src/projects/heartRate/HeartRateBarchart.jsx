@@ -5,6 +5,8 @@ import { HeartRates } from "../../services/py-server/heartrate";
 import BarchartForHeartRate from "./BarchartForHeartRate";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
+import { cssColourMatcher } from "../../config/colours";
+
 ChartJS.register(...registerables);
 
 
@@ -14,10 +16,11 @@ const getHeartBeatVisualisationData = (data) => {
   const averageHeartBeat = {}
 
   keys.forEach(element => {
-    const heartBeatValues = data[element].map((row) => row.Value);
+    const heartBeatValues = data[element]['Values'].map((row) => row.Value);
     averageHeartBeat[element] = {
       'max': heartBeatValues.reduce((x,y) => x > y ? x : y),
       'average': heartBeatValues.reduce((x,y) => x + y) / heartBeatValues.length,
+      'baseline': data[element]['Baseline'],
     }
   });
 
@@ -95,6 +98,7 @@ const HeartRateBarChart = ({
         width={width}
         yLabelsFontSize={yLabelsFontSize}
         customAspectRatio={customAspectRatio}
+        cssColourMatcher={cssColourMatcher}
       />
     </SimpleErrorText>
   );

@@ -42,7 +42,7 @@ def generate_visualization_with_heart_rate_data(simulation_id, data_dir):
 
     session_start_timestamp = get_timestamp_from_sync(os.path.join(data_dir_with_session, "sync.txt"), "audio")
 
-    heart_rate_df = process_heart_rate_data(session, data_dir)
+    heart_rate_df = process_heart_rate_data(session, data_dir, session_start_timestamp=session_start_timestamp)
     heart_rate_df.to_csv(os.path.join(data_dir_with_session, "result", result_data_path))
 
 def _run_auto_transcription_coding(data_folder, the_session_id, handover, secondary, doctor):

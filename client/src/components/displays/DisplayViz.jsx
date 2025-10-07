@@ -22,6 +22,7 @@ import { Slider } from "@mui/material";
 import { COLOURS } from "../../config/colours";
 import SNABarChart from "../../projects/communication/SNABarChart";
 import ENABarChart from "../../projects/communication/ENABarChart";
+import HeartRateBarchart from "../../projects/heartRate/HeartRateBarchart";
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {
@@ -131,7 +132,7 @@ const DisplayViz = ({
     heartRateBarchart: {
       size: "small",
       viz: (
-        <SNABarChart // REPLACE THIS WITH HR BARCHART
+        <HeartRateBarchart // REPLACE THIS WITH HR BARCHART
           timeRange={range}
           timelineTags={timelineTags}
           height={selectedVis.length === 1 ? "60vh" : "38vh"}

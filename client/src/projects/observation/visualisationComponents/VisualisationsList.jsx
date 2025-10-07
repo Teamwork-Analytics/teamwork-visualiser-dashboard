@@ -100,7 +100,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
 
   {
     eventKey: "heartRateBarchart",
-    title: "Heart Rate Bar Chart",
+    title: "Heart Rates",
     component: () => (
       <HeartRateBarchart
         timeRange={timeRange}
@@ -111,8 +111,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
     ),
     info: () => (
       <div>
-        The height of each bar represents the amount of communication instances
-        in that category.
+        The height of each bar represents the number of heart rates per person.
       </div>
     ),
   },
@@ -209,23 +208,6 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   //     </div>
   // ),
   // },
-  {
-    eventKey: "hearRateVis",
-    title: "Heart Rate Visualisation",
-    component: () => (
-      <TeamworkBarchart
-        timeRange={timeRange}
-        showModal={showPreviewModal}
-        width={"100%"}
-        height={"30vh"}
-      />
-    ),
-    info: () => (
-      <div>
-        Heart rate Barchart.
-      </div>
-    ),
-  }
 ];
 
 export { topTabVisualisations, bottomVisualisations };

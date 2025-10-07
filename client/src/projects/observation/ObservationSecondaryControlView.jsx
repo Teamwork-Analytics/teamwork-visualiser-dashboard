@@ -10,6 +10,7 @@ import {
   processAllVisualisations,
   processCommBehaviourViz,
   processVideoTranscoding,
+  processPeninsulaHospitalData,
 } from "../../services/py-server";
 
 const ObservationSecondaryControlView = () => {
@@ -63,6 +64,20 @@ const ObservationSecondaryControlView = () => {
     setIsProcessingAllViz(false);
   };
 
+  const generateAllPeninsulaViz = async () => {
+    try {
+      setIsProcessingAllViz(true);
+      const response = await processPeninsulaHospitalData(simulationId);
+      if (response) {
+        toast.success(response.data);
+        setIsProcessingAllViz(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    setIsProcessingAllViz(false);
+  };
+
   const generateCommBehaviourViz = async () => {
     try {
       setIsProcessingENA(true);
@@ -96,7 +111,8 @@ const ObservationSecondaryControlView = () => {
       <Button
         variant="dark"
         value={"generateAllViz"}
-        onClick={processAllViz}
+        // onClick={processAllViz}
+        onClick={generateAllPeninsulaViz}
         disabled={isProcessingAllViz}
       >
         {isProcessingAllViz ? "Processing..." : "Generate All Visualisations"}

@@ -8,6 +8,7 @@ import { useDebriefing } from "./DebriefContext";
 import {
   processAllVisualisations,
   processCommBehaviourViz,
+  processPeninsulaHospitalData,
 } from "../../services/py-server";
 
 const DebriefPrimaryControlView = () => {
@@ -79,7 +80,8 @@ const DebriefPrimaryControlView = () => {
       <Button
         variant="dark"
         value={"baselineTime"}
-        onClick={processAllViz}
+        // onClick={processAllViz}
+        onClick={processPeninsulaHospitalData}
         disabled={isProcessingAllViz}
       >
         {isProcessingAllViz ? "Processing..." : "Generate All Visualisations"}

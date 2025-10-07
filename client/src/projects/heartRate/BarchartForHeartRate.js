@@ -7,25 +7,33 @@ const BarchartForHeartRate = ({
   width = "40vw",
   yLabelsFontSize,
   customAspectRatio,
+  cssColourMatcher,
 }) => {
 
   const labels = Object.keys(data);
   const averages = []
+  const backgroundColors = []
   
-  labels.forEach(key => averages.push(data[key].average));
-  console.log('averages', averages)
+  labels.forEach(key => {
+    averages.push(data[key].average);
+    backgroundColors.push(cssColourMatcher[key.toUpperCase()])
+  });
+
 
   const chartData = {
     labels: labels,
     datasets: [
       {
         data: averages,
-        backgroundColor: "#3a3a3a"  //rgba(30,144,255, 0.8), "#8856a7",
+        backgroundColor: backgroundColors,
+        // backgroundColor: "#3a3a3a"  //rgba(30,144,255, 0.8), "#8856a7",
       },
     ],
   };
 
-  console.log('These are the entrres', data);
+  if (labels.length > 0) {
+    console.log(chartData, labels.forEach((label) => cssColourMatcher[label.toUpperCase()]))
+  }
 
   return (
     <div
@@ -40,7 +48,8 @@ const BarchartForHeartRate = ({
         data={chartData}
         plugins={[ChartDataLabels]}
         options={{
-          indexAxis: "y",
+          indexAxis: "x",
+          // indexAxis: "y",
           plugins: {
             datalabels: {
               color: "#ffffff",
@@ -80,7 +89,7 @@ const BarchartForHeartRate = ({
               },
               title: {
                 display: true,
-                text: "Behaviours",
+                text: "Heart Rate",
                 font: { size: 18 },
               },
               ticks: {
