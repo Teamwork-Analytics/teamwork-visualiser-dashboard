@@ -3,6 +3,7 @@ error_handling_util.py
 
 This module provides utility functions for error handling
 """
+from flask import jsonify
 from util.validation_util import validate_string_argument, validate_http_status_code
 
 
@@ -38,4 +39,4 @@ def build_http_error_response(error_message: str, status_code: int) -> tuple[str
     """
     validate_string_argument(error_message)
     validate_http_status_code(status_code)
-    return error_message, status_code
+    return jsonify({"error": error_message}), status_code

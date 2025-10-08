@@ -13,6 +13,25 @@ from util.data_saving_location_helper import set_data_save_location
 from util.error_handling_util import build_http_error_response
 from util.logging_util import logger
 from util.env_util import load_env_file
+
+
+def convert_dict_to_label_value_array(data_dict):
+    """
+    Convert dictionary format {red: 0, blue: 12, green: 22, yellow: 12} 
+    to array of objects [{label: 'red', value: 0}, {label: 'blue', value: 12}, ...]
+    
+    Args:
+        data_dict (dict): Dictionary with string keys and numeric values
+        
+    Returns:
+        list: Array of dictionaries with 'label' and 'value' keys
+    """
+    if not isinstance(data_dict, dict):
+        return data_dict
+    
+    return [{"label": key, "value": value} for key, value in data_dict.items()]
+
+
 load_env_file(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 app = Flask(__name__)
@@ -151,7 +170,9 @@ def give_sna_test_data():
         # output_data = df.to_dict(orient="records")
 
         output_data = get_sna_barchart_data(id, data_folder, start_time, end_time, doc_enter_time, secondary_enter_time)
-        return jsonify(output_data)
+        converted_data = convert_dict_to_label_value_array(output_data)
+
+        return jsonify(converted_data)
 
     except Exception as e:
         error_message = "Network data is missing."
@@ -223,7 +244,11 @@ def give_ena_test_data():
         # output_data = calculate_ena_metric(session_view, window_size, column_names)
 
         output_data = get_ena_barchart_data(id, data_folder, start_time, end_time)
-        return jsonify(output_data)
+
+        # Convert dictionary format to array of label-value objects
+        converted_data = convert_dict_to_label_value_array(output_data)
+
+        return jsonify(converted_data)
     except Exception as e:
         error_message = "ENA file not available"
         logger().exception(error_message)

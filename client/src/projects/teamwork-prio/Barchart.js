@@ -8,6 +8,7 @@ const Barchart = ({
   yLabelsFontSize,
   customAspectRatio,
 }) => {
+  
   const chartData = {
     labels: data.map((row) => row.label),
     datasets: [

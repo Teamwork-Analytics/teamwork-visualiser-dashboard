@@ -4,6 +4,7 @@ import { getSNABarchartData } from "../../services/py-server/indexVisualiser";
 import Barchart from "../teamwork-prio/Barchart";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
+import { manualLabels } from "../observation";
 ChartJS.register(...registerables);
 
 const SNABarChart = ({
@@ -22,15 +23,16 @@ const SNABarChart = ({
   const endTime = timeRange[1];
 
   useEffect(() => {
+    console.log( timelineTags.filter((d) => d.label === manualLabels.phases[2]['label']));
     const secondaryTime =
       timelineTags.length !== 0
-        ? timelineTags.filter((d) => d.label === "Secondary nurse enters")[0]
+        ? timelineTags.filter((d) => d.label === manualLabels.phases[2]['label'])[0]
             .value
         : 0;
 
     const doctorTime =
       timelineTags.length !== 0
-        ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
+        ? timelineTags.filter((d) => d.label === manualLabels.phases[3]['label'])[0].value
         : 0;
 
     getSNABarchartData({
@@ -41,6 +43,7 @@ const SNABarChart = ({
       secEnterTime: secondaryTime,
     })
       .then((res) => {
+        console.log(res);
         if (res.status === 200) {
           const filteredData = res.data;
           const finalData = filteredData.filter(
@@ -61,13 +64,13 @@ const SNABarChart = ({
     if (snaCountData.length === 0) {
       const secondaryTime =
         timelineTags.length !== 0
-          ? timelineTags.filter((d) => d.label === "Secondary nurse enters")[0]
+          ? timelineTags.filter((d) => d.label === manualLabels.phases[2]['label'])[0]
               .value
           : 0;
 
       const doctorTime =
         timelineTags.length !== 0
-          ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
+          ? timelineTags.filter((d) => d.label === manualLabels.phases[3]['label'])[0].value
           : 0;
       // Fetch data immediately when component mounts
       function fetchData() {
@@ -79,6 +82,7 @@ const SNABarChart = ({
           secEnterTime: secondaryTime,
         })
           .then((res) => {
+            console.log(res);
             if (res.status === 200) {
               setSnaCountData(res.data);
               setIsError(false);

@@ -6,6 +6,7 @@ import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { useParams } from "react-router-dom";
 import { getSNAdata } from "../../services/py-server/indexVisualiser";
 import { useTimeline } from "../observation/visualisationComponents/TimelineContext";
+import { manualLabels } from "../observation";
 
 const CytoComponent = ({ netData, height = "30vh" }) => {
   const net_options = {
@@ -107,13 +108,13 @@ const SocialNetworkView = ({
         const secondaryTime =
           timelineTags.length !== 0
             ? timelineTags.filter(
-                (d) => d.label === "Secondary nurse enters"
+                (d) => d.label === manualLabels.phases[2]
               )[0].value
             : 0;
 
         const doctorTime =
           timelineTags.length !== 0
-            ? timelineTags.filter((d) => d.label === "Doctor enters")[0].value
+            ? timelineTags.filter((d) => d.label === manualLabels.phases[3])[0].value
             : 0;
 
         const res = await getSNAdata({

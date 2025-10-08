@@ -121,7 +121,7 @@ def proxemics(x):
 
     else:
 
-        x = np.NaN
+        x = np.nan
 
     return x
 
@@ -274,7 +274,7 @@ def proxemicsCo(x):
 
     else:
 
-        x = np.NaN
+        x = np.nan
 
     return x
 

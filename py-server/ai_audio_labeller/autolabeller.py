@@ -369,7 +369,7 @@ def _classify_text_multilabel(text, index, df):
     You are an expert specializing in analyzing communication constructs in healthcare simulations involving nursing students.
 
     Communication constructs and their definitions are as follows:
-    {chr(10).join([f"- {k}: {v} \n" for k,v in DEFINITIONS_WITH_EXAMPLES.items()])}
+    {chr(10).join([f"- {k}: {v} " for k,v in DEFINITIONS_WITH_EXAMPLES.items()])}
 
     Your task is to analyze the utterance contained in the dialogue snippet "{text}" and determine whether the utterance exemplifies any of the communication constructs detailed above.
 
