@@ -111,7 +111,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
     ),
     info: () => (
       <div>
-        The height of each bar represents the number of heart rates per person.
+        The height of each bar represents the average heart rate (BPM).
       </div>
     ),
   },

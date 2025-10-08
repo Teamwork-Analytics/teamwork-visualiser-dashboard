@@ -6,8 +6,8 @@ import BarchartForHeartRate from "./BarchartForHeartRate";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { cssColourMatcher } from "../../config/colours";
-
-ChartJS.register(...registerables);
+import ChartAnnotation from "chartjs-plugin-annotation";  // This version 2.X needs to be registered. inline reg does not work.
+ChartJS.register(...registerables, ChartAnnotation);
 
 
 const getHeartBeatVisualisationData = (data) => {
@@ -92,7 +92,7 @@ const HeartRateBarChart = ({
 
   return (
     <SimpleErrorText isError={isError} message={"Tool in preparation."}>
-      <BarchartForHeartRate
+     <BarchartForHeartRate
         data={heartRateData}
         height={height}
         width={width}
