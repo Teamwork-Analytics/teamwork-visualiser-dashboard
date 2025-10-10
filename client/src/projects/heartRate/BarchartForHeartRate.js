@@ -50,12 +50,12 @@ const BarchartForHeartRate = ({
   // image.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
 
   labels.forEach((label, i) => {
-    console.log('LABEL,', label);
     const baseline = baselines[i];
     const max = maxes[i];
     const colour = backgroundColors[i];
+    const average = averages[i];
 
-    annotations[`box_${i}`] = {
+    annotations[`line_baseline_${i}`] = {
       type: 'line',
       yMin: baseline,
       yMax: baseline,
@@ -65,6 +65,16 @@ const BarchartForHeartRate = ({
       content: baseline,
       borderDash: [1,1,3],
       borderWidth: 2,
+    };
+    annotations[`baseline_${i}`] = {
+      type: 'label',
+      yMin: baseline - 9,
+      yMax: baseline - 9,
+      xMin: i - 0.1,
+      xMax: i - 0.1,
+      content: 'Base: ' + baseline,
+      color: (baseline > average + 8 ? 'black' : 'white'),
+      borderWidth: 0,
     };
     annotations[`heart_${i}`] = {
       type: 'label',
@@ -79,12 +89,12 @@ const BarchartForHeartRate = ({
     annotations[`maxes_${i}`] = {
       type: 'label',
       drawTime: 'afterDraw',
-      yMin: max+1,
-      yMax: max+1,
+      yMin: max + 12,
+      yMax: max + 12,
       xMin: i - 0.5,
       xMax: i + 0.5,
       borderWidth: 0,
-      content: max,
+      content: 'Max: ' + max,
       color: '#575757ff',
     };
   });
@@ -112,12 +122,12 @@ const BarchartForHeartRate = ({
               },
               color: "#ffffff",
               formatter: function (value, context) {
-                return Math.round(value);
+                return 'Avg: ' + Math.round(value);
               },
               textAlign: "end",
-              align: "end",
-              anchor: "end",
-              offset: "-120",
+              align: "start",
+              anchor: "start",
+              offset: "-30",
             },
             legend: {
               labels: {

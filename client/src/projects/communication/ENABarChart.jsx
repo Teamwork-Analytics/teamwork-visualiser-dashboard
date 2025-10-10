@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getENABarchartData } from "../../services/py-server/indexVisualiser";
-import Barchart from "../teamwork-prio/Barchart";
+import Barchart from "./BarchartForENA";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 ChartJS.register(...registerables);
@@ -21,6 +21,7 @@ const ENABarChart = ({
   const endTime = timeRange[1];
 
   useEffect(() => {
+
     getENABarchartData({
       simulationId: simulationId,
       startTime: startTime,
@@ -39,7 +40,7 @@ const ENABarChart = ({
       .catch((e) => {
         setIsError(true);
         console.error(e);
-        // toast.error("Teamwork Barchart error");
+        console.log('Error in ENA Barchart');
       });
   }, [simulationId, startTime, endTime]);
 

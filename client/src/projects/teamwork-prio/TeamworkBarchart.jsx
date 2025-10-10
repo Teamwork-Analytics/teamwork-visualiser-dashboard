@@ -60,7 +60,7 @@ const TeamworkBarchart = ({
           })
           .catch((e) => {
             setIsError(true);
-            console.error(e);
+            console.error('Erroreee', e);
             // toast.error("Teamwork Barchart error");
           });
       }

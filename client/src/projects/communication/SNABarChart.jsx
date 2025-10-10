@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getSNABarchartData } from "../../services/py-server/indexVisualiser";
-import Barchart from "../teamwork-prio/Barchart";
+import Barchart from "./BarchartForSNA";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
 import { manualLabels } from "../observation";

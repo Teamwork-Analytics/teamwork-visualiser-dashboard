@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { cssColourMatcher } from "../../config/colours";
 
 const Barchart = ({
   data,
@@ -8,8 +9,12 @@ const Barchart = ({
   yLabelsFontSize,
   customAspectRatio,
 }) => {
+
+  const labels =  data.map((row) => row.label);
+  const maxValue = data.reduce((x,y) => x.value > y.value ? x : y).value;
+  
   const chartData = {
-    labels: data.map((row) => row.label),
+    labels,
     datasets: [
       {
         data: data.map((row) => row.value),
@@ -34,14 +39,22 @@ const Barchart = ({
           indexAxis: "y",
           plugins: {
             datalabels: {
-              color: "#ffffff",
+              color: (context) => {
+                const index = context.dataIndex;
+                const value = context.dataset.data[index];
+                return value < maxValue * 0.1 ? "#000000" : "#ffffff";
+              },
               formatter: function (value, context) {
                 return Math.round(value) + "%";
               },
               textAlign: "end",
               align: "end",
               anchor: "end",
-              offset: "-30"
+              offset: (context) => {
+                const index = context.dataIndex;
+                const value = context.dataset.data[index];
+                return value < maxValue * 0.1 ? "1" : "-33";
+              },
             },
             legend: {
               labels: {
