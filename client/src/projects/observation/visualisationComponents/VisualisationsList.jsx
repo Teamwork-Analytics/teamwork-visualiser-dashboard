@@ -117,7 +117,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   },
   {
     eventKey: "snaBarchart",
-    title: "SNA Bar Chart",
+    title: "Speaking Time",
     component: () => (
       <SNABarChart
         timeRange={timeRange}
@@ -136,7 +136,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
   },
   {
     eventKey: "enaBarchart",
-    title: "ENA Bar Chart",
+    title: "Communication Behaviours",
     component: () => (
       <ENABarChart
         timeRange={timeRange}
@@ -144,6 +144,7 @@ const bottomVisualisations = (timeRange, timelineTags, showPreviewModal) => [
         showModal={showPreviewModal}
         width="100%"
         height="30vh"
+        yLabelsFontSize = "9px"
       />
     ),
     info: () => (

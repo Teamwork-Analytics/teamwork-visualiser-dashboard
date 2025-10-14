@@ -40,9 +40,9 @@ const resetSyncTime = async (id) => {
 const addPhaseNote = async (obsId, newData) => {
   const { timeString, message } = newData;
   const phaseLabelMapPeninsula2025 = {
-    "Stage 1": "handover_ends",
-    "Stage 2": "secondary_nurse_enters",
-    "Stage 3": "doctor_enters",
+    "Stage 1": "stage_1",
+    "Stage 2": "stage_2",
+    "Stage 3": "stage_3",
   };
 
   return await Observation.findByIdAndUpdate(

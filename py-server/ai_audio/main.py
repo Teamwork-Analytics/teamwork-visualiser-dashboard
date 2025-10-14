@@ -683,6 +683,8 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
 
     # TODO this needs to be fixed. The dataframe has seconds given the results of the whisper. The ongoing filters for the phases are made using
     # timestamps
+    if not os.path.exists(os.path.join(the_data_folder, str(the_session_id), "transcriptions")):
+        os.mkdir(os.path.join(the_data_folder, str(the_session_id), "transcriptions"))
     create_transcription_files(whisper_model,a_session_path, transcription_folder)
     transcription_df = organsing_transcription_df(transcription_folder, transcription_excel_output_path)
     conversation_df = calculate_receiver_by_responded_text(transcription_df)
@@ -732,7 +734,7 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
 
     conversation_df.to_csv(os.path.join(the_data_folder, str(the_session_id), "result", "{}_results_debug.csv".format(the_session_id)))
 
-    conversation_df[["start","end","duration","initiator","receiver"]].to_csv(os.path.join(the_data_folder, str(the_session_id), "result", "{}_sna.csv".format(the_session_id)))
+    conversation_df[["start_time","end_time","duration","initiator","receiver"]].to_csv(os.path.join(the_data_folder, str(the_session_id), "result", "{}_sna.csv".format(the_session_id)))
 
     # This function applies an external automated punctuation to the utterance without any punctuation.
     # add_punctuation(conversation_df)

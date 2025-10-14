@@ -29,6 +29,7 @@ function HiveProvider({ simulationId, children }) {
     showCoordinatesData: false,
   });
 
+  // TODO: remove the manual check on this HIVE viz readiness.
   const [isHiveReady, setIsReady] = React.useState(false);
   useEffect(() => {
     HiveAPI.isDataReady(simulationId)

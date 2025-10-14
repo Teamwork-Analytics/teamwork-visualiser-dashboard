@@ -3,8 +3,8 @@ from typing import Any, Mapping
 from util.db_connect_util import *
 from refactor.pozyx_data.pozyx_data_management import get_timestamp_from_sync
 
-DATABASE_CONFIGURATION = "2023"
-
+DATABASE_CONFIGURATION = "2025"
+UTC_plus = 12
 
 def retrieve_observation_data(simulation_id: str) -> Mapping[str, Any]:
     """
@@ -52,11 +52,11 @@ def extract_timestamps_for_phases(observation_data: Mapping[str, Any]) -> tuple[
 
     for item in observation_data["phases"]:
         if item["phaseKey"] == "handover_ends":
-            handover_finish_time = item["timestamp"].timestamp() + (3600 * 10)
+            handover_finish_time = item["timestamp"].timestamp() + (3600 * UTC_plus)
         elif item["phaseKey"] == "secondary_nurse_enters":
-            secondary_nurses_enter_time = item["timestamp"].timestamp() + (3600 * 10)
+            secondary_nurses_enter_time = item["timestamp"].timestamp() + (3600 * UTC_plus)
         elif item["phaseKey"] == "doctor_enters":
-            doctor_enter_time = item["timestamp"].timestamp() + (3600 * 10)
+            doctor_enter_time = item["timestamp"].timestamp() + (3600 * UTC_plus)
         elif item["phaseKey"] == "bed_4":
             pass
 
@@ -118,6 +118,20 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
                     "timestamp"].timestamp()
             elif item["phaseKey"] == "bed_4":
                 pass
+    # TODO: Change the timezone in database
+    elif DATABASE_CONFIGURATION == "2025":
+        for item in observation_data["phases"]:
+            if item["phaseKey"] == "stage_1":
+                handover_finish_time = item[
+                    "timestamp"].timestamp() + 3600 * UTC_plus
+            elif item["phaseKey"] == "stage_2":
+                secondary_nurses_enter_time = item[
+                    "timestamp"].timestamp() + 3600 * UTC_plus
+            elif item["phaseKey"] == "stage_3":
+                doctor_enter_time = item[
+                    "timestamp"].timestamp() + 3600 * UTC_plus
+            elif item["phaseKey"] == "bed_4":
+                pass
 
     if handover_finish_time is None:
         raise ValueError("Phase key for  'handover' is missing.")
@@ -132,7 +146,7 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
     return handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
 
 
-def process_observation_timestamps(data_dir, doctor_enter_time, handover_finish_time, secondary_nurses_enter_time):
+def process_observation_timestamps(data_dir, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time):
     """
         Adjusts timestamps of key events based on the audio synchronization file.
 
@@ -146,11 +160,20 @@ def process_observation_timestamps(data_dir, doctor_enter_time, handover_finish_
             tuple[float, float, float]: Adjusted timestamps for key events.
         """
     audio_start_timestamp = get_timestamp_from_sync(os.path.join(data_dir, "sync.txt"), "audio")
-    handover_finish_time -= audio_start_timestamp
-    secondary_nurses_enter_time -= audio_start_timestamp
-    doctor_enter_time -= audio_start_timestamp
+    handover_finish_time =  handover_finish_time - audio_start_timestamp
+    secondary_nurses_enter_time = secondary_nurses_enter_time - audio_start_timestamp
+    doctor_enter_time = doctor_enter_time - audio_start_timestamp
+    # handover_finish_time = 3
+    # secondary_nurses_enter_time = 177
+    # doctor_enter_time = 244
+    # logger().info(f" processed timestamps:")
+    # logger().info(f" processed timestamps:")
+    # logger().info(f" processed timestamps:")
+    # logger().info(f" processed timestamps:")
+    # logger().info(f" processed timestamps:")
+    # logger().info(f" processed timestamps:")
+    # logger().info(f" processed timestamps:")
 
-    logger().info(f" processed timestamps:")
     logger().info(f"audio_start_timestamp:{audio_start_timestamp}")
     logger().info(f"handover_finish_time:{handover_finish_time}")
     logger().info(f"secondary_nurses_enter_time:{secondary_nurses_enter_time}")

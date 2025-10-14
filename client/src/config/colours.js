@@ -31,4 +31,5 @@ export const cssColourMatcher = {
   PATIENT: "#FFA500",
   DOCTOR: "#800080",
   RELATIVE: "#000000",
+  ORANGE: "#ff8800ff",
 };

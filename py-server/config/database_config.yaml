@@ -1,9 +1,18 @@
 mongodb:
   server:
-    username: admin
-    password: 5ZVy3RS0FIMcmTxn
-    host: cluster0.ravibmh.mongodb.net
-    database: app
+    host: localhost
+    database: "app"
+    username: ""
+    password: ""
     options:
       retryWrites: true
-      w: majority
+    w: majority
+    #    database: app
+#    username: admin
+#    password: 5ZVy3RS0FIMcmTxn
+#    host: cluster0.ravibmh.mongodb.net
+#    database: app
+#    options:
+#      retryWrites: true
+#      w: majority
+  #    database: app

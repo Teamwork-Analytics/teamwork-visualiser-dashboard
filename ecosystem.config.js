@@ -1,23 +1,22 @@
 module.exports = {
   apps : [{
     name: 'pyserver',
-    //interpreter: "py-server/env/Scripts/python.exe",
-    cmd: "py-server/server.py",
-    script: "py-server/env/Scripts/python.exe",
-    interpreter: "none",
+    interpreter: "/Users/Teamwork Analytics/AppData/Local/Programs/Python/Python310/python.exe",
+    cwd: 'py-server',
+    cmd: "server.py",
     autorestart: false,
     watch: false,
     instances: 1,
-    pid: 'py-server/server.pid',
+    pid: 'server.pid',
   }, {
     name: 'pyserver-visualiser',
-    cmd: 'py-server/server-visualiser.py',
-    script: "py-server/env/Scripts/python.exe",
-    interpreter: "none",
+    interpreter: "/Users/Teamwork Analytics/AppData/Local/Programs/Python/Python310/python.exe",
+    cwd: 'py-server',
+    cmd: 'server-visualiser.py',
     autorestart: false,
     watch: false,
     instances: 1,
-    pid: 'py-server/server-visualiser.pid',
+    pid: 'server-visualiser.pid',
   },{
     name: 'client',
     cwd: 'client',
@@ -26,7 +25,7 @@ module.exports = {
     autorestart: false,
     watch: false,
     instances: 1,
-    pid: 'client/client.pid',
+    pid: 'client.pid',
     env: {
         PORT:"3000",
     }

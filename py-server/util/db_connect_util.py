@@ -84,7 +84,7 @@ def connect_to_mongodb_cluster() -> pymongo.database.Database:
 
     try:
         client = MongoClient(
-            f"mongodb+srv://{host}",
+            f"mongodb://{host}",   # f"mongodb+srv://{host}",
             username=username,
             password=password,
             retryWrites=True,

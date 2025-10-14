@@ -26,17 +26,17 @@ logger().info(f"data_saving_location: {data_folder}")
 CORS(app)
 
 
-@app.route("/generate_viz", methods=['GET'])
-def call_viz():
-    args = request.args
-    try:
-        simulationId = args["sessionId"]
-        generate_visualization(simulationId)
-        return "Visualisations have been generated.", 200
-    except Exception as err:
-        error_message = "Unable to generate visualisation. Check terminal"
-        logger().exception(error_message)
-        return build_http_error_response(error_message, 500)
+# @app.route("/generate_viz", methods=['GET'])
+# def call_viz():
+#     args = request.args
+#     try:
+#         simulationId = args["sessionId"]
+#         generate_visualization(simulationId)
+#         return "Visualisations have been generated.", 200
+#     except Exception as err:
+#         error_message = "Unable to generate visualisation. Check terminal"
+#         logger().exception(error_message)
+#         return build_http_error_response(error_message, 500)
 
 
 @app.route("/generate_ena_viz", methods=['GET'])
@@ -59,6 +59,11 @@ def generate_viz_with_audio_data():
     args = request.args
     try:
         session_id = args["sessionId"]
+
+        data_folder_result = os.path.join(data_folder, session_id, "result")
+
+        if not os.path.exists(data_folder_result):
+            os.makedirs(data_folder_result)
         
         # TODO: process HR CSV data, if we can run this and whisperx in parallel, that would be good.
         generate_visualization_with_heart_rate_data(session_id, data_folder)

@@ -2,6 +2,8 @@ import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { cssColourMatcher } from "../../config/colours";
 
+
+
 const Barchart = ({
   data,
   height = "25vh",
@@ -77,8 +79,8 @@ const Barchart = ({
               // max: 100,
               // min: 0,
               title: {
-                display: false,
-                text: "Count",
+                display: true,
+                text: "Speaking Time (%)",
                 //https://www.chartjs.org/docs/latest/general/fonts.html
                 font: { size: 18 },
               },
@@ -89,7 +91,7 @@ const Barchart = ({
               },
               title: {
                 display: true,
-                text: "Student Colour",
+                text: "Role",
                 font: { size: 18 },
               },
               ticks: {

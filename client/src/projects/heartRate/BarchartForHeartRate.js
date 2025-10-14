@@ -89,8 +89,8 @@ const BarchartForHeartRate = ({
     annotations[`maxes_${i}`] = {
       type: 'label',
       drawTime: 'afterDraw',
-      yMin: max + 12,
-      yMax: max + 12,
+      yMin: max + 20,
+      yMax: max + 20,
       xMin: i - 0.5,
       xMax: i + 0.5,
       borderWidth: 0,
@@ -153,7 +153,7 @@ const BarchartForHeartRate = ({
               },
             },
             y: {
-              max: 120,
+              max: 200,
               grid: {
                 display: false,
               },

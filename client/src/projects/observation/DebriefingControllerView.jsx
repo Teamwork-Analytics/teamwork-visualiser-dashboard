@@ -196,27 +196,10 @@ const DebriefingControllerView = () => {
               <Col md={1}>
                 <BsArrowRepeat size={"1.2em"} />
               </Col>
-              <Col>Reset all</Col>
+              <Col>Reset Projector</Col>
             </Row>
           </Button>
-          <Button
-            variant="success"
-            style={{ marginRight: "5px", fontSize: "14px" }}
-            onClick={() => {
-              trackEvent({
-                action: "click",
-                element: "updateProjector",
-              });
-              updateProjector();
-            }}
-          >
-            <Row>
-              <Col md={1}>
-                <BsUpload />
-              </Col>
-              <Col> Update Projector</Col>
-            </Row>
-          </Button>
+         
         </Col>
       </Row>
       {/* Top row viz */}

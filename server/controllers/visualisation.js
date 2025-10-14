@@ -47,14 +47,15 @@ const checkDataReadiness = async (req, res, next) => {
 
     console.log("DIRECTORY: ", process.env.VISUALISATION_DIR + simulationId);
 
-    const hiveFileName = `${simulationId}_all.csv`;
+    // TODO: change the proper name
+    const hrFileName = `${simulationId}_heart_rate_data.csv`;
     const positionFileName = `${simulationId}_network_data.csv`;
     const communicationFileName = `${simulationId}.csv`;
     const syncFileName = "sync.txt";
 
     if (fileSystem.existsSync(pathJoined)) {
       const fileNames = [
-        hiveFileName,
+        hrFileName,
         positionFileName,
         communicationFileName,
         syncFileName,

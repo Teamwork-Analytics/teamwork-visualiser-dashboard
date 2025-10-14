@@ -43,7 +43,8 @@ def process_heart_rate_data(session_id: int, data_dir: str, sort_by_timestamp: b
     if session_start_timestamp is None:
         session_start_timestamp = heart_rate_data[SERVER_TIMESTAMP].min()  # If none get the first available timestamp
 
-    heart_rate_data[SERVER_TIMESTAMP_RELATIVE] = heart_rate_data[SERVER_TIMESTAMP] - session_start_timestamp
+    # TODO: try to find why we need to add this one hour
+    heart_rate_data[SERVER_TIMESTAMP_RELATIVE] = heart_rate_data[SERVER_TIMESTAMP] - session_start_timestamp + 3600
 
     return heart_rate_data
 

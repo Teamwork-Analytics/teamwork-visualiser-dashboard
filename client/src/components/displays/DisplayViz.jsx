@@ -132,7 +132,7 @@ const DisplayViz = ({
     heartRateBarchart: {
       size: "small",
       viz: (
-        <HeartRateBarchart // REPLACE THIS WITH HR BARCHART
+        <HeartRateBarchart
           timeRange={range}
           timelineTags={timelineTags}
           height={selectedVis.length === 1 ? "60vh" : "38vh"}

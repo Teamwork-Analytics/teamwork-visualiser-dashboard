@@ -123,3 +123,5 @@ server/config.env
 *.bin
 *.xlsx
 py-server/ai_audio_labeller/gen-ai-classification-results/
+
+.idea/

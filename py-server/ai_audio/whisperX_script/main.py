@@ -30,7 +30,7 @@ def whisperx_transcribe(model, audio_file, output_path, enable_diarization=False
 
     # This should have only the filename not the full path.
     audio_filename = os.path.basename(audio_file)
-    speaker_name = audio_filename.split("_")[1]
+    speaker_name = audio_filename.split("_")[1].lower()
 
     # speaker_name = audio_file.split("_")[1]
     # 1. Transcribe with original whisper (batched)

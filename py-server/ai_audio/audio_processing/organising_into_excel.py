@@ -112,12 +112,13 @@ def clip_transcription_to_excel(transcription_folder: str, output_folder: str, h
 
 def filtering_by_phases(a_df, handover_ends: float, met_entered: float, secondary_entered: float):
     # filter_all_nurse before handover ends
-    a_df = a_df[(a_df["start"] > handover_ends)]
+    first_df = a_df[(a_df["start_time"] > handover_ends) & (a_df["initiator"].isin(['blue', 'red']))]
     # filter secondary nurses, before met enters
-    a_df = a_df[(a_df["start"] > secondary_entered) & (a_df["initiator"].isin(['green', 'yellow', 'black', 'orange']))]
-    # filter doctor before they enter
-    a_df = a_df[(a_df["start"] > met_entered) & (a_df["initiator"].isin(['white']))]
+    secondary_df = a_df[(a_df["start_time"] > secondary_entered) & (a_df["initiator"].isin(['green', 'yellow', 'black', 'white', 'orange']))]
 
+    # filter doctor before they enter
+    # a_df = a_df[(a_df["start_time"] > met_entered) & (a_df["initiator"].isin(['white']))]
+    res_df = pd.concat([first_df, secondary_df])
 
     # if a_color.lower() == "blue" or a_color.lower() == "red" or a_color.lower() == "black":
     #     if handover_ends > float(start_time):
@@ -128,7 +129,7 @@ def filtering_by_phases(a_df, handover_ends: float, met_entered: float, secondar
     # if a_color.lower() == "white":
     #     if met_entered > float(start_time):
     #         continue
-    return pd.DataFrame(a_df)
+    return pd.DataFrame(res_df)
 
 def clip_transcription_to_excel_with_filtering(transcription_folder: str, output_folder: str, handover_ends: float,
                                 met_entered: float, secondary_entered: float):
