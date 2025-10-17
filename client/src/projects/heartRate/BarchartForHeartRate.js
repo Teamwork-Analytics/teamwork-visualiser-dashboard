@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { simulationColoursSetting as  colourSettings} from "../../config/simulation";
 // import { Image } from "react";
 import { FaRegHeart } from "react-icons/fa";
 
@@ -11,24 +12,32 @@ const BarchartForHeartRate = ({
   width = "40vw",
   yLabelsFontSize,
   customAspectRatio,
-  cssColourMatcher,
+  nurseNameMatcher,
 }) => {
 
   const labels = Object.keys(data);
-  const averages = []
-  const backgroundColors = []
-  const baselines = []
-  const maxes = []
-  
+  const labelNames = [];
+  const averages = [];
+  const backgroundColors = [];
+  const baselines = [];
+  const maxes = [];
+
   labels.forEach(key => {
+    const colourObject = colourSettings[key.toUpperCase()];
+
+    if (Object.keys(nurseNameMatcher).length > 0 && nurseNameMatcher[colourObject.LONG_TITLE] != "") {
+      labelNames.push(nurseNameMatcher[colourObject.LONG_TITLE]);
+    } else {
+      labelNames.push(colourObject.SHORT_TITLE);
+    }
     averages.push(data[key].average);
     maxes.push(data[key].max);
-    backgroundColors.push(cssColourMatcher[key.toUpperCase()]);
+    backgroundColors.push(colourObject.COLOUR);
     baselines.push(data[key].baseline);
   });
 
   const chartData = {
-    labels: labels,
+    labels: labelNames,
     datasets: [
       {
         data: averages,
@@ -37,10 +46,6 @@ const BarchartForHeartRate = ({
       },
     ],
   };
-
-  if (labels.length > 0) {
-    console.log(chartData, labels.forEach((label) => cssColourMatcher[label.toUpperCase()]))
-  }
   
   const annotations = {};
   const image = new Image(35,35);

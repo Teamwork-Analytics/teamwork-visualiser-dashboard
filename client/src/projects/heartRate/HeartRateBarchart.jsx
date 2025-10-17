@@ -4,8 +4,9 @@ import { HeartRates } from "../../services/py-server/heartrate";
 // import BarchartForHeartRate from "./barchartForHeartRate";
 import BarchartForHeartRate from "./BarchartForHeartRate";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
+import { useNurseName } from "../../projects/observation/visualisationComponents/NurseNameContext";
 import { Chart as ChartJS, registerables } from "chart.js";
-import { cssColourMatcher } from "../../config/colours";
+
 import ChartAnnotation from "chartjs-plugin-annotation";  // This version 2.X needs to be registered. inline reg does not work.
 ChartJS.register(...registerables, ChartAnnotation);
 
@@ -36,6 +37,8 @@ const HeartRateBarChart = ({
   timelineTags,
 }) => {
   const { simulationId } = useParams();
+  const { nurseNames } = useNurseName();
+
   const [heartRateData, setHeartRateData] = useState({});
   const [isError, setIsError] = useState(heartRateData.length === 0);
 
@@ -98,7 +101,7 @@ const HeartRateBarChart = ({
         width={width}
         yLabelsFontSize={yLabelsFontSize}
         customAspectRatio={customAspectRatio}
-        cssColourMatcher={cssColourMatcher}
+        nurseNameMatcher={nurseNames}
       />
     </SimpleErrorText>
   );

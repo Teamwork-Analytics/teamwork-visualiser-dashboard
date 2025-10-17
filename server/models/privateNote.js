@@ -6,6 +6,7 @@ const NurseSchema = new Schema({
   primaryNurse2: String,
   secondaryNurse1: String,
   secondaryNurse2: String,
+  secondaryNurse3: String,
 });
 
 const PrivateNoteSchema = new Schema({

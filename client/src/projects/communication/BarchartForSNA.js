@@ -1,8 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { cssColourMatcher } from "../../config/colours";
-
-
+import { simulationColoursSetting, DEFAULT_COLOUR_SETTING } from "../../config/simulation";
 
 const Barchart = ({
   data,
@@ -10,21 +8,38 @@ const Barchart = ({
   width = "40vw",
   yLabelsFontSize,
   customAspectRatio,
+  nurseNameMatcher,
 }) => {
 
-  const labels =  data.map((row) => row.label);
-  const maxValue = data.reduce((x,y) => x.value > y.value ? x : y).value;
+  // Filtered not participants data. Participant data is in simulation.js config file.
+  data.push({label: "black", value: 1})
+  const filteredData = data.filter(value => value.label.toUpperCase() in simulationColoursSetting);
+
+  const labels =  filteredData.map((row) => row.label);
+  const labelNames = []
+
+  const maxValue = filteredData.reduce((x,y) => x.value > y.value ? x : y).value;
   const backgroundColors = []
 
   labels.forEach(key => {
-    backgroundColors.push(cssColourMatcher[key.toUpperCase()]);
+    let colourObject = simulationColoursSetting[key.toUpperCase()];
+
+    if (!colourObject) colourObject = DEFAULT_COLOUR_SETTING;
+
+    if (Object.keys(nurseNameMatcher).length > 0 && nurseNameMatcher[colourObject.LONG_TITLE] != "") {
+      labelNames.push(nurseNameMatcher[colourObject.LONG_TITLE]);
+    } else {
+      labelNames.push(colourObject.SHORT_TITLE);
+    }
+    backgroundColors.push(colourObject.COLOUR);
+
   });
 
   const chartData = {
-    labels,
+    labels: labelNames,
     datasets: [
       {
-        data: data.map((row) => row.value),
+        data: filteredData.map((row) => row.value),
         backgroundColor: backgroundColors,
       },
     ],

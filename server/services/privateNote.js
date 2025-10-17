@@ -13,10 +13,12 @@ const PrivateNote = require("../models/privateNote");
 const create = async () => {
   return await PrivateNote.create({
     nurses: {
+      medicalDoctor: "",
       primaryNurse1: "",
       primaryNurse2: "",
       secondaryNurse1: "",
-      secondaryNurse2: "",
+      secondaryNurse1: "",
+      secondaryNurse3: "",
     },
   });
 };

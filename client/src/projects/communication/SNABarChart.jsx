@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getSNABarchartData } from "../../services/py-server/indexVisualiser";
+import { useNurseName } from "../../projects/observation/visualisationComponents/NurseNameContext";
 import Barchart from "./BarchartForSNA";
 import SimpleErrorText from "../../components/errors/ErrorMessage";
 import { Chart as ChartJS, registerables } from "chart.js";
@@ -16,6 +17,8 @@ const SNABarChart = ({
   timelineTags,
 }) => {
   const { simulationId } = useParams();
+  const { nurseNames } = useNurseName();
+
   const [snaCountData, setSnaCountData] = useState([]);
   const [isError, setIsError] = useState(snaCountData.length === 0);
 
@@ -111,6 +114,7 @@ const SNABarChart = ({
         width={width}
         yLabelsFontSize={yLabelsFontSize}
         customAspectRatio={customAspectRatio}
+        nurseNameMatcher={nurseNames}
       />
     </SimpleErrorText>
   );

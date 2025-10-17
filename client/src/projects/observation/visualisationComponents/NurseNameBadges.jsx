@@ -11,6 +11,7 @@ import styled from "@emotion/styled";
 import { COLOURS } from "../../../config/colours";
 import { useNurseName } from "./NurseNameContext";
 import { useTracking } from "react-tracking";
+import { simulationColoursSetting } from "../../../config/simulation";
 
 // override bootstrap badge important style
 const StyledBadge = styled(Badge)`
@@ -89,30 +90,18 @@ const NurseNameBadges = () => {
 
   return (
     <div>
-      <EditableBadge
-        colour={COLOURS.PRIMARY_NURSE_1}
-        label="PN 1"
-        nurseName={nurseNames.primaryNurse1 || ""}
-        onUpdate={(newName) => updateNurseName("primaryNurse1", newName)}
-      />
-      <EditableBadge
-        colour={COLOURS.PRIMARY_NURSE_2}
-        label="PN 2"
-        nurseName={nurseNames.primaryNurse2 || ""}
-        onUpdate={(newName) => updateNurseName("primaryNurse2", newName)}
-      />
-      <EditableBadge
-        colour={COLOURS.SECONDARY_NURSE_1}
-        label="SN 1"
-        nurseName={nurseNames.secondaryNurse1 || ""}
-        onUpdate={(newName) => updateNurseName("secondaryNurse1", newName)}
-      />
-      <EditableBadge
-        colour={COLOURS.SECONDARY_NURSE_2}
-        label="SN 2"
-        nurseName={nurseNames.secondaryNurse2 || ""}
-        onUpdate={(newName) => updateNurseName("secondaryNurse2", newName)}
-      />
+      {
+        Object.keys(simulationColoursSetting).map((key) => {
+          const colourSetting = simulationColoursSetting[key];
+          console.log(colourSetting)
+          return <EditableBadge
+              colour={colourSetting.COLOUR}
+              label={colourSetting.SHORT_TITLE}
+              nurseName={nurseNames[colourSetting.LONG_TITLE] || ""}
+              onUpdate={(newName) => updateNurseName(colourSetting.LONG_TITLE, newName)}
+            />
+        })
+      }
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { cssColourMatcher } from "../../config/colours";
 
 const labelsToText = {
   "allocation_self": "Self-allocating tasks",
