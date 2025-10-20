@@ -23,6 +23,7 @@ import { COLOURS } from "../../config/colours";
 import SNABarChart from "../../projects/communication/SNABarChart";
 import ENABarChart from "../../projects/communication/ENABarChart";
 import HeartRateBarchart from "../../projects/heartRate/HeartRateBarchart";
+import { NurseNameProvider } from "../../projects/observation/visualisationComponents/NurseNameContext";
 
 // Define the styles for each visualisation size
 const SIZE_STYLES = {
@@ -132,11 +133,13 @@ const DisplayViz = ({
     heartRateBarchart: {
       size: "small",
       viz: (
-        <HeartRateBarchart
-          timeRange={range}
-          timelineTags={timelineTags}
-          height={selectedVis.length === 1 ? "60vh" : "38vh"}
-        />
+      <NurseNameProvider>
+          <HeartRateBarchart
+            timeRange={range}
+            timelineTags={timelineTags}
+            height={selectedVis.length === 1 ? "60vh" : "38vh"}
+          />
+        </NurseNameProvider>
       ),
     },
     enaBarchart: {
@@ -152,11 +155,13 @@ const DisplayViz = ({
     snaBarchart: {
       size: "small",
       viz: (
+      <NurseNameProvider>
         <SNABarChart
           timeRange={range}
           timelineTags={timelineTags}
           height={selectedVis.length === 1 ? "60vh" : "38vh"}
         />
+      </NurseNameProvider>
       ),
     },
     video: {

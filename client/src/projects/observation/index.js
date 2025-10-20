@@ -82,5 +82,6 @@ export const manualLabels = {
     { label: "Allocates roles", phasesAssociated: ["phaseId005"] },
     { label: "Uses cognitive aids", phasesAssociated: ["phaseId005"] },
     { label: "Anticipates care required", phasesAssociated: ["phaseId005"] },
+    { label: "Secondary nurses arrival", phasesAssociated: ["phaseId005"] },
   ],
 };

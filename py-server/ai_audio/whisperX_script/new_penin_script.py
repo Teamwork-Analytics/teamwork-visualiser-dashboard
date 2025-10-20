@@ -30,12 +30,8 @@ def organsing_transcription_df(res_folder_path, transcription_excel_output_path)
             transcription_list.append(pd.read_excel(os.path.join(res_folder_path, a_transcription)))
     transcription_df = pd.concat(transcription_list)
 
-    # try:
     transcription_df["duration"] = transcription_df["end_time"] - transcription_df["start_time"]
-    # except:
-    #     transcription_df["duration"] = 0
-    #     transcription_df["start"] = 0
-    #     transcription_df["end"] = 0
+
     transcription_df = pd.DataFrame(transcription_df.sort_values(by=["start_time"]))
     transcription_df.to_excel(transcription_excel_output_path)
     return transcription_df

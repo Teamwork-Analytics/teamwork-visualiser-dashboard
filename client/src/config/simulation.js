@@ -20,14 +20,14 @@ export const simulationColoursSetting = {
     },
     YELLOW: {
         COLOUR: "#f39c11", // gold
-        NAME: "",
+        NAME: "Name",
         SHORT_TITLE: "SN 2",
         LONG_TITLE: "secondaryNurse2",
     },
     ORANGE: {
         COLOUR: "#ff6200ff", // gold
         NAME: "Name",
-        SHORT_TITLE: "SN 1",
+        SHORT_TITLE: "SN 3",
         LONG_TITLE: "secondaryNurse3",
     }
 }

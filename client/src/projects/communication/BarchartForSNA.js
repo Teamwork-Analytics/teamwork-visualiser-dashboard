@@ -12,7 +12,6 @@ const Barchart = ({
 }) => {
 
   // Filtered not participants data. Participant data is in simulation.js config file.
-  data.push({label: "black", value: 1})
   const filteredData = data.filter(value => value.label.toUpperCase() in simulationColoursSetting);
 
   const labels =  filteredData.map((row) => row.label);
@@ -34,6 +33,8 @@ const Barchart = ({
     backgroundColors.push(colourObject.COLOUR);
 
   });
+  console.log(labels);
+  console.log(backgroundColors);
 
   const chartData = {
     labels: labelNames,
@@ -44,6 +45,8 @@ const Barchart = ({
       },
     ],
   };
+
+  console.log(chartData);
 
   return (
     <div

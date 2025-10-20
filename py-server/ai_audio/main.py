@@ -617,6 +617,7 @@ def auto_transcription_and_coding_without_force_alignment(the_data_folder: str, 
 
 def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_session_id: int,
                                                 handover_ends: float,
+                                                phase_2: float,
                                                 secondary_entered: float,
                                                 doctor_entered: float,
                                                 whisper_model_name: str):
@@ -703,6 +704,7 @@ def auto_transcription_and_coding_with_whisperX(the_data_folder: str, the_sessio
     # force alignment code is removed
     conversation_df = filtering_by_phases(conversation_df,
                                               handover_ends=handover_ends,
+                                              phase_2=phase_2,
                                               secondary_entered=secondary_entered,
                                               met_entered=doctor_entered
                                           )

@@ -75,7 +75,7 @@ def extract_timestamps_for_phases(observation_data: Mapping[str, Any]) -> tuple[
 
 
 def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, Any]) -> \
-        tuple[float, float, float]:
+        tuple[float, float, float, float]:
     """
         Extracts timestamps for specific key events based on the year of the database configuration.
 
@@ -89,6 +89,7 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
             ValueError: If any key phase is missing from the observation data.
         """
     handover_finish_time = None
+    phase_2 = None
     secondary_nurses_enter_time = None
     doctor_enter_time = None
 
@@ -98,7 +99,7 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
                 handover_finish_time = item[
                     "timestamp"].timestamp()
             elif item["phaseKey"] == "ward_nurse":
-                secondary_nurses_enter_time = item[
+                phase_2 = secondary_nurses_enter_time = item[
                     "timestamp"].timestamp()
             elif item["phaseKey"] == "met_doctor":
                 doctor_enter_time = item[
@@ -111,7 +112,7 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
                 handover_finish_time = item[
                     "timestamp"].timestamp()
             elif item["phaseKey"] == "secondary_nurse_enters":
-                secondary_nurses_enter_time = item[
+                phase_2 = secondary_nurses_enter_time = item[
                     "timestamp"].timestamp()
             elif item["phaseKey"] == "doctor_enters":
                 doctor_enter_time = item[
@@ -125,6 +126,9 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
                 handover_finish_time = item[
                     "timestamp"].timestamp() + 3600 * UTC_plus
             elif item["phaseKey"] == "stage_2":
+                phase_2 = item[
+                    "timestamp"].timestamp() + 3600 * UTC_plus
+            elif item["phaseKey"] == "secondary_nurses_arrival": # This is for Peninsula 2025.
                 secondary_nurses_enter_time = item[
                     "timestamp"].timestamp() + 3600 * UTC_plus
             elif item["phaseKey"] == "stage_3":
@@ -136,17 +140,20 @@ def extract_timestamps_from_phases_based_on_year(observation_data: Mapping[str, 
     if handover_finish_time is None:
         raise ValueError("Phase key for  'handover' is missing.")
     if secondary_nurses_enter_time is None:
-        raise ValueError("Phase key 'secondary' is missing.")
+        # raise ValueError("Phase key 'secondary' is missing.")
+        print("No secondary nurses enter time. Fixing phase 2 to secondary nurses enter time")
+        secondary_nurses_enter_time = phase_2
+
     if doctor_enter_time is None:
         raise ValueError("Phase key 'doctor' is missing.")
 
     logger().info(f"handover_finish_time: {handover_finish_time}")
     logger().info(f"secondary_nurses_enter_time: {secondary_nurses_enter_time}")
     logger().info(f"doctor_enter_time: {doctor_enter_time}")
-    return handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
+    return handover_finish_time, phase_2, secondary_nurses_enter_time, doctor_enter_time
 
 
-def process_observation_timestamps(data_dir, handover_finish_time, secondary_nurses_enter_time, doctor_enter_time):
+def process_observation_timestamps(data_dir, handover_finish_time, phase_2, secondary_nurses_enter_time, doctor_enter_time):
     """
         Adjusts timestamps of key events based on the audio synchronization file.
 
@@ -161,6 +168,7 @@ def process_observation_timestamps(data_dir, handover_finish_time, secondary_nur
         """
     audio_start_timestamp = get_timestamp_from_sync(os.path.join(data_dir, "sync.txt"), "audio")
     handover_finish_time =  handover_finish_time - audio_start_timestamp
+    phase_2 = phase_2 - audio_start_timestamp
     secondary_nurses_enter_time = secondary_nurses_enter_time - audio_start_timestamp
     doctor_enter_time = doctor_enter_time - audio_start_timestamp
     # handover_finish_time = 3
@@ -176,6 +184,7 @@ def process_observation_timestamps(data_dir, handover_finish_time, secondary_nur
 
     logger().info(f"audio_start_timestamp:{audio_start_timestamp}")
     logger().info(f"handover_finish_time:{handover_finish_time}")
+    logger().info(f"Phase 2:{phase_2}")
     logger().info(f"secondary_nurses_enter_time:{secondary_nurses_enter_time}")
     logger().info(f"doctor_enter_time:{doctor_enter_time}")
-    return handover_finish_time, secondary_nurses_enter_time, doctor_enter_time
+    return handover_finish_time, phase_2, secondary_nurses_enter_time, doctor_enter_time

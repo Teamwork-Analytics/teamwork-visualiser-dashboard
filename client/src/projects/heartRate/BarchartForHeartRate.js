@@ -48,16 +48,15 @@ const BarchartForHeartRate = ({
   };
   
   const annotations = {};
-  const image = new Image(35,35);
+  const image = new Image(18,18);
   image.src = heartBase64Image;
 
   // const image = new Image();
   // image.src = 'https://www.chartjs.org/chartjs-plugin-annotation/latest/favicon.png';
 
-  labels.forEach((label, i) => {
+  labels.forEach((_, i) => {
     const baseline = baselines[i];
     const max = maxes[i];
-    const colour = backgroundColors[i];
     const average = averages[i];
 
     annotations[`line_baseline_${i}`] = {
