@@ -1,12 +1,32 @@
-const { createObjectCsvWriter } = require("csv-writer");
-const fs = require("fs");
-const path = require("path");
+import { createObjectCsvWriter } from 'csv-writer';
+import { join, dirname } from 'path';
+import { mkdirSync, existsSync, createWriteStream, access, constants } from 'fs';
+
+/**
+ * All the following functions are curryied version. 
+ * They can be composed using the pipe function.
+ */
+
+const pipe = (...fns) => (arg) => fns.reduce((acc, fn) => fn(acc), arg);
+
+const getUploadFilePath = simulationId => filename => {
+    return join(
+    process.env.VISUALISATION_DIR,
+    simulationId,
+    filename
+  ); // Absolute path for data collection
+}
+
+const makeDirectorySync = filePath => {
+  mkdirSync(dirname(filePath), { recursive: true });
+  return filePath;
+}
 
 // Function to write data to CSV
-function writeToCsv(filename, data) {
+const writeToCsv = data => filePath => {
   const csvWriter = createObjectCsvWriter({
-    path: filename,
-    append: fs.existsSync(filename), // Append data if file exists (setting true will disable headers)
+    path: filePath,
+    append: existsSync(filePath), // Append data if file exists (setting true will disable headers)
     header: [
       { id: "server_time", title: "Server Time" },
       { id: "watch_timestamp", title: "Watch Timestamp" },
@@ -15,37 +35,39 @@ function writeToCsv(filename, data) {
   });
 
   // Check if file exists to decide on writing headers
-  fs.access(filename, fs.constants.F_OK, (err) => {
+  access(filename, constants.F_OK, (err) => {
     csvWriter.writeRecords([data]);
   });
 }
 
-// Function to handle received data
-function handleReceivedData(receivedData, simulationId) {
+// Function to handle fitbit received data
+const handleReceivedData = receivedData => simulationId => {
   const filename = `${receivedData.type.toLowerCase()}-${receivedData.user.toUpperCase()}.csv`;
 
-  // const filePath = path.join(
-  //   `/Users/jiexiangfan/Documents/GitHub/teamwork-visualiser-dashboard/server/saved_data/${simulationId}/result/`,
-  //   filename
-  // );
-
-  // Absolute path of developer
-  const filePath = path.join(
-    `C:\\Users\\Teamwork Analytics\\Documents\\saved_data\\${simulationId}\\`,
-    filename
-  ); // Absolute path for data collection
-
-  // Ensure directory exists
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-
   // Prepare the data object for CSV
+  // TODO, check how to keep new Date() synchronised in the whole platform.
   const dataForCsv = {
     server_time: new Date().toISOString(),
     watch_timestamp: receivedData.timestamp,
     value: receivedData.value || null,
   };
 
-  writeToCsv(filePath, dataForCsv);
+  const getPathSimulationId = getUploadFilePath(simulationId);
+  const writetoCsvWithData = writeToCsv(dataForCsv);
+  const handleReceivedDataFunction = pipe(getPathSimulationId, makeDirectorySync, writetoCsvWithData);
+
+  handleReceivedDataFunction(filename);
+
 }
 
-exports.handleReceivedData = handleReceivedData;
+// Function to handle audio received data
+const handleAudioData = simulationId => filename => {
+
+  const getPathSimulationId = getUploadFilePath(simulationId);
+  const composedFunction = pipe(getPathSimulationId, makeDirectorySync);
+  const curatedFilePath = composedFunction(filename);
+
+  return createWriteStream(curatedFilePath);
+}
+
+export { handleReceivedData, getUploadFilePath, handleAudioData };
