@@ -6,11 +6,22 @@ A NodeJS server that receive data from Android app (which is fetched from fitbit
 
 This server open port `3168` to receive API call. Once it received a POST request at `/data` it stores the data point in a csv file (by adding a new line).
 
+The same port also hosts a WebSocket endpoint (`/ws`) used to push messages down to connected Android devices and receive watch button-click responses back. See "Messaging feature" below.
+
 ## How to run
 
 1. Navigate to this directory using `cd gitbit-receiver` from root of the project.
 2. Do `node server.js` to run this server. (`npm install` might be required to install dependencies).
 3. [Reminder] While installing android application (android-fitbit-middleman), please ensure the IP address is correctly pointing to this server.
+
+## Messaging feature
+
+Each android-fitbit-middleman instance opens a persistent WebSocket connection to this server at `ws://<server-ip>:3168/ws?deviceId=<user>`, identified by its configured user/role. This scales to 10+ concurrently connected phones on one process/port.
+
+- Open `http://<server-ip>:3168/notify.html` in a browser for a small form to send a message to one connected device or broadcast to all of them.
+- The message is pushed down over that device's WebSocket connection, relayed by the Android app to the paired Fitbit watch, which shows the text with Yes/No buttons.
+- A button press is sent back up the same WebSocket connection and stored in `saved_data/button-responses/button-response-<deviceId>.csv` (server time, device id, watch timestamp, button, message), independent of whether a simulation is active.
+- `GET /api/devices` lists currently connected device ids; `POST /api/notify` with `{ "target": "<deviceId>" | "all", "message": "..." }` sends programmatically.
 
 ## Configuration
 

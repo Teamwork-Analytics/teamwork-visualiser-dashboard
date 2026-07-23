@@ -1,73 +1,80 @@
-import { createObjectCsvWriter } from 'csv-writer';
-import { join, dirname } from 'path';
-import { mkdirSync, existsSync, createWriteStream, access, constants } from 'fs';
+const { createObjectCsvWriter } = require("csv-writer");
+const fs = require("fs");
+const path = require("path");
 
-/**
- * All the following functions are curryied version. 
- * They can be composed using the pipe function.
- */
-
-const pipe = (...fns) => (arg) => fns.reduce((acc, fn) => fn(acc), arg);
-
-const getUploadFilePath = simulationId => filename => {
-    return join(
-    process.env.VISUALISATION_DIR,
-    simulationId,
-    filename
-  ); // Absolute path for data collection
-}
-
-const makeDirectorySync = filePath => {
-  mkdirSync(dirname(filePath), { recursive: true });
-  return filePath;
+// Resolves where a simulation's file should live, under VISUALISATION_DIR (set in ../.env)
+function getSimulationFilePath(simulationId, filename) {
+  return path.join(process.env.VISUALISATION_DIR, simulationId, filename);
 }
 
 // Function to write data to CSV
-const writeToCsv = data => filePath => {
+function writeToCsv(filePath, data, header) {
   const csvWriter = createObjectCsvWriter({
     path: filePath,
-    append: existsSync(filePath), // Append data if file exists (setting true will disable headers)
-    header: [
-      { id: "server_time", title: "Server Time" },
-      { id: "watch_timestamp", title: "Watch Timestamp" },
-      { id: "value", title: "Value" }, // For heart rate
-    ],
+    append: fs.existsSync(filePath), // Append data if file exists (setting true will disable headers)
+    header,
   });
 
-  // Check if file exists to decide on writing headers
-  access(filename, constants.F_OK, (err) => {
-    csvWriter.writeRecords([data]);
-  });
+  csvWriter.writeRecords([data]);
 }
 
-// Function to handle fitbit received data
-const handleReceivedData = receivedData => simulationId => {
+// Function to handle received sensor data
+function handleReceivedData(receivedData, simulationId) {
   const filename = `${receivedData.type.toLowerCase()}-${receivedData.user.toUpperCase()}.csv`;
+  const filePath = getSimulationFilePath(simulationId, filename);
 
-  // Prepare the data object for CSV
-  // TODO, check how to keep new Date() synchronised in the whole platform.
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
   const dataForCsv = {
     server_time: new Date().toISOString(),
     watch_timestamp: receivedData.timestamp,
     value: receivedData.value || null,
   };
 
-  const getPathSimulationId = getUploadFilePath(simulationId);
-  const writetoCsvWithData = writeToCsv(dataForCsv);
-  const handleReceivedDataFunction = pipe(getPathSimulationId, makeDirectorySync, writetoCsvWithData);
-
-  handleReceivedDataFunction(filename);
-
+  writeToCsv(filePath, dataForCsv, [
+    { id: "server_time", title: "Server Time" },
+    { id: "watch_timestamp", title: "Watch Timestamp" },
+    { id: "value", title: "Value" }, // For heart rate
+  ]);
 }
 
-// Function to handle audio received data
-const handleAudioData = simulationId => filename => {
-
-  const getPathSimulationId = getUploadFilePath(simulationId);
-  const composedFunction = pipe(getPathSimulationId, makeDirectorySync);
-  const curatedFilePath = composedFunction(filename);
-
-  return createWriteStream(curatedFilePath);
+// Returns a writable stream for an audio chunk uploaded for this simulation
+function handleAudioData(simulationId) {
+  return function (filename) {
+    const filePath = getSimulationFilePath(simulationId, filename);
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    return fs.createWriteStream(filePath);
+  };
 }
 
-export { handleReceivedData, getUploadFilePath, handleAudioData };
+// Function to handle a button-click response coming back from a watch.
+// The middleman already knows its simulationId (same as handleReceivedData/
+// handleAudioData above), so it's carried in the WS payload here rather than
+// relying on the /start-simulation global.
+function handleButtonResponse(deviceId, responseData) {
+  const simulationId = responseData.simulationId || "unknown_simulation_id";
+  const filename = `button-response-${deviceId}.csv`;
+  const filePath = getSimulationFilePath(String(simulationId), filename);
+
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+
+  const dataForCsv = {
+    server_time: new Date().toISOString(),
+    device_id: deviceId,
+    watch_timestamp: responseData.timestamp || null,
+    button: responseData.button || null,
+    message: responseData.message || null,
+  };
+
+  writeToCsv(filePath, dataForCsv, [
+    { id: "server_time", title: "Server Time" },
+    { id: "device_id", title: "Device Id" },
+    { id: "watch_timestamp", title: "Watch Timestamp" },
+    { id: "button", title: "Button" },
+    { id: "message", title: "Message" },
+  ]);
+}
+
+exports.handleReceivedData = handleReceivedData;
+exports.handleAudioData = handleAudioData;
+exports.handleButtonResponse = handleButtonResponse;

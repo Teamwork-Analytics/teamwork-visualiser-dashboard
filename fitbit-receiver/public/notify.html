@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Send message to devices</title>
+  <style>
+    body { font-family: sans-serif; max-width: 480px; margin: 40px auto; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    select, textarea, button { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+    button { margin-top: 16px; cursor: pointer; }
+    #status { margin-top: 12px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Send message to Android devices</h1>
+
+  <label for="target">Target device</label>
+  <select id="target">
+    <option value="all">All connected devices</option>
+  </select>
+
+  <label for="message">Message</label>
+  <textarea id="message" rows="4" placeholder="Type a message..."></textarea>
+
+  <button id="sendBtn">Send</button>
+  <div id="status"></div>
+
+  <script>
+    const targetSelect = document.getElementById("target");
+    const messageInput = document.getElementById("message");
+    const sendBtn = document.getElementById("sendBtn");
+    const statusEl = document.getElementById("status");
+
+    async function refreshDevices() {
+      const res = await fetch("/api/devices");
+      const { devices } = await res.json();
+      const previouslySelected = targetSelect.value;
+
+      targetSelect.innerHTML = '<option value="all">All connected devices</option>';
+      for (const deviceId of devices) {
+        const option = document.createElement("option");
+        option.value = deviceId;
+        option.textContent = deviceId;
+        targetSelect.appendChild(option);
+      }
+
+      if ([...targetSelect.options].some((o) => o.value === previouslySelected)) {
+        targetSelect.value = previouslySelected;
+      }
+    }
+
+    sendBtn.addEventListener("click", async () => {
+      const target = targetSelect.value;
+      const message = messageInput.value.trim();
+      if (!message) {
+        statusEl.textContent = "Please enter a message.";
+        return;
+      }
+
+      const res = await fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ target, message }),
+      });
+
+      if (res.ok) {
+        const body = await res.json();
+        statusEl.textContent = `Sent to: ${body.sentTo.join(", ")}`;
+        messageInput.value = "";
+      } else {
+        statusEl.textContent = `Failed to send: ${await res.text()}`;
+      }
+    });
+
+    refreshDevices();
+    setInterval(refreshDevices, 5000);
+  </script>
+</body>
+</html>
